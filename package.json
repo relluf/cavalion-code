@@ -24,5 +24,11 @@
   "bugs": {
     "url": "https://github.com/relluf/cavalion-code/issues"
   },
-  "homepage": "https://github.com/relluf/cavalion-code#readme"
+  "homepage": "https://github.com/relluf/cavalion-code#readme",
+  "dependencies": {
+    "cavalion-js": "^1.0.0",
+    "cavalion-vcl": "^1.0.0",
+    "node-tomcat-manager": "^3.1.0",
+    "tomcat": "^1.0.0"
+  }
 }

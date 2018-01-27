@@ -34,7 +34,7 @@ require.config({
     }
 });
 
-define("font-awesome", ["stylesheet!../lib/font-awesome.io/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
+define("font-awesome", ["stylesheet!bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
 
