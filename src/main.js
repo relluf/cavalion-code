@@ -1,5 +1,6 @@
 require.config({
     paths: {
+        "ace": "./bower_components/ace/lib/ace",
 
         "home": "/home",
         "vcl-comps/ws/VO": "/home",
@@ -19,88 +20,13 @@ require.config({
         "js": "../lib/cavalion.org/js",
         "util": "../lib/cavalion.org/util",
         "vcl": "../lib/cavalion.org/vcl",
-        // "vcl-pouchdb": "../lib/cavalion.org/",
-
-		/* charting */
-        "dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph",
-        "highcharts": "bower_components/highcharts/highcharts",
-
-		/*- amcharts */
-        "amcharts": "bower_components/amcharts3/amcharts/amcharts",
-        "amcharts.funnel": "bower_components/amcharts3/amcharts/funnel",
-        "amcharts.gauge": "bower_components/amcharts3/amcharts/gauge",
-        "amcharts.pie": "bower_components/amcharts3/amcharts/pie",
-        "amcharts.radar": "bower_components/amcharts3/amcharts/radar",
-        "amcharts.serial": "bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
-
-        /*- veldapps.com */
-        "veldoffice": "../lib/veldapps.com/veldoffice",
-        "vcl-veldoffice": "../lib/veldapps.com/veldoffice/vcl-veldoffice",
-        
-        "linqjs": "../lib/node_modules/linq/linq",
-
-        /*- 3rd party */
-        "proj4": "../lib/proj4js.org/proj4-src",
-        "epsg": "../lib/proj4js.org/epsg",
-        "leaflet": "../lib/leafletjs.com",
-        "framework7": "../lib/framework7.io",
-        "underscore": "../lib/backbonejs.org/bower_components/underscore/underscore",
-        "backbone": "../lib/backbonejs.org/bower_components/backbone/backbone",
 
         "pouchdb": "./bower_components/pouchdb/dist/pouchdb",
-        "ace": "./bower_components/ace/lib/ace",
         "jquery": "./bower_components/jquery/dist/jquery",
         "moment": "./bower_components/moment/moment",
         "moment-locale": "./bower_components/moment/locale"
     },
     shim: {
-        "highcharts": {
-            exports: 'highcharts',
-            deps: ['jquery']
-    	},
-        "amcharts.funnel": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        },
-        "amcharts.gauge": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        },
-        "amcharts.pie": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        },
-        "amcharts.radar": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        },
-        "amcharts.serial": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        },
-        "amcharts.xy": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
-            "init": function () {
-                AmCharts.isReady = true;
-            }
-        }
     }
 });
 
@@ -121,7 +47,7 @@ define("markdown", ["./bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 
-define("less", ["../lib/lesscss.org/bower_components/less/dist/less"], function(less) {
+define("less", ["./bower_components/less/dist/less"], function(less) {
 	return less;
 });
 
