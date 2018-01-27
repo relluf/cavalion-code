@@ -1,3 +1,6 @@
+2018-01-27
+- Moving to Git in order to be able to more easily share code within Cavalion team, for now focus will be a build which should be runnable
+
 2018-01-21
 - Fixing some non-escaped HTML (vcl/ui/Tab, vcl/ui/Node)
 - Adding several libraries to main.js
