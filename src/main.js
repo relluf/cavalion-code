@@ -1,13 +1,11 @@
 require.config({
     paths: {
-        "ace": "./bower_components/ace/lib/ace",
-
+		/*- TODO */
         "home": "/home",
         "vcl-comps/ws/VO": "/home",
 
         /*- bangers! */
-        "text": "../lib/text",
-        "page": "../lib/framework7.io/page",
+        "text": "../lib/cavalion.org/text",
         "stylesheet": "../lib/cavalion.org/stylesheet",
         "script": "../lib/cavalion.org/script",
 
@@ -21,6 +19,8 @@ require.config({
         "util": "../lib/cavalion.org/util",
         "vcl": "../lib/cavalion.org/vcl",
 
+		/*- bower */
+        "ace": "./bower_components/ace/lib/ace",
         "pouchdb": "./bower_components/pouchdb/dist/pouchdb",
         "jquery": "./bower_components/jquery/dist/jquery",
         "moment": "./bower_components/moment/moment",
