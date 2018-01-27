@@ -1,3 +1,5 @@
+var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
+var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
 require.config({
     paths: {
 		/*- TODO */
@@ -5,22 +7,24 @@ require.config({
         "vcl-comps/ws/VO": "/home",
 
         /*- bangers! */
-        "text": "../lib/cavalion.org/text",
-        "stylesheet": "../lib/cavalion.org/stylesheet",
-        "script": "../lib/cavalion.org/script",
+        "locale": cavalion_js + "locale",
+        "text": cavalion_js + "text",
+        "stylesheet": cavalion_js + "stylesheet",
+        "script": cavalion_js + "script",
 
         /*- cavalion.org */
-        "console": "../lib/cavalion.org/console",
-        "data": "../lib/cavalion.org/data",
-        "persistence": "../lib/cavalion.org/persistence",
-        "entities": "../lib/cavalion.org/entities",
-        "features": "../lib/cavalion.org/features",
-        "js": "../lib/cavalion.org/js",
-        "util": "../lib/cavalion.org/util",
-        "vcl": "../lib/cavalion.org/vcl",
+        "console": cavalion_js + "console",
+        "data": cavalion_js + "data",
+        "persistence": cavalion_js + "persistence",
+        "entities": cavalion_js + "entities",
+        "features": cavalion_js + "features",
+        "js": cavalion_js + "js",
+        "util": cavalion_js + "util",
+        "vcl": cavalion_vcl,
 
 		/*- bower */
         "ace": "./bower_components/ace/lib/ace",
+        "less": "./bower_components/less/dist/less",
         "pouchdb": "./bower_components/pouchdb/dist/pouchdb",
         "jquery": "./bower_components/jquery/dist/jquery",
         "moment": "./bower_components/moment/moment",
@@ -30,15 +34,6 @@ require.config({
     }
 });
 
-define("locale", ["../lib/cavalion.org/locale"], function(locale) {
-	return locale;
-});
-
-define("pouchdb", ["./bower_components/pouchdb/dist/pouchdb"], function(pouchdb) { return pouchdb; });
-
-define("leaflet", ["leaflet/leaflet-default"], function(leaflet) { 
-	return leaflet; });
-define("Framework7", ["framework7/Framework7"]);
 define("font-awesome", ["stylesheet!../lib/font-awesome.io/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
@@ -47,23 +42,14 @@ define("markdown", ["./bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 
-define("less", ["./bower_components/less/dist/less"], function(less) {
-	return less;
-});
-
 define(function(require) {
-
-	/*- Get IE up to speed */	
-	// require("node_modules/es5-shim/es5-shim");
-	// require("node_modules/es6-shim/es6-shim");
-	// require("node_modules/es7-shim/dist/es7-shim");
 
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
 
 	/*- Some awesomeness */
-	// require("font-awesome");
+	require("font-awesome");
 	require("console/Printer");
 	
 	var ComponentNode = require("console/node/vcl/Component");
@@ -72,10 +58,9 @@ define(function(require) {
 	var Url = require("util/net/Url");
 	var JsObject = require("js/JsObject");
 
-	var app, url = new Url();
-	
 	window.j$ = JsObject.$;
-	
+
+	var app, url = new Url(); 
 	if((app = url.getParamValue("app"))) {
 		if(app && app.indexOf("/") === -1) {
 		    app += "/App.v1.desktop";
@@ -83,8 +68,10 @@ define(function(require) {
 	        app = "App.v1.desktop";
 	    }
 	} else {
-		app = url.getParamValues().filter(function(s) { 
-			return s !== "debug"; });
+		// TODO reserved valueless parameters: ['debug']
+		
+		app = url.getParamValues("").filter(function(s) { 
+			return s !== "debug"; })[0] || "devtools";
 		app += "/App";
 	}
 

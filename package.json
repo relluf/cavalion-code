@@ -1,0 +1,28 @@
+{
+  "name": "cavalion-code",
+  "version": "1.0.0",
+  "description": "Code Management for Cavalion",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relluf/cavalion-code.git"
+  },
+  "keywords": [
+    "code",
+    "management",
+    "online",
+    "cavalion"
+  ],
+  "author": "ralph",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/relluf/cavalion-code/issues"
+  },
+  "homepage": "https://github.com/relluf/cavalion-code#readme"
+}
