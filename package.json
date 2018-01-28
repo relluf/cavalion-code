@@ -4,7 +4,6 @@
   "description": "Code Management for Cavalion",
   "main": "index.js",
   "directories": {
-    "lib": "lib"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,9 +25,5 @@
   },
   "homepage": "https://github.com/relluf/cavalion-code#readme",
   "dependencies": {
-    "cavalion-js": "^1.0.0",
-    "cavalion-vcl": "^1.0.0",
-    "node-tomcat-manager": "^3.1.0",
-    "tomcat": "^1.0.0"
   }
 }

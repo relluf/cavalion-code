@@ -1,5 +1,7 @@
-var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
-var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+// var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
+// var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+var cavalion_js = "node_modules/cavalion-js/src/";
+var cavalion_vcl = "node_modules/cavalion-vcl/src/";
 require.config({
     paths: {
 		/*- TODO */
@@ -23,12 +25,12 @@ require.config({
         "vcl": cavalion_vcl,
 
 		/*- bower */
-        "ace": "./bower_components/ace/lib/ace",
-        "less": "./bower_components/less/dist/less",
-        "pouchdb": "./bower_components/pouchdb/dist/pouchdb",
-        "jquery": "./bower_components/jquery/dist/jquery",
-        "moment": "./bower_components/moment/moment",
-        "moment-locale": "./bower_components/moment/locale"
+        "ace": "bower_components/ace/lib/ace",
+        "less": "bower_components/less/dist/less",
+        "pouchdb": "bower_components/pouchdb/dist/pouchdb",
+        "jquery": "bower_components/jquery/dist/jquery",
+        "moment": "bower_components/moment/moment",
+        "moment-locale": "bower_components/moment/locale"
     },
     shim: {
     }
@@ -38,7 +40,7 @@ define("font-awesome", ["stylesheet!bower_components/font-awesome/css/font-aweso
 	return stylesheet;
 });
 
-define("markdown", ["./bower_components/markdown/lib/markdown"], function() {
+define("markdown", ["bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 
