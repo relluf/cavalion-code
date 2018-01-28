@@ -19,6 +19,7 @@ $(["ui/Form"], {
             "json": "json",
             "js": "javascript",
             "vcl": "javascript",
+            "ts": "typescript",
             "java": "java",
             "jsx": "jsx",
             "wsdl": "xml",

@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Code Management for Cavalion",
   "main": "index.js",
-  "directories": {
-  },
+  "directories": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,5 +24,6 @@
   },
   "homepage": "https://github.com/relluf/cavalion-code#readme",
   "dependencies": {
+    "cavalion-vcl": "^1.0.1"
   }
 }

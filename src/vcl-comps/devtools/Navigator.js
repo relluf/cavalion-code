@@ -1,8 +1,20 @@
-"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources, js/Method";
+"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources-node, js/Method";
 
 var Method = require("js/Method");
-var Resources = require("devtools/Resources");
+var Resources = require("devtools/Resources-node");
 var NavigatorNode = require("devtools/NavigatorNode");
+
+var needsParent = ["src", "build", "vcl-comps", "css", "images", "img", "lib", "pages"];
+function getNodeText(uri, usedNames) {
+	var r = []; usedNames = usedNames || [];
+	r.push((uri = uri.split("/")).pop());
+	
+	while(uri.length > 0 && (needsParent.indexOf(r[0]) !== -1 || usedNames.indexOf(r.join("/")) !== -1)) {
+		r.unshift(uri.pop());
+	}
+	
+	return r.join("/");
+}
 
 $("vcl/ui/Form", {
 	activeControl: "search-input",
@@ -50,7 +62,7 @@ $("vcl/ui/Form", {
                     var run = ++indexing;
                     scope['search-input'].addClass("searching");
                     return Resources.index(uris).
-	                    addCallback(function (res) {
+	                    then(function (res) {
 	                        if (run === indexing) {
 	                            for (var k in index) {
 	                                delete index[k];
@@ -66,7 +78,7 @@ $("vcl/ui/Form", {
 	                        scope['search-input'].removeClass("searching");
 	                        return res;
 	                    }).
-	                    addErrback(function(res) {
+	                    catch(function(res) {
 	                        scope['search-input'].removeClass("searching");
 	                        return res;
 	                    });
@@ -75,7 +87,7 @@ $("vcl/ui/Form", {
                 list: function (uri) {
                     lists[uri] = Resources.list(uri);
                     return lists[uri].
-	                    addCallback(function (res) {
+	                    then(function (res) {
 	                        return (index[uri] = res);
 	                    });
                 },
@@ -321,10 +333,10 @@ $("vcl/ui/Form", {
                                     node.setExpanded(false);
                                     node.getNode().style.opacity = "0.5";
                                     Resources['delete'](node.getVar("resource.uri"))
-                                        .addCallback(function() {
+                                        .then(function() {
                                             node.destroy();
                                         })
-                                        .addErrback(function(err) {
+                                        .catch(function(err) {
                                             node.setEnabled(true);
                                             node.getNode().style.opacity = ""; // FIXME use a class!
                                         });
@@ -339,7 +351,7 @@ $("vcl/ui/Form", {
                             function(uri) {
                                 if(uri !== null) {
                                     Resources.create(uri, {text:""})
-                                        .addCallback(function(res) {
+                                        .then(function(res) {
                                             selection[0].reloadChildNodes();
                                             app.qsa("devtools/Workspace<>:owner-of(.) #editor-needed", owner)
                                             	.execute({
@@ -347,7 +359,7 @@ $("vcl/ui/Form", {
 	                                                selected: true
 	                                            });
                                         })
-                                        .addErrback(function(res) {
+                                        .catch(function(res) {
                                             alert(res);
                                         });
                                 }
@@ -417,7 +429,7 @@ $("vcl/ui/Form", {
 	                
 	                var item = {
 	                	uri:	uri[0], 
-	                	name:	uri[1] || uri[0].split("/").pop(),
+	                	name:	uri[1] || getNodeText(uri[0]),
 	                	type:	uri[2] || "Folder"
 	                };
 	
@@ -450,7 +462,7 @@ $("vcl/ui/Form", {
             }
             
             var r = this.apply("Resources.list", [uri]).
-	            addCallback(function (res) {
+	            then(function (res) {
 	            	res.sort(function(i1, i2) {
 	            		if(i1.type === i2.type) {
 	            			return i1.name < i2.name ? -1 : 1;
