@@ -80,7 +80,7 @@ $(["ui/Form"], {
                 editor.setReadOnly(true);
                 editor.blur();
                 Resources.get(resource.uri).
-                    addCallback(function (res) {
+                    then(function (res) {
                         if(res.text !== editor.session.getValue()) {
                             tab.setVar("modified", "resetundo,gototop");
                             editor.session.setValue(res.text);
@@ -94,7 +94,7 @@ $(["ui/Form"], {
                         tab.emit("resource-loaded");
 //                        tab.setState("invalidated", true);
                     }).
-                    addErrback(function(res) {
+                    catch(function(res) {
                         editor.setReadOnly(false);
                         editor.focus();
                         
@@ -127,19 +127,19 @@ $(["ui/Form"], {
 
             resource.text = editor.getValue();
             Resources.update(resource.uri, resource).
-                addBoth(function(res) {
+                then(function(res) {
                     editor.setReadOnly(false);
                     editor.focus();
                     scope.loading.hide();
                     return res;
                 }).
-                addCallback(function(res) {
+                then(function(res) {
                     tab.removeVar("modified");
                     tab.setState("invalidated", true);
                     resource.revision = res.revision;
                     tab.emit("resource-saved");
                 }).
-                addErrback(function(err) {
+                catch(function(err) {
                     alert(err.message);
                 });
         }
