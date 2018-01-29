@@ -1,7 +1,7 @@
-"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources-node, js/Method";
+"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources, js/Method";
 
 var Method = require("js/Method");
-var Resources = require("devtools/Resources-node");
+var Resources = require("devtools/Resources");
 var NavigatorNode = require("devtools/NavigatorNode");
 
 var needsParent = ["src", "build", "vcl-comps", "css", "images", "img", "lib", "pages"];
