@@ -1,7 +1,7 @@
 {
   "name": "cavalion-code",
-  "version": "1.0.0",
-  "description": "Code Management for Cavalion",
+  "version": "1.0.1",
+  "description": "Cavalion Code Management",
   "main": "index.js",
   "directories": {},
   "scripts": {

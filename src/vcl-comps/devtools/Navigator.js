@@ -193,7 +193,7 @@ $("vcl/ui/Form", {
                         scope.tree.makeVisible(node);
                     }
                 } else {
-                    alert("Could not find " + evt.resource.uri);
+                    //alert("Could not find " + evt.resource.uri);
                 }
             }
 

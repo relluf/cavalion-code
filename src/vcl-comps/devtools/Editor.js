@@ -205,12 +205,13 @@ $(["ui/Form"], {
             }
         }
     }),
-    $("vcl/Action", "focus-in-navigator", {
-        hotkey: "MetaCtrl+48",
+    $("vcl/Action#focus-in-navigator", {
+    	hotkey: "MetaCtrl+48",
         onExecute: function(evt) {
             var app = this.getApp();
+            var resource = this.getVar("resource", true);
             app.qsa("devtools/Workspace<>:owner-of(.) #navigator #resource-focus", this)
-            	.execute({resource: this.getVar("resource", true)}, this);
+            	.execute({resource: resource}, this);
         }
     }),
     $("vcl/ui/Ace", "ace"),

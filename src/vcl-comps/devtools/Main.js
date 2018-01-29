@@ -160,6 +160,7 @@ $(["ui/Form"], {
 			"Shift+Ctrl+Meta+219": "editor-move-left",
 			"Shift+Ctrl+Meta+221": "editor-move-right",
 			"Ctrl+W": "editor-close",
+			// "MetaCtrl+48": "editor-focus-in-navigator",
 			"Escape": "editor-setfocus"
 		};
 		
@@ -359,5 +360,7 @@ $(["ui/Form"], {
     		this._owner.emit("state-dirty");
         }
     }),
+    
+    
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false})
 ]);

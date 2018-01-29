@@ -3,7 +3,7 @@ define(function(require) {
 	var $ = require("jquery");
 	var js = require("js");
 
-	var BASE_URL = "/restify-fs/";
+	var BASE_URL = "/fs/";
 
 	function deferred(request) {
 		return Promise.resolve(request);
@@ -32,7 +32,7 @@ define(function(require) {
 					window.escape(uris.join(";"))));
 		},
 		list: function(uri) {
-			if(typeof uri === "string" && uri.charAt(uri.length - 1) !== "/") {
+			if(typeof uri === "string" && uri !== "/" && uri.charAt(uri.length - 1) !== "/") {
 				uri += "/";
 			}
 			return deferred($.ajax(adjust(uri))).then(function(res) {
@@ -40,7 +40,7 @@ define(function(require) {
 					for(var k in res) {
 						var resource = res[k];
 						arr.push({
-							uri: resource.path, modified: resource.mtime,
+							uri: uri + name, modified: resource.mtime,
 							created: resource.ctime, added: resource.atime,
 							link: resource.link, size: resource.size, name: k, 
 							type: resource.type

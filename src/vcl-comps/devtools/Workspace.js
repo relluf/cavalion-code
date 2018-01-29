@@ -255,6 +255,15 @@ $(["ui/Form"], {
 			this._owner.qs("vcl/ui/Tab:selected:childOf(editors-tabs) #ace").setFocus();
     	}
     }),
+    $("vcl/Action#editor-focus-in-navigator", {
+        onExecute: function(evt) {
+        	// TODO 
+            // var app = this.getApp();
+            // var resource = this.getVar("resource", true);
+            // app.qsa("devtools/Workspace<>:owner-of(.) #navigator #resource-focus", this)
+            // 	.execute({resource: resource}, this);
+        }
+    }),
 
     $("vcl/ui/Panel#left-sidebar", { align: "left", css: "border-right: 1px solid gray;", width: 375 }, [
     	
