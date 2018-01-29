@@ -1,9 +1,9 @@
-var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
-var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
-var veldoffice_js = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
-// var cavalion_js = "node_modules/cavalion-js/src/";
-// var cavalion_vcl = "node_modules/cavalion-vcl/src/";
-// var veldoffice_js = "node_modules/veldoffice-js/src/";
+// var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
+// var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+// var veldoffice_js = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
+var cavalion_js = "node_modules/cavalion-js/src/";
+var cavalion_vcl = "node_modules/cavalion-vcl/src/";
+var veldoffice_js = "node_modules/veldoffice-js/src/";
 require.config({
     paths: {
 		/*- TODO */
