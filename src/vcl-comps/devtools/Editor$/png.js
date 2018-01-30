@@ -5,7 +5,7 @@ $([], {}, [
             var node = scope.image.getNode();
             node.style.background = 
                 String.format("url(%s/%s?%d&file) no-repeat 50%%,50%%", 
-                    "/stuv/rest/resources",
+                    "/home",
                     this.getVar("resource.uri", true), 
                     Date.now());
         }
