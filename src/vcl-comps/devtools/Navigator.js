@@ -68,8 +68,8 @@ $("vcl/ui/Form", {
 	                                delete index[k];
 	                            }
 	                            for (k in lists) {
-	                                if (lists[k].results[0] instanceof Array) {
-	                                    index[k] = lists[k].results[0];
+	                                if (lists[k] instanceof Array) {
+	                                    index[k] = lists[k];
 	                                }
 	                            }
 	                            js.mixIn(index, res);
@@ -88,6 +88,7 @@ $("vcl/ui/Form", {
                     lists[uri] = Resources.list(uri);
                     return lists[uri].
 	                    then(function (res) {
+	                    	lists[uri] = res;
 	                        return (index[uri] = res);
 	                    });
                 },

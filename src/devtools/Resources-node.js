@@ -28,8 +28,29 @@ define(function(require) {
 
 	return {
 		index: function(uris) {
-			return deferred($.ajax(adjust("") + "?index&uris=" +
-					window.escape(uris.join(";"))));
+			return deferred($.ajax(adjust("") + "?index&uris=" + window.escape(uris.join(";"))))
+				.then(function(res) {
+						/*- TODO Current devtools/Navigator expects weird structure */
+						var dirs = {};
+						for(var path in res) {
+							res[path].forEach(function(item) {
+								var item_path = item.path.split("/");
+								var dir, name = item_path.pop();
+								
+								item_path.unshift(path);
+								dir = item_path.join("/");
+								if(!dirs.hasOwnProperty(dir)) {
+									dirs[dir] = [];
+								}
+								dirs[dir].push(js.mixIn(item, {name: name}));
+							});
+						}
+
+
+						console.log("res2dir", [res, dirs]);
+						
+						return dirs;
+					});
 		},
 		list: function(uri) {
 			if(typeof uri === "string" && uri !== "/" && uri.charAt(uri.length - 1) !== "/") {

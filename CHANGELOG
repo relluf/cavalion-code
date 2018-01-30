@@ -1,3 +1,10 @@
+2018-01-30
+- Finetuning Navigator, Resources, cavalion-server/fs
+	- Things always cost more time than you think 
+	- This Resources thing is and was a mess (but het doel heiligt de middelen)
+	- Need general entity modelling everywhere
+- Introducing Main.md (how about grouping all .md resources in the Navigator? We need filters)
+
 2018-01-27
 - Moving to Git in order to be able to more easily share code within Cavalion team, for now focus will be a build which should be runnable
 
