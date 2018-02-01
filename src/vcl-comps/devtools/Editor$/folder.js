@@ -42,7 +42,7 @@ $([], {
     	var owner = this;
     	var uri = this.getVar("resource.uri", true);
     	var act = this.up("devtools/Workspace<>:root").down("#editor-needed");
-    	Resources.list(uri).addCallback(function(res) {
+    	Resources.list(uri).then(function(res) {
 			res.filter(allowResource).forEach(function(resource, i) {
     			var tab = act.execute({
     				parents: {container: owner, tab: scope['editors-tabs']},

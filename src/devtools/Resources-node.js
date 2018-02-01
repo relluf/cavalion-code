@@ -34,6 +34,7 @@ define(function(require) {
 						var dirs = {};
 						for(var path in res) {
 							res[path].forEach(function(item) {
+								// if(item.type !== "Folder") {
 								var item_path = item.path.split("/");
 								var dir, name = item_path.pop();
 								
@@ -42,7 +43,7 @@ define(function(require) {
 								if(!dirs.hasOwnProperty(dir)) {
 									dirs[dir] = [];
 								}
-								dirs[dir].push(js.mixIn(item, {name: name}));
+								dirs[dir].push(js.mixIn(item, {name: name, uri: dir}));
 							});
 						}
 
@@ -61,7 +62,7 @@ define(function(require) {
 					for(var k in res) {
 						var resource = res[k];
 						arr.push({
-							uri: uri + name, modified: resource.mtime,
+							uri: uri + k, modified: resource.mtime,
 							created: resource.ctime, added: resource.atime,
 							link: resource.link, size: resource.size, name: k, 
 							type: resource.type

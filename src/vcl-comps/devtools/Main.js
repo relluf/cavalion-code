@@ -338,6 +338,24 @@ $(["ui/Form"], {
     		evt.preventDefault();
     	}
     }),
+    $("vcl/Action#workspace-move-left", {
+		hotkey: "Ctrl+Alt+Meta+219",
+    	onExecute: function() {
+    		var tab = this._owner.qs("vcl/ui/Tab:selected:childOf(workspaces-tabs)");
+    		var index = tab.getIndex();
+    		if(index > 0) {
+    			tab.setIndex(index - 1);
+    		}
+    	}
+    }),
+    $("vcl/Action#workspace-move-right", {
+		hotkey: "Ctrl+Alt+Meta+221",
+    	onExecute: function() {
+    		var tab = this._owner.qs("vcl/ui/Tab:selected:childOf(workspaces-tabs)");
+    		var index = tab.getIndex();
+    		tab.setIndex(index + 1);
+    	}
+    }),
     $("vcl/Action", "F5-blocker", {
         hotkey: "F5|MetaCtrl+R",
         onExecute: function(evt) {
