@@ -194,7 +194,23 @@ $(["ui/Form"], {
 		function create_callback_activateWS(hotkey, index) {
 			return function(evt, type) {
 				evt.preventDefault();
-				me.scope()['workspaces-tabs'].qsa("< vcl/ui/Tab")[index].setSelected(true);
+				var tab = me.scope()['workspaces-tabs'].qsa("< vcl/ui/Tab")[index];
+				tab.setSelected(true);
+                try {
+                	if((tab = tab._control.qs("#left-sidebar-tabs < vcl/ui/Tab:selected"))) {
+                		var input = tab._control.qs("vcl/ui/Input");
+                		if(!input.isFocused()) {
+                			console.log("focus sidebar");
+                			input.setFocus();
+                		} else {
+                			console.log("focus editor");
+                			me.down('*:selected #editor-setfocus').execute(evt, me);
+                		}
+                	}
+                	
+                } catch(e) {
+					console.warn(e.message);
+				}
 			};
 		}
 		
@@ -309,13 +325,20 @@ $(["ui/Form"], {
         }
     }),
     $("vcl/Action", "workspace-activate", {
-    	hotkey: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(keyCode) { 
-    		return "Ctrl+" + (48 + keyCode); }).join("|"),
+    	// hotkey: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(keyCode) { 
+    	// 	return "Ctrl+" + (48 + keyCode); }).join("|"),
     	onExecute: function(evt) {
-            var control, tabs = this.getScope()['workspaces-tabs'];
-            if((control = tabs.getControl(evt.keyCode - 49)) !== null) {
+            var tab, tabs = this.getScope()['workspaces-tabs'];
+            if((tab = tabs.getControl(evt.keyCode - 49)) !== null) {
                 evt.preventDefault();
-                control.setSelected(true);
+                tab.setSelected(true);
+                try {
+                	tab = tab._control.qs("#left-sidebar-tabs < vcl/ui/Tab:selected");
+                	console.log(tab, tab._control.qs("vcl/ui/Input"));
+                	//.setFocus()
+                } catch(e) {
+					console.warn(e.message);
+				}
             }
     	}
     }),

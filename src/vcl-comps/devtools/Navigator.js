@@ -64,9 +64,9 @@ $("vcl/ui/Form", {
                     return Resources.index(uris).
 	                    then(function (res) {
 	                        if (run === indexing) {
-	                            for (var k in index) {
-	                                delete index[k];
-	                            }
+	                            // for (var k in index) {
+	                            //     delete index[k];
+	                            // }
 	                            for (k in lists) {
 	                                if (lists[k] instanceof Array) {
 	                                    index[k] = lists[k];

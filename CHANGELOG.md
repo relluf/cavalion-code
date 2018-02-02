@@ -1,3 +1,11 @@
+### 2018-02-01
+- Writing some more Markdown in Main.md
+- Still debugging devtools/Resources-node (sigh)
+- In need of a test workflow as well going forward (!!)
+
+### 2018-01-31
+- Enhancing Markdown support
+
 ### 2018-01-30
 - Finetuning Navigator, Resources, cavalion-server/fs
 	- Things always cost more time than you think 

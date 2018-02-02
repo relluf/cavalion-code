@@ -30,12 +30,11 @@ define(function(require) {
 		index: function(uris) {
 			return deferred($.ajax(adjust("") + "?index&uris=" + window.escape(uris.join(";"))))
 				.then(function(res) {
-						/*- TODO Current devtools/Navigator expects weird structure */
-						var dirs = {};
+						/*- TODO Current devtools/Navigator expects weird structure/processing */
+						var dirs = {}, files = {};
 						for(var path in res) {
 							res[path].forEach(function(item) {
-								// if(item.type !== "Folder") {
-								var item_path = item.path.split("/");
+								var item_path = ("" + item.path).split("/");
 								var dir, name = item_path.pop();
 								
 								item_path.unshift(path);
@@ -43,12 +42,19 @@ define(function(require) {
 								if(!dirs.hasOwnProperty(dir)) {
 									dirs[dir] = [];
 								}
-								dirs[dir].push(js.mixIn(item, {name: name, uri: dir}));
+								
+								item_path = dir + "/" + name;
+								
+								if(!files[item_path]) {
+									dirs[dir].push(files[item_path] = js.mixIn(
+											item, {name: name, uri: dir}));
+								} else {
+									// console.log("duplicate", item.path)
+								}
 							});
 						}
 
-
-						console.log("res2dir", [res, dirs]);
+						console.log("files", files);
 						
 						return dirs;
 					});
