@@ -37,6 +37,7 @@ require.config({
         
         "pouchdb": "node_modules/pouchdb/dist/pouchdb",
         "pouchdb.find": "node_modules/pouchdb/dist/pouchdb.find",
+        "relational-pouch": "bower_components/relational-pouch/dist/pouchdb.relational-pouch"
         // "pouchdb-find": "node_modules/pouchdb-find/lib/index-browser",
         // "pouchdb-live-find": "node_modules/pouchdb-live-find/dist/pouchdb.live-find",
     },
