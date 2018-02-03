@@ -27,7 +27,8 @@ $(["ui/Form"], {
             "xsd": "xml",
             "xml": "xml",
             "xsl": "xml",
-            "jsp": "jsp"
+            "jsp": "jsp",
+            "csv": "csv"
         };
 
         var ed = scope.ace.getEditor();

@@ -6,8 +6,7 @@ $([], {}, [
     
     $i("ace", {
         align: "left",
-        autoSize: "width",
-        css: { width: "50%" },
+        width: 375,
         onChange: function() {
             var scope = this.getScope();
             scope.out.setContent(markdown.toHTML(this.getValue()));
