@@ -10,6 +10,7 @@ require.config({
         "home": "/home",
         "vcl-comps/ws/VO": "/home",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
+		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
@@ -30,10 +31,14 @@ require.config({
 		/*- bower */
         "ace": "bower_components/ace/lib/ace",
         "less": "bower_components/less/dist/less",
-        "pouchdb": "bower_components/pouchdb/dist/pouchdb",
         "jquery": "bower_components/jquery/dist/jquery",
         "moment": "bower_components/moment/moment",
-        "moment-locale": "bower_components/moment/locale"
+        "moment-locale": "bower_components/moment/locale",
+        
+        "pouchdb": "node_modules/pouchdb/dist/pouchdb",
+        "pouchdb.find": "node_modules/pouchdb/dist/pouchdb.find",
+        // "pouchdb-find": "node_modules/pouchdb-find/lib/index-browser",
+        // "pouchdb-live-find": "node_modules/pouchdb-live-find/dist/pouchdb.live-find",
     },
     shim: {
     }
@@ -47,6 +52,8 @@ define("markdown", ["bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 
+window.locale_base = "locales/";
+
 define(function(require) {
 
 	/*- Class/Type System, Tools, etc. */	
@@ -56,6 +63,8 @@ define(function(require) {
 	/*- Some awesomeness */
 	require("font-awesome");
 	require("console/Printer");
+	
+	require("locale!en-US");
 	
 	var ComponentNode = require("console/node/vcl/Component");
 	var Component = require("vcl/Component");

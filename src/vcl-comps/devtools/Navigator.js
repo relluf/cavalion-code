@@ -527,10 +527,6 @@ $("vcl/ui/Form", {
                     color: "silver"
                 }
             }
-        },
-        onLoad: function () {
-            // FIXME
-            this._rowHeight = 19;
         }
     }, [
         $("vcl/ui/ListColumn", {

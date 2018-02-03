@@ -7,22 +7,8 @@ var HotkeyManager = require("util/HotkeyManager");
 var DefaultWorkspaces = [{
     name: "code",
     selected: true
-}, { name: "vcl"
-}, { name: "V7"
-// }, { //     name: "cavalion.org"
-}, { name: "veldapps.com"
-}, { name: "VO"
-}, { // name: "eae.com"
-}, { // name: "eae.com/BBT"
-}, { name: "BBT-1.5.0"
-}, { name: "BBT-1.5.3"
-}, { name: "geoxplore.nl"
-}, { name: "Vectorklic"
-}, { name: "Playground"
-}, { name: "consoles"
-}, { name: "devtools/Editor"
-}, { name: "leaflet"
-}, { name: "fw7"
+}, { 
+	name: "vcl"
 }];
 
 // FIXME Move
@@ -222,7 +208,7 @@ $(["ui/Form"], {
 			});
 		}
 		
-		HotkeyManager.register("Meta+U", {
+		HotkeyManager.register("Shift+Meta+48", {
 			type: "keydown", 
 			callback: function(evt) {
 				var q = me.app().qsa("devtools/Workspace<>:root:selected #left-sidebar");
@@ -233,7 +219,7 @@ $(["ui/Form"], {
 				}
 			}
 		});
-		
+
 		/* Workspaces and Sidebar */
 		for(var i = 1; i <= 9; ++i) {
 			var hotkey = String.format("Meta+%d", i + 48);

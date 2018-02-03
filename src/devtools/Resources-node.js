@@ -33,7 +33,7 @@ define(function(require) {
 						/*- TODO Current devtools/Navigator expects weird structure/processing */
 						var dirs = {}, files = {};
 						for(var path in res) {
-							res[path].forEach(function(item) {
+							(res[path] instanceof Array) && res[path].forEach(function(item) {
 								var item_path = ("" + item.path).split("/");
 								var dir, name = item_path.pop();
 								

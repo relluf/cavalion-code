@@ -1,7 +1,7 @@
 # Shortcuts
 
 ## General
-- **Cmd+U** - Toggle sidebar
+- **Shift+Cmd+0** - Toggle sidebar
 - **Cmd+1-9** - Focus workspace 1-9, keeping pressing to switch focus between sidebar and editor
 - **Alt+Cmd+1-9** - Focus tab 1-9 in sidebar
 - **Escape** - Focus editor
@@ -25,11 +25,14 @@
 - **Ctrl+Shift+Cmd+[]** - Move tab active editor
 
 #### Editor<vcl>
-- Shift+Cmd+X - Toggle Component
-- Shift+Cmd+S - Toggle Source
+- **Shift+Cmd+X** - Toggle Component
+- **Shift+Cmd+S** - Toggle Source
 
 # TODO
 
 ## Navigator
+
+## Tree
+
 
 - Favorite files

@@ -14,6 +14,11 @@ define(function() { return {
 	"No":								".",
 	
 	"*.hint":							"Hint",
+	
+	"Navigator":						".",
+	"Open Tabs":						"Recent",
+	"Console":							"Console",
+	"Outline":							"Outline",
 
 	"Application": {
 		"-build":						document.head.dataset.version,

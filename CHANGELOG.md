@@ -1,3 +1,7 @@
+### 2018-02-02
+- Fighting with pouchdb-live-find, seems promising, but can't get it to work (yet)
+- Envisioning "samenwerken", V7 met Karel, devtools2/code
+
 ### 2018-02-01
 - Writing some more Markdown in Main.md
 - Still debugging devtools/Resources-node (sigh)
