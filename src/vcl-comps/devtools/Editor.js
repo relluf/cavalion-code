@@ -27,8 +27,7 @@ $(["ui/Form"], {
             "xsd": "xml",
             "xml": "xml",
             "xsl": "xml",
-            "jsp": "jsp",
-            "csv": "csv"
+            "jsp": "jsp"
         };
 
         var ed = scope.ace.getEditor();
@@ -38,7 +37,13 @@ $(["ui/Form"], {
 
         var ext = (tab.getVar("resource.uri") || "").split(".").pop();
         var session = ed.getSession();
-        session.setMode("ace/mode/" + (ExtensionToMode[ext || this.getSpecializer()] || (ext || "js")));
+        
+        var mode = "ace/mode/" + (ExtensionToMode[ext || this.getSpecializer()] || (ext || "js"));
+        
+        require([mode], 
+        	function() { session.setMode(mode); }, 
+        	function() { console.log("Unknown mode " + mode); });
+        
         session.setUseWrapMode(true);
         session.setWrapLimitRange(null, null);
 

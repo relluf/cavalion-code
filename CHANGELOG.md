@@ -1,3 +1,6 @@
+### 2018-02-03
+- Introducing **devtools/Editor<csv>**
+
 ### 2018-02-02
 - Fighting with pouchdb-live-find, seems promising, but can't get it to work (yet)
 - Envisioning "samenwerken", V7 met Karel, devtools2/code
