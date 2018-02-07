@@ -173,28 +173,38 @@ $("vcl/ui/Form", {
             var scope = this.getScope();
             var names = evt.resource.uri.split("/");
             var path = [];
+            
+            var node = scope.tree.getSelection()[0] || null;
+            if(node !== null && evt.resource.uri === node.getVar("resource.uri")) {
+            	scope.tree.makeVisible(node);
+            	return;
+            }
 
             scope['search-list'].hide();
 
             function walk(parent) {
                 path.push(names.shift());
 
-                var node = parent.getControls().find(function(node) {
+                node = parent.getControls().find(function(node) {
                     return node.getVar("resource.uri") === path.join("/");
                 });
 
                 if(node) {
+                	scope.tree.setTimeout("mqkeVisible", function() {
+                        scope.tree.makeVisible(node);
+                	}, 20);
+                        
                     if(names.length) {
                         node.childNodesNeeded(function() {
                             node.setExpanded(true);
-                            walk(node);
+                            /*- TODO how to know when nodes are actually created? */
+                            node.setTimeout("walk", function() {
+                        		walk(node);
+                            }, 50);
                         });
                     } else {
                         scope.tree.setSelection([node]);
-                        scope.tree.makeVisible(node);
                     }
-                } else {
-                    //alert("Could not find " + evt.resource.uri);
                 }
             }
 
@@ -203,26 +213,10 @@ $("vcl/ui/Form", {
     }),
     $("vcl/Action", "resource-new", {}),
     $("vcl/Action", "resource-delete", {}),
-    $("vcl/ui/Panel", "search-panel", {
-        align: "top",
-        autoSize: "height",
-        css: "padding: 6px 4px;"
-    }, [
+    $("vcl/ui/Bar", "search-bar", { classes: "no-border" }, [
         $("vcl/ui/Input", "search-input", {
             placeholder: "Search Workspace Resources (⌥+F)",
-            css: {
-                width: "100%",
-                border: "1px solid silver",
-                "border-radius": "3px",
-                padding: "4px",
-                "&.searching": {
-                    "background": "url(/shared/vcl/images/loading.gif) no-repeat 2px 2px",
-                    "background-position": "right 4px top 5px"
-                },
-                "&.value": {
-                    "background-color": "yellow"
-                }
-            },
+            classes: "search-top",
             onDblClick: function() {
 //                this.fire("onChange", [false]);
                 var scope = this.getScope();
@@ -499,11 +493,7 @@ $("vcl/ui/Form", {
             return r;
         }
     }),
-    $("vcl/ui/List", "search-list", {
-        align: "client",
-        action: "search-open",
-        source: "search-results",
-        visible: false,
+    $("vcl/ui/List", "search-list", { action: "search-open", source: "search-results", visible: false,
         css: {
             "background-color": "white",
             ".{./ListHeader}": {
@@ -545,4 +535,4 @@ $("vcl/ui/Form", {
             }
         })
     ])
-])
+]);

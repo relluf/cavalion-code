@@ -1,0 +1,3 @@
+$(["./Node<devtools/Resources>"], {}, [
+		
+]);

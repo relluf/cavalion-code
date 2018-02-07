@@ -21,7 +21,9 @@ $([], {}, [
             "border-right": "1px solid silver",
             "font-family": "times,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'", 
             "font-size": "12pt",
-            padding: "10px"
+            padding: "10px",
+            "img:not(:hover)": "max-width: 75%;",
+            "code": "border-radius:3px;font-size: 10pt;background-color:white;padding:2px;line-height:12pt;"
         }
     })
 

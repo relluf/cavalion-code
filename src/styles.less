@@ -3,7 +3,21 @@
   //color: red;
 }
 .vcl-ui-Bar {
-    &:not(.bottom) {
-        border-bottom: 1px solid silver
+	padding-top: 8px;
+    &:not(.bottom):not(.no-border) {
+        border-bottom: 1px solid rgba(99, 99, 99, 0.1);
+    }
+    input[name=search], input[name=search-input] {
+    	width: 100%;
+        border: 1px solid silver;
+        border-radius: 3px;
+        padding: 4px;
+        &.searching {
+            background: url(/shared/vcl/images/loading.gif) no-repeat 2px 2px;
+            background-position: right 4px top 5px;
+        }
+        &.value {
+            background-color: yellow;
+        }
     }
 }

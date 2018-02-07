@@ -1,3 +1,13 @@
+/*-
+
+### 2018-02
+- Starting to use Markdown
+- 
+
+### 2018-01
+- Porting back-end to Node
+
+*/
 define(function(require) {
 
 	var $ = require("jquery");

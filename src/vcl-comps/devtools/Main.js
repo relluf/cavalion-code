@@ -3,6 +3,7 @@
 var Ace = require("vcl/ui/Ace");
 var Method = require("js/Method");
 var HotkeyManager = require("util/HotkeyManager");
+var jQuery = require("jquery");
 
 var DefaultWorkspaces = [{
     name: "code",
@@ -10,6 +11,16 @@ var DefaultWorkspaces = [{
 }, { 
 	name: "vcl"
 }];
+
+
+(function makeSureStylesLessOverridesLibs(styles) {
+	
+	var node = styles[0];
+	var parent = node.parentNode;
+	parent.removeChild(node);
+	parent.appendChild(node);
+	
+}(jQuery("style")));
 
 // FIXME Move
 function replaceChars(uri) {

@@ -111,27 +111,9 @@ $("vcl/ui/Form", {
                     }));
         }
     }),
-    $("vcl/ui/Panel", "search-panel", {
-        align: "top",
-        autoSize: "height",
-        css: "padding: 6px 4px;",
-        visible: true
-    }, [
-        $("vcl/ui/Input", "search-input", {
-            placeholder: "Search Open Tabs (⌥+F)",
-            css: {
-                width: "100%",
-                border: "1px solid silver",
-                "border-radius": "3px",
-                padding: "4px",
-                "&.searching": {
-                    "background": "url(/shared/vcl/images/loading.gif) no-repeat 2px 2px",
-                    "background-position": "right 4px top 5px"
-                },
-                "&.value": {
-                    "background-color": "yellow"
-                }
-            },
+    $("vcl/ui/Bar#search-bar", { classes: "no-border" }, [
+        $("vcl/ui/Input#search-input", {
+            placeholder: "Search Recently Opened (⌥+F)",
             onDblClick: function() {
                 this.setInputValue("");
             },

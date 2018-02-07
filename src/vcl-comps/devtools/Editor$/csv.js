@@ -21,7 +21,11 @@ $([], {
 	$("vcl/data/Array#source"),
 	$("vcl/ui/List#list", { css: "background-color: white;", align: "client", autoColumns: true, source: "source",
 		onColumnGetValue: function(column, value, row, source) {
-			return this._source._array[row][column._attribute];
+			var value = this._source._array[row][column._attribute];
+			if(column.getIndex() === 0) {
+				return row + " - " + value;
+			}
+			return value;
 		}
 	}),
 
