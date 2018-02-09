@@ -24,6 +24,8 @@
     "markdown": "^0.5.0",
     "relational-pouch": "^3.0.1",
     "amcharts3": "^3.21.12",
-    "CSV-JS": "csv-js#^1.1.1"
+    "CSV-JS": "csv-js#^1.1.1",
+    "pouchdb": "^6.4.3",
+    "pouchdb-find": "^0.10.5"
   }
 }

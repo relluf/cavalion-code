@@ -64,10 +64,13 @@ define(function(require) {
 							});
 						}
 
-						console.log("files", files);
+						// console.log("files", files);
 						
 						return dirs;
-					});
+					})
+				.catch(function(err) {
+					// TODO alert(err.message);
+				});
 		},
 		list: function(uri) {
 			if(typeof uri === "string" && uri !== "/" && uri.charAt(uri.length - 1) !== "/") {

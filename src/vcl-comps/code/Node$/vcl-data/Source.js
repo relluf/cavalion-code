@@ -1,4 +1,10 @@
-$("vcl-ui/Node", {
+/*- 
+
+	vars: {
+		source: "querystring for the array"
+	}
+*/
+$([], {
 	expandable: true, 
 	vars: { item: { _: null } },
 	onNodesNeeded: function(parent) { 
@@ -14,6 +20,8 @@ $("vcl-ui/Node", {
 		});
 	
 		var owner = this._owner, props;
+		parent.beginLoading();
+console.log("nodesneeded", parent)
 		array.getObjects().forEach(function(item) {
 			var node = new Node(owner);
 			props = props || node.defineProperties();
@@ -23,15 +31,22 @@ $("vcl-ui/Node", {
 					p.set(node, item[k]);
 				}
 			}
-			if(!item.hasOwnProperty("expandable")) {
-				node.setExpandable(true);
-			}
+			// if(!item.hasOwnProperty("expandable")) {
+			// 	node.setExpandable(true);
+			// }
 			// if(!item.hasOwnProperty("onNodesNeeded")) {
 				// node._onChildNodesNeeded = onNodesNeeded;
 			// }
 			
 			node.setVar("item", item);
 			node.setParent(parent);
+console.log("child created", parent)
+		});
+		parent.endLoading();
+console.log("parent.update()", parent)
+		parent.update(function() {
+console.log("callback parent.update()", parent)
+			parent.updateChildren();
 		});
 		
 		// return false; // do not bubble up to tree?

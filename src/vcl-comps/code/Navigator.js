@@ -1,24 +1,3 @@
-"vcl/ui/Node";
-
-var Component = require("vcl/Component");
-var Console = require("vcl/ui/Console");
-var Node_ = require("vcl/ui/Node"); var count = 0;
-
-function tree_onNodesNeeded(parent) {
-	var node = parent, pname = "_onChildNodesNeeded";
-	while(node && !node.hasOwnProperty(pname)) {
-		node = node._parent;
-	}
-	if(node === parent) {
-		return;
-	}
-	if(node && node.hasOwnProperty(pname)) {
-		return node.fire(pname.substring(1), [parent]);
-	}
-	
-	pr(this, "tree_onNodesNeeded", parent);
-}
-
 var styles = {
 	".{Node}.root-invisible": {
 		"> *:not(ol)": "display:none;",
@@ -73,12 +52,26 @@ var styles = {
     },
 };
 
+function tree_onNodesNeeded(parent) {
+	var node = parent, pname = "_onChildNodesNeeded";
+	while(node && !node.hasOwnProperty(pname)) {
+		node = node._parent;
+	}
+	if(node === parent) {
+		return;
+	}
+	if(node && node.hasOwnProperty(pname)) {
+		return node.fire(pname.substring(1), [parent]);
+	}
+}
+
 $("vcl-ui/Panel", { align: "client", css: styles }, [
 	$("vcl-ui/Bar#search-bar", { classes: "no-border" }, [
 		$("vcl-ui/Input", "search", { placeholder: "Search"})
 	]),
 	$("vcl-ui/Tree#tree", { onNodesNeeded: tree_onNodesNeeded }, [
-		$(["./Node.fs"], "fs-node", { classes: "root-invisible", text: locale("FileSystem"), expandable: true, expanded: true }),
-		$(["./ArrayExample"], "arrayExample-node", { classes: "folder", text: "Array-example" })
+		$(["./Node.fs"], "fs-node", { classes: "root-invisible", expanded: true }),
+		$(["./ArrayExample"], "arrayExample-node", { classes: "folder", text: "Array-example" }),
+		$(["./Node<veldoffice/Onderzoek>"], { classes: "folder", text: "Recent Investigations"})
 	])
 ]);

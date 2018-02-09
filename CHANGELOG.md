@@ -1,3 +1,18 @@
+### 2018-02-09
+- Developing `code/Node<>` components
+- vcl/Action#toggle-source for devtools/Editor<md>
+- Setting up PouchDB libraries via bower 
+- Moved STREAM.md and DESIGN.md to (personal) Dropbox (for now?)
+
+### 2018-02-07
+- Integrating .md more and more
+- Developing vcl-comps/code/Navigator, how to work with dynamic and static nodes. Thinking about offline-first stuff.
+- Made src/styles.less override vcl-comps::css definitions
+- Moving general styles to styles.less
+
+### 2018-02-04
+- Improved [Navigator vcl/Action#focus-resources], some smooth scrolling would be nice still, though...
+
 ### 2018-02-03
 - Introducing **devtools/Editor<csv>**
 

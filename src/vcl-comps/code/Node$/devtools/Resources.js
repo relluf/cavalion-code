@@ -17,7 +17,7 @@ function getUriNodeText(uri, usedNames) {
 	return r.join("/");
 }
 
-$("vcl-ui/Node", {
+$([], {
 	onLoad: function() {
         var scope = this.scope();
         var me = this;
@@ -173,6 +173,7 @@ $("vcl-ui/Node", {
             });
         }
         
+        /*- TODO get rid of this weird apply-thing */
         var r = this.apply("Resources.list", [uri]).
             then(function (res) {
             	res.sort(function(i1, i2) {
@@ -181,30 +182,37 @@ $("vcl-ui/Node", {
             		}
             		return i1.type !== "Folder" ? 1 : -1;
             	});
-                res.forEach(function (item, index) {
-                    var node = new NavigatorNode(owner);
-                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
-
-                    node.setVar("resource", item);
-                    root && node.addClass("root");
-                    
-                    root === true && index === 0 && node.addClass("seperator top");
-
-                    var checked = false;
-                    for(var i = 0; i < uris.length && !checked; ++i) {
-                    	checked = uris[i].indexOf(item.uri) === 0;
-                    }
-
-                    if(checked && uris.indexOf(item.uri) === -1) {
-                    	node.addClass("opaque");
-                    }
-                    node.setChecked(checked);
-                    if (control) {
-                        node.setVar("control", control);
-                    }
-                    node.setExpandable(item.type.indexOf("Folder") !== -1);
-                    node.setParent(parent);
-                });
+            	parent.setExpandable("auto");
+            	parent.beginLoading();
+            	try {
+	                res.forEach(function (item, index) {
+	                    var node = new NavigatorNode(owner);
+	                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
+	
+	                    node.setVar("resource", item);
+	                    root && node.addClass("root");
+	                    
+	                    root === true && index === 0 && node.addClass("seperator top");
+	
+	                    var checked = false;
+	                    for(var i = 0; i < uris.length && !checked; ++i) {
+	                    	checked = uris[i].indexOf(item.uri) === 0;
+	                    }
+	
+	                    if(checked && uris.indexOf(item.uri) === -1) {
+	                    	node.addClass("opaque");
+	                    }
+	                    node.setChecked(checked);
+	                    if (control) {
+	                        node.setVar("control", control);
+	                    }
+	                    node.setExpandable(item.type.indexOf("Folder") !== -1);
+	                    node.setParent(parent);
+	                });
+            	} finally {
+            		parent.endLoading();
+            		parent.updateChildren(); // TODO should be automatic
+            	}
                 return res;
             });
         return r;

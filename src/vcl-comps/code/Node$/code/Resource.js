@@ -1,0 +1,1 @@
+/* devtools/Resources -> code/Resource (or code/Favorite) */

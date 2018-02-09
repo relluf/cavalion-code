@@ -1,9 +1,6 @@
-// var cavalion_js = "/home/Workspaces/cavalion.org/cavalion-js/src/";
-// var cavalion_vcl = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
-// var veldoffice_js = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
-var cavalion_js = "node_modules/cavalion-js/src/"; // Maybe move this to localStorage?
-var cavalion_vcl = "node_modules/cavalion-vcl/src/";
-var veldoffice_js = "node_modules/veldoffice-js/src/";
+var cavalion_js = localStorage['cavalion-js-path'] || "/home/Workspaces/cavalion.org/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Workspaces/cavalion.org/cavalion-vcl/src";
+var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Workspaces/veldapps.com/veldoffice-js/src/";
 require.config({
     paths: {
 		/*- TODO */
@@ -37,7 +34,9 @@ require.config({
         "moment": "bower_components/moment/moment",
         "moment-locale": "bower_components/moment/locale",
         // "csv-js": "bower_components/CSV-JS/csv",
-        "relational-pouch": "bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        // "relational-pouch": "bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        "backbone": "bower_components/backbone/backbone",
+        "underscore": "bower_components/underscore/underscore",
         
 		/*- amcharts3 */
         "amcharts": "bower_components/amcharts3/amcharts/amcharts",
@@ -48,20 +47,20 @@ require.config({
         "amcharts.serial": "bower_components/amcharts3/amcharts/serial",
         "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
         
-        /*- PouchDB */
-        "pouchdb": "node_modules/pouchdb/dist/pouchdb",
-        "pouchdb.find": "node_modules/pouchdb/dist/pouchdb.find"
-        // "pouchdb-find": "node_modules/pouchdb-find/lib/index-browser",
-        // "pouchdb-live-find": "node_modules/pouchdb-live-find/dist/pouchdb.live-find",
     },
     shim: {
     }
 });
 
+define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", "bower_components/relational-pouch/dist/pouchdb.relational-pouch"], function(pouchdb, find, relational) {
+	pouchdb.plugin(find);
+	pouchdb.plugin(relational);
+	return pouchdb;
+});
+
 define("font-awesome", ["stylesheet!bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
-
 define("markdown", ["bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
