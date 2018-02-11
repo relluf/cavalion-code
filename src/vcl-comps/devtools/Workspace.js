@@ -29,6 +29,7 @@ var Utils = {
     getState: function(scope) {
         var tabs = scope["editors-tabs"].getControls();
         return {
+        	'left-sidebar.visible': scope['left-sidebar'].getVisible(),
             editors: tabs.map(function(tab) {
                 var ace = tab.qsa("devtools/Editor<> #ace")[0];
                 var resource = tab.getVar("resource") || {}, r;
@@ -65,37 +66,40 @@ var Utils = {
         var Range = require("ace/range").Range;
         
         var workspace = scope['@owner'];
-        state && state.editors && state.editors.forEach(function(state) {
-            var _state = js.mixIn({}, state);
-            var tab = scope["editor-needed"].execute(js.mixIn(state, {
-            	dontBringToFront: true
-            }));
-            tab.setVar(".state", _state);
-            tab.once("resource-loaded", function() {
-                var ace = tab._control._form.getScope().ace;
-                setTimeout(function() {
-                    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
-                    var session = ace.getEditor().session;    
-                    session.selection.fromJSON(state.selection);
-                    session.setOptions(state.options);
-                    state.mode && session.setMode(state.mode);
-                    try {
-                        state.folds.forEach(function(fold){
-                            session.addFold(fold.placeholder, 
-                                Range.fromPoints(fold.start, fold.end));
-                        });
-                    } catch(e) {
-                        console.log(e.message);
-                    }
-                    session.setScrollTop(state.scrollTop);
-                    session.setScrollLeft(state.scrollLeft);
-
-                    ace.getEditor().gotoLine(
-                        state.position.row + 1,
-                        state.position.column);
-                }, 0);
-            });
-        });
+        if(state) {
+	        state.editors && state.editors.forEach(function(state) {
+	            var _state = js.mixIn({}, state);
+	            var tab = scope["editor-needed"].execute(js.mixIn(state, {
+	            	dontBringToFront: true
+	            }));
+	            tab.setVar(".state", _state);
+	            tab.once("resource-loaded", function() {
+	                var ace = tab._control._form.getScope().ace;
+	                setTimeout(function() {
+	                    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
+	                    var session = ace.getEditor().session;    
+	                    session.selection.fromJSON(state.selection);
+	                    session.setOptions(state.options);
+	                    state.mode && session.setMode(state.mode);
+	                    try {
+	                        state.folds.forEach(function(fold){
+	                            session.addFold(fold.placeholder, 
+	                                Range.fromPoints(fold.start, fold.end));
+	                        });
+	                    } catch(e) {
+	                        console.log(e.message);
+	                    }
+	                    session.setScrollTop(state.scrollTop);
+	                    session.setScrollLeft(state.scrollLeft);
+	
+	                    ace.getEditor().gotoLine(
+	                        state.position.row + 1,
+	                        state.position.column);
+	                }, 0);
+	            });
+	        });
+	        scope['left-sidebar'].setVisible(state['left-sidebar.visible'] !== false);
+        }
     }
 };
 
