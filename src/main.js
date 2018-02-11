@@ -1,6 +1,6 @@
-var cavalion_js = localStorage['cavalion-js-path'] || "/home/Workspaces/cavalion.org/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Workspaces/cavalion.org/cavalion-vcl/src";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Workspaces/veldapps.com/veldoffice-js/src/";
+var cavalion_js = localStorage['cavalion-js-path'] || "node_modules/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src";
+var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src";
 require.config({
     paths: {
 		/*- TODO */
