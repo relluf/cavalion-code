@@ -14,7 +14,6 @@ $([
             this.setTimeout("render", render.bind(this), 500);
         }
     }),
-    
     $("vcl/Action#toggle-source", {
         hotkey: "Shift+MetaCtrl+S",
         selected: "state", visible: "state",
@@ -25,7 +24,6 @@ $([
         	// this.scope().ace.setVisible(this.getState());
         }
     }),
-    
     $("vcl/ui/Panel", "output", { align: "client", css: {
 	    "background-color": "#f0f0f0", 
 	    "border-left": "1px solid silver",
@@ -36,5 +34,4 @@ $([
 	    "img:not(:hover)": "max-width: 75%;",
 	    "code": "border-radius:3px;font-size: 10pt;background-color:white;padding:2px;line-height:12pt;"
     } })
-
 ]);

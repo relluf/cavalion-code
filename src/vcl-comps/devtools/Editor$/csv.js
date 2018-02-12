@@ -15,9 +15,7 @@ $([], {
         return this.inherited(arguments);
     }
 }, [
-
 	$i("ace", { align: "bottom", height: 200 }),
-	
 	$("vcl/data/Array#source"),
 	$("vcl/ui/List#list", { css: "background-color: white;", align: "client", autoColumns: true, source: "source",
 		onColumnGetValue: function(column, value, row, source) {
@@ -28,7 +26,6 @@ $([], {
 			return value;
 		}
 	}),
-
 	$("vcl/Action#render", {
 		onExecute: function() {
 			var scope = this.scope();
@@ -44,7 +41,4 @@ $([], {
 			}));
 		}
 	})
-	
-	
-	
 ]);

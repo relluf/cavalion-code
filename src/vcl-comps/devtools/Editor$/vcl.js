@@ -35,7 +35,14 @@ $([], {
     		uri = uri.join("/");
         }
         
+        if(uri.indexOf("/tools/vcl-comps/") !== -1) {
+        	scope['toggle-source'].setState(false);
+        	scope.ace.hide();
+        	scope['toggle-component'].setState(true);
+        }
+        
     	var keys = Component.getKeysByUri(this.up("devtools/Workspace<>")._uri);
+    	// TODO this might work better: uri = String.format("home/%s", uri);
     	uri = String.format("ws/%s/%s", keys.specializer, uri);
         
         function f() { scope.instantiate.execute({ uri: uri, sourceUri: sourceUri }); }
@@ -104,8 +111,6 @@ $([], {
         
         onExecute: function() {
         	this.setState(!this.getState());
-        	// var source = this.scope().source;
-        	// source.setSelected(!source.isSelected());
         }
     }),
     $("vcl/Action#toggle-component", {

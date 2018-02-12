@@ -1,5 +1,4 @@
 var Handlers = {
-
 	"#ace loaded": function() {
 		this.scope().refresh.onclick();
 	},
@@ -12,23 +11,20 @@ var Handlers = {
 		var ace = this.scope().ace;
 		localStorage['devtools/Main$workspaces'] = ace.getValue();
 	}
-	
 };
 
 
 $("vcl/ui/Panel", { handlers: Handlers, align: "client" }, [
-	
 	$("vcl/ui/Ace#ace"),
-	
 	$("vcl/ui/Panel", {
 		align: "top", autoSize: "height", 
 		css: {
 			padding: "16px", 
-			'.{./Button}': "margin-right: 5px;"
+			'.{Button}': "margin-right: 5px;"
 		}
 	}, [
-		$("vcl/ui/Button#refresh", { content: "Refresh" }),
-		$("vcl/ui/Button#update", { content: "Update" })
+		$("vcl/ui/Button#refresh", { content: "Read" }),
+		$("vcl/ui/Button#update", { content: "Write" })
 	])
 	
 ]);

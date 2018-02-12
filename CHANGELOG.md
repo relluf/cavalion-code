@@ -1,3 +1,10 @@
+### 2018-02-11
+- Made workspaces configuration visible and accesible for Theo
+- Autodetect `tools/vcl-comps` resources
+
+### 2018-02-10
+- The visibility of the Left sidebar is maintained in workspace state
+
 ### 2018-02-09
 - Developing `code/Node<>` components
 - vcl/Action#toggle-source for devtools/Editor<md>

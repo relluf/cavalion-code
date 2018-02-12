@@ -8,9 +8,7 @@ function allowResource(resource) {
 
 $([], {
 	css: {
-		"[id$=-editors-tabs]": {
-			"border-top-color": "transparent"
-		}
+		"[id$=-editors-tabs]": "border-top-color: transparent;"
 	},
 	onDispatchChildEvent: function(component, name, evt, f, args) {
 		if(name !== "keyup") {
