@@ -35,7 +35,8 @@ $([], {
     		uri = uri.join("/");
         }
         
-        if(uri.indexOf("/tools/vcl-comps/") !== -1) {
+        /* When dealing with a "tool" run it immediately */
+        if(uri.indexOf("/tools/vcl-comps/") !== -1 || uri.indexOf("/vcl-comps/tools/") !== -1) { 
         	scope['toggle-source'].setState(false);
         	scope.ace.hide();
         	scope['toggle-component'].setState(true);
