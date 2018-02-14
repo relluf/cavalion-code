@@ -52,9 +52,15 @@ require.config({
     }
 });
 
-define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", "bower_components/relational-pouch/dist/pouchdb.relational-pouch"], function(pouchdb, find, relational) {
+define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", "bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], function(pouchdb, find, relational, memory) {
+	
+	/*- hacked pouchdb.memory */
+	memory = window.pouch_MemoryPouchPlugin;
+	delete window.pouch_MemoryPouchPlugin;
+	
 	pouchdb.plugin(find);
 	pouchdb.plugin(relational);
+	pouchdb.plugin(memory);
 	return pouchdb;
 });
 
