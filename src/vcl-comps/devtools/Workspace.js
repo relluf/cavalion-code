@@ -136,6 +136,11 @@ $(["ui/Form"], {
             }, 200);
         });
         
+        scope['left-sidebar'].override("visibleChanged", function() {
+            this._owner.emit("state-dirty");
+        	return this.inherited(arguments);
+        });
+        
         return this.inherited(arguments);
     }
 }, [

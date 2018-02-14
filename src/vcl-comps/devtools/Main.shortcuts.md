@@ -21,6 +21,7 @@
 - **Cmd+S** - Save
 - **Cmd+R** - Reload/Revert
 - **Cmd+0** - Focus in Navigator (might need to be press multiple times in a row)
+- **Cmd+Shift+W**" - Toggle Wrapping
 - **Ctrl+Shift+[]** - Select previous/next editor
 - **Ctrl+Shift+Cmd+[]** - Move tab active editor
 
