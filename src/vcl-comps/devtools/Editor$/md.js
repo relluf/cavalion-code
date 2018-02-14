@@ -31,7 +31,7 @@ $([
 	    "font-family": "times,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'", 
 	    "font-size": "12pt",
 	    padding: "10px",
-	    "img:not(:hover)": "max-width: 75%;",
+	    "img:not(:hover)": "max-width: 75%; max-height: 600px;",
 	    "code": "border-radius:3px;font-size: 10pt;background-color:white;padding:2px;line-height:12pt;"
     } })
 ]);
