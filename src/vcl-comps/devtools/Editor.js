@@ -174,6 +174,14 @@ $(["ui/Form"], {
             }
         }
     }),
+    $("vcl/Action", "toggle-wrap", {
+        hotkey: "MetaCtrl+Shift+W",
+        onExecute: function (evt) {
+            var editor = this.scope().ace.getEditor();
+            editor.getSession().setUseWrapMode(!editor.getSession().getUseWrapMode());
+            evt.preventDefault();
+        }
+    }),
     $("vcl/Action", "evaluate", {
         hotkey: "MetaCtrl+Enter",
         onExecute: function() {
