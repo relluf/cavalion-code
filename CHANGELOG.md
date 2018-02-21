@@ -8,7 +8,8 @@ Lot's has changed, lets see if I can recall (using GitUp).
 * Updating bower configuration
 * Using localStorage to tweak dependency locations
 * Adding RequireJS shim config for AmCharts3
-* devtools/App: refactoring code, been playing around with localStorage-pouched for shared Workspace settings between browsers
+* `devtools/App`: refactoring code, been playing around with localStorage-pouched for shared Workspace settings between browsers
+* `devtools/Editor<>`: Improving png, csv, vcl and introducing xml
 
 ### 2018-02-11
 - Made workspaces configuration visible and accesible for Theo
