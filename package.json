@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/relluf/cavalion-code#readme",
   "dependencies": {
-    "cavalion-vcl": "^1.0.6"
+    "cavalion-vcl": "^1.0.7"
   }
 }
