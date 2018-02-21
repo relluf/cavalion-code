@@ -48,7 +48,7 @@ $(["ui/Form"], {
 	            'height': "26px",
 	            "padding-left": "2px",
 	            "padding-top": "3px",
-	            "border-top": "1px solid silver",
+	            // "border-top": "1px solid silver",
 	            
 	            "&.gradient":{
 	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
@@ -110,7 +110,7 @@ $(["ui/Form"], {
 
         this.readStorage("workspaces", function (value) {
             if(value) {
-                value = JSON.parse(value);
+                value = JSON.parse(value) || DefaultWorkspaces;
             } else {
                 value = DefaultWorkspaces;
             }

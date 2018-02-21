@@ -88,7 +88,7 @@ $(["ui/Form"], {
                 editor.blur();
                 Resources.get(resource.uri).
                     then(function (res) {
-                        if(res.text !== editor.session.getValue()) {
+                        if(res.text !== undefined && res.text !== editor.session.getValue()) {
                             tab.setVar("modified", "resetundo,gototop");
                             editor.session.setValue(res.text);
                         } else {

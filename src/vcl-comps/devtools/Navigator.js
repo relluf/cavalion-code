@@ -174,41 +174,43 @@ $("vcl/ui/Form", {
             var names = evt.resource.uri.split("/");
             var path = [];
             
-            var node = scope.tree.getSelection()[0] || null;
-            if(node !== null && evt.resource.uri === node.getVar("resource.uri")) {
-            	scope.tree.makeVisible(node);
-            	return;
-            }
-
-            scope['search-list'].hide();
-
-            function walk(parent) {
-                path.push(names.shift());
-
-                node = parent.getControls().find(function(node) {
-                    return node.getVar("resource.uri") === path.join("/");
-                });
-
-                if(node) {
-                	scope.tree.setTimeout("mqkeVisible", function() {
-                        scope.tree.makeVisible(node);
-                	}, 20);
-                        
-                    if(names.length) {
-                        node.childNodesNeeded(function() {
-                            node.setExpanded(true);
-                            /*- TODO how to know when nodes are actually created? */
-                            node.setTimeout("walk", function() {
-                        		walk(node);
-                            }, 50);
-                        });
-                    } else {
-                        scope.tree.setSelection([node]);
-                    }
-                }
-            }
-
-            walk(scope.tree);
+            var sidebar = this.up("devtools/Workspace<>:root").down("#left-sidebar");
+            sidebar.show();
+            sidebar.update(function() {
+	            var node = scope.tree.getSelection()[0] || null;
+	            if(node !== null && evt.resource.uri === node.getVar("resource.uri")) {
+	            	scope.tree.makeVisible(node);
+	            	return;
+	            }
+	            scope['search-list'].hide();
+	            function walk(parent) {
+	                path.push(names.shift());
+	
+	                node = parent.getControls().find(function(node) {
+	                    return node.getVar("resource.uri") === path.join("/");
+	                });
+	
+	                if(node) {
+	                	scope.tree.setTimeout("mqkeVisible", function() {
+	                        scope.tree.makeVisible(node);
+	                	}, 20);
+	                        
+	                    if(names.length) {
+	                        node.childNodesNeeded(function() {
+	                            node.setExpanded(true);
+	                            /*- TODO how to know when nodes are actually created? */
+	                            node.setTimeout("walk", function() {
+	                        		walk(node);
+	                            }, 50);
+	                        });
+	                    } else {
+	                        scope.tree.setSelection([node]);
+	                    }
+	                }
+	            }
+	            walk(scope.tree);
+            });
+            
         }
     }),
     $("vcl/Action", "resource-new", {}),

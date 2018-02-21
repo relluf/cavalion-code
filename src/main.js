@@ -1,12 +1,17 @@
 var cavalion_js = localStorage['cavalion-js-path'] || "node_modules/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src/";
+var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src/";
+// localStorage['cavalion-js-path'] = "/home/Workspaces/cavalion.org/cavalion-js/src/";
+// localStorage['cavalion-vcl-path'] = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+// localStorage['veldoffice-js-path'] = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
 require.config({
     paths: {
 		/*- TODO */
         "vcl-comps/ws/VO": "/home",
         "vcl-comps/ws/code": "/home",
-        
+        "vcl-comps/ws/veldapps_com": "/home",
+        "vcl-comps/$HOME": "/home",
+
         "home": "/home",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -46,9 +51,53 @@ require.config({
         "amcharts.radar": "bower_components/amcharts3/amcharts/radar",
         "amcharts.serial": "bower_components/amcharts3/amcharts/serial",
         "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
-        
+
+        /*- yarn */
+        "fast-xml-parser": "fast-xml-parser/parser"
     },
     shim: {
+        "amcharts.funnel": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.gauge": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.pie": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.radar": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.serial": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.xy": {
+            "deps": ["amcharts"],
+            "exports": "AmCharts",
+            "init": function () {
+                AmCharts.isReady = true;
+            }
+        }
     }
 });
 
@@ -58,9 +107,9 @@ define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/po
 	memory = window.pouch_MemoryPouchPlugin;
 	delete window.pouch_MemoryPouchPlugin;
 	
-	pouchdb.plugin(find);
-	pouchdb.plugin(relational);
-	pouchdb.plugin(memory);
+	// pouchdb.plugin(find);
+	// pouchdb.plugin(relational);
+	// pouchdb.plugin(memory);
 	return pouchdb;
 });
 
@@ -107,7 +156,7 @@ define(function(require) {
 			return s !== "debug"; })[0] || "devtools";
 		app += "/App";
 	}
-
+	
 	Factory.require(app, function(factory) {
 		factory.newInstance();
 	});

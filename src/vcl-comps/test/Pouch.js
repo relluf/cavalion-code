@@ -18,10 +18,10 @@ $([], {}, [
 			}
 		},
 		
-		dbName: "v7-4",
-		onFilterObject: function(obj) {
+		dbName: "v7.7",
+		_onFilterObject: function(obj) {
 			return !obj._id || obj._id.split(":")[0] !== "Bodemlaag";
 		}
 	})
 	
-])
+]);

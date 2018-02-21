@@ -1,4 +1,6 @@
-define(function() { return {
+define(["./prototype"], function(proto) { return {
+	
+	proto: proto,
 
 	"Language": 						"Taal",
 	"Apply": 							"Toepassen",

@@ -4,7 +4,7 @@
 
 ## General
 - **Shift+Cmd+0** - Toggle sidebar
-- **Cmd+1-9** - Focus workspace 1-9, keeping pressing to switch focus between sidebar and editor
+- **Cmd+1-9** - Focus workspace 1-9 (keep pressing to switch focus between sidebar and editor)
 - **Alt+Cmd+1-9** - Focus tab 1-9 in sidebar
 - **Escape** - Focus editor
 - **Shift+Alt+X** - Toggle console
@@ -13,14 +13,16 @@
 - **Ctrl+Alt+Cmd+[]** - Move tab active workspace 
 
 ## Navigator
-- **F5** - Refresh children focused node or root node
+- **F5** - Refresh children of focused node or when no node is fouces refresh the root nodes
 - **F8** - Delete selected resource
 - **F9** - Create new resource
-- **Ctrl+N** - New resource
+- **Ctrl+N** - New editor
  
 ## Console
 - **Up/Down** - Browse through previous commands
 - **Ctrl+L** - Clear
+- **Alt+Click** - Select vcl/Component (check console)
+- **Cmd+Alt+Click** - Select vcl/Component
 
 ## Editor
 - **Cmd+Shift+1-9** - Focus Editor Tab (TODO)

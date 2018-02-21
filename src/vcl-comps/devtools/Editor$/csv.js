@@ -6,9 +6,7 @@ $([], {
     onLoad: function() {
         var tab = this.up("vcl/ui/Tab");
         var scope = this.scope();
-        
-        
-        
+
         function f() { scope.render.execute({}); }
         tab.on({"resource-loaded": f, "resource-saved": f});
 

@@ -1,6 +1,21 @@
+### 2018-02-21
+
+Lot's has changed, lets see if I can recall (using GitUp).
+
+![](https://i.snag.gy/cTzw04.jpg)
+
+* Introducing locales/prototype - common ground for all locales
+* Updating bower configuration
+* Using localStorage to tweak dependency locations
+* Adding RequireJS shim config for AmCharts3
+* devtools/App: refactoring code, been playing around with localStorage-pouched for shared Workspace settings between browsers
+
 ### 2018-02-11
 - Made workspaces configuration visible and accesible for Theo
-- Autodetect `tools/vcl-comps` resources
+- Autodetect `tools/vcl-comps` and `vcl-comps/tools` resources
+
+> ![](https://i.snag.gy/FQHaCm.jpg)  
+(*Need away to link directly to these kind of snippets*)
 
 ### 2018-02-10
 - The visibility of the Left sidebar is maintained in workspace state

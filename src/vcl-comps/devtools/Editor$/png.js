@@ -6,7 +6,7 @@ $([], {}, [
             node.style.background = 
                 String.format("url(%s/%s?%d&file) no-repeat 50%%,50%%", 
                     "/home",
-                    this.getVar("resource.uri", true), 
+                    window.escape(this.getVar("resource.uri", true)),
                     Date.now());
         }
     }),

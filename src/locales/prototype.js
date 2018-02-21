@@ -18,5 +18,11 @@ define(function() { return {
 		".du-NL.flag":					"&#x1F1F3;&#x1F1F1",
 		".en-US":						"English (US)",
 		".en-US.flag":					"&#x1F1FA;&#x1F1F8"
+	},
+	"Component": {
+		"":								"."
+	},
+	"Source": {
+		"":								"."
 	}
 }});

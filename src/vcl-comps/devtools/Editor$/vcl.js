@@ -1,4 +1,4 @@
-"vcl/Factory, vcl/ui/Node, vcl/ui/Tab, locale";
+"vcl/Factory, vcl/ui/Node, vcl/ui/Tab";
 
 var Component = require("vcl/Component");
 var Factory = require("vcl/Factory");
@@ -43,8 +43,11 @@ $([], {
         }
         
     	var keys = Component.getKeysByUri(this.up("devtools/Workspace<>")._uri);
-    	// TODO this might work better: uri = String.format("home/%s", uri);
-    	uri = String.format("ws/%s/%s", keys.specializer, uri);
+    	// TODO this might work better: uri = String.format("/home/%s", uri);
+    	// uri = String.format("ws/%s/%s", keys.specializer, uri);
+    	
+    	// see main.js
+    	uri = String.format("$HOME/%s", uri);
         
         function f() { scope.instantiate.execute({ uri: uri, sourceUri: sourceUri }); }
         tab.on({"resource-loaded": f, "resource-saved": f});
