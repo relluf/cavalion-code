@@ -3,125 +3,110 @@
 var Ace = require("vcl/ui/Ace");
 var Method = require("js/Method");
 var HotkeyManager = require("util/HotkeyManager");
+var Url = require("util/net/Url");
 var jQuery = require("jquery");
 
 var DefaultWorkspaces = [{
-    name: "code",
+    name: "⌘1",
     selected: true
 }, { 
-	name: "vcl"
+	name: "⌘2"
+}, { 
+	name: "⌘3"
+}, { 
+	name: "⌘4"
 }];
 
-
-(function makeSureStylesLessOverridesLibs(styles) {
-	
-	var node = styles[0];
-	var parent = node.parentNode;
-	parent.removeChild(node);
-	parent.appendChild(node);
-	
-}(jQuery("style")));
-
-// FIXME Move
-function replaceChars(uri) {
-    return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
-}
-function forceUpdate(control) {
-	/*- FIXME Find a better solution to force a Tab to update while invisible */
-	var ControlUpdater = require("vcl/ControlUpdater");
-	(function loop(c) {
-		ControlUpdater.queue(c);
-		c._controls && c._controls.forEach(loop);
-	}(control));
-}
-
-$(["ui/Form"], {
-    css: {
-        ".{./Panel}#editors": {
-            "background-color": "silver"
-        },
-        "#editors-tabs:focus": "transition: background-color 0.5s ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
-        ".{./Bar}": {
-            "&[id$=-tabs]": {
-	            // typical usage vertical: 4px 16px 4px
-	            "background-color": "#f0f0f0",
-	            'height': "26px",
-	            "padding-left": "2px",
-	            "padding-top": "3px",
-	            // "border-top": "1px solid silver",
-	            
-	            "&.gradient":{
-	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
-	            },
-	            "&:not(.bottom)": {
-	                "border-bottom": "1px solid silver"
-	            },
-                "&.bottom": {
-	                "padding-top": "0px",
-	                "border-top": "1px solid silver",
-                    ".{./Tab}": {
-                        // border: "1px solid silver",
-                        "&.selected": {
-                        	// "border-radius": "5px",
-                        	"border-bottom": "1px solid #a0a0a0"
-                        },
-                        "border-top": "none"
-                    }
-                },
-	            "&.sizeable": {
-	                "padding-right": "10px",
-	                "&.overflowing": {
-	                    "padding-right": "24px"
-	                },
-	                ".overflow_handler": {
-	                    right: "4px"
-	                }
-	            },
-	            ">#size_handle": {
-	                "margin-top": "9px"
-	            },
-                ".{./Tab}": {
-                    display: "inline-block",
-                    border: "1px solid transparent",
-                    "border-bottom": "none",
-                    padding: "2px 4px 2px 4px",
-                    "margin-left": "3px",
-                    "margin-right": "3px",
-                    "&.selected": {
-                        "background-color": "white",
-                        "border-color": "#a0a0a0",
-	                    ".hashcode": "font-size: 7pt;"
-                    },
-                    "&:not(.selected) .hashcode": "display: none;"
-                },
-            }
-        }
+var styles = {
+    ".{./Panel}#editors": {
+        "background-color": "silver"
     },
+    "#editors-tabs:focus": "transition: background-color 0.5s ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
+    ".{./Bar}": {
+        "&[id$=-tabs]": {
+            // typical usage vertical: 4px 16px 4px
+            "background-color": "#f0f0f0",
+            'height': "26px",
+            "padding-left": "2px",
+            "padding-top": "3px",
+            // "border-top": "1px solid silver",
+            
+            "&.gradient":{
+                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
+            },
+            "&:not(.bottom)": {
+                "border-bottom": "1px solid silver"
+            },
+            "&.bottom": {
+                "padding-top": "0px",
+                "border-top": "1px solid silver",
+                ".{./Tab}": {
+                    // border: "1px solid silver",
+                    "&.selected": {
+                    	// "border-radius": "5px",
+                    	"border-bottom": "1px solid #a0a0a0"
+                    },
+                    "border-top": "none"
+                }
+            },
+            "&.sizeable": {
+                "padding-right": "10px",
+                "&.overflowing": {
+                    "padding-right": "24px"
+                },
+                ".overflow_handler": {
+                    right: "4px"
+                }
+            },
+            ">#size_handle": {
+                "margin-top": "9px"
+            },
+            ".{./Tab}": {
+                display: "inline-block",
+                border: "1px solid transparent",
+                "border-bottom": "none",
+                padding: "2px 4px 2px 4px",
+                "margin-left": "3px",
+                "margin-right": "3px",
+                "&.selected": {
+                    "background-color": "white",
+                    "border-color": "#a0a0a0",
+                    ".hashcode": "font-size: 7pt;"
+                },
+                "&:not(.selected) .hashcode": "display: none;"
+            },
+        }
+    }
+};
+var handlers = {
     onLoad: function () {
         var scope = this.scope();
         var me = this;
-
-        /*- disable Ctrl+Shift+D */
-        Method.override(Ace.prototype, "onnodecreated", function() {
-            var r = this.inherited(arguments);
-            this._editor.commands.removeCommand("duplicateSelection");
-            return r;
-        });
-
-        this.readStorage("workspaces", function (value) {
-            if(value) {
-                value = JSON.parse(value) || DefaultWorkspaces;
-            } else {
-                value = DefaultWorkspaces;
-            }
-            value.forEach(function (workspace) {
+        
+        function createWorkspaces(workspaces) {
+            workspaces.forEach(function (workspace) {
                 scope["workspace-needed"].execute({
-                        sender: this,
+                        sender: me,
     	                workspace: workspace,
     	                selected: workspace.selected
                     });
-            }, this);
-        });
+            });
+        }
+        
+        var url = new Url();
+        var workspaces = url.getParamValue("workspaces");
+        if(workspaces) {
+        	createWorkspaces(workspaces.split(",").map(_ => ({name: _})));
+        } else {
+	        this.readStorage("workspaces", function (value) {
+	            if(value) {
+	                value = JSON.parse(value) || DefaultWorkspaces;
+	            } else {
+	                value = DefaultWorkspaces;
+	            }
+	            createWorkspaces(value);
+	        });
+        }
         this.readStorage("state", function(state) {
             if(state !== null) {
                 var index = JSON.parse(state).workspace;
@@ -283,7 +268,32 @@ $(["ui/Form"], {
     onDeactivate: function() {
     	// FIXME deactivate hotkeys
     }
-}, [
+};
+
+
+(function makeSureStylesLessOverridesLibs(styles) {
+	
+	var node = styles[0];
+	var parent = node.parentNode;
+	parent.removeChild(node);
+	parent.appendChild(node);
+	
+}(jQuery("style")));
+
+// FIXME Move
+function replaceChars(uri) {
+    return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
+}
+function forceUpdate(control) {
+	/*- FIXME Find a better solution to force a Tab to update while invisible */
+	var ControlUpdater = require("vcl/ControlUpdater");
+	(function loop(c) {
+		ControlUpdater.queue(c);
+		c._controls && c._controls.forEach(loop);
+	}(control));
+}
+
+$(["ui/Form"], { css: styles, handlers: handlers }, [
     $(["devtools/TabFactory"], "workspaces-new", {
         vars: {
             parents: {
@@ -306,6 +316,28 @@ $(["ui/Form"], {
             tab.setText(evt.workspace.name);
             return tab;
         }
+    }),
+    $("vcl/Action", "toggle-workspace-tabs", {
+    	hotkey: "Ctrl+F12", // euh ,responds to F11 instead?
+    	onExecute: function() {
+    		var visible = this._tag;
+
+    		// var tabs = this.app().down("devtools/Main<> #workspaces-tabs");
+    		if(visible === true) {//!tabs.getVisible()) {
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs").show();
+    		} else {
+    			this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs").hide();
+    		}
+    		// tabs.setVisible(!tabs.getVisible());
+    		this._tag = !this._tag;
+    	}	
+    }),
+    $("vcl/Action", "toggle-workspaces-tabs", {
+    	hotkey: "Ctrl+Alt+F12", // euh ,responds to F11 instead?
+    	onExecute: function() {
+    		var tabs = this.app().down("devtools/Main<> #workspaces-tabs");
+    		tabs.setVisible(!tabs.getVisible());
+    	}	
     }),
     $("vcl/Action", "workspace-needed", {
         onExecute: function(evt) {
@@ -398,7 +430,6 @@ $(["ui/Form"], {
     		this._owner.emit("state-dirty");
         }
     }),
-    
-    
+
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false})
 ]);

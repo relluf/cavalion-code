@@ -1,12 +1,4 @@
-$(["./Node<vcl-data/Source>"], { 
-	vars: "source: #array;",
-	onNodesNeeded: function() {
-		// console.log("onNodesNeeded", this);
-		return this.inherited(arguments);
-	}
-	
-}, [
-	
+$(["./Node<vcl-data/Source>"], { vars: "source: #array;" }, [
 	$("vcl-data/Array#array", {
 		array: [
 			{ _: 1, parent_: null, text: locale("Pages"), classes: "folder"},
@@ -21,9 +13,7 @@ $(["./Node<vcl-data/Source>"], {
 			{ _: 14, parent_: 2, text: locale("Monsters"), classes: "file" },
 			{ _: 15, parent_: 2, text: locale("MainPage2"), classes: "file" },
 			{ _: 16, parent_: 2, text: locale("MainPage3"), classes: "file" },
-			
 		]
-		
 	})
 ]);
 

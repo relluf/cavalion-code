@@ -10,8 +10,10 @@ require.config({
         "vcl-comps/ws/VO": "/home",
         "vcl-comps/ws/code": "/home",
         "vcl-comps/ws/veldapps_com": "/home",
+        "vcl-comps/ws/BBT-1.5.0": "/home",
+        "vcl-comps/ws/BBT-1.5.3": "/home",
         "vcl-comps/$HOME": "/home",
-
+        
         "home": "/home",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -43,6 +45,11 @@ require.config({
         "backbone": "bower_components/backbone/backbone",
         "underscore": "bower_components/underscore/underscore",
         
+        /*- dojo */
+        "dojo": "bower_components/dojo",
+        "dgrid": "bower_components/dgrid",
+        "dstore": "bower_components/dstore",
+
 		/*- amcharts3 */
         "amcharts": "bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "bower_components/amcharts3/amcharts/funnel",
@@ -107,9 +114,9 @@ define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/po
 	memory = window.pouch_MemoryPouchPlugin;
 	delete window.pouch_MemoryPouchPlugin;
 	
-	// pouchdb.plugin(find);
-	// pouchdb.plugin(relational);
-	// pouchdb.plugin(memory);
+	pouchdb.plugin(find);
+	pouchdb.plugin(relational);
+	pouchdb.plugin(memory);
 	return pouchdb;
 });
 

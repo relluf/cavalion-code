@@ -70,8 +70,8 @@ $("vcl-ui/Panel", { align: "client", css: styles }, [
 		$("vcl-ui/Input", "search", { placeholder: "Search"})
 	]),
 	$("vcl-ui/Tree#tree", { onNodesNeeded: tree_onNodesNeeded }, [
-		$(["./Node.fs"], "fs-node", { classes: "root-invisible", expanded: true }),
-		$(["./ArrayExample"], "arrayExample-node", { classes: "folder", text: "Array-example" }),
-		$(["./Node<veldoffice/Onderzoek>"], { classes: "folder", text: "Recent Investigations"})
+		// $(["./Node.fs"], "node-fs", { classes: "root-invisible", expanded: true }),
+		// $(["./ArrayExample"], "arrayExample-node", { classes: "folder", text: "Array-example" }),
+		// $(["./Node<veldoffice/Onderzoek>"], { classes: "folder", text: "Recent Investigations"})
 	])
 ]);

@@ -277,13 +277,13 @@ $(["ui/Form"], {
     $("vcl/ui/Panel#left-sidebar", { align: "left", css: "border-right: 1px solid gray;", width: 375 }, [
     	
         $("vcl/ui/Tabs#left-sidebar-tabs", [
-            $(["ui/controls/SizeHandle"], { classes: "horizontal", vars: "control: left-sidebar;" }),
             $("vcl/ui/Tab", { text: locale("Navigator"), control: "navigator", selected: true }),
             $("vcl/ui/Tab", { text: locale("Open Tabs"), control: "openTabs" }),
             $("vcl/ui/Tab", { text: locale("Console"), control: "console" }),
             $("vcl/ui/Tab", { text: locale("Outline"), control: "outline" }),
             $("vcl/ui/Tab", { text: locale("Bookmarks"), control: "bookmarks", visible: false }),
-            $("vcl/ui/Tab", { text: locale("Search"), control: "search-panel", visible: false })
+            $("vcl/ui/Tab", { text: locale("Search"), control: "search-panel", visible: false }),
+            $(["ui/controls/SizeHandle"], { classes: "horizontal", vars: "control: left-sidebar;" })
         ]),
 
         $(["./Navigator"], "navigator"),
@@ -296,7 +296,7 @@ $(["ui/Form"], {
         $("vcl/ui/Panel", "inspector-panel", { align: "client", visible: false })
     ]),
 
-    $("vcl/ui/Panel#editors", { align: "client" }, [
+    $("vcl/ui/Panel#editors", { align: "client", css: "background-color: red;" }, [
         $("vcl/ui/Tabs", "editors-tabs", {
             onChange: function(tab, previous) {
                 var title = this.app().getPropertyValue("title");

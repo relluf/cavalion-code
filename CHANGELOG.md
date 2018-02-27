@@ -1,3 +1,9 @@
+### 2018-02-22
+
+Adding dojo to the mix of libraries to work with. 
+
+![](https://snag.gy/9NGLq4.jpg)
+
 ### 2018-02-21
 
 Lot's has changed, lets see if I can recall (using GitUp).
