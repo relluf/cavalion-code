@@ -1,6 +1,6 @@
 {
   "name": "cavalion-code",
-  "version": "1.0.26",
+  "version": "1.0.28",
   "description": "Coding in the browser",
   "main": "index.js",
   "directories": {},
@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/relluf/cavalion-code#readme",
   "dependencies": {
-    "cavalion-vcl": "^1.0.7"
+    "cavalion-vcl": "^1.0.10"
   }
 }

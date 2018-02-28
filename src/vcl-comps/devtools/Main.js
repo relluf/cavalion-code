@@ -130,7 +130,6 @@ var handlers = {
         return this.inherited(arguments);
     },
     onActivate: function() {
-    	/*- TODO Mac/Windows shortcuts */
 		var shortcuts = {
 			"Ctrl+Alt+F1": "editor-move-to-front",
 			"Ctrl+N": "editor-new", 
@@ -248,22 +247,6 @@ var handlers = {
 				}
 			});
 		}());
-		
-		// EscEsc; focus editor/console
-		0 && (function(focused) {
-			HotkeyManager.register({
-				keyCode: 27, type: "keyup",
-				callback: function(evt) {
-					if(focused) {
-						console.log(evt.keyCode, focused, evt);
-					} else {
-						focused = require("vcl/Control").focused;
-						me.setTimeout("escesc", function() { 
-							focused = null;}, 250);
-					}
-				}
-			});
-		}());
     },
     onDeactivate: function() {
     	// FIXME deactivate hotkeys
@@ -282,7 +265,8 @@ var handlers = {
 
 // FIXME Move
 function replaceChars(uri) {
-    return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
+    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
+    return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
 }
 function forceUpdate(control) {
 	/*- FIXME Find a better solution to force a Tab to update while invisible */
