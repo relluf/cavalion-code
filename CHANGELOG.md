@@ -1,3 +1,7 @@
+### 2018-02-28
+
+New release due to bug fixes in cavalion-vcl and cavalion-code.
+
 ### 2018-02-22
 
 Adding dojo to the mix of libraries to work with. 
