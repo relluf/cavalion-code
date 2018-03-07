@@ -27,6 +27,7 @@
     "CSV-JS": "csv-js#^1.1.1",
     "pouchdb": "^6.4.3",
     "pouchdb-find": "^0.10.5",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "js-yaml": "^3.10.0"
   }
 }
