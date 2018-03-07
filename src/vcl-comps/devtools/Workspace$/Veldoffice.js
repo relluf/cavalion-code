@@ -20,15 +20,15 @@ $([], { css: styles }, [
 	$(["veldoffice/ListOf<Onderzoek>"], "investigations", { visible: false }),
 	
 	$i("left-sidebar-tabs", {
-		onLoad: function() {
-			var scope = this.scope();
-			var control = this._controls[0]._control;
-			this._controls[0].setControl(scope['vo-navigator']);
-			control.hide();
-		}
+		// onLoad: function() {
+		// 	var scope = this.scope();
+		// 	var control = this._controls[0]._control;
+		// 	this._controls[0].setControl(scope['vo-navigator']);
+		// 	control.hide();
+		// }
 	}),
 	$i(["left-sidebar"], [
-		$(["veldoffice/Navigator"], "vo-navigator")
+		$(["veldoffice/Navigator"], "vo-navigator", { visible: false })
 	])
 	
 	

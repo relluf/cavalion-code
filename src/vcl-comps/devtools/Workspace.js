@@ -196,6 +196,8 @@ $(["ui/Form"], {
     			    	evt.formUri = "devtools/Editor<folder>";
     			    } else if(path.indexOf("vcl-comps") !== -1 && ext === "js") {
                         evt.formUri = "devtools/Editor<vcl>";
+    			    } else if(path.indexOf("cavalion-blocks") !== -1 && ext === "js") {
+                        evt.formUri = "devtools/Editor<blocks>";
                     // } else if(path.indexOf("pages") !== -1)  {
                     // 	evt.formUri = "devtools/Editor<page>";
                     } else {

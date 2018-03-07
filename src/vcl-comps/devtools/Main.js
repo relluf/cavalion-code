@@ -46,7 +46,8 @@ var styles = {
                     	// "border-radius": "5px",
                     	"border-bottom": "1px solid #a0a0a0"
                     },
-                    "border-top": "none"
+                    "border-top": "none",
+                    "margin-top": "0"
                 }
             },
             "&.sizeable": {
@@ -66,6 +67,7 @@ var styles = {
                 border: "1px solid transparent",
                 "border-bottom": "none",
                 padding: "2px 4px 2px 4px",
+                "margin-top": "2px",
                 "margin-left": "3px",
                 "margin-right": "3px",
                 "&.selected": {

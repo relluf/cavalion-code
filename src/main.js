@@ -1,8 +1,10 @@
 var cavalion_js = localStorage['cavalion-js-path'] || "node_modules/cavalion-js/src/";
 var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src/";
+var cavalion_blocks = localStorage['cavalion-blocks-path'] || "node_modules/cavalion-blocks/src/";
 var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src/";
 // localStorage['cavalion-js-path'] = "/home/Workspaces/cavalion.org/cavalion-js/src/";
 // localStorage['cavalion-vcl-path'] = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+// localStorage['cavalion-blocks-path'] = "/home/Workspaces/cavalion.org/cavalion-blocks/src/";
 // localStorage['veldoffice-js-path'] = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
 require.config({
     paths: {
@@ -13,6 +15,8 @@ require.config({
         "vcl-comps/ws/BBT-1.5.0": "/home",
         "vcl-comps/ws/BBT-1.5.3": "/home",
         "vcl-comps/$HOME": "/home",
+        
+        "cavalion-blocks/$HOME": "/home",
         
         "home": "/home",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
@@ -33,6 +37,7 @@ require.config({
         "js": cavalion_js + "js",
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
+        "blocks": cavalion_blocks,
 
 		/*- bower */
         "ace": "bower_components/ace/lib/ace",
@@ -44,6 +49,7 @@ require.config({
         // "relational-pouch": "bower_components/relational-pouch/dist/pouchdb.relational-pouch",
         "backbone": "bower_components/backbone/backbone",
         "underscore": "bower_components/underscore/underscore",
+        "js-yaml": "bower_components/js-yaml/dist/js-yaml",
         
         /*- dojo */
         "dojo": "bower_components/dojo",
