@@ -81,7 +81,6 @@ var methods = {
 	}],
 	
 	["vcl-ui:Tree", "tree", [
-		// ["Node<"]
 		["Node<devtools/Resources>", { classes: "root-invisible", expanded: true }],
 		
 		["Node", { text: "Node 2 (dummy)", expandable: true }]

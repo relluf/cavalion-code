@@ -218,3 +218,19 @@ function getUriNodeText(uri, usedNames) {
         return r;
 	}
 }];
+
+
+/*- 
+
+	Nodes
+	Blocks
+	Components
+	Classes
+	Codes
+	Files
+	Objects
+	Properties
+	Values
+	Keys
+	
+*/

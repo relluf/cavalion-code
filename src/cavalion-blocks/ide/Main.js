@@ -1,10 +1,6 @@
-"use Data, locale, vcl/ui/Tab";
 "use strict";
 
-var Tab = require("vcl/ui/Tab");
-var Data = require("Data");
 var locale = window.locale;
-
 var handlers = {
 	// onLoad: function() {
 	// 	var me = this, workspaces = this.scope().workspaces;
@@ -24,17 +20,16 @@ var handlers = {
 				
 	// 	// 	}
 	// 	// });
-	// }
+	// },
+	"#tabs onLoad": function() {
+		
+	}
 };
 
 ["Page", { handlers: handlers }, [
 	
-	/*- 
-		render the ide/Project<>-instances	
-			- entity: ide/Project
-			- collection/class: recent
-	*/
-
-	["Tabs", "tabs", { align: "bottom" }]
-
+	// ["Executeable", "workspace-needed"]
+	
+	["Tabs", "workspaces", { align: "bottom", classes: "bottom" }, []]
+	
 ]];

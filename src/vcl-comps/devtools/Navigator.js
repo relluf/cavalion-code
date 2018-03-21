@@ -466,6 +466,7 @@ $("vcl/ui/Form", {
 	            		}
 	            		return i1.type !== "Folder" ? 1 : -1;
 	            	});
+	            	parent.beginLoading();
 	                res.forEach(function (item, index) {
 	                    var node = new NavigatorNode(owner);
 	                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
@@ -490,6 +491,7 @@ $("vcl/ui/Form", {
 	                    node.setExpandable(item.type.indexOf("Folder") !== -1);
 	                    node.setParent(parent);
 	                });
+	            	parent.endLoading();
 	                return res;
 	            });
             return r;

@@ -19,7 +19,6 @@ require.config({
         "cavalion-blocks/$HOME": "/home",
         
         "home": "/home",
-		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 
         /*- bangers! */
@@ -38,6 +37,15 @@ require.config({
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
+        
+		/* veldapps.com */		
+		"veldapps": veldoffice_js + "veldapps.com",
+		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
+		"vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
+		/*- veldapps.com/leaflet */
+		"proj4": veldoffice_js + "proj4js.org/proj4-src",
+		"epsg": veldoffice_js + "proj4js.org/epsg",
+		"leaflet": veldoffice_js + "leafletjs.com",
 
 		/*- bower */
         "ace": "bower_components/ace/lib/ace",
@@ -125,12 +133,25 @@ define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/po
 	pouchdb.plugin(memory);
 	return pouchdb;
 });
-
 define("font-awesome", ["stylesheet!bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
 define("markdown", ["bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
+});
+define("override", function() {
+	
+	function override(obj, method, factory) {
+		obj[method] = factory(obj[method]);
+	}
+	
+	return override;
+});
+define("blocks-js", ["blocks/Blocks"], function(Blocks) {
+	for(var k in Blocks) {
+		Array.prototype[k] = Blocks[k];
+	}
+	return Blocks;
 });
 
 window.locale_base = "locales/";
@@ -140,6 +161,8 @@ define(function(require) {
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
+	
+	require("blocks-js");
 
 	/*- Some awesomeness */
 	require("font-awesome");
@@ -152,8 +175,62 @@ define(function(require) {
 	var Factory = require("vcl/Factory");
 	var Url = require("util/net/Url");
 	var JsObject = require("js/JsObject");
+	var override = require("override");
 
 	window.j$ = JsObject.$;
+
+	override(Factory, "load", function(inherited) {
+		
+		return function(name, parentRequire, load, config) {
+			
+			var local = name.indexOf("local/") === 0;
+			var app = !local && name.indexOf("app/") === 0;
+
+			if(!local && !app) {
+				// return Factory.load("local/" + name, parentRequire, load, config);
+			}
+
+			// function f(source) {
+			// 	var factory = new Factory(parentRequire, name, Factory.makeTextUri(name) + ".LOCAL");
+			// 	factory.load(source, function() {
+			// 		load(factory, source);
+			// 	});
+			// }
+			inherited.apply(this, [name, parentRequire, load, config]);
+			
+			// [].db.get("block:" + name, {}, function(err, doc) {
+			// 	if(!err) {
+			// 		function loaded_rev(factory, source) {
+			// 			if(doc.source !== source) {
+			// 				[].db.put({
+			// 					_id: "block:" + name,
+			// 					_rev: doc._rev,
+			// 					source: source,
+			// 					uri: factory._uri
+			// 				}).then(function() {
+			// 					console.log("updated", name);
+			// 				});
+			// 			}
+			// 			return load.apply(this, arguments);
+			// 		}
+					
+			// 		// inherited.apply(this, [name, parentRequire, loaded_rev, config]);
+			// 		f(doc.source);
+			// 	} else {
+			// 		function loaded(factory, source) {
+			// 			[].db.put({
+			// 				_id: "block:" + name,
+			// 				source: source,
+			// 				uri: factory._uri
+			// 			});
+			// 			return load.apply(this, arguments);
+			// 		}
+					
+			// 		inherited.apply(this, [name, parentRequire, loaded, config]);
+			// 	}
+			// });
+		};
+	});
 
 	var app, url = new Url(); 
 	if((app = url.getParamValue("app"))) {
