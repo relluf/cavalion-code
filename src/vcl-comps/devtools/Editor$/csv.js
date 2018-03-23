@@ -1,6 +1,6 @@
-"bower_components/CSV-JS/csv";
+"bower_components/papaparse/papaparse";
 
-var CSV = require("bower_components/CSV-JS/csv");
+var Parser = require("bower_components/papaparse/papaparse");
 
 $([], {
     onLoad: function() {
@@ -9,7 +9,7 @@ $([], {
 
         function f() { scope.render.execute({}); }
         tab.on({"resource-loaded": f, "resource-saved": f});
-
+        
         return this.inherited(arguments);
     }
 }, [
@@ -26,8 +26,31 @@ $([], {
 	}),
 	$("vcl/Action#render", {
 		onExecute: function() {
+			// see https://www.papaparse.com/docs#config
+			var options = this.getVar("options", true) || {
+				// delimiter: "",	// auto-detect
+				// newline: "",	// auto-detect
+				// quoteChar: '"',
+				// escapeChar: '"',
+				// header: false,
+				// dynamicTyping: false,
+				// preview: 0,
+				// encoding: "",
+				// worker: false,
+				// comments: false,
+				// step: undefined,
+				// complete: undefined,
+				// error: undefined,
+				// download: false,
+				// skipEmptyLines: false,
+				// chunk: undefined,
+				// fastMode: undefined,
+				// beforeFirstChunk: undefined,
+				// withCredentials: undefined
+			};
+			
 			var scope = this.scope();
-			var arr = CSV.parse(scope.ace.getValue());
+			var arr = Parser.parse(scope.ace.getValue(), options).data;
 			var headers = arr.shift();
 			
 			scope.source.setArray(arr.map(function(values) {
