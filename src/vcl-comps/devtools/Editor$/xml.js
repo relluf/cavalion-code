@@ -2,17 +2,11 @@
 
 var Parser = require("fast-xml-parser");
 
-$([], {
-    // onLoad: function() {
-    //     var tab = this.up("vcl/ui/Tab");
-    //     var scope = this.scope();
+var styles = {
+	"#output": "background-color: #f0f0f0; border-right: 1px solid silver;"
+};
 
-    //     function f() { scope.render.execute({}); }
-    //     tab.on({"resource-loaded": f, "resource-saved": f});
-
-    //     return this.inherited(arguments);
-    // }
-}, [
+$([], { css: styles }, [
     $("vcl/Action#toggle-source", {
         hotkey: "Shift+MetaCtrl+S",
         selected: "state", visible: "state",
@@ -27,32 +21,43 @@ $([], {
         hotkey: "Shift+MetaCtrl+O",
         selected: "state",
         visible: "state",
-        state: false,
+        state: true,
         
         onExecute: function() {
-        	// this.setState(!this.getState());
-        	var preview = this.scope().console;
-        	preview.setVisible(!preview.isVisible());
+        	var output = this.scope().output;
+        	output.setVisible(!output.isVisible());
         }
     }),
-    $("vcl/ui/Console", "console", { align: "client", 
-    	css: "background-color: #f0f0f0; border-left: 1px solid silver; border-right: 1px solid silver;",
-    	onEvaluate: function(expr) {
-    		var root = this._owner.getVar("root"), scope = this.scope();
-    		return eval(expr);
+    $("vcl/Action#render", {
+    	onExecute: function() {
+    		var scope = this.scope();
+		 	var console = scope.console;
+			
+			var root = Parser.parse(scope.ace.getValue(), {ignoreAttributes : false});
+			this._owner.setVar("root", root);
+			
+			console.print("root", root);
     	}
     }),
+    
+    $("vcl/ui/Panel", "output", { align: "client" }, [
+	    $("vcl/ui/Tabs", "tabs", { align: "bottom", classes: "bottom" }, [
+	    	$("vcl/ui/Tab", { text: locale("Console"), control: "console", selected: true })
+	    ]),
+	    $("vcl/ui/Console", "console", { align: "client", 
+	    	onEvaluate: function(expr) {
+	    		var root = this._owner.getVar("root"), scope = this.scope();
+	    		return eval(expr);
+	    	}
+	    })
+    ]),
     $i("ace", { 
-    	align: "left", width: 475, action: "toggle-source",
+    	align: "left", width: 600, action: "toggle-source",
     	executesAction: "none",
         onChange: function() {
-        	var console = this.scope().console;
 			function render() {
-				var root = Parser.parse(this.getValue(), {ignoreAttributes : false});
-				console.print("root", root);
-				this._owner.setVar("root", root);
+				this.scope().render.execute({});
             }        	
-        	
             this.setTimeout("render", render.bind(this), 500);
         }
     }),
