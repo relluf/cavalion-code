@@ -1,3 +1,9 @@
+### 2018-03-21
+
+* Start using `cavalion-blocks`
+* `veldapps` namespace is emerging
+* Advancing `devtools/Editor<xml>`
+
 ### 2018-02-28
 
 New release due to bug fixes in cavalion-vcl and cavalion-code.

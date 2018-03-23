@@ -122,6 +122,13 @@ require.config({
     }
 });
 
+define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
+	return P;
+});
+define("leaflet", ["leaflet/leaflet-default"], function(L) {
+	return L;
+});
+
 define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", "bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], function(pouchdb, find, relational, memory) {
 	
 	/*- hacked pouchdb.memory */
@@ -169,6 +176,8 @@ define(function(require) {
 	require("console/Printer");
 	
 	require("locale!en-US");
+	
+	require("leaflet");
 	
 	var ComponentNode = require("console/node/vcl/Component");
 	var Component = require("vcl/Component");

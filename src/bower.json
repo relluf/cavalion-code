@@ -28,6 +28,8 @@
     "pouchdb": "^6.4.3",
     "pouchdb-find": "^0.10.5",
     "xml2js": "^0.4.19",
-    "js-yaml": "^3.10.0"
+    "js-yaml": "^3.10.0",
+    "papaparse": "^4.3.7",
+    "animate.css": "^3.5.2"
   }
 }

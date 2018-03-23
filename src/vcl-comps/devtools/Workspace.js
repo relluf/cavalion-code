@@ -167,7 +167,7 @@ $(["ui/Form"], {
                     tab._owner.emit("state-dirty");
                 });
                 tab.render();
-                this._form.setName(tab.getVar("resource.uri"));
+				this._form.setName(tab.getVar("resource.uri"));
             });
             return tab;
         }
