@@ -40,17 +40,24 @@ var handlers = {
         
         var url = new Url();
         var workspaces = url.getParamValue("workspaces");
+        var title = url.getParamValue("title");
+        if(title) {
+        	this.app()['@properties'].title = title;
+        	this.app().setTitle(title);
+        }
+        
         if(workspaces) {
         	createWorkspaces(workspaces.split(",").map(_ => ({name: _})));
         } else {
-	        this.readStorage("workspaces", function (value) {
-	            if(value) {
-	                value = JSON.parse(value) || DefaultWorkspaces;
-	            } else {
-	                value = DefaultWorkspaces;
-	            }
-	            createWorkspaces(value);
-	        });
+	        // this.readStorage("workspaces", function (value) {
+	        //     if(value) {
+	        //         value = JSON.parse(value) || DefaultWorkspaces;
+	        //     } else {
+	        //         value = DefaultWorkspaces;
+	        //     }
+	        //     createWorkspaces(value);
+	        // });
+            createWorkspaces(DefaultWorkspaces);
         }
         this.readStorage("state", function(state) {
             if(state !== null) {
@@ -347,15 +354,6 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         align: "bottom",
         classes: "bottom",
         onChange: function() {
-            var app = this.app();
-        	var selected = this.getSelectedControl(1);
-        	var title = this.getApp().getPropertyValue("title");
-        	if(selected) {
-        		title = [title, selected.getNode().
-        				childNodes[0].textContent].join(" - ");
-        	}
-    		app.setTitle(title);
-    		
     		this._owner.emit("state-dirty");
         }
     }),

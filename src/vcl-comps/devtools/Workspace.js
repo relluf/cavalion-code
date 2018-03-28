@@ -301,13 +301,16 @@ $(["ui/Form"], {
     $("vcl/ui/Panel#editors", { align: "client", css: "background-color: red;" }, [
         $("vcl/ui/Tabs", "editors-tabs", {
             onChange: function(tab, previous) {
-                var title = this.app().getPropertyValue("title");
+// TODO tell application to render it's title
+                var title = this.app().getTitle(), me = this;
                 this.setTimeout("foo", function() {
+	                var ws = me.app().qs(":root:selected");
+	                ws = ws !== null ? ws.getSpecializer() : "";
                     if(tab) {
-                        document.title = String.format("%s - %s",
-                            tab.getVar("resource.uri"), title);
+                        document.title = String.format("%s - [%s > %s]",
+                            tab.getVar("resource.uri"), title, ws);
                     } else {
-                        document.title = title;
+                        // document.title = title;
                     }
                 }, 0);
                 this._owner.emit("state-dirty");

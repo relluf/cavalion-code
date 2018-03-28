@@ -1,3 +1,7 @@
+### 2018-03-22
+
+* **devtools/Editor<csv>** - Switching to PapaParse
+
 ### 2018-03-21
 
 * Start using `cavalion-blocks`

@@ -176,8 +176,8 @@ define(function(require) {
 	require("console/Printer");
 	
 	require("locale!en-US");
-	
 	require("leaflet");
+	require("PageVisibility");
 	
 	var ComponentNode = require("console/node/vcl/Component");
 	var Component = require("vcl/Component");
@@ -187,6 +187,8 @@ define(function(require) {
 	var override = require("override");
 
 	window.j$ = JsObject.$;
+	
+	ComponentNode.initialize();
 
 	override(Factory, "load", function(inherited) {
 		
