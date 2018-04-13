@@ -133,7 +133,7 @@ var handlers = {
                 	if((tab = tab._control.qs("#left-sidebar-tabs < vcl/ui/Tab:selected"))) {
                 		var input = tab._control.qs("vcl/ui/Input");
                 		if(!input.isFocused()) {
-                			console.log("focus sidebar");
+                			// console.log("focus sidebar");
                 			input.setFocus();
                 		} else {
                 			console.log("focus editor");
@@ -299,7 +299,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
                 tab.setSelected(true);
                 try {
                 	tab = tab._control.qs("#left-sidebar-tabs < vcl/ui/Tab:selected");
-                	console.log(tab, tab._control.qs("vcl/ui/Input"));
+                	// console.log(tab, tab._control.qs("vcl/ui/Input"));
                 	//.setFocus()
                 } catch(e) {
 					console.warn(e.message);

@@ -33,10 +33,10 @@ define(function () {
     
     var PV = {
     	off: function() {
-    		console.log("off");
+    		// console.log("off");
     	},
     	on: function() {
-    		console.log("on");
+    		// console.log("on");
     	}
     	
     };
