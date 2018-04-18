@@ -74,7 +74,9 @@ require.config({
         "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
 
         /*- yarn */
-        "fast-xml-parser": "fast-xml-parser/parser"
+        "fast-xml-parser": "fast-xml-parser/parser",
+        
+        /*- Framework 7 */
     },
     shim: {
         "amcharts.funnel": {
@@ -121,6 +123,61 @@ require.config({
         }
     }
 });
+
+define("Framework7/plugins/auto-back-title", function() {
+	
+	var selectors = {
+		back: ".navbar .back.link span",
+		title: ".title"
+	};
+
+    /*- Link title of back button to title of page */
+    document.addEventListener("page:beforein", function (e) {
+    	
+    	if(e.detail.direction !== "forward") {
+    		return;
+    	}
+    	
+    	var previous = e.detail.pageFrom;
+    	if(!previous) return;
+    	
+    	var current = e.detail;
+        var back = current.navbarEl && current.navbarEl.down(selectors.back);
+
+        if(back && previous.navbarEl) {
+            back.innerHTML = previous.navbarEl.down(selectors.title).innerHTML;
+        }
+    });
+    
+    return selectors;
+});
+define("Framework7/plugins/esc-is-back", [], function() {
+
+	var selectors = {
+		back: ".view-main .navbar .navbar-current .left a.back.link",
+	};
+	
+	document.addEventListener("keyup", function(e) {
+		if(e.keyCode === 27) {
+			e.preventDefault();
+			document.qsa(selectors.back).forEach(function(el, index) {
+				if(index === 0) el.click();
+			});
+		}
+	});
+	
+	return selectors;
+});
+define("Framework7", [
+	"bower_components/framework7/dist/js/framework7", 
+	"Framework7/plugins/auto-back-title", "Framework7/plugins/esc-is-back",
+	"stylesheet!bower_components/font-awesome/css/font-awesome.css",
+	"stylesheet!bower_components/framework7/dist/css/framework7.css", 
+	"stylesheet!bower_components/framework7-icons/css/framework7-icons.css"
+], function(Framework7) {
+	return Framework7;
+});
+
 
 define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
 	return P;
