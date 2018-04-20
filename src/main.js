@@ -211,10 +211,29 @@ define("override", function() {
 	
 	return override;
 });
-define("blocks-js", ["blocks/Blocks"], function(Blocks) {
+define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) {
 	for(var k in Blocks) {
 		Array.prototype[k] = Blocks[k];
 	}
+	
+	var override = require("override");
+	override(Blocks, "implicitBaseFor", function(inherited) {
+		return function(uri) {
+			var r = inherited.apply(this, arguments);
+			if(r === null && uri.indexOf("cavalion-blocks") !== -1 
+					&& uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
+				r = uri.split("/");
+				while(r[2] !== "cavalion-blocks" && r.length > 2) {
+					r.splice(2, 1);
+				}
+				r.splice(2, 1);
+				r = r.join("/");
+				console.log("adjusted to", r);
+			}
+			return r;
+		};
+	});
+	
 	return Blocks;
 });
 
