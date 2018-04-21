@@ -1,3 +1,5 @@
+"use pages/Controller";
+
 var q$ = require("jquery");
 
 $([], {
@@ -6,13 +8,10 @@ $([], {
 		var scope = this.scope();
 		if(
 			(resource.uri.indexOf("/src/pages/") !== -1 && resource.uri.indexOf(".page/.html") !== -1) ||
-			(resource.uri.indexOf("/src/gdtis2/pages/") !== -1)
+			(resource.uri.indexOf("/src/gdtis/pages/") !== -1)
 		) {
-			
-			scope.preview.setAlign("none");
-			scope.preview.setAutoSize("both");
-			scope.preview.setAutoPosition("all");
-			scope.preview.setClasses("floating ios");
+			require("pages/Controller");
+			scope.preview.setClasses("fw7 ios");
 		}
 		
 		scope.preview.override({
@@ -23,7 +22,6 @@ $([], {
 				if(this._node.childNodes.length && (template = this._node.childNodes[0]).nodeName === "TEMPLATE") {
 					var instance = document.importNode(template.content, true);
 					this._node.insertBefore(instance, template);
-					console.log(instance);
 				}
 			}
 		});
@@ -74,18 +72,14 @@ $([], {
     
     $("vcl/ui/Panel", "preview", {
         align: "right",
-        autoSize: "width",
+        width: 375,
         css: { 
             "background-color": "#f0f0f0", 
             "border-left": "1px solid silver",
             "border-right": "1px solid silver",
-            "width": "50%",
-            "&.floating": {
+            "&.fw7": {
             	"background-color": "rgba(224,224,224,0.8)",
-            	"width": "375px",
-            	"right": "10%",
-            	"top": "0", "bottom": "0",
-            	"z-index": "999999"
+            	// "z-index": "999999"
             }
         },
         visible: true

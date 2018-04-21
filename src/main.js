@@ -37,7 +37,7 @@ require.config({
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
-        
+
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
@@ -124,6 +124,89 @@ require.config({
     }
 });
 
+
+define("Element", function() {
+	/* Make life easier */
+	var qsa = Element.prototype.querySelectorAll;
+	Element.prototype.up = function(selector) {
+		
+		if(arguments.length === 0) {
+			return this.parentNode;
+		}
+
+		function distanceToParent(node, parent) {
+			var r = 1;
+			node = node.parentNode;
+			while(node && node !== parent) {
+				node = node.parentNode;
+				r++;
+			}
+			return node === parent ? r : 0;
+		}
+		
+		var all = document.querySelectorAll(selector), me = this;
+		return Array.prototype.slice.apply(all, [0]).map(function(node) { 
+			return {node: node, distance: distanceToParent(me, node)};
+		}).filter(function(result) {
+			return result.distance > 0;
+		}).sort(function(i1, i2) {
+			return i1.distance - i2.distance;
+		}).map(function(i1) {
+			return i1.node;
+		})[0] || null;
+	};
+	Element.prototype.down = function(selector) {
+		return this.querySelector(selector);
+	};
+	Element.prototype.qsa = function() {
+		return Array.prototype.slice.call(qsa.apply(this, arguments), [0]);
+	};
+	Element.prototype.qs = Element.prototype.querySelector;
+	Element.prototype.on = function() {
+		var args = Array.prototype.slice.apply(args, [0]); 
+		return on.apply(this, (args.unshift(this), args));
+	};
+	Element.prototype.once = function(name, f) {
+		this.addEventListener(name, function() {
+			this.removeEventListener(name, arguments.callee);
+			f.apply(this, arguments);
+		});
+	};
+	Element.prototype.inViewport = function() {
+	    var el = this, rect = el.getBoundingClientRect();
+	    return (
+	        rect.top >= 0 &&
+	        rect.left >= 0 &&
+	        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+	        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+	    );
+	};
+	/* Again */
+	document.down = document.qs = document.querySelector;
+	document.qsa = document.querySelectorAll;
+	document.addEventListener("touchmove", function(evt) {
+	    if(evt.target === document) {
+	        evt.preventDefault();
+	    }
+	}, false);
+	document.addEventListener("ontouchstart" in window ? 
+		"touchstart" : "mousedown", function checkBlockSwipe(evt) {
+			var node = evt.target, prevent = false;
+	    	if(evt.touches) {
+	    		node = evt.touches[0].target;
+	    	}
+			while(node !== document && node !== null && !prevent) {
+				prevent = $(node).hasClass("block-swipe");
+				node = node.parentNode;
+			}
+			window.TouchEvent && (TouchEvent.prototype.f7PreventPanelSwipe = prevent);
+			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
+	    });
+});
+define("refreshDom", function() {
+	return function() {};
+});
+
 define("Framework7/plugins/auto-back-title", function() {
 	
 	var selectors = {
@@ -175,9 +258,165 @@ define("Framework7", [
 	"stylesheet!bower_components/framework7/dist/css/framework7.css", 
 	"stylesheet!bower_components/framework7-icons/css/framework7-icons.css"
 ], function(Framework7) {
+	
+	Template7.registerHelper("l", function (str) {
+		if(arguments.length > 1) {
+			str = js.copy_args(arguments);
+			
+			if(str[0] !== ">") {
+				str.pop();
+				str = str.join("");
+			} else {
+				str.shift(); // [thisObj, entity, factory, options]
+				var f = window.locale(String.format("%s.factories/%s", str[1], str[2]));
+				if(typeof f === "function") {
+					return f.apply(str[0], [str[1], str[2], str[3]]);
+				}
+			}
+		}
+		
+	    if (typeof str === "function") str = str.call(this);
+	    
+	    if(typeof window.locale === "function") {
+	    	return window.locale(str);
+	    }
+	    
+	    return str;
+    });
+    Template7.registerHelper("e", function(context, options) {
+    	var joined;
+		if(arguments.length > 1) {
+			context = js.copy_args(arguments);
+			options = context.pop();
+			joined = context = context.join(".");
+		    context = js.get(context);
+		} else {
+	    	if (typeof context === "function") context = context.call(this);
+		}
+
+		return String.escapeHtml(options.fn(context));
+    });
+    Template7.registerHelper("w", function(context, options) {
+    	var joined;
+		if(arguments.length > 1) {
+			context = js.copy_args(arguments);
+			options = context.pop();
+			joined = context = context.join("");
+			try {
+		    	context = eval(context);
+		    } catch(e) {
+		    	context = js.get(context);
+		    }
+		}
+		
+    	if (typeof context === "function") context = context.call(this);
+
+		return options.fn(context);
+    });
+    Template7.registerHelper("wjs", function(expression, options) {
+        if (typeof expression === "function") { expression = expression.call(this); }
+    	
+        // 'with': function (context, options) {
+        //     if (isFunction(context)) { context = context.call(this); }
+        //     return options.fn(context);
+        // },
+        
+        var func;
+        if (expression.indexOf('return')>=0) {
+            func = '(function(){'+expression+'})';
+        }
+        else {
+            func = '(function(){return ('+expression+')})';
+        }
+        return options.fn(eval.call(this, func).call(this));
+    });
+    
 	return Framework7;
 });
 
+define("template7", ["Framework7"], function() {
+	
+	Template7.registerHelper("l", function (str) {
+		if(arguments.length > 1) {
+			str = js.copy_args(arguments);
+			
+			if(str[0] !== ">") {
+				str.pop();
+				str = str.join("");
+			} else {
+				str.shift(); // [thisObj, entity, factory, options]
+				var f = window.locale(String.format("%s.factories/%s", str[1], str[2]));
+				if(typeof f === "function") {
+					return f.apply(str[0], [str[1], str[2], str[3]]);
+				}
+			}
+		}
+		
+	    if (typeof str === "function") str = str.call(this);
+	    
+	    if(typeof window.locale === "function") {
+	    	return window.locale(str);
+	    }
+	    
+	    return str;
+    });
+    Template7.registerHelper("e", function(context, options) {
+    	var joined;
+		if(arguments.length > 1) {
+			context = js.copy_args(arguments);
+			options = context.pop();
+			joined = context = context.join(".");
+		    context = js.get(context);
+		} else {
+	    	if (typeof context === "function") context = context.call(this);
+		}
+
+		return String.escapeHtml(options.fn(context));
+    });
+    Template7.registerHelper("w", function(context, options) {
+    	var joined;
+		if(arguments.length > 1) {
+			context = js.copy_args(arguments);
+			options = context.pop();
+			joined = context = context.join("");
+			try {
+		    	context = eval(context);
+		    } catch(e) {
+		    	context = js.get(context);
+		    }
+		}
+		
+    	if (typeof context === "function") context = context.call(this);
+
+		return options.fn(context);
+    });
+    Template7.registerHelper("wjs", function(expression, options) {
+        if (typeof expression === "function") { expression = expression.call(this); }
+    	
+        // 'with': function (context, options) {
+        //     if (isFunction(context)) { context = context.call(this); }
+        //     return options.fn(context);
+        // },
+        
+        var func;
+        if (expression.indexOf('return')>=0) {
+            func = '(function(){'+expression+'})';
+        }
+        else {
+            func = '(function(){return ('+expression+')})';
+        }
+        return options.fn(eval.call(this, func).call(this));
+    });
+    
+	return {
+		load: function(name, parentRequire, load, config) {
+			/** @see http://requirejs.org/docs/plugins.html#apiload */
+			parentRequire(["text!" + name], function(source) {
+				load(Template7.compile(source));
+			});
+		}
+	};
+});
 
 define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
 	return P;
@@ -228,7 +467,6 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 				}
 				r.splice(2, 1);
 				r = r.join("/");
-				console.log("adjusted to", r);
 			}
 			return r;
 		};
@@ -253,7 +491,9 @@ define(function(require) {
 	
 	require("locale!en-US");
 	require("leaflet");
+	
 	require("PageVisibility");
+	require("Element");
 	
 	var ComponentNode = require("console/node/vcl/Component");
 	var Component = require("vcl/Component");
