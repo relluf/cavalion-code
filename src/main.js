@@ -1,11 +1,8 @@
-var cavalion_js = localStorage['cavalion-js-path'] || "node_modules/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src/";
-var cavalion_blocks = localStorage['cavalion-blocks-path'] || "node_modules/cavalion-blocks/src/";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src/";
-// localStorage['cavalion-js-path'] = "/home/Workspaces/cavalion.org/cavalion-js/src/";
-// localStorage['cavalion-vcl-path'] = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
-// localStorage['cavalion-blocks-path'] = "/home/Workspaces/cavalion.org/cavalion-blocks/src/";
-// localStorage['veldoffice-js-path'] = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
+var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
+var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
+var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
+
 require.config({
     paths: {
 		/*- TODO */
@@ -124,7 +121,6 @@ require.config({
     }
 });
 
-
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
@@ -203,10 +199,6 @@ define("Element", function() {
 			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
 	    });
 });
-define("refreshDom", function() {
-	return function() {};
-});
-
 define("Framework7/plugins/auto-back-title", function() {
 	
 	var selectors = {
@@ -333,7 +325,6 @@ define("Framework7", [
     
 	return Framework7;
 });
-
 define("template7", ["Framework7"], function() {
 	
 	Template7.registerHelper("l", function (str) {
