@@ -1,3 +1,7 @@
+### 2018-04-24
+- `cavalion-blocks` now supports `vcl-comps`
+- Porting to cavalion-blocks way of doing things
+
 ### 2018-03-22
 
 * **devtools/Editor<csv>** - Switching to PapaParse
