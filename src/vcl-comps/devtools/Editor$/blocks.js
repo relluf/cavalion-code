@@ -157,7 +157,10 @@ $([], {
 	
     $("vcl/ui/Panel", "host", { action: "toggle-component", align: "client", selected: "never", executesAction: false }, [
     	$("vcl/ui/Element", {
-    		content: "<h3><center>Save or Reload to view the component here</center></h3>"
+    		content: "<h3><center>Save or Reload to view the component here</center></h3>",
+    		onClick: function() {
+    			this.scope().refresh.execute();
+    		}
     	})
     ])
 

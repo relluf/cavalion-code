@@ -30,6 +30,8 @@
     "xml2js": "^0.4.19",
     "js-yaml": "^3.10.0",
     "papaparse": "^4.3.7",
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "framework7": "^2.2.1",
+    "framework7-icons": "^0.9.1"
   }
 }
