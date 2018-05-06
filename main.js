@@ -1,8 +1,11 @@
-var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
-var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
-
+var cavalion_js = localStorage['cavalion-js-path'] || "node_modules/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "node_modules/cavalion-vcl/src/";
+var cavalion_blocks = localStorage['cavalion-blocks-path'] || "node_modules/cavalion-blocks/src/";
+var veldoffice_js = localStorage['veldoffice-js-path'] || "node_modules/veldoffice-js/src/";
+// localStorage['cavalion-js-path'] = "/home/Workspaces/cavalion.org/cavalion-js/src/";
+// localStorage['cavalion-vcl-path'] = "/home/Workspaces/cavalion.org/cavalion-vcl/src/";
+// localStorage['cavalion-blocks-path'] = "/home/Workspaces/cavalion.org/cavalion-blocks/src/";
+// localStorage['veldoffice-js-path'] = "/home/Workspaces/veldapps.com/veldoffice-js/src/";
 require.config({
     paths: {
 		/*- TODO */
@@ -121,84 +124,7 @@ require.config({
     }
 });
 
-define("Element", function() {
-	/* Make life easier */
-	var qsa = Element.prototype.querySelectorAll;
-	Element.prototype.up = function(selector) {
-		
-		if(arguments.length === 0) {
-			return this.parentNode;
-		}
 
-		function distanceToParent(node, parent) {
-			var r = 1;
-			node = node.parentNode;
-			while(node && node !== parent) {
-				node = node.parentNode;
-				r++;
-			}
-			return node === parent ? r : 0;
-		}
-		
-		var all = document.querySelectorAll(selector), me = this;
-		return Array.prototype.slice.apply(all, [0]).map(function(node) { 
-			return {node: node, distance: distanceToParent(me, node)};
-		}).filter(function(result) {
-			return result.distance > 0;
-		}).sort(function(i1, i2) {
-			return i1.distance - i2.distance;
-		}).map(function(i1) {
-			return i1.node;
-		})[0] || null;
-	};
-	Element.prototype.down = function(selector) {
-		return this.querySelector(selector);
-	};
-	Element.prototype.qsa = function() {
-		return Array.prototype.slice.call(qsa.apply(this, arguments), [0]);
-	};
-	Element.prototype.qs = Element.prototype.querySelector;
-	Element.prototype.on = function() {
-		var args = Array.prototype.slice.apply(args, [0]); 
-		return on.apply(this, (args.unshift(this), args));
-	};
-	Element.prototype.once = function(name, f) {
-		this.addEventListener(name, function() {
-			this.removeEventListener(name, arguments.callee);
-			f.apply(this, arguments);
-		});
-	};
-	Element.prototype.inViewport = function() {
-	    var el = this, rect = el.getBoundingClientRect();
-	    return (
-	        rect.top >= 0 &&
-	        rect.left >= 0 &&
-	        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-	        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
-	    );
-	};
-	/* Again */
-	document.down = document.qs = document.querySelector;
-	document.qsa = document.querySelectorAll;
-	document.addEventListener("touchmove", function(evt) {
-	    if(evt.target === document) {
-	        evt.preventDefault();
-	    }
-	}, false);
-	document.addEventListener("ontouchstart" in window ? 
-		"touchstart" : "mousedown", function checkBlockSwipe(evt) {
-			var node = evt.target, prevent = false;
-	    	if(evt.touches) {
-	    		node = evt.touches[0].target;
-	    	}
-			while(node !== document && node !== null && !prevent) {
-				prevent = $(node).hasClass("block-swipe");
-				node = node.parentNode;
-			}
-			window.TouchEvent && (TouchEvent.prototype.f7PreventPanelSwipe = prevent);
-			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
-	    });
-});
 define("Framework7/plugins/auto-back-title", function() {
 	
 	var selectors = {
@@ -325,6 +251,7 @@ define("Framework7", [
     
 	return Framework7;
 });
+
 define("template7", ["Framework7"], function() {
 	
 	Template7.registerHelper("l", function (str) {
@@ -442,7 +369,10 @@ define("override", function() {
 	return override;
 });
 define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) {
-
+	for(var k in Blocks) {
+		Array.prototype[k] = Blocks[k];
+	}
+	
 	var override = require("override");
 	override(Blocks, "implicitBaseFor", function(inherited) {
 		return function(uri) {

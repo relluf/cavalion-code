@@ -78,8 +78,9 @@ $([], {
             "border-left": "1px solid silver",
             "border-right": "1px solid silver",
             "&.fw7": {
+				"font-family": "-apple-system, SF UI Text, Helvetica Neue, Helvetica, Arial, sans-serif",
             	"background-color": "rgba(224,224,224,0.8)",
-            	// "z-index": "999999"
+            	"border-radius": "12px"
             }
         },
         visible: true

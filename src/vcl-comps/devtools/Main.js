@@ -277,6 +277,10 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     }),
     $("vcl/Action", "workspace-needed", {
         onExecute: function(evt) {
+        	if(typeof evt === "string") {
+        		evt = { workspace: {name: evt} };
+        	}
+        	
             var scope = this.getScope();
     		var tabs = scope['workspaces-tabs'].getControls();
     		var tab = tabs.find(function(tab) {

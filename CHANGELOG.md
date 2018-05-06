@@ -1,3 +1,6 @@
+### 2018-05-05
+- Component.query: adding vars() to Result
+
 ### 2018-04-24
 - `cavalion-blocks` now supports `vcl-comps`
 - Porting to cavalion-blocks way of doing things

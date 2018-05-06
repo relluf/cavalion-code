@@ -30,6 +30,7 @@
     "xml2js": "^0.4.19",
     "js-yaml": "^3.10.0",
     "papaparse": "^4.3.7",
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "exif-js": "^2.3.0"
   }
 }
