@@ -1,17 +1,18 @@
 "markdown";
+var markdown = require("markdown");
+
+function render() {
+	var root = markdown.toHTMLTree(this.getValue());
+	this.up().vars("root", markdown.toHTMLTree(this.getValue()));//[].concat(root));
+    this.up().qsa("#output").forEach(_ => _.setContent(markdown.renderJsonML(root)));
+}        	
+
 $([
     $i("ace", { 
     	align: "left", width: 475, action: "toggle-source",
     	executesAction: "none",
-        onChange: function() {
-			function render() {
-            	var html = require("markdown").toHTML(this.getValue());
-            	
-	            this.up().qsa("#output")
-	            	.forEach(_ => _.setContent(html));
-            }        	
-        	
-            this.setTimeout("render", render.bind(this), 500);
+        onChange: function() { 
+        	this.setTimeout("render", render.bind(this), 500);
         }
     }),
     $("vcl/Action#toggle-source", {
