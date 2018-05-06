@@ -47,12 +47,17 @@ var styles = {
 					next(); 
 				}
 				images.setTimeout(function() { 
-					images.setArray(all.sort(function(i1, i2) {
-						return i1.source < i2.source ? -1 : 1;
-					})); 
+					// TODO this if(all.length) { ... } should not be necessay
+					if(all.length) {
+						images.setArray(all.sort(function(i1, i2) {
+							return i1.source < i2.source ? -1 : 1;
+						})); 
+						// TODO this is a bug, should not be needed
+						images.notifyEvent("changed");
+					}
 					status.setContent(String.format("%d snag.gy image%s found", 
 						all.length, all.length === 1 ? "": "s"));
-				}, 200);
+				}, 20);
 			}
 			function next() {
 				var uri = mds.pop();
@@ -88,7 +93,7 @@ var styles = {
 	}
 }, [
 	["vcl-data:Array", "images"],
-	["Container", { align: "left", width: 200, visible: false }, [
+	["Container", { align: "left", width: 200, visible: !false }, [
 		["vcl-ui:Panel", "status", { autoSize: "height", align: "top" }],
 		["vcl-ui:Tree", {
 			onLoad: function() {
