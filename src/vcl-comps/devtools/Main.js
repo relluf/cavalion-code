@@ -155,17 +155,18 @@ var handlers = {
 			});
 		}
 		
-		HotkeyManager.register("Shift+Meta+48", {
-			type: "keydown", 
-			callback: function(evt) {
-				var q = me.app().qsa("devtools/Workspace<>:root:selected #left-sidebar");
-				if(q.length && q[0].isVisible()) {
-					q.hide();
-				} else {
-					q.show();
-				}
+		function toggleSidebar(evt) {
+			var q = me.app().qsa("devtools/Workspace<>:root:selected #left-sidebar");
+			if(q.length && q[0].isVisible()) {
+				q.hide();
+			} else {
+				q.show();
 			}
-		});
+		}
+		
+		/*- Sidebar Shift+Cmd+E */
+		HotkeyManager.register("Shift+Meta+48", { type: "keydown",  callback: toggleSidebar });
+		HotkeyManager.register("Shift+Meta+E", { type: "keydown",  callback: toggleSidebar });
 
 		/* Workspaces and Sidebar */
 		for(var i = 1; i <= 9; ++i) {

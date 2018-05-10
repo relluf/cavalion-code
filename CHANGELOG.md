@@ -1,5 +1,11 @@
+### 2018-05-10
+- Developing PostParser/Factory
+- Improving pagination for vcl-data/Pouch, now handling 1000s without hassle
+- Adding pace to the mix
+
 ### 2018-05-05
 - Component.query: adding vars() to Result
+- ImageSnagger was born, this should be the begin of persisting in Pouch
 
 ### 2018-04-24
 - `cavalion-blocks` now supports `vcl-comps`
