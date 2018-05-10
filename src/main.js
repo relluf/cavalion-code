@@ -121,6 +121,16 @@ require.config({
     }
 });
 
+define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
+		pace.start({ 
+			restartOnRequestAfter: true, 
+			restartOnPushState: true,
+			document: false
+		});
+		//{ trackMethods: [] } });
+		return pace; 
+	});
+
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
@@ -466,10 +476,12 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 window.locale_base = "locales/";
 
 define(function(require) {
+	require("pace");
 
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
+	
 	
 	require("blocks-js");
 
