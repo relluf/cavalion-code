@@ -470,6 +470,32 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 		};
 	});
 	
+	// TODO Refactor to blocks/Superblock?
+	define("vcl/Component-parentIsOwner", ["require", "js/defineClass", "vcl/Component"], function (require, ComponentPIO, Component) {
+		return (ComponentPIO = ComponentPIO(require, {
+			inherits: Component,
+			prototype: {
+				setParentComponent: function(value) {
+					this.setOwner(value);
+				}
+			}
+		}));
+	});	
+	
+	Blocks.adjustUri = function(uri) {
+		if(uri.indexOf("cavalion-blocks") !== -1 && uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
+			uri = uri.split("/");
+			while(uri[2] !== "cavalion-blocks" && uri.length > 2) {
+				uri.splice(2, 1);
+			}
+			uri.splice(2, 1);
+			uri = uri.join("/");
+		}
+		return uri;
+	}
+
+	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
+	
 	return Blocks;
 });
 
@@ -481,8 +507,6 @@ define(function(require) {
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
-	
-	
 	require("blocks-js");
 
 	/*- Some awesomeness */
