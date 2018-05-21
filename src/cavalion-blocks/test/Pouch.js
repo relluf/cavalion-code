@@ -23,17 +23,17 @@ function randomWord() {
 	
 	["vcl-data:Pouch", "pouch", {
 		dbName: "test",
-		// onLoad: function() {
-		// 	var arr = [];
-		// 	for(var i = 0; i < 100000; ++i) {
-		// 		arr.push({
-		// 			_id: String.format("%020d", 6000000 + (i - 2) * 3 + parseInt(Math.random(6))),
-		// 			index: i,
-		// 			name: randomWord() + " " + randomWord().toLowerCase()
-		// 		});
-		// 	}
-		// 	console.log(this._db.bulkDocs(arr));
-		// }
+		$onLoad: function() {
+			var arr = [];
+			for(var i = 0; i < 100000; ++i) {
+				arr.push({
+					_id: String.format("%020d", 6000000 + (i - 2) * 3 + parseInt(Math.random(6))),
+					index: i,
+					name: randomWord() + " " + randomWord().toLowerCase()
+				});
+			}
+			console.log(this._db.bulkDocs(arr));
+		}
 	}],
 	
 	["Bar", [
