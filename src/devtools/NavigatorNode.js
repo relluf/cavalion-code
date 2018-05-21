@@ -43,9 +43,9 @@ define(function(require) {
                 return r;
             },
             render: function () {
-            	/** @overrides vcl/Control.prototype.initializeNodes */
+            	/** @overrides vcl/Control.prototype.render */
                 //node.setText(root ? String.format("%H <span class='desc'>- %H</span>", item.name, item.uri) : item.name);
-                var item = this.getVar("resource") || {};
+                var item = this.vars("resource") || {};
                 if (this.hasClass("root")) {
                     this._nodes.text.innerHTML = String.format("%H&nbsp;&nbsp;<span class='desc'>%H</span>", item.name, item.uri);
                 } else {
