@@ -218,8 +218,9 @@ var handlers = {
 
 // FIXME Move
 function replaceChars(uri) {
+	return uri;
     // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
-    return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
+    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
 }
 function forceUpdate(control) {
 	/*- FIXME Find a better solution to force a Tab to update while invisible */
@@ -362,6 +363,8 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		this._owner.emit("state-dirty");
         }
     }),
+    
+    $(["devtools/DragDropHandler"]),
 
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false})
 ]);

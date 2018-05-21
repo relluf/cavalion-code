@@ -1,3 +1,8 @@
+### 2018-05-21
+- Improved reloading in `devtools/Editor<blocks>`
+- Finetuning illegal workspace characters and the navigator tree
+- 
+
 ### 2018-05-10
 - Developing PostParser/Factory
 - Improving pagination for vcl-data/Pouch, now handling 1000s without hassle

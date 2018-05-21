@@ -101,6 +101,14 @@ $("vcl/ui/Form", {
             me.apply("Resources.index");
             scope.tree.dispatch("nodesneeded", null);
         });
+        
+        scope.tree.override({
+        	refresh: function() {
+        		this._controls.forEach(function(node) {
+        			node.reloadChildNodes();
+        		});
+        	}
+        });
 
         return this.inherited(arguments);
     }
@@ -191,7 +199,7 @@ $("vcl/ui/Form", {
 	                });
 	
 	                if(node) {
-	                	scope.tree.setTimeout("mqkeVisible", function() {
+	                	scope.tree.setTimeout("makeVisible", function() {
 	                        scope.tree.makeVisible(node);
 	                	}, 20);
 	                        
@@ -201,14 +209,15 @@ $("vcl/ui/Form", {
 	                            /*- TODO how to know when nodes are actually created? */
 	                            node.setTimeout("walk", function() {
 	                        		walk(node);
-	                            }, 50);
+	                            }, 75);
 	                        });
 	                    } else {
 	                        scope.tree.setSelection([node]);
 	                    }
 	                }
 	            }
-	            walk(scope.tree);
+	            
+	            walk(scope.fs);
             });
             
         }
@@ -259,6 +268,10 @@ $("vcl/ui/Form", {
     ]),
     $("vcl/ui/Tree", "tree", {
         css: {
+			".{Node}.root-invisible": {
+				"> *:not(ol)": "display:none;",
+				"> ol": "padding-left: 0;"
+			},
             "padding-left": undefined,
             "overflow-x": undefined,
             ".{./Node}": {
@@ -272,6 +285,7 @@ $("vcl/ui/Form", {
                     right: "4px",
                     display: "none"
                 },
+                "&.no-icon >.icon": "width:14px;",
                 ">.icon": {
                     width: "30px",
                     "background-repeat": "no-repeat",
@@ -405,7 +419,7 @@ $("vcl/ui/Form", {
                 }, 2000);
             }
         },
-        onNodesNeeded: function (parent) {
+        _onNodesNeeded: function (parent) {
             var owner = this._owner;
             var root = parent === null;
 
@@ -495,8 +509,116 @@ $("vcl/ui/Form", {
 	                return res;
 	            });
             return r;
-        }
-    }),
+        },
+		onNodesNeeded: function(parent) { 
+			var node = parent, pname = "_onChildNodesNeeded";
+			while(node && !node.hasOwnProperty(pname)) {
+				node = node._parent;
+			}
+			if(node === parent) {
+				return;
+			}
+			if(node && node.hasOwnProperty(pname)) {
+				return node.fire(pname.substring(1), [parent]);
+			}
+		}
+    }, [
+    	$("devtools/NavigatorNode", "fs", {
+	   		vars: { resource: { type: "Folder", uri: "", name: "Remote Files" } },
+    		classes: "root-invisible", 
+    		// classes: "root",
+    		expanded: true,
+	        onNodesNeeded: function (parent) {
+	            var owner = this._owner;
+	            var root = parent === this;
+	
+	            var uri = parent.getVar("resource.uri") || "";
+	            var control = parent.getVar("control");
+	            var uris = this._owner.getVar("uris").sort(function(i1, i2) {
+	            	return i1 < i2 ? -1 : 1;
+	            });
+	            
+	            if(root) {
+		            var uriNodes = {};
+					function createUriNode(uri) {
+		                var node = new NavigatorNode(owner);
+		                
+		                uri = uri.split(";");
+		                
+		                var item = {
+		                	uri:	uri[0], 
+		                	name:	uri[1] || getNodeText(uri[0]),
+		                	type:	uri[2] || "Folder"
+		                };
+		
+		                root && node.addClass("root");
+		                node.setVar("resource", item);
+		                
+		                node.setChecked(true);
+		                node.setExpandable(true);
+		                node.setParent(parent);
+		                return (uriNodes[uri[1]] = node);
+		            }            
+		            
+		            uris.forEach(createUriNode);
+		            
+		            Method.override(uris, {
+			            splice: function(index, count) {
+			            	for(var i = 0; i < count; ++i) {
+			            		var node = uriNodes[this[index + i]];
+			            		node && node.destroy();
+			            	}
+			            	return Method.callInherited(this, arguments);
+			            },
+			            push: function() {
+			            	for(var i= 0; i < arguments.length; ++i) {
+			            		createUriNode(arguments[i]).setIndex(0);
+			            	}
+			            	return Method.callInherited(this, arguments);
+			            }
+		            });
+	            }
+	            
+	            var r = this.apply("Resources.list", [uri]).
+		            then(function (res) {
+		            	res.sort(function(i1, i2) {
+		            		if(i1.type === i2.type) {
+		            			return i1.name < i2.name ? -1 : 1;
+		            		}
+		            		return i1.type !== "Folder" ? 1 : -1;
+		            	});
+		            	parent.beginLoading();
+		                res.forEach(function (item, index) {
+		                    var node = new NavigatorNode(owner);
+		                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
+	
+		                    node.setVar("resource", item);
+		                    root && node.addClass("root");
+		                    
+		                    root === true && index === 0 && node.addClass("seperator top");
+	
+		                    var checked = false;
+		                    for(var i = 0; i < uris.length && !checked; ++i) {
+		                    	checked = uris[i].indexOf(item.uri) === 0;
+		                    }
+	
+		                    if(checked && uris.indexOf(item.uri) === -1) {
+		                    	node.addClass("opaque");
+		                    }
+		                    node.setChecked(checked);
+		                    if (control) {
+		                        node.setVar("control", control);
+		                    }
+		                    node.setExpandable(item.type.indexOf("Folder") !== -1);
+		                    node.setParent(parent);
+		                });
+		            	parent.endLoading();
+		                return res;
+		            });
+	            return r;
+	        }
+    	})
+    ]),
     $("vcl/ui/List", "search-list", { action: "search-open", source: "search-results", visible: false,
         css: {
             "background-color": "white",

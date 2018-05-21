@@ -14,6 +14,12 @@ var styles = {
 };
 var handlers = { /*- onLoad: function() { /* DOESN'T SEEM TO WORK */ };
 
+function print(comp, msg, value) {
+	comp.up("devtools/Workspace<>:selected")
+		.qsa("devtools/Console<> #console")
+		.print(msg, value);
+}
+
 $([], { 
 	css: styles, 
     onLoad: function() {
@@ -77,7 +83,7 @@ $([], {
             var root = scope.host.getControls()[0];
             
             while(root) {
-            	root && root.setParent(null);
+            	root && root.destroy();
             	root = scope.host.getControls()[0];
             }
             factory.load(scope.ace.getValue(), 
@@ -85,6 +91,7 @@ $([], {
                     try {
                         root && root.destroy();
                         root = factory.newInstance(scope['@owner'], uri);
+                        print(scope['@owner'], uri.substring(uri.indexOf("cavalion-blocks/") + "cavalion-blocks/".length), root);
                         if(root instanceof require("vcl/Control")) {
                             root.setParent(scope.host);
                         } else {
