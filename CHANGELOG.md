@@ -1,7 +1,12 @@
+### 2018-05-23
+- Cleaning up cavalion-blocks (Git maintainance)
+- Adding devtools/Editor<var/log> (for Apache2 access_logs)
+
+>> ![](https://i.snag.gy/E8pPKz.jpg)
+
 ### 2018-05-21
 - Improved reloading in `devtools/Editor<blocks>`
 - Finetuning illegal workspace characters and the navigator tree
-- 
 
 ### 2018-05-10
 - Developing PostParser/Factory
