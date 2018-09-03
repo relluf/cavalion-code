@@ -200,7 +200,7 @@ $(["ui/Form"], {
                         evt.formUri = "devtools/Editor<blocks>";
                     // } else if(path.indexOf("pages") !== -1)  {
                     // 	evt.formUri = "devtools/Editor<page>";
-    			    } else if(evt.resource.uri.indexOf("/var/log/") !== -1) {
+    			    } else if(path.length > 1 && evt.resource.uri.indexOf("/var/log/") !== -1) {
     			    	evt.formUri = "devtools/Editor<var/log>";
                     } else {
     			        evt.formUri = String.format("devtools/Editor<%s>", ext);

@@ -7,7 +7,7 @@ $([], {
 		var resource = this.getVar("resource", true);
 		var scope = this.scope();
 		if(
-			(resource.uri.indexOf("/src/pages/") !== -1 && resource.uri.indexOf(".page/.html") !== -1) ||
+			(resource.uri.indexOf("/src/pages/") !== -1 || resource.uri.indexOf(".page/.html") !== -1) ||
 			(resource.uri.indexOf("/src/gdtis/pages/") !== -1)
 		) {
 			require("pages/Controller");
