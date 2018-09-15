@@ -5,6 +5,7 @@ var Resources = require("devtools/Resources");
 var Node_ = require("vcl/ui/Node");
 var markdown = require("markdown");
 var jquery = require("jquery");
+var locale = window.locale;
 
 function findImages(arr, r) {
 	r = r || [];
@@ -37,7 +38,7 @@ var styles = {
 			var images = this.scope().images, status = this.scope().status;
 			var mds = this.app()
 				.qsa("devtools/Workspace<>:root #editors-tabs < vcl/ui/Tab")
-				.filter(_ => _.vars(["resource.uri"]).endsWith(".md"))
+				.filter(_ => (_.vars(["resource.uri"]) || "").endsWith(".md"))
 				.map(_ => _.vars(["resource.uri"]));
 				
 			this.vars("mds", mds);
@@ -93,76 +94,84 @@ var styles = {
 	}
 }, [
 	["vcl-data:Array", "images"],
-	["Container", { align: "left", width: 200, visible: !false }, [
-		["vcl-ui:Panel", "status", { autoSize: "height", align: "top" }],
-		["vcl-ui:Tree", {
-			onLoad: function() {
-				this.dispatch("nodesneeded", null);
-			},
-			onNodesNeeded: function(parent) {
-				var app = this.app(), owner = this._owner;
-					
-				if(!parent) {
-					parent = this;
-					this.app().qsa("devtools/Main<> #workspaces-tabs < vcl/ui/Tab")
-						.vars("workspace").forEach(function(workspace) {
-							var node = new Node_(owner);
-							node.setVar("workspace", workspace);
-							node.setExpandable(true);
-							node.setText(workspace.name);
-							node.setParent(parent);
-						});
-						
-					return;
-				}
+	["vcl-ui:Node", {
+		text: locale("Images.text"),
+		classes: "folder seperator",
+		onLoad: function() {
+			var tree = this.up("devtools/Workspace<>").down("devtools/Navigator<>#tree");
+			this.setParent(tree);
+			this.expand();
+		},
+		onNodesNeeded: function(parent) {
+			var app = this.app(), owner = this._owner;
 				
-				var workspace = parent.vars("workspace");
-				var resource = parent.vars("resource");
-				var tab = parent.vars("tab");
-				if(workspace) {
-					this.app()
-						.qsa(String.format(
-							"devtools/Workspace<%s>:root #editors-tabs < vcl/ui/Tab", 
-							workspace.name))
-						.filter(_ => _.vars(["resource.uri"]).endsWith(".md"))
-						.forEach(function(tab) {
-							var node = new Node_(owner);
-							node.setVars({"resource": tab.vars(["resource"]), "tab": tab });
-							node.setExpandable(true);
-							
-							var uri = tab.vars(["resource.uri"]).split("/");
-							node.setText(String.format("<b>%s</b> - %s", uri.pop(), uri.join("/")));
-							node.setParent(parent);
-						});
-				} else if(resource && tab) {
-					Resources.get(resource.uri).then(function(resp) {
-						resource.cached = resp.cached;
-						findImages(markdown.toHTMLTree(resp.text)).forEach(function(img) {
-							var node = new Node_(owner);
-							node.setText(img.src);
-							node.vars("src", img.src);
-							node.setExpandable(true);
-							node.setParent(parent);
-						});
+			if(parent === this) {
+				this.app().qsa("devtools/Main<> #workspaces-tabs < vcl/ui/Tab")
+					.vars("workspace").forEach(function(workspace) {
+						var node = new Node_(owner);
+						node.setVar("workspace", workspace);
+						node.setExpandable(true);
+						node.setText(workspace.name);
+						node.addClass("no-icon");
+						node.setParent(parent);
 					});
-				} else {
-					parent._nodes.container.innerHTML = String.format(
-							"<li><img src='%s'></li>", parent.vars("src"));
-				}
+					
+				return;
+			}
+			
+			var workspace = parent.vars("workspace");
+			var resource = parent.vars("resource");
+			var tab = parent.vars("tab");
+			if(workspace) {
+				this.app()
+					.qsa(String.format(
+						"devtools/Workspace<%s>:root #editors-tabs < vcl/ui/Tab", 
+						workspace.name))
+					.filter(_ => (_.vars(["resource.uri"]) || "").endsWith(".md"))
+					.forEach(function(tab) {
+						var node = new Node_(owner);
+						node.setVars({"resource": tab.vars(["resource"]), "tab": tab });
+						node.setExpandable(true);
+						
+						var uri = tab.vars(["resource.uri"]).split("/");
+						node.setText(String.format("<b>%s</b> - %s", uri.pop(), uri.join("/")));
+						node.addClass("no-icon");
+						node.setParent(parent);
+					});
+			} else if(resource && tab) {
+				Resources.get(resource.uri).then(function(resp) {
+					resource.cached = resp.cached;
+					findImages(markdown.toHTMLTree(resp.text)).forEach(function(img) {
+						var node = new Node_(owner);
+						node.setText(img.src);
+						node.vars("src", img.src);
+						node.setExpandable(true);
+						node.addClass("no-icon");
+						node.setParent(parent);
+					});
+				});
+			} else {
+				parent._nodes.container.innerHTML = String.format(
+						"<li><img src='%s'></li>", parent.vars("src"));
+			}
+		}
+	}],
+	["vcl-ui:Panel", "status", { autoSize: "height", align: "top" }],
+	["Container", { align: "left", width: 500 }, [
+		["Bar", [
+			["vcl-ui:Input", "search", { placeholder: locale("Search.placeholder") }],
+			["vcl-ui:Element", "status"]
+		]],
+		["vcl-ui:List", {
+			autoColumns: true,
+			source: "images",
+			onSelectionChange: function() {
+				this.scope().preview.setContent(this.getSelection(true).map(function(entry) {
+					return String.format("<img src='%s'>", entry.source);
+				}).join(""));
 			}
 		}],
 	]],
-	["vcl-ui:List", {
-		autoColumns: true,
-		source: "images",
-		align: "left", width: 500,
-		
-		onSelectionChange: function() {
-			this.scope().preview.setContent(this.getSelection(true).map(function(entry) {
-				return String.format("<img src='%s'>", entry.source);
-			}).join(""));
-		}
-	}],
 	["Container", "preview", { align: "client" }]
 	
 ]];

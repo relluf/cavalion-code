@@ -6,6 +6,7 @@ var Node_ = require("vcl/ui/Node");
 var markdown = require("markdown");
 var jquery = require("jquery");
 var j$ = window.j$;
+var locale = window.locale;
 
 function isContentItem(item) {
 	return ["img"].indexOf(item) === -1;
@@ -49,7 +50,7 @@ function getPosts(arr, posts) {
 		// Recognize date marker
 		if((dt = isDateMarker(item)) !== false) {
 			if(date !== undefined && post === undefined) {
-				j$[6].print(date + " - " + arr[index - 1]);
+				// j$[6].print(date + " - " + arr[index - 1]);
 				post = {date: date, h: -1, nodes: [arr[index - 1]]};
 			}
 			
@@ -83,19 +84,28 @@ function getPosts(arr, posts) {
 var styles = {
 	".vcl-ui-Tree li": "list-style-type: none;",
 	".vcl-ui-Tree li img:not(:hover)": "max-width: 64px; max-height: 64px;",
-	"#preview": "padding: 20px;",
+	"#preview": "border-left: 1px solid silver; background-color: #f9f9f9; padding: 20px;",
 	"#preview img:not(:hover)": "max-width: 90%; max-height: 800px;"
 };
 
 ["Container", { css: styles, handlers: {
-	loaded: function() {
+	"#posts onFilterObject": function(obj) {
+		var q = this.scope().search.getInputValue();
+		if(q === "") return false;
+		return JSON.stringify(obj.nodes).toLowerCase().indexOf(q.toLowerCase()) === -1; 
+	},
+	"#search onChange": function() {
+		var posts = this.scope().posts;
+		this.setTimeout(function() { posts.updateFilter(); }, 200);
+	},
+	"loaded": function() {
 		// Get all resource uris to Markdown-files (.md extensions)
 		
 		var all = [], uris = [];
 		var posts = this.scope().posts, status = this.scope().status;
 		var mds = this.app()
 			.qsa("devtools/Workspace<>:root #editors-tabs < vcl/ui/Tab")
-			.filter(_ => _.vars(["resource.uri"]).endsWith(".md"))
+			.filter(_ => (_.vars(["resource.uri"]) || "").endsWith(".md"))
 			.map(_ => _.vars(["resource.uri"]));
 			
 		this.vars("mds", mds);
@@ -134,79 +144,88 @@ var styles = {
 	}}
 }, [
 	["vcl-data:Array", "posts"],
-	["Container", { align: "left", width: 200, visible: !false }, [
-		["vcl-ui:Panel", "status", { autoSize: "height", align: "top" }],
-		["vcl-ui:Tree", {
-			onLoad: function() {
-				this.dispatch("nodesneeded", null);
-			},
-			onNodesNeeded: function(parent) {
-				var app = this.app(), owner = this._owner;
-					
-				if(!parent) {
-					parent = this;
-					this.app().qsa("devtools/Main<> #workspaces-tabs < vcl/ui/Tab")
-						.vars("workspace").forEach(function(workspace) {
-							var node = new Node_(owner);
-							node.setVar("workspace", workspace);
-							node.setExpandable(true);
-							node.setText(workspace.name);
-							node.setParent(parent);
-						});
-						
-					return;
-				}
+	["vcl-ui:Node", {
+		text: locale("Posts.text"),
+		classes: "folder seperator",
+		onLoad: function() {
+			var tree = this.up("devtools/Workspace<>").down("devtools/Navigator<>#tree");
+			this.setParent(tree);
+			this.expand();
+		},
+		onNodesNeeded: function(parent) {
+			var app = this.app(), owner = this._owner;
 				
-				var workspace = parent.vars("workspace");
-				var resource = parent.vars("resource");
-				var tab = parent.vars("tab");
-				if(workspace) {
-					this.app()
-						.qsa(String.format(
-							"devtools/Workspace<%s>:root #editors-tabs < vcl/ui/Tab", 
-							workspace.name))
-						.filter(_ => _.vars(["resource.uri"]).endsWith(".md"))
-						.forEach(function(tab) {
-							var node = new Node_(owner);
-							node.setVars({"resource": tab.vars(["resource"]), "tab": tab });
-							node.setExpandable(true);
-							
-							var uri = tab.vars(["resource.uri"]).split("/");
-							node.setText(String.format("<b>%s</b> - %s", uri.pop(), uri.join("/")));
-							node.setParent(parent);
-						});
-				} else if(resource && tab) {
-					Resources.get(resource.uri).then(function(resp) {
-						resource.cached = resp.cached;
-						getPosts(markdown.toHTMLTree(resp.text)).forEach(function(post) {
-							var node = new Node_(owner);
-							node.setText(post.date);
-							node.vars("post", post);
-							node.setExpandable(true);
-							node.setParent(parent);
-						});
+			if(parent === this) {
+				this.app().qsa("devtools/Main<> #workspaces-tabs < vcl/ui/Tab")
+					.vars("workspace").forEach(function(workspace) {
+						var node = new Node_(owner);
+						node.setVar("workspace", workspace);
+						node.setClasses("folder");
+						node.setExpandable(true);
+						node.setText(workspace.name);
+						node.setParent(parent);
 					});
-				} else {
-					var post = parent.vars("post");
-					post.render = post.render || 
-							markdown.renderJsonML(["p"].concat(post.nodes));
-					parent._nodes.container.innerHTML = post.render;
-				}
+					
+				return;
 			}
-		}],
-	]],
-	["vcl-ui:List", {
-		autoColumns: true,
-		source: "posts",
-		align: "left", width: 500,
-		
-		onSelectionChange: function() {
-			this.scope().preview.setContent(this.getSelection(true).map(function(entry) {
-				return (entry.render = entry.render || 
-					(markdown.renderJsonML(["p"].concat(entry.nodes))));
-			}).join(""));
+			
+			var workspace = parent.vars("workspace");
+			var resource = parent.vars("resource");
+			var tab = parent.vars("tab");
+			if(workspace) {
+				this.app()
+					.qsa(String.format(
+						"devtools/Workspace<%s>:root #editors-tabs < vcl/ui/Tab", 
+						workspace.name))
+					.filter(_ => _.vars(["resource.uri"]).endsWith(".md"))
+					.forEach(function(tab) {
+						var node = new Node_(owner);
+						node.setVars({"resource": tab.vars(["resource"]), "tab": tab });
+						node.setExpandable(true);
+						node.setClasses("file");
+						
+						var uri = tab.vars(["resource.uri"]).split("/");
+						node.setText(String.format("<b>%s</b> - %s", uri.pop(), uri.join("/")));
+						node.setParent(parent);
+					});
+			} else if(resource && tab) {
+				Resources.get(resource.uri).then(function(resp) {
+					resource.cached = resp.cached;
+					getPosts(markdown.toHTMLTree(resp.text)).forEach(function(post) {
+						var node = new Node_(owner);
+						node.setText(post.date);
+						node.setClasses("no-icon");
+						node.vars("post", post);
+						node.setExpandable(true);
+						node.setParent(parent);
+					});
+				});
+			} else {
+				var post = parent.vars("post");
+				post.render = post.render || 
+						markdown.renderJsonML(["p"].concat(post.nodes));
+				parent._nodes.container.innerHTML = post.render;
+			}
 		}
 	}],
+	
+	["Container", { align: "left", width: 500 }, [
+		["Bar", [
+			["vcl-ui:Input", "search", { placeholder: locale("Search.placeholder") }],
+			["vcl-ui:Element", "status"]
+		]],
+		
+		["vcl-ui:List", {
+			autoColumns: true,
+			source: "posts",
+			onSelectionChange: function() {
+				this.scope().preview.setContent(this.getSelection(true).map(function(entry) {
+					return (entry.render = entry.render || 
+						(markdown.renderJsonML(["p"].concat(entry.nodes))));
+				}).join(""));
+			}
+		}]
+	]],
 	["Container", "preview", { align: "client" }]
 	
 ]];
