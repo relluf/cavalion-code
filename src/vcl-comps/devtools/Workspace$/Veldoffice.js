@@ -18,7 +18,7 @@ $([], { css: styles }, [
 	]),
 	
 	$(["veldoffice/Collections"], "collections"),
-	$(["veldoffice/ListOf<Onderzoek>"], "investigations", { visible: !false }),
+	$(["veldoffice/ListOf<Onderzoek>"], "investigations", { visible: false }),
 	
 	$i("left-sidebar-tabs", {
 		// onLoad: function() {

@@ -1,5 +1,7 @@
 "devtools/Resources";
 
+// #editor-needed has a param parents
+
 var Resources = require("devtools/Resources");
 
 function allowResource(resource) {
@@ -62,6 +64,10 @@ $([], {
     }
 
 }, [
-	$("vcl/ui/Tabs", "editors-tabs", []),
+	$("vcl/ui/Tabs", "editors-tabs", [], {
+		onDblClick: function() {
+			alert(1);
+		}
+	}),
 	$i("ace", {visible:false})
 ]);

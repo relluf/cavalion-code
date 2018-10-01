@@ -426,7 +426,10 @@ define("leaflet", ["leaflet/leaflet-default"], function(L) {
 	return L;
 });
 
-define("pouchdb", ["bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", "bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], function(pouchdb, find, relational, memory) {
+define("pouchdb", [
+	"bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", 
+	"bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], 
+function(pouchdb, find, relational, memory) {
 	
 	/*- hacked pouchdb.memory */
 	memory = window.pouch_MemoryPouchPlugin;
@@ -500,6 +503,7 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 });
 
 window.locale_base = "locales/";
+window.loc = "en-US";
 
 define(function(require) {
 	require("pace");

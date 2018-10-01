@@ -7,7 +7,7 @@ $([], {
 		var resource = this.getVar("resource", true);
 		var scope = this.scope();
 		if(
-			(resource.uri.indexOf("/src/pages/") !== -1 || resource.uri.indexOf(".page/.html") !== -1) ||
+			(resource.uri.indexOf("/V7/src/") !== -1 || resource.uri.indexOf("/src/pages/") !== -1 || resource.uri.indexOf(".page/.html") !== -1) ||
 			(resource.uri.indexOf("/src/gdtis/pages/") !== -1)
 		) {
 			require("pages/Controller");
@@ -22,6 +22,14 @@ $([], {
 				if(this._node.childNodes.length && (template = this._node.childNodes[0]).nodeName === "TEMPLATE") {
 					var instance = document.importNode(template.content, true);
 					this._node.insertBefore(instance, template);
+				}
+
+				var node = this._node.childNodes[0] || {};
+				if(node.className === "popup" && node.childNodes.length) {
+					node.className = "popup_";
+					if(node.childNodes[0].className === "view") {
+						node.childNodes[0].className = "view_";
+					}
 				}
 			}
 		});
