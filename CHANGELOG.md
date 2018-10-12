@@ -1,3 +1,7 @@
+### 2018-10
+- Introducing devtools/Editor<xsd>
+- Using NPM for the cavalion-js/vcl/blocks libraries
+
 ### 2018-05-23
 - Cleaning up cavalion-blocks (Git maintainance)
 - Adding devtools/Editor<var/log> (for Apache2 access_logs)

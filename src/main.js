@@ -1,7 +1,11 @@
-var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
-var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
+// var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
+// var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
+// var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
+// var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
+var cavalion_js = "node_modules/cavalion-js/src/";
+var cavalion_vcl = "node_modules/cavalion-vcl/src";
+var cavalion_blocks = "node_modules/cavalion-blocks/src";
+var veldoffice_js = "node_modules/veldoffice-js/src/";
 
 require.config({
     paths: {
@@ -419,7 +423,8 @@ define("template7", ["Framework7"], function() {
 	};
 });
 
-define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
+// define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
+define("proj4", [veldoffice_js + "proj4js.org/proj4-src"], function(P) {
 	return P;
 });
 define("leaflet", ["leaflet/leaflet-default"], function(L) {
