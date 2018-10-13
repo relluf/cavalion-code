@@ -39,7 +39,7 @@ require.config({
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
         
-        "v7": "/home/Workspaces/veldapps.com/V7/src/v7",
+        "v7": "/home/Projects/V7/src/v7",
 
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
