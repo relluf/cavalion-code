@@ -133,16 +133,10 @@ window.req = function req() {
     		return require(arguments[0]);
     	} catch(e) {}
 	}
-    var d = new Deferred();
-    require.apply(this, [js.copy_args(arguments),
-        function () {
-            d.callback.apply(d, js.copy_args(arguments));
-        },
-        function (err) {
-            d.errback(err);
-        }
-    ]);
-    return d;
+	var modules = js.copy_args(arguments);
+	return new Promise(function(resolve, reject) {
+	    require(modules, resolve, reject);
+	});
 };
 
 define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
