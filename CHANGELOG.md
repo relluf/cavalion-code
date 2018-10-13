@@ -1,6 +1,7 @@
 ### 2018-10
 - Introducing devtools/Editor<xsd>
 - Using NPM for the cavalion-js/vcl/blocks libraries
+- Added `window.req`
 
 ### 2018-05-23
 - Cleaning up cavalion-blocks (Git maintainance)

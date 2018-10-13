@@ -38,6 +38,8 @@ require.config({
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
+        
+        "v7": "/home/Workspaces/veldapps.com/V7/src/v7",
 
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
@@ -125,6 +127,24 @@ require.config({
     }
 });
 
+window.req = function req() {
+	if(arguments.length == 1) {
+    	try {
+    		return require(arguments[0]);
+    	} catch(e) {}
+	}
+    var d = new Deferred();
+    require.apply(this, [js.copy_args(arguments),
+        function () {
+            d.callback.apply(d, js.copy_args(arguments));
+        },
+        function (err) {
+            d.errback(err);
+        }
+    ]);
+    return d;
+};
+
 define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			restartOnRequestAfter: true, 
@@ -134,7 +154,7 @@ define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/
 		//{ trackMethods: [] } });
 		return pace; 
 	});
-
+	
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
