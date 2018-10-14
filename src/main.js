@@ -35,6 +35,7 @@ require.config({
         "entities": cavalion_js + "entities",
         "features": cavalion_js + "features",
         "js": cavalion_js + "js",
+        "json": cavalion_js + "json",
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
