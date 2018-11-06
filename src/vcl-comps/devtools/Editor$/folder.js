@@ -50,6 +50,9 @@ $([], {
     				selected: i === 0,
     				owner: owner
     			});
+    			if(resource.uri.split("/").pop().indexOf(".") === -1)  {
+    				tab.addClass("bold");
+    			}
     			tab.setCloseable(false);
     			tab.on("dblclick", function() { 
     				if(confirm("Are you sure?") === true) {
