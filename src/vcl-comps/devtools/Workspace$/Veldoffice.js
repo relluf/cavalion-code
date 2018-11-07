@@ -32,5 +32,4 @@ $([], { css: styles }, [
 		$(["veldoffice/Navigator"], "vo-navigator")
 	])
 	
-	
 ]);
