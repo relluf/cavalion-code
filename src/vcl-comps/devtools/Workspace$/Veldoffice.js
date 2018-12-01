@@ -18,12 +18,12 @@ $([], {
 	}
 	
 }, [
-	$(["veldoffice/Session"], { css: "background-color: #f0f0f0; direction: rtl; padding: 8px;" }, [
-		$("vcl-ui/Button", { content: locale("Hide"), index: 1,
-			onClick: function() { 
-				this._parent.hide(); 
-			}
-		})
+	$(["veldoffice/Session"], [
+		// $("vcl-ui/Button", { content: locale("Hide"), index: 1,
+		// 	onClick: function() { 
+		// 		this._parent.hide(); 
+		// 	}
+		// })
 	]),
 	
 	// $(["veldoffice/Collections"], "collections"),
