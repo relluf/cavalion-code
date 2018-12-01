@@ -26,8 +26,8 @@ $([], {
 		})
 	]),
 	
-	$(["veldoffice/Collections"], "collections"),
-	$(["veldoffice/ListOf<Onderzoek>"], "investigations", { visible: false }),
+	// $(["veldoffice/Collections"], "collections"),
+	// $(["veldoffice/ListOf<Onderzoek>"], "investigations", { visible: false }),
 	
 	$i("left-sidebar-tabs", {
 		// onLoad: function() {

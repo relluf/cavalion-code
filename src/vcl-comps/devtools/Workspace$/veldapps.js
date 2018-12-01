@@ -1,4 +1,4 @@
-"veldoffice/Session, veldoffice/EM, stylesheet!home/Workspaces/veldapps.com/V7/src/styles.less, pouchdb";
+"veldoffice/Session, veldoffice/EM, stylesheet!home/Projects/V7/src/styles.less, pouchdb";
 
 var Application = require("vcl/Application");
 var Session = require("veldoffice/Session");
@@ -9,7 +9,7 @@ var app = Application.get();
 var consol3 = app.qs("#console");
 var PouchDB = require("pouchdb");
 
-define("veldoffice/models", ["home/Workspaces/veldapps.com/veldoffice-js/src/veldapps.com/veldoffice/models"], function(models) {
+define("veldoffice/models", ["home/Projects/V7/src/node_modules/veldoffice-js/src/veldapps.com/veldoffice/models"], function(models) {
 	return models;
 });
 
