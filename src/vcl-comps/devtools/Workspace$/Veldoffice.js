@@ -8,7 +8,16 @@ var styles = {
 	"button": "width: auto;"
 };
 
-$([], { css: styles }, [
+$([], { 
+	css: styles,
+	onLoad: function() {
+		var Blocks = require("blocks/Blocks");
+		Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
+		
+		return this.inherited(arguments);
+	}
+	
+}, [
 	$(["veldoffice/Session"], { css: "background-color: #f0f0f0; direction: rtl; padding: 8px;" }, [
 		$("vcl-ui/Button", { content: locale("Hide"), index: 1,
 			onClick: function() { 

@@ -1,10 +1,10 @@
-// var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
-// var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
-// var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
-// var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
-var cavalion_js = "node_modules/cavalion-js/src/";
-var cavalion_vcl = "node_modules/cavalion-vcl/src";
-var cavalion_blocks = "node_modules/cavalion-blocks/src";
+var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
+var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
+//var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
+// var cavalion_js = "node_modules/cavalion-js/src/";
+// var cavalion_vcl = "node_modules/cavalion-vcl/src";
+// var cavalion_blocks = "node_modules/cavalion-blocks/src";
 var veldoffice_js = "node_modules/veldoffice-js/src/";
 
 require.config({
@@ -20,7 +20,6 @@ require.config({
         "cavalion-blocks/$HOME": "/home",
         
         "home": "/home",
-		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
@@ -45,7 +44,8 @@ require.config({
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
-		"vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
+		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
+		// "vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		/*- veldapps.com/leaflet */
 		"proj4": veldoffice_js + "proj4js.org/proj4-src",
 		"epsg": veldoffice_js + "proj4js.org/epsg",

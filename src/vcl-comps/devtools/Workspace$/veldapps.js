@@ -3,7 +3,7 @@
 var Application = require("vcl/Application");
 var Session = require("veldoffice/Session");
 var EM = require("veldoffice/EM");
-var Blocks = require("blocks/Blocks");
+
 
 var app = Application.get();
 var consol3 = app.qs("#console");
@@ -20,9 +20,6 @@ $([], {
 		window.Session = Session;
 		
 		window.v7o_db = new PouchDB("v7-objects");
-
-	/* Blocks: Add namespaces */		
-		Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl/veldoffice";
 
 		consol3.log("veldapps loaded", veldapps);
 		return this.inherited(arguments);
