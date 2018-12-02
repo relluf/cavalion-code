@@ -14,11 +14,13 @@ $([], {
 		var Blocks = require("blocks/Blocks");
 		Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
 		
+		this.down("#session-bar").setIndex(0);
+		
 		return this.inherited(arguments);
 	}
 	
 }, [
-	$(["veldoffice/Session"], [
+	$(["veldoffice/Session"], "session-bar", [
 		// $("vcl-ui/Button", { content: locale("Hide"), index: 1,
 		// 	onClick: function() { 
 		// 		this._parent.hide(); 
