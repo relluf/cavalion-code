@@ -48,7 +48,7 @@ require.config({
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		// "vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		/*- veldapps.com/leaflet */
-		"proj4": veldoffice_js + "proj4js.org/proj4-src",
+		// "proj4": veldoffice_js + "proj4js.org/proj4",
 		"epsg": veldoffice_js + "proj4js.org/epsg",
 		"leaflet": veldoffice_js + "leafletjs.com",
 
@@ -140,6 +140,7 @@ window.req = function req() {
 	    require(modules, resolve, reject);
 	});
 };
+var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
 define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
@@ -440,10 +441,10 @@ define("template7", ["Framework7"], function() {
 });
 
 // define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
-define("proj4", [veldoffice_js + "proj4js.org/proj4-src"], function(P) {
+define("proj4", [veldoffice_js_ + "proj4js.org/proj4-src"], function(P) {
 	return P;
 });
-define("leaflet", ["leaflet/leaflet-default"], function(L) {
+define("leaflet", [veldoffice_js_ + "leafletjs.com/leaflet-default"], function(L) {
 	return L;
 });
 
