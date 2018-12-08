@@ -585,7 +585,7 @@ define(function(require) {
 	require("console/Printer");
 	
 	require("locale!en-US");
-	// require("leaflet"); depends on global js, which might not be loaded yet
+	require("leaflet"); //depends on global js, which might not be loaded yet
 	
 	require("PageVisibility");
 	require("Element");
