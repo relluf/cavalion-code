@@ -102,10 +102,10 @@ $("vcl/ui/Form", {
         });
             
         this.readStorage("uris", function (json) {
-        	console.log("fetched uris", json);
+        	// console.log("fetched uris", json);
 	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
             me.apply("Resources.index");
-            scope.tree.setTimeout("refresh", 0);
+            scope.tree.setTimeout("refresh", 100);
             // scope.tree.dispatch("nodesneeded", null);
         });
         
