@@ -46,60 +46,58 @@ $("vcl/ui/Form", {
         var scope = this.scope();
         var me = this;
         
+        var indexing = 0;
+        var lists = {};
+        var index = {};
+        var uris = [];
+
+        me.setVar("index", index);
+        me.setVar("uris", uris);
+
+        me.setVar("Resources", {
+            index: function () {
+                var run = ++indexing;
+                scope['search-input'].addClass("searching");
+                return Resources.index(uris).
+                    then(function (res) {
+                        if (run === indexing) {
+                            // for (var k in index) {
+                            //     delete index[k];
+                            // }
+                            for (k in lists) {
+                                if (lists[k] instanceof Array) {
+                                    index[k] = lists[k];
+                                }
+                            }
+                            js.mixIn(index, res);
+                            scope.search.execute();
+                        }
+                        scope['search-input'].removeClass("searching");
+                        return res;
+                    }).
+                    catch(function(res) {
+                        scope['search-input'].removeClass("searching");
+                        return res;
+                    });
+            },
+            list: function (uri) {
+                lists[uri] = Resources.list(uri);
+                return lists[uri].
+                    then(function (res) {
+                    	lists[uri] = res;
+                        return (index[uri] = res);
+                    });
+            },
+            refresh: function (uri) {
+                delete lists[uri];
+            }
+        });
+            
         this.readStorage("uris", function (json) {
-
-            var indexing = 0;
-            var lists = {};
-            var index = {};
-            var uris = json ? JSON.parse(json) : [];
-
-            me.setVar("index", index);
-            me.setVar("uris", uris);
-
-            me.setVar("Resources", {
-
-                index: function () {
-                    var run = ++indexing;
-                    scope['search-input'].addClass("searching");
-                    return Resources.index(uris).
-	                    then(function (res) {
-	                        if (run === indexing) {
-	                            // for (var k in index) {
-	                            //     delete index[k];
-	                            // }
-	                            for (k in lists) {
-	                                if (lists[k] instanceof Array) {
-	                                    index[k] = lists[k];
-	                                }
-	                            }
-	                            js.mixIn(index, res);
-	                            scope.search.execute();
-	                        }
-	                        scope['search-input'].removeClass("searching");
-	                        return res;
-	                    }).
-	                    catch(function(res) {
-	                        scope['search-input'].removeClass("searching");
-	                        return res;
-	                    });
-                },
-
-                list: function (uri) {
-                    lists[uri] = Resources.list(uri);
-                    return lists[uri].
-	                    then(function (res) {
-	                    	lists[uri] = res;
-	                        return (index[uri] = res);
-	                    });
-                },
-
-                refresh: function (uri) {
-                    delete lists[uri];
-                }
-            });
-
+	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
             me.apply("Resources.index");
-            scope.tree.dispatch("nodesneeded", null);
+            // scope.tree.setTimeout("refresh", 200);
+            // scope.tree.dispatch("nodesneeded", null);
         });
         
         scope.tree.override({
@@ -534,7 +532,7 @@ $("vcl/ui/Form", {
 	
 	            var uri = parent.getVar("resource.uri") || "";
 	            var control = parent.getVar("control");
-	            var uris = this._owner.getVar("uris").sort(function(i1, i2) {
+	            var uris = (this._owner.getVar("uris")||[]).sort(function(i1, i2) {
 	            	return i1 < i2 ? -1 : 1;
 	            });
 	            

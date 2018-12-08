@@ -1,3 +1,6 @@
+### 2018-12
+- Finally using PouchDB as storage layer
+
 ### 2018-10
 - Introducing devtools/Editor<xsd>
 - Using NPM for the cavalion-js/vcl/blocks libraries

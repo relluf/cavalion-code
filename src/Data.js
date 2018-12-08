@@ -7,7 +7,7 @@ define(function() {
 			
 		}
 		
-	};
+	};	
 	
 	
 });
