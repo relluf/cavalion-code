@@ -443,7 +443,7 @@ define("template7", ["Framework7"], function() {
 define("proj4", [veldoffice_js_ + "proj4js.org/proj4-src"], function(P) {
 	return P;
 });
-define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(L) {
+define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
 
