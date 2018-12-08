@@ -42,6 +42,7 @@ $([], {
     	var owner = this;
     	var uri = this.getVar("resource.uri", true);
     	var act = this.up("devtools/Workspace<>:root").down("#editor-needed");
+    	
     	Resources.list(uri).then(function(res) {
 			res.filter(allowResource).forEach(function(resource, i) {
     			var tab = act.execute({
@@ -64,6 +65,11 @@ $([], {
 		});
 		
 		scope.save._onExecute = null;
+
+    	// Nasty hack ;-)
+		this.up("vcl/ui/Tab").addClass("bold");
+		
+		// BTW do not call inherited, we are not editing a file
     }
 
 }, [
