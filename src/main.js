@@ -11,16 +11,17 @@ var veldoffice_js = "node_modules/veldoffice-js/src/";
 require.config({
     paths: {
 		/*- TODO */
-        "vcl-comps/ws/VO": "/home",
-        "vcl-comps/ws/code": "/home",
-        "vcl-comps/ws/veldapps_com": "/home",
-        "vcl-comps/ws/BBT-1.5.0": "/home",
-        "vcl-comps/ws/BBT-1.5.3": "/home",
-        "vcl-comps/$HOME": "/home",
+        // "vcl-comps/ws/VO": "/home",
+        // "vcl-comps/ws/code": "/home",
+        // "vcl-comps/ws/veldapps_com": "/home",
+        // "vcl-comps/ws/BBT-1.5.0": "/home",
+        // "vcl-comps/ws/BBT-1.5.3": "/home",
+        // "vcl-comps/$HOME": "/home",
         
         "cavalion-blocks/$HOME": "/home",
-        
         "home": "/home",
+        // "v7": "node_modules/veldapps-v7/src/v7",
+        "v7": "/home/Projects/V7/src/v7",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
@@ -39,8 +40,6 @@ require.config({
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
-        
-        "v7": "/home/Projects/V7/src/v7",
 
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
@@ -444,7 +443,7 @@ define("template7", ["Framework7"], function() {
 define("proj4", [veldoffice_js_ + "proj4js.org/proj4-src"], function(P) {
 	return P;
 });
-define("leaflet", [veldoffice_js_ + "leafletjs.com/leaflet-default"], function(L) {
+define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(L) {
 	return L;
 });
 
@@ -527,6 +526,44 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 window.locale_base = "locales/";
 window.loc = "en-US";
 
+define("vcl/Component-pouched", ["vcl/Component", "v7/objects"], function(Component, objects) {
+	var V7 = {objects: objects};
+	js.override(Component.prototype, {
+        readStorage: function (key, callback, errback) {
+        	var args = arguments, me = this;
+            V7.objects.fetch(this.getStorageKey(key)).then(function(obj) {
+            	console.info("fetched", obj);
+            	if(obj && !obj.hasOwnProperty('cavalion.org/vcl:Component.storage')) {
+            		if((obj['cavalion.org/vcl:Component.storage'] = me.inherited(args))) {
+            			console.log(">>> falling back on localStorage", me.getStorageKey(key), obj['cavalion.org/vcl:Component.storage']);
+            		}
+            	}
+            	callback(obj['cavalion.org/vcl:Component.storage']);
+            }).catch(function(e) {
+            	console.error(e);
+            	errback(e);	
+            });
+console.log("readStorage", this, arguments);
+            // return this.inherited(arguments);
+        },
+        writeStorage: function (key, value, callback, errback) {
+			var obj = V7.objects.get(this.getStorageKey(key));
+			obj['cavalion.org/vcl:Component.storage'] = value;
+			V7.objects.save(obj).then(function() {
+			    if (typeof callback === "function") { // nextTick?
+			        callback.apply(this, arguments);
+			    }
+			}).catch(function() {
+			    if (typeof errback === "function") { // nextTick?
+			        errback.apply(this, arguments);
+			    }
+			});
+console.log("writeStorage", this, arguments);
+        	// return this.inherited(arguments);
+        }
+	});
+});
+
 define(function(require) {
 	require("pace");
 
@@ -540,7 +577,7 @@ define(function(require) {
 	require("console/Printer");
 	
 	require("locale!en-US");
-	require("leaflet");
+	// require("leaflet"); depends on global js, which might not be loaded yet
 	
 	require("PageVisibility");
 	require("Element");
@@ -552,6 +589,8 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
+	require("vcl/Component-pouched");
+	
 	window.j$ = JsObject.$;
 	
 	ComponentNode.initialize();
