@@ -124,7 +124,7 @@ $(["ui/Form"], {
     onLoad: function() {
         var scope = this.getScope();
         this.readStorage("state", function(value) {
-            Utils.setState(JSON.parse(value) || {}, scope);
+            Utils.setState(JSON.parse(value) || {workspace:0}, scope);
         });
 
         this.on("state-dirty", function() {

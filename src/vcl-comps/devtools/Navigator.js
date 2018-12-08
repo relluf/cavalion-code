@@ -52,7 +52,7 @@ $("vcl/ui/Form", {
         var uris = [];
 
         me.setVar("index", index);
-        me.setVar("uris", uris);
+        // me.setVar("uris", uris);
 
         me.setVar("Resources", {
             index: function () {
@@ -92,14 +92,7 @@ $("vcl/ui/Form", {
                 delete lists[uri];
             }
         });
-            
-        this.readStorage("uris", function (json) {
-	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
-            me.apply("Resources.index");
-            // scope.tree.setTimeout("refresh", 200);
-            // scope.tree.dispatch("nodesneeded", null);
-        });
-        
+
         scope.tree.override({
         	refresh: function() {
         		this._controls.forEach(function(node) {
@@ -107,6 +100,15 @@ $("vcl/ui/Form", {
         		});
         	}
         });
+            
+        this.readStorage("uris", function (json) {
+        	console.log("fetched uris", json);
+	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
+            me.apply("Resources.index");
+            scope.tree.setTimeout("refresh", 0);
+            // scope.tree.dispatch("nodesneeded", null);
+        });
+        
 
         return this.inherited(arguments);
     }
@@ -513,9 +515,9 @@ $("vcl/ui/Form", {
 			while(node && !node.hasOwnProperty(pname)) {
 				node = node._parent;
 			}
-			if(node === parent) {
-				return;
-			}
+			
+			if(node === parent) return;
+			
 			if(node && node.hasOwnProperty(pname)) {
 				return node.fire(pname.substring(1), [parent]);
 			}
@@ -523,8 +525,7 @@ $("vcl/ui/Form", {
     }, [
     	$("devtools/NavigatorNode", "fs", {
 	   		vars: { resource: { type: "Folder", uri: "", name: "Remote Files" } },
-    		classes: "root-invisible", 
-    		// classes: "root",
+    		classes: "root-invisible", // classes: "root",
     		expanded: true,
 	        onNodesNeeded: function (parent) {
 	            var owner = this._owner;
@@ -532,7 +533,11 @@ $("vcl/ui/Form", {
 	
 	            var uri = parent.getVar("resource.uri") || "";
 	            var control = parent.getVar("control");
-	            var uris = (this._owner.getVar("uris")||[]).sort(function(i1, i2) {
+	            var uris = this._owner.getVar("uris");
+	            
+	            if(!uris) return;
+	            
+	            uris = uris.sort(function(i1, i2) {
 	            	return i1 < i2 ? -1 : 1;
 	            });
 	            

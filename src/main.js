@@ -1,11 +1,11 @@
-// var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
-// var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
-// var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
+var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
+var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
+var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
 // var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
 
-var cavalion_js = "node_modules/cavalion-js/src/";
-var cavalion_vcl = "node_modules/cavalion-vcl/src";
-var cavalion_blocks = "node_modules/cavalion-blocks/src";
+// var cavalion_js = "node_modules/cavalion-js/src/";
+// var cavalion_vcl = "node_modules/cavalion-vcl/src";
+// var cavalion_blocks = "node_modules/cavalion-blocks/src";
 var veldoffice_js = "node_modules/veldoffice-js/src/";
 
 require.config({
@@ -526,40 +526,48 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 window.locale_base = "locales/";
 window.loc = "en-US";
 
-define("vcl/Component-pouched", ["vcl/Component", "v7/objects"], function(Component, objects) {
-	var V7 = {objects: objects};
+define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects"], function(Component, objects) {
+	var V7 = {objects: objects}, property = "cavalion:vcl/Component";
 	js.override(Component.prototype, {
         readStorage: function (key, callback, errback) {
         	var args = arguments, me = this;
-            V7.objects.fetch(this.getStorageKey(key)).then(function(obj) {
-            	console.info("fetched", obj);
-            	if(obj && !obj.hasOwnProperty('cavalion.org/vcl:Component.storage')) {
-            		if((obj['cavalion.org/vcl:Component.storage'] = me.inherited(args))) {
-            			console.log(">>> falling back on localStorage", me.getStorageKey(key), obj['cavalion.org/vcl:Component.storage']);
+            V7.objects.fetch(this.getStorageKey()).then(function(obj) {
+// console.info("fetched", obj);
+            	if(!obj.hasOwnProperty(property)) {
+        			obj[property] = {};
+            	}
+            	if(!obj[property].hasOwnProperty(key)) {
+            		var ls = me.inherited(args);
+            		if(ls) {
+            			obj[property][key] = ls;
+// console.log(">>> copied from localStorage", me.getStorageKey(), key, obj[property][key]);
             		}
             	}
-            	callback(obj['cavalion.org/vcl:Component.storage']);
+            	callback(obj && obj[property] && obj[property][key] || null);
             }).catch(function(e) {
             	console.error(e);
             	errback(e);	
             });
-console.log("readStorage", this, arguments);
-            // return this.inherited(arguments);
+// console.log("readStorage", this, arguments);
         },
         writeStorage: function (key, value, callback, errback) {
-			var obj = V7.objects.get(this.getStorageKey(key));
-			obj['cavalion.org/vcl:Component.storage'] = value;
-			V7.objects.save(obj).then(function() {
-			    if (typeof callback === "function") { // nextTick?
-			        callback.apply(this, arguments);
-			    }
-			}).catch(function() {
-			    if (typeof errback === "function") { // nextTick?
-			        errback.apply(this, arguments);
-			    }
-			});
-console.log("writeStorage", this, arguments);
-        	// return this.inherited(arguments);
+        	var args = arguments, me = this;
+            V7.objects.fetch(this.getStorageKey()).then(function(obj) {
+            	if(!obj.hasOwnProperty(property)) {
+        			obj[property] = {};
+            	}
+				obj[property][key] = value;
+				V7.objects.save(obj).then(function() {
+				    if (typeof callback === "function") { // nextTick?
+				        callback.apply(this, arguments);
+				    }
+				}).catch(function() {
+				    if (typeof errback === "function") { // nextTick?
+				        errback.apply(this, arguments);
+				    }
+				});
+            });
+// console.log("writeStorage", this, arguments);
         }
 	});
 });
@@ -589,7 +597,7 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
-	require("vcl/Component-pouched");
+	require("vcl/Component.read/writeStorage->PouchDB");
 	
 	window.j$ = JsObject.$;
 	
