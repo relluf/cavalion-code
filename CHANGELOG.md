@@ -1,9 +1,11 @@
 ### 2018-12 / 1.0.35
-- Finally using PouchDB as storage layer
-- Finally supporting (viewing) PDF files   
+- Improving Editor<blocks> and Editor<vcl>
+>>![](https://i.snag.gy/jFQ2aT.jpg?1)
 
+- Finally supporting (viewing) PDF files  
 >>![](https://i.snag.gy/7EJca1.jpg)
 
+- Finally using PouchDB as storage layer
 - Bolder folder
 - Blending in Veldoffice/Velddata
 

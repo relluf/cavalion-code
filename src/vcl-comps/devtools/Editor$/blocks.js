@@ -164,7 +164,12 @@ $([], {
 	
     $("vcl/ui/Panel", "host", { action: "toggle-component", align: "client", selected: "never", executesAction: false }, [
     	$("vcl/ui/Element", {
-    		content: "<h3><center>Save or Reload to view the component here</center></h3>",
+    		content: "<h3 style='margin-top:10%;'><center>" + 
+    			"Reload [<small>&#x2318;+R</small>] or Save [<small>&#x2318;+S</small>] to view the component here<br><small>(or just click here at this label to reload)</small><br><br><br>" + 
+    			"</center></h3><ul>" + 
+	    		"<li><small>&#x21E7;&#x2318;+S</small> toggles the Source tab</li>" +
+	    		"<li><small>&#x21E7;&#x2318;+C</small> toggles the Component tab</li>" +
+	    		"<li><small>&#x21E7;&#x2318;+X</small> toggles the Component tab and reloads upon show</li></ul>",
     		onClick: function() {
     			this.scope().refresh.execute();
     		}
