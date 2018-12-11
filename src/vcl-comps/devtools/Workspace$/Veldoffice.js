@@ -4,6 +4,7 @@ var styles = {
 	// 	".{Group} > *": "margin-right:4px;",
 	// 	"input": "padding:4px;border-radius:3px;border:1px solid silver;"
 	// },
+	"#session-bar": "background-color:#f0f0f0;",
 	"#list": "background-color: white;",
 	"button": "width: auto;"
 };
