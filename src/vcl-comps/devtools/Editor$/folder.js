@@ -69,7 +69,7 @@ $([], {
     	// Nasty hack ;-)
 		this.up("vcl/ui/Tab").addClass("bold");
 		
-		// BTW do not call inherited, we are not editing a file
+		// BTW do not call inherited, because we are not editing a file? didn't seem to work with jpg/png.js - better override refresh?
     }
 
 }, [
