@@ -1,5 +1,13 @@
-### 2018-12
+### 2018-12 / 1.0.35
 - Finally using PouchDB as storage layer
+- Finally supporting (viewing) PDF files   
+
+>>![](https://i.snag.gy/7EJca1.jpg)
+
+- Bolder folder
+- Blending in Veldoffice/Velddata
+
+>>![](https://i.snag.gy/2R1ifr.jpg)
 
 ### 2018-10
 - Introducing devtools/Editor<xsd>
