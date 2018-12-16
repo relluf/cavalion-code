@@ -10,14 +10,6 @@ var veldoffice_js = "node_modules/veldoffice-js/src/";
 
 require.config({
     paths: {
-		/*- TODO */
-        // "vcl-comps/ws/VO": "/home",
-        // "vcl-comps/ws/code": "/home",
-        // "vcl-comps/ws/veldapps_com": "/home",
-        // "vcl-comps/ws/BBT-1.5.0": "/home",
-        // "vcl-comps/ws/BBT-1.5.3": "/home",
-        // "vcl-comps/$HOME": "/home",
-        
         "cavalion-blocks/$HOME": "/home",
         "home": "/home",
         // "v7": "node_modules/veldapps-v7/src/v7",

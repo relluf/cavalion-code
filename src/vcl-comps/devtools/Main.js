@@ -1,10 +1,12 @@
-"js/Method, vcl/ui/Ace, vcl/ui/Panel, vcl/ui/Bar, util/HotkeyManager";
+"js/Method, vcl/ui/Ace, vcl/ui/Tab, vcl/ui/Panel, vcl/ui/Bar, vcl/ui/FormContainer, util/HotkeyManager";
 
 var Ace = require("vcl/ui/Ace");
+var Tab = require("vcl/ui/Tab");
 var Method = require("js/Method");
 var HotkeyManager = require("util/HotkeyManager");
 var Url = require("util/net/Url");
 var jQuery = require("jquery");
+var FormContainer = require("vcl/ui/FormContainer");
 
 var DefaultWorkspaces = [{
     name: "⌘1",
@@ -364,6 +366,103 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         }
     }),
     
+    $("vcl/Action", "open_form", {
+        left: 96,
+        onExecute: function onExecute(uri, options) {
+        	/** options: 
+        	 *		- caption
+        	 *		- text
+        	 *		- selected
+        	 *		- closeable/canClose,
+        	 *		- onGetFormParams
+        	 *		- params
+        	 *		- forceLoad
+        	 */
+            var scope = this.scope();
+            var owner = this._owner;
+            var selectedTab = scope['workspaces-tabs'].getSelectedControl(1);
+            var container = new FormContainer(owner);
+            var tab = new Tab(owner);
+            tab.setText(uri);
+
+            if (options.closeable !== false) {
+                tab.addClass("closeable");
+            }
+
+            // container.on("formload", function () {
+            //     var form = this.getForm();
+            //     if (options.updateCaption !== false) {
+            //         form.on("captionchanged", function () {
+            //             var caption = form.getCaption(true);
+            //             if (caption instanceof Array) {
+            //                 tab.setText(caption.join(""));
+            //             } else {
+            //                 tab.setText(String.format("%H", caption));
+            //             }
+            //         });
+            //         var caption = form.getCaption();
+            //         if (caption instanceof Array) {
+            //             caption = caption.join("");
+            //         } else {
+            //             caption = String.format("%H", form.getCaption() || options.caption || form.getName() || form.getUri() || "New Tab");
+            //         }
+            //         tab.setText(caption);
+            //     } else {
+            //         tab.setText(options.caption || form.getCaption() || form.getName() || form.getUri() || "New Tab");
+            //     }
+            // });
+            
+            tab.setText("&nbsp;<img src='/shared/vcl/images/loading.gif' align='absmiddle'>" + (options.text || "&nbsp;"));
+            container.on("formload", function() {
+            	// this.app().log(this.getForm());
+                tab.setText(uri);
+            });
+            
+            tab.setControl(container);
+            tab.setParent(scope['workspaces-tabs']);
+            
+            if (selectedTab !== null) {
+                // tab.setIndex(selectedTab.getIndex() + 1);
+            }
+
+            tab.setSelected(options.selected !== false);
+            tab.setOnCloseClick(function () { container.getForm().close(); });
+            
+            container.setVisible(false);
+            container.setFormUri(uri);
+            container.setAlign("client");
+            container.setParent(scope['@owner']);
+            container.setOnFormLoadError(function () {
+                alert("Could not load form " + container.getFormUri());
+                tab.destroy();
+                container.destroy();
+                form = null;
+                tab = null;
+                container = null;
+                return false;
+            });
+            container.setOnFormClose(function () {
+                this.getForm().destroy();
+                this.destroy();
+                tab.destroy();
+                form = null;
+                tab = null;
+                container = null;
+            });
+            container.setOnGetFormParams(options.onGetFormParams || null);
+            container.setFormParams(options.params || null);
+            container.setVisible(options.selected !== false);
+            
+            if (options.forceLoad !== false) {
+                container.forceLoad();
+            }
+            
+            tab._update();
+            return tab;
+        },
+        top: 232
+    }),
+
     $(["devtools/DragDropHandler"]),
 
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false})

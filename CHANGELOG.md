@@ -1,6 +1,10 @@
-### 2018-12 / 1.0.35
+### 2018-12 / 1.0.36
+- Implemented open_form in Main.js - use open("uri") in the console
+- Creating a first build
 - Improving Editor<blocks> and Editor<vcl>
+
 >>![](https://i.snag.gy/jFQ2aT.jpg?1)
+>>![](https://i.snag.gy/3KrkJY.jpg)
 
 - Finally supporting (viewing) PDF files  
 >>![](https://i.snag.gy/7EJca1.jpg)
