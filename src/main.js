@@ -69,7 +69,6 @@ require.config({
         "amcharts.serial": "bower_components/amcharts3/amcharts/serial",
         "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
 
-        /*- yarn */
         "fast-xml-parser": "fast-xml-parser/parser",
         
         /*- Framework 7 */

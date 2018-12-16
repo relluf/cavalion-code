@@ -22,8 +22,5 @@
   "bugs": {
     "url": "https://github.com/relluf/cavalion-code/issues"
   },
-  "homepage": "https://github.com/relluf/cavalion-code#readme",
-  "dependencies": {
-    "cavalion-vcl": "^1.0.10"
-  }
+  "homepage": "https://github.com/relluf/cavalion-code#readme"
 }

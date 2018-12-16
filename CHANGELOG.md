@@ -1,7 +1,8 @@
-### 2018-12 / 1.0.36
+### 2018-12 / 1.0.38
 - Implemented open_form in Main.js - use open("uri") in the console
-- Creating a first build
+- Creating a first build and second (optimized) build
 - Improving Editor<blocks> and Editor<vcl>
+- Introducing tools/make/Build
 
 >>![](https://i.snag.gy/jFQ2aT.jpg?1)
 >>![](https://i.snag.gy/3KrkJY.jpg)
