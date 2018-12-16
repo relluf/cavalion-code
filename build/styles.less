@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+  //color: red;
+}
+.bold { font-weight: bold; }
+.vcl-ui-Bar {
+	padding-top: 8px;
+    &:not(.bottom):not(.no-border) {
+        // border-bottom: 1px solid rgba(99, 99, 99, 0.1);
+    }
+    input[name=search], input[name=search-input], input.search {
+    	width: 100%;
+        border: 1px solid silver;
+        border-radius: 3px;
+        padding: 4px;
+        &.searching {
+            background: url(/shared/vcl/images/loading.gif) no-repeat 2px 2px;
+            background-position: right 4px top 5px;
+        }
+        &.value {
+            background-color: yellow;
+        }
+    }
+}
+.vcl-ui-Tabs { padding-top:3px; }
