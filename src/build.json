@@ -14,6 +14,7 @@
 		"entities": "node_modules/cavalion-js/src/entities",
 		"features": "node_modules/cavalion-js/src/features",
 		"js": "node_modules/cavalion-js/src/js",
+		"on": "node_modules/cavalion-js/src/on",
         "util": "node_modules/cavalion-js/src/util",
 		"vcl": "node_modules/cavalion-vcl/src",
 		

@@ -28,6 +28,7 @@ require.config({
         "entities": cavalion_js + "entities",
         "features": cavalion_js + "features",
         "js": cavalion_js + "js",
+        "on": cavalion_js + "on",
         "json": cavalion_js + "json",
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
