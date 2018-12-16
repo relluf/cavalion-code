@@ -20,23 +20,24 @@ $("vcl/ui/Form", {
 	activeControl: "search-input",
     onDispatchChildEvent: function (component, name, evt, f, args) {
         if (name.indexOf("key") === 0) {
-            var scope = this.getScope();
-            if (name.indexOf("key") === 0) {
-                if (component === scope['search-input']) {
-                    if ([13, 27, 33, 34, 38, 40].indexOf(evt.keyCode) !== -1) {
-                        var list = scope['search-list'];
-                        if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
-                            list.setSelection([0]);
-                        } else if(evt.keyCode === 27) {
-			                scope['search-input'].setValue("");
-			                scope['search-input'].fire("onChange", [true]); // FIXME
-                        }
-
-                        if (list.isVisible()) {
-                            list.dispatch(name, evt);
-                        }
-                        evt.preventDefault();
+            var scope = this.scope();
+            this.app().qs("vcl/ui/Console#console").print(name, {f: arguments.callee, args: arguments});
+            if(component !== scope.tree && !scope.tree.isParentOf(component) && name === "keyup" && evt.keyCode === evt.KEY_F5) {
+            	scope.tree.refresh();
+            } else if (component === scope['search-input']) {
+                if ([13, 27, 33, 34, 38, 40].indexOf(evt.keyCode) !== -1) {
+                    var list = scope['search-list'];
+                    if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
+                        list.setSelection([0]);
+                    } else if(evt.keyCode === 27) {
+		                scope['search-input'].setValue("");
+		                scope['search-input'].fire("onChange", [true]); // FIXME
                     }
+
+                    if (list.isVisible()) {
+                        list.dispatch(name, evt);
+                    }
+                    evt.preventDefault();
                 }
             }
         }
