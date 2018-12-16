@@ -971,6 +971,8 @@ define('stylesheet',[],function() {
     
 });
 
+
+
 define('js/mixIn',[],function() {
 
 	/**
@@ -15237,7 +15239,8 @@ define('blocks/Blocks',['require','stylesheet!./blocks.less'],function(require) 
 		DEFAULT_NAMESPACES: {
 			"vcl": "vcl",
 			"vcl-ui": "vcl/ui",
-			"vcl-data": "vcl/data"
+			"vcl-data": "vcl/data",
+			"vcl-veldoffice": "vcl/veldoffice"
 		},
 		
 		//db: new PouchDB("cavalion-blocks"),
@@ -17253,6 +17256,10 @@ define('vcl/Component.query',['vcl/Component','vcl/Component','vcl/Component'],f
     	Component = Component || require("vcl/Component");
     	var classes = Component.getKeysByUri(component._uri).classes;
         return rule.classNames.every(function(className) {
+        	if(className.indexOf("classes-") === 0) {
+        		return (component._classes||[]).indexOf(
+        				className.substring("classes-".length)) !== -1;
+        	}
         	return classes.indexOf(className) !== -1;
         });            
     }
@@ -18889,7 +18896,6 @@ define('blocks/Factory.parse',['require','js/Deferred','blocks/Blocks','vcl/Comp
 	
 	return impl;
 });
-
 define('vcl/Factory.parse',['require','js/Deferred','vcl/Component','vcl/Factory','vcl/Factory'],function(require) {
 	
 	var Deferred = require("js/Deferred");
@@ -43362,7 +43368,8 @@ exports.setSchema = function (schema) {
     parseDocID: parseDocID,
     makeDocID: makeDocID,
     parseRelDocs: parseRelDocs,
-    isDeleted: isDeleted
+    isDeleted: isDeleted,
+    uuid: uuid
   };
 };
 
@@ -43467,7 +43474,7 @@ exports.Promise = Promise;
 exports.extend = require('pouchdb-extend');
 
 }).call(this,require('_process'))
-},{"_process":10,"inherits":6,"pouchdb-extend":8,"pouchdb-promise":9}],4:[function(require,module,exports){
+},{"_process":10,"inherits":6,"pouchdb-extend":7,"pouchdb-promise":8}],4:[function(require,module,exports){
 "use strict";
 
 // BEGIN Math.uuid.js
@@ -43652,6 +43659,199 @@ if (typeof Object.create === 'function') {
 }
 
 },{}],7:[function(require,module,exports){
+"use strict";
+
+// Extends method
+// (taken from http://code.jquery.com/jquery-1.9.0.js)
+// Populate the class2type map
+var class2type = {};
+
+var types = [
+  "Boolean", "Number", "String", "Function", "Array",
+  "Date", "RegExp", "Object", "Error"
+];
+for (var i = 0; i < types.length; i++) {
+  var typename = types[i];
+  class2type["[object " + typename + "]"] = typename.toLowerCase();
+}
+
+var core_toString = class2type.toString;
+var core_hasOwn = class2type.hasOwnProperty;
+
+function type(obj) {
+  if (obj === null) {
+    return String(obj);
+  }
+  return typeof obj === "object" || typeof obj === "function" ?
+    class2type[core_toString.call(obj)] || "object" :
+    typeof obj;
+}
+
+function isWindow(obj) {
+  return obj !== null && obj === obj.window;
+}
+
+function isPlainObject(obj) {
+  // Must be an Object.
+  // Because of IE, we also have to check the presence of
+  // the constructor property.
+  // Make sure that DOM nodes and window objects don't pass through, as well
+  if (!obj || type(obj) !== "object" || obj.nodeType || isWindow(obj)) {
+    return false;
+  }
+
+  try {
+    // Not own constructor property must be Object
+    if (obj.constructor &&
+      !core_hasOwn.call(obj, "constructor") &&
+      !core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
+      return false;
+    }
+  } catch ( e ) {
+    // IE8,9 Will throw exceptions on certain host objects #9897
+    return false;
+  }
+
+  // Own properties are enumerated firstly, so to speed up,
+  // if last one is own, then all properties are own.
+  var key;
+  for (key in obj) {}
+
+  return key === undefined || core_hasOwn.call(obj, key);
+}
+
+
+function isFunction(obj) {
+  return type(obj) === "function";
+}
+
+var isArray = Array.isArray || function (obj) {
+  return type(obj) === "array";
+};
+
+function extend() {
+  // originally extend() was recursive, but this ended up giving us
+  // "call stack exceeded", so it's been unrolled to use a literal stack
+  // (see https://github.com/pouchdb/pouchdb/issues/2543)
+  var stack = [];
+  var i = -1;
+  var len = arguments.length;
+  var args = new Array(len);
+  while (++i < len) {
+    args[i] = arguments[i];
+  }
+  var container = {};
+  stack.push({args: args, result: {container: container, key: 'key'}});
+  var next;
+  while ((next = stack.pop())) {
+    extendInner(stack, next.args, next.result);
+  }
+  return container.key;
+}
+
+function extendInner(stack, args, result) {
+  var options, name, src, copy, copyIsArray, clone,
+    target = args[0] || {},
+    i = 1,
+    length = args.length,
+    deep = false,
+    numericStringRegex = /\d+/,
+    optionsIsArray;
+
+  // Handle a deep copy situation
+  if (typeof target === "boolean") {
+    deep = target;
+    target = args[1] || {};
+    // skip the boolean and the target
+    i = 2;
+  }
+
+  // Handle case when target is a string or something (possible in deep copy)
+  if (typeof target !== "object" && !isFunction(target)) {
+    target = {};
+  }
+
+  // extend jQuery itself if only one argument is passed
+  if (length === i) {
+    /* jshint validthis: true */
+    target = this;
+    --i;
+  }
+
+  for (; i < length; i++) {
+    // Only deal with non-null/undefined values
+    if ((options = args[i]) != null) {
+      optionsIsArray = isArray(options);
+      // Extend the base object
+      for (name in options) {
+        //if (options.hasOwnProperty(name)) {
+        if (!(name in Object.prototype)) {
+          if (optionsIsArray && !numericStringRegex.test(name)) {
+            continue;
+          }
+
+          src = target[name];
+          copy = options[name];
+
+          // Prevent never-ending loop
+          if (target === copy) {
+            continue;
+          }
+
+          // Recurse if we're merging plain objects or arrays
+          if (deep && copy && (isPlainObject(copy) ||
+              (copyIsArray = isArray(copy)))) {
+            if (copyIsArray) {
+              copyIsArray = false;
+              clone = src && isArray(src) ? src : [];
+
+            } else {
+              clone = src && isPlainObject(src) ? src : {};
+            }
+
+            // Never move original objects, clone them
+            stack.push({
+              args: [deep, clone, copy],
+              result: {
+                container: target,
+                key: name
+              }
+            });
+
+          // Don't bring in undefined values
+          } else if (copy !== undefined) {
+            if (!(isArray(options) && isFunction(copy))) {
+              target[name] = copy;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // "Return" the modified object by setting the key
+  // on the given container
+  result.container[result.key] = target;
+}
+
+
+module.exports = extend;
+
+
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var lie = _interopDefault(require('lie'));
+
+/* istanbul ignore next */
+var PouchPromise = typeof Promise === 'function' ? Promise : lie;
+
+module.exports = PouchPromise;
+
+},{"lie":9}],9:[function(require,module,exports){
 'use strict';
 var immediate = require('immediate');
 
@@ -43906,200 +44106,7 @@ function race(iterable) {
   }
 }
 
-},{"immediate":5}],8:[function(require,module,exports){
-"use strict";
-
-// Extends method
-// (taken from http://code.jquery.com/jquery-1.9.0.js)
-// Populate the class2type map
-var class2type = {};
-
-var types = [
-  "Boolean", "Number", "String", "Function", "Array",
-  "Date", "RegExp", "Object", "Error"
-];
-for (var i = 0; i < types.length; i++) {
-  var typename = types[i];
-  class2type["[object " + typename + "]"] = typename.toLowerCase();
-}
-
-var core_toString = class2type.toString;
-var core_hasOwn = class2type.hasOwnProperty;
-
-function type(obj) {
-  if (obj === null) {
-    return String(obj);
-  }
-  return typeof obj === "object" || typeof obj === "function" ?
-    class2type[core_toString.call(obj)] || "object" :
-    typeof obj;
-}
-
-function isWindow(obj) {
-  return obj !== null && obj === obj.window;
-}
-
-function isPlainObject(obj) {
-  // Must be an Object.
-  // Because of IE, we also have to check the presence of
-  // the constructor property.
-  // Make sure that DOM nodes and window objects don't pass through, as well
-  if (!obj || type(obj) !== "object" || obj.nodeType || isWindow(obj)) {
-    return false;
-  }
-
-  try {
-    // Not own constructor property must be Object
-    if (obj.constructor &&
-      !core_hasOwn.call(obj, "constructor") &&
-      !core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
-      return false;
-    }
-  } catch ( e ) {
-    // IE8,9 Will throw exceptions on certain host objects #9897
-    return false;
-  }
-
-  // Own properties are enumerated firstly, so to speed up,
-  // if last one is own, then all properties are own.
-  var key;
-  for (key in obj) {}
-
-  return key === undefined || core_hasOwn.call(obj, key);
-}
-
-
-function isFunction(obj) {
-  return type(obj) === "function";
-}
-
-var isArray = Array.isArray || function (obj) {
-  return type(obj) === "array";
-};
-
-function extend() {
-  // originally extend() was recursive, but this ended up giving us
-  // "call stack exceeded", so it's been unrolled to use a literal stack
-  // (see https://github.com/pouchdb/pouchdb/issues/2543)
-  var stack = [];
-  var i = -1;
-  var len = arguments.length;
-  var args = new Array(len);
-  while (++i < len) {
-    args[i] = arguments[i];
-  }
-  var container = {};
-  stack.push({args: args, result: {container: container, key: 'key'}});
-  var next;
-  while ((next = stack.pop())) {
-    extendInner(stack, next.args, next.result);
-  }
-  return container.key;
-}
-
-function extendInner(stack, args, result) {
-  var options, name, src, copy, copyIsArray, clone,
-    target = args[0] || {},
-    i = 1,
-    length = args.length,
-    deep = false,
-    numericStringRegex = /\d+/,
-    optionsIsArray;
-
-  // Handle a deep copy situation
-  if (typeof target === "boolean") {
-    deep = target;
-    target = args[1] || {};
-    // skip the boolean and the target
-    i = 2;
-  }
-
-  // Handle case when target is a string or something (possible in deep copy)
-  if (typeof target !== "object" && !isFunction(target)) {
-    target = {};
-  }
-
-  // extend jQuery itself if only one argument is passed
-  if (length === i) {
-    /* jshint validthis: true */
-    target = this;
-    --i;
-  }
-
-  for (; i < length; i++) {
-    // Only deal with non-null/undefined values
-    if ((options = args[i]) != null) {
-      optionsIsArray = isArray(options);
-      // Extend the base object
-      for (name in options) {
-        //if (options.hasOwnProperty(name)) {
-        if (!(name in Object.prototype)) {
-          if (optionsIsArray && !numericStringRegex.test(name)) {
-            continue;
-          }
-
-          src = target[name];
-          copy = options[name];
-
-          // Prevent never-ending loop
-          if (target === copy) {
-            continue;
-          }
-
-          // Recurse if we're merging plain objects or arrays
-          if (deep && copy && (isPlainObject(copy) ||
-              (copyIsArray = isArray(copy)))) {
-            if (copyIsArray) {
-              copyIsArray = false;
-              clone = src && isArray(src) ? src : [];
-
-            } else {
-              clone = src && isPlainObject(src) ? src : {};
-            }
-
-            // Never move original objects, clone them
-            stack.push({
-              args: [deep, clone, copy],
-              result: {
-                container: target,
-                key: name
-              }
-            });
-
-          // Don't bring in undefined values
-          } else if (copy !== undefined) {
-            if (!(isArray(options) && isFunction(copy))) {
-              target[name] = copy;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // "Return" the modified object by setting the key
-  // on the given container
-  result.container[result.key] = target;
-}
-
-
-module.exports = extend;
-
-
-
-},{}],9:[function(require,module,exports){
-'use strict';
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var lie = _interopDefault(require('lie'));
-
-/* istanbul ignore next */
-var PouchPromise = typeof Promise === 'function' ? Promise : lie;
-
-module.exports = PouchPromise;
-
-},{"lie":7}],10:[function(require,module,exports){
+},{"immediate":5}],10:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -65896,8 +65903,10 @@ define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects
 	});
 });
 
-define('main',['require','pace','js','less','blocks-js','font-awesome','console/Printer','locale!en-US','leaflet','PageVisibility','Element','console/node/vcl/Component','vcl/Component','vcl/Factory','util/net/Url','js/JsObject','override','vcl/Component.read/writeStorage->PouchDB'],function(require) {
+define('main',['require','pace','stylesheet!styles.less','js','less','blocks-js','font-awesome','console/Printer','locale!en-US','leaflet','PageVisibility','Element','console/node/vcl/Component','vcl/Component','vcl/Factory','util/net/Url','js/JsObject','override','vcl/Component.read/writeStorage->PouchDB'],function(require) {
 	require("pace");
+	
+	require("stylesheet!styles.less");
 
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
@@ -80387,23 +80396,22 @@ define('leaflet/leaflet-default',["module","proj4","./bower_components/leaflet/d
 	// "stylesheet!./bower_components/PruneCluster/dist/LeafletStyleSheet.css",
 	"stylesheet!./bower_components/leaflet.zoomhome/dist/leaflet.zoomhome.css"
 ], function(module, proj4, leaflet, wicket) { 
-	// var path = js.normalize(module.uri, "./bower_components/");
 	var path = "../../" + js.normalize(module.uri, "./bower_components/");
 	// var css = "stylesheet!" + path;
-	define("leaflet/plugins/proj4", [path + "Proj4Leaflet/src/proj4leaflet"], defined);
+	define("leaflet/plugins/proj4", [path + "Proj4Leaflet/src/proj4leaflet.js"], defined);
 	// define("leaflet/plugins/bouncemarker", [path + "leaflet.bouncemarker/bouncemarker.js", defined]);
 	define("leaflet/plugins/bouncemarker", ["leaflet/bouncemarker", defined]);
-	define("leaflet/plugins/locate", [path + "leaflet.locatecontrol/dist/L.Control.Locate.min"], defined);
-	define("leaflet/plugins/awesome-markers", [path + "Leaflet.awesome-markers/dist/leaflet.awesome-markers"], function() {
+	define("leaflet/plugins/locate", [path + "leaflet.locatecontrol/dist/L.Control.Locate.min.js"], defined);
+	define("leaflet/plugins/awesome-markers", [path + "Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"], function() {
 	    L.AwesomeMarkers.Icon.prototype.options.prefix = "fa";
 	    return arguments[0];
 	});
-	define("leaflet/plugins/markercluster", [path + "leaflet.markercluster/dist/leaflet.markercluster-src"], defined);
-	define("leaflet/plugins/history", [path + "leaflet-history/dist/leaflet-history-src"], defined);	
-	// define("leaflet/plugins/prunecluster", [path + "PruneCluster/dist/PruneCluster"], defined);	
-	define("leaflet/plugins/search", [path + "leaflet-search/dist/leaflet-search.src"], defined);
-	define("leaflet/plugins/home", [path + "leaflet.zoomhome/dist/leaflet.zoomhome"], defined);
-	define("leaflet/plugins/freedraw", [path + "leaflet-freedraw/dist/leaflet-freedraw.web"], function(FreeDraw) { 
+	define("leaflet/plugins/markercluster", [path + "leaflet.markercluster/dist/leaflet.markercluster-src.js"], defined);
+	define("leaflet/plugins/history", [path + "leaflet-history/dist/leaflet-history-src.js"], defined);	
+	// define("leaflet/plugins/prunecluster", [path + "PruneCluster/dist/PruneCluster.js"], defined);	
+	define("leaflet/plugins/search", [path + "leaflet-search/dist/leaflet-search.src.js"], defined);
+	define("leaflet/plugins/home", [path + "leaflet.zoomhome/dist/leaflet.zoomhome.js"], defined);
+	define("leaflet/plugins/freedraw", [path + "leaflet-freedraw/dist/leaflet-freedraw.web.js"], function(FreeDraw) { 
 		return FreeDraw; });
 	
 	/*- Extra primitives */
@@ -85520,7 +85528,11 @@ define('vcl/ui/Node',['require','js/defineClass','js/referenceClass!./Tree','js/
 					var props = obj[k][0], Class = props['@class'] || "vcl/ui/Node";
 					var kids = arguments.callee($, config, obj[k][1]);
 					
-					js.mixIn(props, config.defaults || {});
+					for(var cdk in config.defaults) {
+						if(!props.hasOwnProperty(cdk)) {
+							props[cdk] = config.defaults[cdk];
+						}
+					}
 
 					if(typeof props.vars === "string") {
 						props.vars = js.str2obj(props.vars);
@@ -86520,7 +86532,7 @@ define('vcl/ui/Tree',['require','js/defineClass','./Node','./Panel','js/Type','.
                     ">.close": {
                     	position: "absolute",
                     	right: "4px",
-                    	"padding-top": "3px",
+                    	"padding-top": "2px",
                     	cursor: "pointer",
                     	display: "none"
                     },
@@ -98119,6 +98131,4 @@ define('vcl/ui/CheckGroup',['require','js/defineClass','js/Type','./Group','../E
 
 });
 
-	require(['main']);
-	
-}());
+require(['main']);}());

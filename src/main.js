@@ -566,6 +566,8 @@ define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects
 
 define(function(require) {
 	require("pace");
+	
+	require("stylesheet!styles.less");
 
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
