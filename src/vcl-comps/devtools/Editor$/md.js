@@ -10,7 +10,7 @@ function render() {
     	_.update(function() {
 		    on(this._node.qsa("img"), "load", function(img) {
 		    	img = this;
-		    	console.log(img.naturalWidth, img);
+		    	// console.log(img.naturalWidth, img);
 		    	if(img.src.indexOf("?2x") !== -1) {
 		    		img.style.width = img.naturalWidth / 2 + "px";
 		    	}

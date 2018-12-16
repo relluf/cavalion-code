@@ -21,7 +21,7 @@ $("vcl/ui/Form", {
     onDispatchChildEvent: function (component, name, evt, f, args) {
         if (name.indexOf("key") === 0) {
             var scope = this.scope();
-            this.app().qs("vcl/ui/Console#console").print(name, {f: arguments.callee, args: arguments});
+            // this.app().qs("vcl/ui/Console#console").print(name, {f: arguments.callee, args: arguments});
             if(component !== scope.tree && !scope.tree.isParentOf(component) && name === "keyup" && evt.keyCode === evt.KEY_F5) {
             	scope.tree.refresh();
             } else if (component === scope['search-input']) {
