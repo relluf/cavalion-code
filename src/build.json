@@ -27,14 +27,14 @@
 		"leaflet": "node_modules/veldoffice-js/src/leafletjs.com"
 	}, 
     "name": "main",
-    "out": "../build/lib.js",
+    "out": "lib.js",
     "optimize": "uglify",
     "uglify": {
         "beatify": true
     },
     "wrap": {
         "start": "(function() {",
-        "end": "require(['app'], function() { require(['main']); })}());"
+        "end": "require(['main']);}());"
     },
     "include": [
     	"js/nameOf","js/_js","js/JsObject","js/Enum","console/node/OnlyKey","js/global","js/minify","js/beautify","js/serialize","leaflet/leaflet-default","stylesheet","leaflet/wicket","leaflet/bower_components/Wicket/wicket","proj4","leaflet/bower_components/leaflet/dist/leaflet-src","text","vcl/ui/Node","vcl/ui/Tree","vcl/ui/Group","vcl/ui/Panel","jquery","vcl/ui/Container","vcl/ui/Element","data/SourceEvent","vcl/Control","util/Stylesheet","util/DocumentHook","vcl/EventDispatcher","vcl/Action","vcl/CssRules","vcl/ControlUpdater","vcl/Dragger","util/Ajax","util/HotkeyManager","util/Keyboard","util/Fullscreen","vcl/ui/FormContainer","vcl/Application","vcl/ui/Form","util/Command","vcl/ui/Sizer","entities/EM","entities/ExpressionBuilder","util/Rest","features/FM","entities/Instance","data/Source","data/SourceState","vcl/ui/Button","vcl/ui/Console","vcl/ui/Console.evaluate","veldoffice/Session","util/net/Url","locale","vcl/ui/Tab","vcl/ui/Tabs","vcl/ui/Bar","vcl/ui/Select","veldoffice/EM-v1","vcl/ui/LargeIcon","vcl/ui/Node.closeable","leaflet/CoordinatesControl","veldoffice/Meetpunt/leaflet/Marker","veldoffice/util/Leaflet","veldoffice/util/Date","features/GeoUtils","node_modules/veldoffice-js/src/leafletjs.com/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js","veldoffice/Meetpunt/type/icons","node_modules/veldoffice-js/src/leafletjs.com/bower_components/Proj4Leaflet/src/proj4leaflet.js","leaflet/layers/28992","epsg/28992","node_modules/veldoffice-js/src/leafletjs.com/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js","leaflet/LayerFactory","vcl/ui/Input","vcl/data/Array","vcl/ui/List","vcl/ui/ListColumn","vcl/ui/ListHeader","vcl/ui/ListFooter","vcl/ui/ListBody","vcl/ui/ListRow","vcl/ui/Checkbox","vcl/ui/CheckGroup"] 
