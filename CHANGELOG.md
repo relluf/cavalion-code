@@ -1,13 +1,16 @@
 ### 2018-12 / 1.0.38
-- Implemented open_form in Main.js - use open("uri") in the console
+- F5 refreshes the navigator when search is focused (finally)
+- Implemented open_form in Main.js - use `open('<uri>')` in the console (open\_form must refactor to page somehow)
+- Introducing `tools/make/Build`, not sure whether it's the way go though
 - Creating a first build and second (optimized) build
-- Improving Editor<blocks> and Editor<vcl>
-- Introducing tools/make/Build
+- Improving `Editor<blocks>` and `Editor<vcl>`
+- Adding to ability to instruct `Editor<md>` about highresulution (@2x) images
 
 >>![](https://i.snag.gy/jFQ2aT.jpg?1)
 >>![](https://i.snag.gy/3KrkJY.jpg)
 
 - Finally supporting (viewing) PDF files  
+
 >>![](https://i.snag.gy/7EJca1.jpg)
 
 - Finally using PouchDB as storage layer
