@@ -80,6 +80,8 @@ var handlers = {
         var console_scope = this.app().scope().console.scope();
         console_scope.toolbar.setVisible(false);
         console_scope.size_handle.setParent(scope['workspaces-tabs']);
+        
+        this.app().qs("vcl/ui/Console#console").print("loaded", this);
 
         return this.inherited(arguments);
     },
@@ -220,7 +222,7 @@ var handlers = {
 
 // FIXME Move
 function replaceChars(uri) {
-	return uri;
+	return uri.replace(/\-/g, ".").replace(/\//g, ".");
     // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
     // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
 }
@@ -248,7 +250,6 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
                     String.format("devtools/Workspace<%s>",
 	                	replaceChars(evt.workspace.name || ""));
             }
-
             evt.params = evt.workspace;
 
             var tab = this.inherited(arguments);
