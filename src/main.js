@@ -71,6 +71,8 @@ require.config({
         "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
 
         "fast-xml-parser": "fast-xml-parser/parser",
+
+		"dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph"
         
         /*- Framework 7 */
     },

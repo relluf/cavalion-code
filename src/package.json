@@ -7,6 +7,7 @@
     "cavalion-blocks": "^0.8.7",
     "cavalion-js": "^1.0.15",
     "cavalion-vcl": "^1.0.20",
+    "dygraphs": "^2.1.0",
     "ol": "^5.2.0",
     "veldapps-v7": "^1.0.1",
     "veldoffice-js": "^1.0.22"
