@@ -34,7 +34,16 @@ $([], {
         
         if((index = uri.indexOf("cavalion-blocks")) !== -1) {
         	//uri.splice(0, index + 1);
+        	
+	    	if(uri.length > 1 && uri[uri.length - 1].endsWith("<>")) {
+	    		var specializer = uri.pop(), p = uri.join("/");
+	    		uri = String.format("$HOME/%s<%s>", p.substring(p.length - 2), n);
+	    	}
+        	
         	uri = uri.join("/");
+        	if((index = uri.indexOf("<>/")) !== -1) {
+        		uri = uri.substring(0, index + 1) + uri.substring(index + 3) + ">";
+        	}
         	if(uri.indexOf("$/") !== -1) {
         		uri = uri.split("$");
         		uri = uri[0] + ("<" + uri.pop().substring(1) + ">");

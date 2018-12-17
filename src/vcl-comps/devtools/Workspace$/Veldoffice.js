@@ -41,7 +41,7 @@ $([], {
 		// }
 	}),
 	$i(["left-sidebar"], [
-		$(["veldoffice/Navigator"], "vo-navigator")
+		// $(["veldoffice/Navigator"], "vo-navigator")
 	])
 	
 ]);

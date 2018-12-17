@@ -1,4 +1,5 @@
-### 2018-12 / 1.0.39
+### 2018-12 / 1.0.40
+- Fixing issues with loading cavalion-blocks inline
 - Adding dygraphs
 - F5 refreshes the navigator when search is focused (finally)
 - Implemented open_form in Main.js - use `open('<uri>')` in the console (open\_form must refactor to page somehow)

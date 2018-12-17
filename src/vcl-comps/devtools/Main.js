@@ -172,6 +172,10 @@ var handlers = {
 		HotkeyManager.register("Shift+Meta+48", { type: "keydown",  callback: toggleSidebar });
 		HotkeyManager.register("Shift+Meta+E", { type: "keydown",  callback: toggleSidebar });
 
+		HotkeyManager.register("Shift+Ctrl+Z", { type: "keydown",  callback: function() {
+			me.updateChildren(true, true);
+		} });
+		
 		/* Workspaces and Sidebar */
 		for(var i = 1; i <= 9; ++i) {
 			var hotkey = String.format("Meta+%d", i + 48);
