@@ -6,16 +6,16 @@ function render() {
 	var root = markdown.toHTMLTree(this.getValue());
 	this.up().vars("root", markdown.toHTMLTree(this.getValue()));//[].concat(root));
     this.up().qsa("#output").forEach(_ => {
-    	_.setContent(markdown.renderJsonML(root));
     	_.update(function() {
 		    on(this._node.qsa("img"), "load", function(img) {
 		    	img = this;
-		    	// console.log(img.naturalWidth, img);
+		    	console.log(img.naturalWidth, img);
 		    	if(img.src.indexOf("?2x") !== -1) {
 		    		img.style.width = img.naturalWidth / 2 + "px";
 		    	}
 		    });
     	}.bind(_));
+    	_.setContent(markdown.renderJsonML(root));
     });
     
 }        	
