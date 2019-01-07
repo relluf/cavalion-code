@@ -81,7 +81,7 @@ var handlers = {
         console_scope.toolbar.setVisible(false);
         console_scope.size_handle.setParent(scope['workspaces-tabs']);
         
-        this.app().qs("vcl/ui/Console#console").print("loaded", this);
+        this.app().qs("vcl/ui/Console#console").print("devtools/Main", this);
 
         return this.inherited(arguments);
     },
