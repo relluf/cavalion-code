@@ -15,6 +15,21 @@ define(["./prototype"], function(proto) { return {
 	"Yes":								".",
 	"No":								".",
 	
+	"Filters":							".",
+	"Open":								".",
+	"New":								".",
+	"Delete":							".",
+	"Remove":							".",
+	"Archive":							".",
+	"Export":							".",
+	"Search":							".",
+	"Refresh":							".",
+	"Options":							".",
+	
+	"*-naam.label":						"Naam",
+	"*-projectcode.label":				"Projectcode",
+	"*-opmerking.label":				"Opmerking",
+	
 	"*.hint":							"Hint",
 	
 	"Navigator":						".",
