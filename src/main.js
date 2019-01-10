@@ -1,12 +1,8 @@
-var cavalion_js = localStorage['cavalion-js-path'] || "/home/Projects/cavalion-js/src/";
-var cavalion_vcl = localStorage['cavalion-vcl-path'] || "/home/Projects/cavalion-vcl/src";
-var cavalion_blocks = localStorage['cavalion-blocks-path'] || "/home/Projects/cavalion-blocks/src";
-var veldoffice_js = localStorage['veldoffice-js-path'] || "/home/Projects/veldoffice-js/src/";
-
-// var cavalion_js = "node_modules/cavalion-js/src/";
-// var cavalion_vcl = "node_modules/cavalion-vcl/src";
-// var cavalion_blocks = "node_modules/cavalion-blocks/src";
-// var veldoffice_js = "node_modules/veldoffice-js/src/";
+function ls() { var r = localStorge[k]; if(r) { console.log(k, r); return r; }
+var cavalion_js = ls('cavalion-js-path') || "node_modules/cavalion-js/src/";
+var cavalion_vcl = ls('cavalion-vcl-path') || "node_modules/cavalion-vcl/src";
+var cavalion_blocks = ls('cavalion-blocks-path') || "node_modules/cavalion-blocks/src";
+var veldoffice_js = ls('veldoffice-js-path') || "node_modules/veldoffice-js/src/";
 
 require.config({
     paths: {
