@@ -12,7 +12,7 @@ $([], {
 	css: {
 		"[id$=-editors-tabs]": "border-top-color: transparent;"
 	},
-	onDispatchChildEvent: function(component, name, evt, f, args) {
+	_onDispatchChildEvent: function(component, name, evt, f, args) {
 		if(name !== "keyup") {
 			return;
 		}

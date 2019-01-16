@@ -92,7 +92,7 @@ var styles = {
 	"#posts onFilterObject": function(obj) {
 		var q = this.scope().search.getInputValue();
 		if(q === "") return false;
-		return JSON.stringify(obj.nodes).toLowerCase().indexOf(q.toLowerCase()) === -1; 
+		return JSON.stringify(obj).toLowerCase().indexOf(q.toLowerCase()) === -1; 
 	},
 	"#search onChange": function() {
 		var posts = this.scope().posts;

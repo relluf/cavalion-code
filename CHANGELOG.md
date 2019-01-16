@@ -1,4 +1,8 @@
-### 2018-12 / 1.0.40
+### 2018-12 / 1.0.43
+- Navigating `devtools/Workspace<>:root #editors-tabs`
+- Centralizing/staticfying123368 keyboards shortcuts
+
+### 2018-12 / 1.0.42
 - Fixing issues with loading cavalion-blocks inline
 - Adding dygraphs
 - F5 refreshes the navigator when search is focused (finally)
@@ -7,6 +11,8 @@
 - Creating a first build and second (optimized) build
 - Improving `Editor<blocks>` and `Editor<vcl>`
 - Adding to ability to instruct `Editor<md>` about highresulution (@2x) images
+- Facilitating switch to load certain modules (cavalion\_js, cavalion\_vcl, cavalion\_blocks, veldoffice\_js) from the default node\_modules or soome other path set in localStorage 
+- Improved searching Editor<md>/PostParser
 
 >>![](https://i.snag.gy/jFQ2aT.jpg?1)
 >>![](https://i.snag.gy/3KrkJY.jpg)

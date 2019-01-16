@@ -23,7 +23,7 @@ var styles = {
     ".{./Panel}#editors": {
         "background-color": "silver"
     },
-    "#editors-tabs:focus": "transition: background-color 0.5s ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);"
+    "#editors-tabs:focus": "transition: background-color ease-in 0.02s; background-color: rgba(244, 253, 255, 0.94);"
 };
 var handlers = {
     onLoad: function () {
@@ -90,10 +90,16 @@ var handlers = {
 			"Ctrl+Alt+F1": "editor-move-to-front",
 			"Ctrl+N": "editor-new", 
 			"Alt+Ctrl+N": "editor-new",
-			"Ctrl+Tab": "editor-next", 
+			
+			"Shift+Ctrl+187": "editors-previous",
+			"Shift+Ctrl+222": "editors-next",
 			"Shift+Ctrl+221": "editor-next", 
-			"Shift+Ctrl+Tab": "editor-previous", 
 			"Shift+Ctrl+219": "editor-previous", 
+			
+			"Ctrl+Tab": "editor-next", 
+			"Shift+Ctrl+Tab": "editor-previous", 
+			
+			
 			"Shift+Ctrl+Meta+219": "editor-move-left",
 			"Shift+Ctrl+Meta+221": "editor-move-right",
 			"Ctrl+W": "editor-close",
@@ -105,7 +111,7 @@ var handlers = {
 		function create_callback(hotkey, action) {
 			return function(evt, type) {
 				evt.preventDefault();
-				me.qsa("devtools/Workspace<>:root[selected=true] #" + action)
+				me.qsa("devtools/Workspace<>:root:selected:visible #" + action)
 					.execute(evt);
 			};
 		}
@@ -171,7 +177,6 @@ var handlers = {
 		/*- Sidebar Shift+Cmd+E */
 		HotkeyManager.register("Shift+Meta+48", { type: "keydown",  callback: toggleSidebar });
 		HotkeyManager.register("Shift+Meta+E", { type: "keydown",  callback: toggleSidebar });
-
 		HotkeyManager.register("Shift+Ctrl+Z", { type: "keydown",  callback: function() {
 			me.updateChildren(true, true);
 		} });
@@ -213,7 +218,6 @@ var handlers = {
     	// FIXME deactivate hotkeys
     }
 };
-
 
 (function makeSureStylesLessOverridesLibs(styles) {
 	

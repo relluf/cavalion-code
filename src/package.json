@@ -4,16 +4,16 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "cavalion-blocks": "^0.8.7",
-    "cavalion-js": "^1.0.15",
-    "cavalion-vcl": "^1.0.20",
+    "cavalion-blocks": "^0.8.9",
+    "cavalion-js": "^1.0.16",
+    "cavalion-vcl": "^1.0.24",
     "dygraphs": "^2.1.0",
     "ol": "^5.2.0",
     "veldapps-v7": "^1.0.1",
-    "veldoffice-js": "^1.0.22"
+    "veldoffice-js": "^1.0.26"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.10.3"
+    "parcel-bundler": "^1.11.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

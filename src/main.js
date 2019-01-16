@@ -1,4 +1,4 @@
-function ls() { var r = localStorge[k]; if(r) { console.log(k, r); return r; }
+function ls(k) { var r = localStorage[k]; if(r) { console.log(k, r); return r; } }
 var cavalion_js = ls('cavalion-js-path') || "node_modules/cavalion-js/src/";
 var cavalion_vcl = ls('cavalion-vcl-path') || "node_modules/cavalion-vcl/src";
 var cavalion_blocks = ls('cavalion-blocks-path') || "node_modules/cavalion-blocks/src";

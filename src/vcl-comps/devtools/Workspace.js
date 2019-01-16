@@ -172,6 +172,36 @@ $(["ui/Form"], {
             return tab;
         }
     }),
+    $("vcl/Action#editors-next", {
+    	onExecute: function() {
+			var tabs = this.up().qsa("#editors-tabs:visible");
+			var focused = this.up().vars("editors-tabs:focused");
+			if(focused && !focused.isFocused()) {
+				return focused.setFocus();
+			}
+			if(tabs.length) {
+				var index = tabs.indexOf(focused) + 1;
+				if(index >= tabs.length) index = 0;
+				focused = this.up().vars("editors-tabs:focused", tabs[index]);
+				focused.setFocus();
+			}
+    	}
+    }),
+    $("vcl/Action#editors-previous", {
+    	onExecute: function() {
+			var tabs = this.up().qsa("#editors-tabs:visible");
+			var focused = this.up().vars("editors-tabs:focused");
+			if(focused && !focused.isFocused()) {
+				return focused.setFocus();
+			}
+			if(tabs.length) {
+				var index = tabs.indexOf(focused) - 1;
+				if(index < 0) index = tabs.length - 1;
+				focused = this.up().vars("editors-tabs:focused", tabs[index]);
+				focused.setFocus();
+			}
+    	}
+    }),
     $("vcl/Action#editor-new", {
         onExecute: function(evt) {
             this.scope("editor-factory")
@@ -222,14 +252,14 @@ $(["ui/Form"], {
     }),
     $("vcl/Action#editor-next", {
         onExecute: function() {
-            var scope = this.getScope();
-            scope['editors-tabs'].selectNext();
+			var tabs = this.up().vars("editors-tabs:focused") || this.scope()["editors-tabs"];
+			tabs.selectNext();
         }
     }),
     $("vcl/Action#editor-previous", {
         onExecute: function() {
-            var scope = this.getScope();
-            scope['editors-tabs'].selectPrevious();
+			var tabs = this.up().vars("editors-tabs:focused") || this.scope()["editors-tabs"];
+			tabs.selectPrevious();
         }
     }),
     $("vcl/Action#editor-close", {
