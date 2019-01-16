@@ -1,4 +1,4 @@
-"entities/EM";
+"entities/EM, blocks/Blocks";
 
 var EM = require("entities/EM");
 var prefix = "/bbt-1.5.3/";
