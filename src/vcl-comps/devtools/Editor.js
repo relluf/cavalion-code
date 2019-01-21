@@ -18,6 +18,7 @@ $(["ui/Form"], {
             "scss": "scss",
             "json": "json",
             "js": "javascript",
+            "blocks": "javascript",
             "vcl": "javascript",
             "ts": "typescript",
             "md": "markdown",
