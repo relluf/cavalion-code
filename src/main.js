@@ -4,6 +4,8 @@ var cavalion_vcl = ls('cavalion-vcl-path') || "node_modules/cavalion-vcl/src";
 var cavalion_blocks = ls('cavalion-blocks-path') || "node_modules/cavalion-blocks/src";
 var veldoffice_js = ls('veldoffice-js-path') || "node_modules/veldoffice-js/src/";
 
+less = { logLevel: 0 };
+
 require.config({
     paths: {
         "cavalion-blocks/$HOME": "/home",
