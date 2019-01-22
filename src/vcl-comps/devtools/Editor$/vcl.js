@@ -175,6 +175,7 @@ $([], {
 	
     $("vcl/ui/Panel", "host", {
         action: "toggle-component", align: "client", selected: "never", executesAction: false,
+        classes: "animated",
         css: { 
             "background-color": "#f0f0f0", 
             "border-left": "1px solid silver",

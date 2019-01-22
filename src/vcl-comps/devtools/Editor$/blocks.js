@@ -171,7 +171,7 @@ $([], {
     	$("vcl/ui/Tab", { action: "toggle-component", text: locale("Component"), control: "host", groupIndex: -3, visible: "always" })
 	]),
 	
-    $("vcl/ui/Panel", "host", { action: "toggle-component", align: "client", selected: "never", executesAction: false }, [
+    $("vcl/ui/Panel", "host", { action: "toggle-component", align: "client", selected: "never", executesAction: false, classes: "animated" }, [
     	$("vcl/ui/Element", {
     		content: "<h3 style='margin-top:10%;'><center>" + 
     			"Reload <small>&#x2318;+R</small> or Save <small>&#x2318;+S</small> to view the component here<br><small>(or just click here to Reload)</small><br><br><br>" + 
