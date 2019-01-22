@@ -23,7 +23,7 @@ var styles = {
     ".{./Panel}#editors": {
         "background-color": "silver"
     },
-    "#editors-tabs:focus": "transition: background-color ease-in 0.02s; background-color: rgba(244, 253, 255, 0.94);"
+    "#editors-tabs:focus": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);"
 };
 var handlers = {
     onLoad: function () {
@@ -91,8 +91,9 @@ var handlers = {
 			"Ctrl+N": "editor-new", 
 			"Alt+Ctrl+N": "editor-new",
 			
-			"Shift+Ctrl+187": "editors-previous",
-			"Shift+Ctrl+222": "editors-next",
+			"Shift+Ctrl+187": "editors-next",
+			"Shift+Ctrl+189": "editors-previous",
+			// "Shift+Ctrl+222": "editors-next",
 			"Shift+Ctrl+221": "editor-next", 
 			"Shift+Ctrl+219": "editor-previous", 
 			
@@ -171,6 +172,7 @@ var handlers = {
 				q.hide();
 			} else {
 				q.show();
+				me.app().scope("client").updateChildren(true, true);
 			}
 		}
 		

@@ -26,6 +26,7 @@
 - **Cmd+Shift+W**" - Toggle Wrapping
 - **Ctrl+Shift+[]** - Select previous/next editor
 - **Ctrl+Shift+Cmd+[]** - Move tab active editor
+- **Ctrl+Shift+='** - Select previous/next (editors-)tabs
 
 #### Editor<vcl>
 - **Shift+Cmd+X** - Toggle Component
