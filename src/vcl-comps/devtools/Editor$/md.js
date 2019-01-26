@@ -7,11 +7,17 @@ function render() {
 	this.up().vars("root", markdown.toHTMLTree(this.getValue()));//[].concat(root));
     this.up().qsa("#output").forEach(_ => {
     	_.update(function() {
-		    on(this._node.qsa("img"), "load", function(img) {
-		    	img = this;
-		    	console.log(img.naturalWidth, img);
+		    on(this._node.qsa("img"), "load", function(img, r) {
+		    	img = this; r = window.devicePixelRatio || 1;
 		    	if(img.src.indexOf("?2x") !== -1) {
-		    		img.style.width = img.naturalWidth / 2 + "px";
+	    			img.style.width = img.naturalWidth / r + "px";
+		    	}
+		    });
+		    this._node.qsa("img").forEach(function(img) {
+		    	var r = window.devicePixelRatio > 1 ? 2 : 2;
+		    	if(img.naturalWidth && img.src.indexOf("?2x") !== -1) {
+			    	console.log(">>>", img.naturalWidth, img);
+		    		img.style.width = img.naturalWidth / r + "px";
 		    	}
 		    });
     	}.bind(_));
@@ -22,10 +28,14 @@ function render() {
 
 var Handlers = {
 	"#output onDblClick": function(evt) {
-    	if(evt.target.nodeName === "IMG" && evt.shiftKey === true) {
-    		var img = evt.target; 
-    		img.style.maxWidth = img.style.maxWidth ? "" : img.naturalWidth / 2 + "px";
-    		this.app().qs("#console #console").print(evt.target.src);
+    	if(evt.metaKey === true) {
+		    this._node.qsa("img").forEach(function(img) {
+		    	var r = window.devicePixelRatio > 1 ? 2 : 2;
+		    	if(img.naturalWidth && img.src.indexOf("?2x") !== -1) {
+		    		console.log(">>>", img.naturalWidth, img);
+		    		img.style.width = img.naturalWidth / r + "px";
+		    	}
+		    });
     	}
 	}
 };
