@@ -535,6 +535,10 @@ define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects
 // console.log(">>> copied from localStorage", me.getStorageKey(), key, obj[property][key]);
             		}
             	}
+            	if(typeof(obj && obj[property] && obj[property][key]) === "object") {
+            		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
+            		obj[property][key] = JSON.stringify(obj[property][key]);
+            	}
             	callback(obj && obj[property] && obj[property][key] || null);
             }).catch(function(e) {
             	console.error(e);
@@ -547,6 +551,9 @@ define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects
             V7.objects.fetch(this.getStorageKey()).then(function(obj) {
             	if(!obj.hasOwnProperty(property)) {
         			obj[property] = {};
+            	}
+            	if(typeof value === "string") {
+            		try { value = JSON.parse(value); } catch(e) {}
             	}
 				obj[property][key] = value;
 				V7.objects.save(obj).then(function() {
@@ -562,6 +569,15 @@ define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects
 // console.log("writeStorage", this, arguments);
         }
 	});
+});
+define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], function(Component) {
+	Component.prototype.e = function() {
+		if(typeof this.constructor.prototype.execute === "function") {
+			if(typeof this.execute === "function") {
+				return this.execute.apply(this, arguments);
+			}
+		}
+	};
 });
 
 define(function(require) {
