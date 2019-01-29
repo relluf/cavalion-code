@@ -1,6 +1,11 @@
+### 2019-01
+- Tweaking PouchDB usage for read/writeStorage, data is now considered to be JSON object (valid strings are parsed and thus instantiated automatically)
+- Started working on a PouchDB viewer/editor (ide/pouchdb/AllDocs)
+- Finally fixed the images vs. devicePixelRatio issue in `Editor<md>`
+
 ### 2018-12 / 1.0.43
 - Navigating `devtools/Workspace<>:root #editors-tabs`
-- Centralizing/staticfying123368 keyboards shortcuts
+- Centralizing/staticfying keyboards shortcuts
 
 ### 2018-12 / 1.0.42
 - Fixing issues with loading cavalion-blocks inline
@@ -32,10 +37,7 @@
 - Using NPM for the cavalion-js/vcl/blocks libraries
 - Added `window.req`
 
-### 2018-05-23
-- Cleaning up cavalion-blocks (Git maintainance)
-- Adding devtools/Editor<var/log> (for Apache2 access_logs)
-
+ 
 >> ![](https://i.snag.gy/E8pPKz.jpg)
 
 ### 2018-05-21
