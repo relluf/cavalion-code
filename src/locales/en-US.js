@@ -28,6 +28,7 @@ define(["./prototype"], function(proto) { return {
 	
 	"*-naam.label":						"Naam",
 	"*-projectcode.label":				"Projectcode",
+	// "*-projectcode.label":				"Projectcode",
 	"*-opmerking.label":				"Opmerking",
 	
 	"*.hint":							"Hint",

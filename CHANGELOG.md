@@ -1,3 +1,11 @@
+### 2019-02 / 1.0.45
+- Developing devtools/Editor<xsd>, gathering type info like attributes and relationships in order to auto-generate code templates for importing and exporting
+
+### 2019-01 / 1.0.44
+- Got rid of annoying logging (Less)
+- Enhancing devtools/Editor<blocks/vcl/svg>
+- Enhancing keyboard navigating nested editor tabs
+
 ### 2018-12 / 1.0.43
 - Navigating `devtools/Workspace<>:root #editors-tabs`
 - Centralizing/staticfying123368 keyboards shortcuts
