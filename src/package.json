@@ -10,7 +10,7 @@
     "dygraphs": "^2.1.0",
     "ol": "^5.2.0",
     "veldapps-v7": "^1.0.1",
-    "veldoffice-js": "^1.0.26"
+    "veldoffice-js": "^1.0.28"
   },
   "devDependencies": {
     "parcel-bundler": "^1.11.0"
