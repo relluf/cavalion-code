@@ -1,5 +1,8 @@
+### 2019-02-06 / 1.0.46
+- Advancing `devtoolls/Editor<xsd>`, loading all relevant XSD files in the workspace
+
 ### 2019-02 / 1.0.45
-- Developing devtools/Editor<xsd>, gathering type info like attributes and relationships in order to auto-generate code templates for importing and exporting
+- Developing `devtools/Editor<xsd>`, gathering type info like attributes and relationships in order to auto-generate code templates for importing and exporting
 
 ### 2019-01 / 1.0.44
 - Got rid of annoying logging (Less)
