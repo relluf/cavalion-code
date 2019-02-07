@@ -55,10 +55,8 @@ $([], { css: styles }, [
     	align: "left", width: 600, action: "toggle-source",
     	executesAction: "none",
         onChange: function() {
-			function render() {
-				this.scope().render.execute({});
-            }        	
-            this.setTimeout("render", render.bind(this), 500);
+        	var scope = this.scope();
+            scope.render.setTimeout("execute", 500);
         }
     }),
 ]);
