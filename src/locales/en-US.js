@@ -33,8 +33,8 @@ define(["./prototype"], function(proto) { return {
 	
 	"*.hint":							"Hint",
 	
-	"Navigator":						".",
-	"Open Tabs":						"Recent",
+	"Navigator":						"All Files",
+	"Open Tabs":						"Open Files",
 	"Console":							"Console",
 	"Outline":							"Outline",
 
