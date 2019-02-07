@@ -74,7 +74,7 @@ var sf = String.format;
 		}			
 
 		if((base = type['@_base'])) {
-			if((base = this.elems_map[base])) {
+			if((base = this.ctypes_map[base])) {
 				type["__base-resolved"] = base;
 				this.parseComplexType(base, elem, type['@_base']);
 			} else {
