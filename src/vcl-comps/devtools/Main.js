@@ -104,6 +104,7 @@ var handlers = {
 			"Shift+Ctrl+Meta+219": "editor-move-left",
 			"Shift+Ctrl+Meta+221": "editor-move-right",
 			"Ctrl+W": "editor-close",
+			"Shift+Ctrl+W": "editors-close-all",
 			// "MetaCtrl+48": "editor-focus-in-navigator",
 			"Escape": "editor-setfocus"
 		};
