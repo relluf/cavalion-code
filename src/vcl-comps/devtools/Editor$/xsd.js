@@ -34,14 +34,24 @@ var sf = String.format;
 		
 		// create debug info and optionally add attribute
 		function f(ctx, key, value, add_attr) {
+			var type;
 			function g(ctx, key, value) {
 				var obj = elem[PARSED_KEY][ctx] || (elem[PARSED_KEY][ctx] = {});
 				return (obj[key] = value);
 			}
+
 			if(add_attr !== false) {
 				g("attributes", value['@_name'] || key, value);
+				if((type = value['@_type'])) {
+					if((type = me.ctypes_map[type])) {
+						value['__type-resolved'] = type;
+					} else {
+						// me.log(elem, String.format("@_type %s not found", value['@_type']));
+					}
+				}
 			}
 			
+			g("__attributes", sf("%s/%s", prefix, value['@_name'] || key), value);
 			return g("__" + ctx, value['@_name'] || key, value);
 		}
 		
@@ -171,11 +181,18 @@ $(["devtools/Editor<xml>"], {
 			
 			function filter(object) {
 				var values = me.getInputValue().toLowerCase().trim().split(" ");
-				return !values.some(function(value) {
+				var or = values.some(function(value) {
 					return Object.keys(object).some(function(key) {
 						return (""+object[key]).toLowerCase().indexOf(value) !== -1;
 					});
 				});
+				var and = values.every(function(value) {
+					return Object.keys(object).some(function(key) {
+						return (""+object[key]).toLowerCase().indexOf(value) !== -1;
+					});
+				});
+				
+				return !and;
 			}
 			
 			this.setTimeout("change", function() {
@@ -300,19 +317,19 @@ $(["devtools/Editor<xml>"], {
 					parser.log(elem, "simpleType");
 				}
 				
-				if(elem[PARSED_KEY].attributes) {
-					Object.keys(elem[PARSED_KEY].attributes).forEach(function(key, i) {
-						var type = elem[PARSED_KEY].attributes[key];
+				if(elem[PARSED_KEY].__attributes) {
+					Object.keys(elem[PARSED_KEY].__attributes).forEach(function(key, i) {
+						var type = elem[PARSED_KEY].__attributes[key];
 						parser.attrs.push({ 
 							namespace: key.split(":")[0],
 							element: elem['@_name'],
 							name: key.split("/").pop(),
 							index: i,
 							type: key.split("/")[0].split(":").pop(),
+							documentation: js.get("annotation.documentation", type) || "",
 							'__elem': elem,
 							'__type': type,
-							'__name': key,
-							'__documentation': js.get("annotation.documentation", type) || ""
+							'__name': key
 						});
 					});
 				}
@@ -323,6 +340,7 @@ $(["devtools/Editor<xml>"], {
 			scope.stypes.setArray(parser.stypes);
 			scope.ctypes.setArray(parser.ctypes);
 			scope.elems.setArray(parser.elems);
+			scope.groups.setArray(parser.groups);
 			scope.attrs.setArray(parser.attrs);
 
 	// Sort columns			
@@ -333,6 +351,9 @@ $(["devtools/Editor<xml>"], {
 				col.setIndex(sorted.indexOf(col));
 			});
 			
+			var schemas_map = workspace.vars(["devtools/Editor<xsd>/schemas_map", false, {}]);
+			schemas_map[resource.uri] = schema;
+			parser.schemas_map = schemas_map;
 	// Report and emit
 			scope.console.print("vars", parser);
 			this.up("vcl/ui/Tab").emit("resource-rendered", [this]);
@@ -343,6 +364,7 @@ $(["devtools/Editor<xml>"], {
 	
 	$("vcl/data/Array", "imps"),
 	$("vcl/data/Array", "attrs"),
+	$("vcl/data/Array", "groups"),
 	$("vcl/data/Array", "elems"),
 	$("vcl/data/Array", "ctypes"),
 	$("vcl/data/Array", "stypes"),
@@ -356,6 +378,7 @@ $(["devtools/Editor<xml>"], {
 	    	$("vcl/ui/Tab", { text: locale("-/Attribute.plural"), control: "attributes"}),
 	    	$("vcl/ui/Tab", { text: locale("-/Element.plural"), control: "elements" }),
 	    	$("vcl/ui/Tab", { text: locale("-/ComplexType.plural"), control: "complexTypes" }),
+	    	$("vcl/ui/Tab", { text: locale("-/Groups.plural"), control: "groupsl" }),
 	    	$("vcl/ui/Tab", { text: locale("-/SimpleType.plural"), control: "simpleTypes" })
 	    ]),
 	    $i("console", { visible: false }),
@@ -363,6 +386,7 @@ $(["devtools/Editor<xml>"], {
 	    $("vcl/ui/List", "attributes", { autoColumns: true, source: "attrs", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "elements", { autoColumns: true, source: "elems", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "complexTypes", { autoColumns: true, source: "ctypes", visible: false, onDblClick: onDblClick }),
+	    $("vcl/ui/List", "groupsl", { autoColumns: true, source: "groups", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "simpleTypes", { autoColumns: true, source: "stypes", visible: false, onDblClick: onDblClick })
     ])
 
