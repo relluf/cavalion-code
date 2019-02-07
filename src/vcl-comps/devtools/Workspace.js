@@ -55,7 +55,7 @@ var Utils = {
                         scrollLeft: ed.session.getScrollLeft()
                     };
                 } else {
-                    r = tab.getVar(".state");
+                    r = tab.getVar(".state") || {};
                 }
                 r.selected = tab && tab.getSelected();
                 return r;
@@ -200,6 +200,18 @@ $(["ui/Form"], {
 				focused = this.up().vars("editors-tabs:focused", tabs[index]);
 				focused.setFocus();
 			}
+    	}
+    }),
+    $("vcl/Action", "editors-close-all", {
+    	onExecute: function() {
+    		var scope = this.scope();
+            var selected = scope['editors-tabs'].getSelectedControl(1);
+    		scope['editors-tabs']._controls.filter(_ => _ !== selected).forEach(function(tab) {
+    			tab._control.destroy();	
+    			tab._control = null;
+    			tab.destroy();
+    			// tab.update(function() { tab.destroy(); });
+    		});
     	}
     }),
     $("vcl/Action", "editor-new", {

@@ -4,23 +4,21 @@ $("vcl/ui/Form", {
 	activeControl: "search-input",
     onDispatchChildEvent: function (component, name, evt, f, args) {
         if (name.indexOf("key") === 0) {
-            var scope = this.getScope();
-            if (name.indexOf("key") === 0) {
-                if (component === scope['search-input']) {
-                    if ([13, 27, 33, 34, 38, 40].indexOf(evt.keyCode) !== -1) {
-                        var list = scope.list;
-                        if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
-                            list.setSelection([0]);
-                        } else if(evt.keyCode === 27) {
-			                scope['search-input'].setValue("");
-			                scope['search-input'].fire("onChange", [true]); // FIXME
-                        }
-
-                        if (list.isVisible()) {
-                            list.dispatch(name, evt);
-                        }
-                        evt.preventDefault();
+            var scope = this.scope();
+            if (component === scope['search-input']) {
+                if ([13, 27, 33, 34, 38, 40, 116].indexOf(evt.keyCode) !== -1) {
+                    var list = scope.list;
+                    if(evt.keyCode === 116) {
+                    	this._onActivate.apply(this, [this._parent]);
+                    } else if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
+                        list.setSelection([0]);
+                    } else if(evt.keyCode === 27) {
+		                scope['search-input'].setValue("");
+		                scope['search-input'].fire("onChange", [true]); // FIXME
+                    } else if (list.isVisible()) {
+                        list.dispatch(name, evt);
                     }
+                    evt.preventDefault();
                 }
             }
         }
@@ -113,7 +111,7 @@ $("vcl/ui/Form", {
     }),
     $("vcl/ui/Bar#search-bar", { classes: "no-border" }, [
         $("vcl/ui/Input#search-input", {
-            placeholder: "Search Recently Opened (⌥+F)",
+            placeholder: "Filter (⌥+F)",
             onDblClick: function() {
                 this.setInputValue("");
             },

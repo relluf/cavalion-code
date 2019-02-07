@@ -227,7 +227,7 @@ $("vcl/ui/Form", {
     $("vcl/Action", "resource-delete", {}),
     $("vcl/ui/Bar", "search-bar", { classes: "no-border" }, [
         $("vcl/ui/Input", "search-input", {
-            placeholder: "Search Workspace Resources (⌥+F)",
+            placeholder: "Filter (⌥+F)",
             classes: "search-top",
             onDblClick: function() {
 //                this.fire("onChange", [false]);
