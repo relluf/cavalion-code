@@ -1,4 +1,4 @@
-### 2019-02-06 / 1.0.47
+### 2019-02-06 / 1.0.48
 - Advancing `devtoolls/Editor<xsd>`, loading all relevant XSD files in the workspace
 
 ### 2019-02 / 1.0.45
