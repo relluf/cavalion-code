@@ -1,4 +1,35 @@
 define(function() { return {
+
+// devtools/Editor<xsd>
+	"-/Attribute": {
+		"":								".",
+		".plural":						"Attributes"
+	},
+	"-/ComplexType": {
+		"":								".",
+		".plural":						"Complex Types"
+	},
+	"-/SimpleType": {
+		"":								".",
+		".plural":						"Simple Types"
+	},
+	"-/Element": {
+		"":								".",
+		".plural":						"Elements"
+	},
+	"-/Group": {
+		"":								".",
+		".plural":						"Groups"
+	},
+	"-/AttributeGroup": {
+		"":								".",
+		".plural":						"Attribute Groups"
+	},
+	"-/Import": {
+		"":								".",
+		".plural":						"Imports"
+	},
+
 	"Model": {
 		"":								".",
 		".plural":						"Models",
