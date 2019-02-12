@@ -307,6 +307,8 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		} else {
         		tab.setSelected(true);
     		}
+    		
+    		return tab;
         }
     }),
     $("vcl/Action", "workspace-activate", {

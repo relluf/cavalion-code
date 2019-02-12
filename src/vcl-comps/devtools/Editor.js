@@ -72,7 +72,7 @@ $(["ui/Form"], {
         });
 
         scope.refresh.execute();
-
+        
         return this.inherited(arguments);
     }
 }, [
