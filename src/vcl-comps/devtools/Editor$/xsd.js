@@ -1,9 +1,8 @@
-// "use strict";
+// "use strict"; var locale = window.locale, $ = window.$, $i = window.$i, js = window.js;
 
 var XSD_NS = "http://www.w3.org/2001/XMLSchema";
-var PARSED_KEY = "__";
+var at__ = "@__";
 var sf = String.format;
-// var locale = window.locale, $ = window.$, $i = window.$i, js = window.js;
 
 	function asArray(arr) {
 		if(arr === null || arr === undefined) return [];
@@ -13,11 +12,10 @@ var sf = String.format;
 	function onDblClick() { 
 		// var console = this.scope().console; 
 		var console = this.up("devtools/Workspace<>").down("vcl/ui/Console#console");
-		this.getSelection(true).map(_ => console.print(_['__name'] || _['@_name'], _));
+		this.getSelection(true).map(_ => console.print(_.__name || _['@_name'], _));
 		// this.scope().tabs.getControl(0).setSelected(true);
 		
 	}
-	
 	function resolveUri(uri, me) {
 		if(uri.indexOf("http://schemas.opengis.net/") === 0) {
 			uri = "Library/opengis.net/" + uri.substring("http://schemas.opengis.net/".length);
@@ -28,126 +26,23 @@ var sf = String.format;
 		}
 		return uri;
 	}
-	function parseComplexType(type, elem, prefix) {
-		var arr, name, ref, ext, base, path, subst;
-		var me = this;
-		
-		// create debug info and optionally add attribute
-		function f(ctx, key, value, add_attr) {
-			var type;
-			function g(ctx, key, value) {
-				var obj = elem[PARSED_KEY][ctx] || (elem[PARSED_KEY][ctx] = {});
-				return (obj[key] = value);
-			}
-
-			if(add_attr !== false) {
-				g("attributes", value['@_name'] || key, value);
-				if((type = value['@_type'])) {
-					if((type = me.ctypes_map[type])) {
-						value['__type-resolved'] = type;
-					} else {
-						// me.log(elem, String.format("@_type %s not found", value['@_type']));
-					}
-				}
-			}
-			
-			g("__attributes", sf("%s/%s", prefix, value['@_name'] || key), value);
-			return g("__" + ctx, value['@_name'] || key, value);
-		}
-		
-		function parseElement(el, i) {
-			var type; /* hide outer type !!! */
-			if((name = el["@_name"])) {
-				f(path + "@_name", String.format("%s/%s", (prefix||"?"), name), el);
-				if(el.complexType) {
-					f(path + "complexType", String.format("%s", ref), el);
-				}
-			} else if((ref = el["@_ref"])) {
-				if((ref = me.elems_map[ref])) {
-					el["__ref-resolved"] = ref;
-					me.parseComplexType(ref, elem, el['@_ref']);
-					f(path + "@_ref", String.format("%s", el['@_ref']), el);
-				} else {
-					me.log(elem, String.format("@_ref %s not found", el['@_ref']));
-				}
-			} else if((type = el["@_type"])) {
-				if((type = me.ctypes_map[type])) {
-					el["__type-resolved"] = type;
-					me.parseComplexType(type, elem, el['@_type']);
-					f(path + "@_type", String.format("%s", el['@_type']), el);
-				} else {
-					me.log(elem, String.format("@_type %s not found", el['@_type']));
-				}
-			} else {
-				me.log(elem,"parseElement - need implementation", el);
-			}
-		}			
-
-		if((base = type['@_base'])) {
-			if((base = this.ctypes_map[base])) {
-				type["__base-resolved"] = base;
-				this.parseComplexType(base, elem, type['@_base']);
-			} else {
-				this.log(elem, String.format("@_base %s not found", type['@_base']));
-			}
-		}
-		if((ref = type['@_ref'])) {
-			if((ref = this.elems_map[ref])) {
-				type["__ref-resolved"] = ref;
-				this.parseComplexType(ref, elem, type['@_ref']);
-			} else {
-				this.log(elem, String.format("@_ref %s not found", type['@_ref']));
-			}
-		}
-		if((subst = type['@_substitutionGroup'])) {
-			if((subst = this.elems_map[subst])) {
-				type['@_substitutionGroup-resolved'] = subst;
-				// this.parseComplexType(subst, elem, type['@_substitutionGroup']);
-			} else {
-				this.log(elem, String.format("@_substitutionGroup %s not found", type['@_substitutionGroup']));
-			}
-		}
-		if((ext = js.get("complexContent.extension", type))) {
-			this.parseComplexType(ext, elem, prefix);
-		}
-		if((arr = asArray(js.get("attribute", type))).length) {
-			arr.forEach(function(attr, i) {
-				if((name = attr["@_name"])) {
-					f("attribute/@_name", String.format("%s/%s", (prefix||"?"), name), attr);
-				} else if((ref = attr["@_ref"]))	 {
-					// attr["__ref-resolved-a"] = ref;
-					f("attribute/@_ref", String.format("%s", ref), attr);
-				} else {
-					me.log(elem, "attribute?", el);
-				}
-			});
-		}
-		if((arr = asArray(js.get("sequence.element", type))).length) {
-			path = "sequence.element/";
-			arr.forEach(parseElement);
-		}
-		if((arr = asArray(js.get("sequence.sequence.element", type))).length) {
-			path = "sequence.sequence.element/";
-			arr.forEach(parseElement);
-		}
-		if((arr = asArray(js.get("sequence.group", type))).length) {
-			arr.forEach(function(group, i) {
-				if((name = group["@_name"])) {
-					f("sequence.group/@_name", String.format("%s/%s", (prefix||"?"), name), group);
-					// this.log(elem, String.format(""))
-				} else if((ref = group['@_ref'])) {
-					f("sequence.group/@_ref", String.format("%s", ref), group, false);
-					if((ref = me.groups_map[ref])) {
-						group["__ref-resolved"] = ref;
-						me.parseComplexType(ref, elem, group['@_ref']);
-					} else {
-						me.log(elem, [String.format("@_ref %s not found", group['@_ref']), group]);
-					}
-				}
-				
+	function parserNeeded(workspace, uri, callback, once) {
+		var tab = workspace.qs("#editor-needed").execute({
+			dontBringToFront: true,
+			resource: { uri: uri }});
+		var parser = tab.qs(":root");
+		if(parser && (parser = parser.vars("parser"))) {
+			callback(parser);
+		} else {
+			// callback everytime or just once (which is default)
+			tab[!once ? "on" : "once"]("resource-rendered", function() {
+				parserNeeded(workspace, uri, callback, once);
 			});
 		}
 	}
+	
+var xsTypes = {};
+["ID","anyType","anyURI","boolean","complexContent/extension","date","dateTime","decimal","double","duration","integer","nonNegativeInteger","positiveInteger","string","time","xs:anyURI","xs:boolean","xs:dateTime","xs:decimal","xs:double","xs:duration","xs:integer","xs:string"].map(_ => (xsTypes[_] = {xstype: _}));
 
 $(["devtools/Editor<xml>"], { 
 	handlers: {
@@ -166,7 +61,11 @@ $(["devtools/Editor<xml>"], {
 			var me = this; evt = evt || {};
 			this.getSelection(true).forEach(function(imp) {
 				var uri = resolveUri(imp['@_schemaLocation'], me);
-				var tab = action.execute({dontBringToFront: true, selected: evt.metaKey, resource:{uri: uri}});
+				var tab = action.execute({
+					dontBringToFront: evt.altKey !== false,
+					selected: evt.altKey === true,
+					resource: { uri: uri }
+				});
 				var root = tab._control.down(":root");
 				if(!root) {
 					// tab.setIndex(0);
@@ -203,7 +102,7 @@ $(["devtools/Editor<xml>"], {
 				scope.attrs.setOnFilterObject(!value.length ? null : filter);
 			}, 200);
 		} 
-	}, 
+	}
 }, [
 
     $("vcl/data/Array", "ctypes"), $("vcl/data/Array", "elems"),
@@ -214,8 +113,9 @@ $(["devtools/Editor<xml>"], {
 	// Setup vars
 			var r = this.inherited(arguments);
 			var app = this.app(), scope = this.scope(), me = this;
-			var workspace = this.up("devtools/Workspace<>:root");
 			var resource = this.vars(["resource", true]);
+			var workspace = this.up("devtools/Workspace<>:root");
+			var schema_id = resource.uri.split("/").splice(2).join("/");
 
 	// Determine xs:schema node and ns_prefix (ie. none, xs: or xsd:)
 			var root = this.vars(["root"]), schema, ns_prefix;
@@ -235,113 +135,278 @@ $(["devtools/Editor<xml>"], {
 					}
 				}
 			});
-
+			
 	 // Gather parser context, types and definitions			
 			var parser = {
-				root: root, 
-				xmlns: xmlns,
-				schema: schema,
-				ns_prefix: ns_prefix,
+				root: root, xmlns: xmlns, schema: schema_id, ns_prefix: ns_prefix,
 				
-				stypes: asArray(js.get(sf("%ssimpleType", ns_prefix), schema)),
-				ctypes: asArray(js.get(sf("%scomplexType", ns_prefix), schema)),
-				elems: asArray(js.get(sf("%selement", ns_prefix), schema)),
-				groups: asArray(js.get(sf("%sgroup", ns_prefix), schema)),
+				included_stypes: {}, included_ctypes: {}, included_elems: {},
+				included_groups: {}, included_imps: {}, included_attrs: {},
+				included_agroups: {},
+				
 				imps: asArray(js.get(sf("%simport", ns_prefix), schema)).concat(
 					asArray(js.get(sf("%sschema.%sinclude", ns_prefix, ns_prefix), root))
 						.map(function(include) {
 							include['@_namespace'] = schema['@_targetNamespace'];
+							js.set(at__ + ".include", true, include);
 							return include;
 						})
 				),
-				attrs: [],
-				
+				elems: asArray(js.get(sf("%selement", ns_prefix), schema)),
+				ctypes: asArray(js.get(sf("%scomplexType", ns_prefix), schema)),
+				stypes: asArray(js.get(sf("%ssimpleType", ns_prefix), schema)),
+				attrs: asArray(js.get(sf("%sattribute", ns_prefix), schema)),
+				groups: asArray(js.get(sf("%sgroup", ns_prefix), schema)),
+				agroups: asArray(js.get(sf("%sattributeGroup", ns_prefix), schema)),
+
+				// imps_map: workspace.vars(["devtools/Editor<xsd>/imps_map", false, {}]),
+				elems_map: workspace.vars(["devtools/Editor<xsd>/elems_map", false, {}]),
+				attrs_map: workspace.vars(["devtools/Editor<xsd>/attrs_map", false, {}]),
 				ctypes_map: workspace.vars(["devtools/Editor<xsd>/ctypes_map", false, {}]),
 				stypes_map: workspace.vars(["devtools/Editor<xsd>/stypes_map", false, {}]),
-				elems_map: workspace.vars(["devtools/Editor<xsd>/elems_map", false, {}]),
 				groups_map: workspace.vars(["devtools/Editor<xsd>/groups_map", false, {}]),
-				imps_map: workspace.vars(["devtools/Editor<xsd>/imps_map", false, {}]),
-				
-				parseComplexType: parseComplexType,
+				agroups_map: workspace.vars(["devtools/Editor<xsd>/agroups_map", false, {}]),
+
 				log: function(elem, msg) {
 					if(msg instanceof Array) {
 						scope.console.print(msg[0], msg.splice(1));
 					} else {
 						scope.console.print(msg, elem);
 					}
-					(elem[PARSED_KEY].messages 
-							= elem[PARSED_KEY].messages || []).push(msg);
+					(elem[at__].messages 
+							= elem[at__].messages || []).push(msg);
+				},
+				parse: function() {
+// workspace.print(schema_id, this);
+					this.stypes.forEach(this.parseSimpleType, this);
+					this.ctypes.forEach(this.parseComplexType, this);
+					this.agroups.forEach(this.parseAttributeGroup, this);
+					this.groups.forEach(this.parseGroup, this);
+					this.imps.forEach(this.parseImport, this);
+					
+					this.attrs.forEach(this.parseAttribute, this);
+					this.elems.forEach(this.parseElement, this);
+				},
+				
+				findType: function(name) {
+					return this.ctypes_map[name] || this.stypes_map[name] || xsTypes[name];
+				},
+				findGroup: function(name) {
+					return this.groups_map[name];
+				},
+				findAttributeGroup: function(name) {
+					return this.agroups_map[name];
+				},
+				findElement: function(name) {
+					// console.log("findElement", name, this.elems_map[name]);
+
+					return this.elems_map[name];
+				},
+
+				parseImport: function(xselem) {
+					var uri = xselem[at__] = resolveUri(xselem['@_schemaLocation'], me);
+
+					// parserNeeded(workspace, uri, function(parser) {
+						this.inheritImport(xselem, uri, parser);
+					// }.bind(this), true);
+				},
+				parseSimpleType: function(xselem, i) {
+					this.stypes_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					js.set(at__ + ".schema", schema_id, xselem);
+					// js.set(at__ + ".source", "simpleType", xselem);
+				},
+				parseAttributeGroup: function(xselem, i) {
+					this.agroups_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					// if(xselem[at__] === undefined) {
+						js.set(at__ + ".schema", schema_id, xselem);
+						// js.set(at__ + ".source", "attributeGroup", xselem);
+						this.inheritAttributeGroup(xselem, xselem, xselem['@_name']);
+					// }
+				},
+				parseGroup: function(xselem, i) {
+					this.groups_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					// if(xselem[at__] === undefined) {
+						js.set(at__ + ".schema", schema_id, xselem);
+						// js.set(at__ + ".source", "group", xselem);
+						this.inheritGroup(xselem, xselem, xselem['@_name']);
+					// }
+				},
+				parseComplexType: function(xselem, i) {
+					this.ctypes_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					// js.set(at__ + ".source", "complexType", xselem);
+					
+					// if(xselem[at__] === undefined) {
+						js.set(at__ + ".schema", schema_id, xselem);
+						this.inheritType(xselem, xselem, xselem['@_name']);
+					// }
+				},
+				parseElement: function(xselem, i) {
+					this.elems_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					// if(xselem[at__] === undefined) {
+						js.set(at__ + ".schema", schema_id, xselem);
+						// js.set(at__ + ".source", "element", xselem);
+						
+						var base, type, ref;
+						
+						// this.inheritElement for symmetry?
+						// this.inheritElement(xselem, xselem, xselem['@_name'])
+						if(xselem['@_base']) {
+							console.log("parseElement.@_base", xselem);
+						} else if(xselem['@_type']) {
+							if((type = this.findType(xselem['@_type']))) {
+								js.set(at__ + ".type-resolved", type, xselem);
+								this.inheritType(xselem, type, xselem['@_type']);
+							} else {
+								this.log(xselem, sf("@_type %s not found", xselem['@_type']));
+							}
+						} else if(xselem[sf("%scomplexType", ns_prefix)]) {
+							this.inheritType(xselem, xselem.complexType, "inline?");	
+						} else {
+							console.log("parseElement.notHandled", xselem);
+						}
+					// }
+				},
+				parseAttribute: function(xselem, i) {
+					this.attrs_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
+					js.set(at__ + ".schema", schema_id, xselem);
+					// js.set(at__ + ".source", "attribute", xselem);
+					if(xselem['@_type']) {
+						
+					} else if(xselem.simpleType) {
+						
+					}	
+					this.inheritAttribute(xselem, xselem, "root");
+				},
+
+				inheritImport: function(xselem, uri, parser) {
+					var me = this;
+					if(js.get(at__ + ".include", xselem) === true) {
+						
+						["stypes", "ctypes", "groups", "elems", "attrs"].map(function(key) {
+							me["included_" + key][uri] = [].concat(parser[key]);
+						});
+						
+						// Really necessary?
+						scope['@owner'].setTimeout("refresh", function() {
+							me.reflect();
+						}, 200);
+					}
+				},			
+				inheritType: function(xselem, xstype, xstype_name) {
+					var base;
+					if(xstype['@_base']) {
+						if((base = this.findType(xstype['@_base']))) {
+							js.set(at__ + ".base-resolved", base, xstype);
+							this.inheritType(xselem, base, xstype_name);//xstype['@_base']);
+						} else {
+							this.log(xselem, sf("@_base %s not found", xstype['@_base']));
+						}
+					}
+					if(xstype['@_ref']) {
+						console.log("inheritType.@_ref", xselem, xstype);
+					}
+					if(xstype['@_substitutionGroup']) {
+						console.log("inheritType.@_substitutionGroup", xselem, xstype);
+					}
+					asArray(js.get(sf("%scomplexContent.%sextension", ns_prefix, ns_prefix), xstype)).map(function(xsext, i) {
+						this.inheritType(xselem, xsext, "complexContent/extension");
+					}, this);
+					asArray(js.get(sf("%sattribute", ns_prefix), xstype)).map(function(xsattr, i) {
+						this.inheritAttribute(xselem, xsattr, xstype_name);
+					}, this);
+					asArray(js.get(sf("%ssequence.%selement", ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.inheritElement(xselem, xsel, xsel['@_type']);
+					}, this);
+					asArray(js.get(sf("%ssequence.%ssequence.%selement", ns_prefix, ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.inheritElement(xselem, xsel, xstype_name);
+					}, this);
+					asArray(js.get(sf("%ssequence.%sgroup", ns_prefix, ns_prefix), xstype)).map(function(xsgroup, i) {
+						this.inheritGroup(xselem, xsgroup, xstype_name);
+					}, this);
+				},
+				inheritAttribute: function(xselem, xsattribute, xsattribute_name) {
+					var ref = xsattribute['@_ref'], type;
+					var name = xsattribute['@_name'] || ref;
+					
+					if(ref) {
+						if(!(type = this.attrs_map[ref])) {
+							this.log(xselem, sf("@_ref %s not found", ref));
+						}
+					} else {
+						type = this.findType(xsattribute['@_type'] || xsattribute_name);
+						this.log(xselem, sf("@_type %s not found", xsattribute['@_type'] || xsattribute_name));
+					}
+
+					js.set(at__ + ".attributes." + name, {
+						kind: "attribute", 
+						type: ref || xsattribute['@_type'] || xsattribute_name,
+						'type-resolved': type,
+						xs: xsattribute
+					}, xselem);
+				},
+				inheritElement: function(xselem, xsel, xsel_name) {
+					var ref = xsel['@_ref'], name = xsel['@_name'] || ref;
+					var info = {
+						kind: "element", 
+						type: xsel_name,
+						xs: xsel
+					};
+
+					if(ref) {
+						info.type = ref;
+						if(!(info['type-resolved'] = this.elems_map[ref])) {
+							this.log(xselem, sf("@_ref %s not found", ref));
+						}
+					} else if(!(info['type-resolved'] = this.findType(info.type))) {
+						this.log(xselem, sf("%s not found", info.type || name));
+					}
+					
+					js.set(at__ + ".attributes." + name, info, xselem);
+				},
+				inheritGroup: function(xselem, xsgroup, xsgroup_name) {
+					var ref;
+					if(xsgroup['@_ref']) {
+						if((ref = this.findGroup(xsgroup['@_ref']))) {
+							js.set(at__ + ".ref-resolved", ref, xsgroup);
+							this.inheritType(xselem, ref, xsgroup['@_ref']);
+						} else {
+							this.log(xselem, sf("@_ref %s not found", xsgroup['@_ref']));
+						}
+					}
+				},
+				inheritAttributeGroup: function(xselem, xsattributegroup, xsattributegroup_name) {
+					var ref;
+					if((ref = xsattributegroup['@_ref'])) {
+						if((ref = this.findAttributeGroup(ref))) {
+							js.set(at__ + ".ref-resolved", ref, xsattributegroup);
+							this.inheritType(xselem, ref, xsattributegroup['@_ref']);
+						} else {
+							this.log(xselem, sf("@_ref %s not found", xsattributegroup['@_ref']));
+						}
+					}
+				},
+				
+				reflect: function() { 
+					var me = this; // Reflect UI (fill grids)
+					
+					function sort_name(i1, i2) {
+						return i1['@_name'] < i2['@_name'] ? -1 : 1;
+					}
+					
+					["stypes", "ctypes", "groups", "agroups", "elems", "attrs"].map(function(key) {
+						var included = [];
+						for(var k in me["included_" + key]) {
+							included = included.concat(me["included_" + key][k]);
+						}
+						scope[key].setArray(me[key].concat(included).sort(sort_name));
+					});
+
+					scope.imps.setArray(this.imps);
 				}
 			};
-			parser.stypes.forEach(function(type) {
-				type[PARSED_KEY] = type[PARSED_KEY] || {
-					schema: resource.uri.split("/").splice(2).join("/")
-				};
-				parser.stypes_map[xmlns[''] + ":" + type['@_name']] = type;
-			});
-			parser.ctypes.forEach(function(type) {
-				type[PARSED_KEY] = type[PARSED_KEY] || {
-					schema: resource.uri.split("/").splice(2).join("/")
-				};
-				parser.ctypes_map[xmlns[''] + ":" + type['@_name']] = type;
-			});
-			parser.groups.forEach(function(group) {
-				group[PARSED_KEY] = group[PARSED_KEY] || {
-					schema: resource.uri.split("/").splice(2).join("/")
-				};
-				parser.groups_map[xmlns[''] + ":" + group['@_name']] = group;
-			});
-			parser.imps.forEach(function(imp) {
-				parser.imps_map[imp['@_schemaLocation']] = resolveUri(imp['@_schemaLocation'], me);
-			});
-	// --->>> Parse elements and fill attrs
-			parser.elems.forEach(function(elem) {
-				elem[PARSED_KEY] = elem[PARSED_KEY] || {
-					schema: resource.uri.split("/").splice(2).join("/")
-				};
-				parser.elems_map[xmlns[''] + ":" + elem['@_name']] = elem;
-				
-				var type;
-				if((type = elem['@_type'])) {
-					if((type = parser.ctypes_map[type])) {
-						elem["__type-resolved"] = type;
-						parser.parseComplexType(type, elem, elem['@_type']);
-					}
-				}
-// complexType
-				if((type = elem.complexType)) {
-					parser.parseComplexType(type, elem, "complexType");
-				}
-				
-				if((type = elem.simpleType)) {
-					parser.log(elem, "simpleType");
-				}
-				
-				if(elem[PARSED_KEY].__attributes) {
-					Object.keys(elem[PARSED_KEY].__attributes).forEach(function(key, i) {
-						var type = elem[PARSED_KEY].__attributes[key];
-						parser.attrs.push({ 
-							namespace: key.split(":")[0],
-							element: elem['@_name'],
-							name: key.split("/").pop(),
-							index: i,
-							type: key.split("/")[0].split(":").pop(),
-							documentation: js.get("annotation.documentation", type) || "",
-							'__elem': elem,
-							'__type': type,
-							'__name': key
-						});
-					});
-				}
-			});
-
-	// Reflect UI (fill grids)
-			scope.imps.setArray(parser.imps);
-			scope.stypes.setArray(parser.stypes);
-			scope.ctypes.setArray(parser.ctypes);
-			scope.elems.setArray(parser.elems);
-			scope.groups.setArray(parser.groups);
-			scope.attrs.setArray(parser.attrs);
+			
+			parser.parse();
+			parser.reflect();
 
 	// Sort columns			
 			var sorted = [].concat(scope.elements._columns).sort(function(c1, c2) {
@@ -351,12 +416,13 @@ $(["devtools/Editor<xml>"], {
 				col.setIndex(sorted.indexOf(col));
 			});
 			
-			var schemas_map = workspace.vars(["devtools/Editor<xsd>/schemas_map", false, {}]);
-			schemas_map[resource.uri] = schema;
-			parser.schemas_map = schemas_map;
 	// Report and emit
-			scope.console.print("vars", parser);
+			scope.console.print("parser", parser);
+
+			this.up(":root").vars("parser", parser);
 			this.up("vcl/ui/Tab").emit("resource-rendered", [this]);
+			
+	// generateCode(parser);
 
 			return r;
 		}
@@ -365,28 +431,31 @@ $(["devtools/Editor<xml>"], {
 	$("vcl/data/Array", "imps"),
 	$("vcl/data/Array", "attrs"),
 	$("vcl/data/Array", "groups"),
+	$("vcl/data/Array", "agroups"),
 	$("vcl/data/Array", "elems"),
 	$("vcl/data/Array", "ctypes"),
 	$("vcl/data/Array", "stypes"),
-
+	
     $i("output", [
     	$("vcl/ui/Bar", [
     		$("vcl/ui/Input", "search-input", { classes: "search-top" }),
     	]),
 	    $i("tabs", [
-	    	$("vcl/ui/Tab", { text: locale("-/Import.plural"), control: "imports", selected: true  }),
+	    	$("vcl/ui/Tab", { text: locale("-/Import.plural"), control: "imports"  }),
 	    	$("vcl/ui/Tab", { text: locale("-/Attribute.plural"), control: "attributes"}),
 	    	$("vcl/ui/Tab", { text: locale("-/Element.plural"), control: "elements" }),
 	    	$("vcl/ui/Tab", { text: locale("-/ComplexType.plural"), control: "complexTypes" }),
-	    	$("vcl/ui/Tab", { text: locale("-/Groups.plural"), control: "groupsl" }),
-	    	$("vcl/ui/Tab", { text: locale("-/SimpleType.plural"), control: "simpleTypes" })
+	    	$("vcl/ui/Tab", { text: locale("-/Group.plural"), control: "groupsl" }),
+	    	$("vcl/ui/Tab", { text: locale("-/SimpleType.plural"), control: "simpleTypes" }),
+	    	$("vcl/ui/Tab", { text: locale("-/AttributeGroup.plural"), control: "attributeGroups" })
 	    ]),
 	    $i("console", { visible: false }),
-	    $("vcl/ui/List", "imports", { autoColumns: true, source: "imps", visible: true, onDblClick: onDblClick }),
+	    $("vcl/ui/List", "imports", { autoColumns: true, source: "imps", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "attributes", { autoColumns: true, source: "attrs", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "elements", { autoColumns: true, source: "elems", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "complexTypes", { autoColumns: true, source: "ctypes", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "groupsl", { autoColumns: true, source: "groups", visible: false, onDblClick: onDblClick }),
+	    $("vcl/ui/List", "attributeGroups", { autoColumns: true, source: "agroups", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "simpleTypes", { autoColumns: true, source: "stypes", visible: false, onDblClick: onDblClick })
     ])
 
