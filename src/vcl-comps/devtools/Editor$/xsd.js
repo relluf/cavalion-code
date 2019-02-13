@@ -144,6 +144,15 @@ $(["devtools/Editor<xml>"], {
 				included_groups: {}, included_imps: {}, included_attrs: {},
 				included_agroups: {},
 				
+				stamp: function(xsel) {
+					if(!js.get(at__ + ".schema", xsel)) {
+						js.set(at__ + ".schema", schema_id, xsel);
+					}
+					if(!js.get(at__ + ".xmlns", xsel)) {
+						js.set(at__ + ".xmlns", xmlns[''], xsel);
+					}
+				},
+				
 				imps: asArray(js.get(sf("%simport", ns_prefix), schema)).concat(
 					asArray(js.get(sf("%sschema.%sinclude", ns_prefix, ns_prefix), root))
 						.map(function(include) {
@@ -212,13 +221,13 @@ $(["devtools/Editor<xml>"], {
 				},
 				parseSimpleType: function(xselem, i) {
 					this.stypes_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
-					js.set(at__ + ".schema", schema_id, xselem);
+					this.stamp(xselem);
 					// js.set(at__ + ".source", "simpleType", xselem);
 				},
 				parseAttributeGroup: function(xselem, i) {
 					this.agroups_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
 					// if(xselem[at__] === undefined) {
-						js.set(at__ + ".schema", schema_id, xselem);
+						this.stamp(xselem);
 						// js.set(at__ + ".source", "attributeGroup", xselem);
 						this.inheritAttributeGroup(xselem, xselem, xselem['@_name']);
 					// }
@@ -226,7 +235,7 @@ $(["devtools/Editor<xml>"], {
 				parseGroup: function(xselem, i) {
 					this.groups_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
 					// if(xselem[at__] === undefined) {
-						js.set(at__ + ".schema", schema_id, xselem);
+						this.stamp(xselem);
 						// js.set(at__ + ".source", "group", xselem);
 						this.inheritGroup(xselem, xselem, xselem['@_name']);
 					// }
@@ -236,14 +245,14 @@ $(["devtools/Editor<xml>"], {
 					// js.set(at__ + ".source", "complexType", xselem);
 					
 					// if(xselem[at__] === undefined) {
-						js.set(at__ + ".schema", schema_id, xselem);
+						this.stamp(xselem);
 						this.inheritType(xselem, xselem, xselem['@_name']);
 					// }
 				},
 				parseElement: function(xselem, i) {
 					this.elems_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
 					// if(xselem[at__] === undefined) {
-						js.set(at__ + ".schema", schema_id, xselem);
+						this.stamp(xselem);
 						// js.set(at__ + ".source", "element", xselem);
 						
 						var base, type, ref;
@@ -268,7 +277,7 @@ $(["devtools/Editor<xml>"], {
 				},
 				parseAttribute: function(xselem, i) {
 					this.attrs_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
-					js.set(at__ + ".schema", schema_id, xselem);
+					this.stamp(xselem);
 					// js.set(at__ + ".source", "attribute", xselem);
 					if(xselem['@_type']) {
 						
@@ -292,7 +301,7 @@ $(["devtools/Editor<xml>"], {
 						}, 200);
 					}
 				},			
-				inheritType: function(xselem, xstype, xstype_name) {
+				inheritType: function(xselem, xstype, xstype_name, as_base) {
 					var base;
 					if(xstype['@_base']) {
 						if((base = this.findType(xstype['@_base']))) {
@@ -309,18 +318,23 @@ $(["devtools/Editor<xml>"], {
 						console.log("inheritType.@_substitutionGroup", xselem, xstype);
 					}
 					asArray(js.get(sf("%scomplexContent.%sextension", ns_prefix, ns_prefix), xstype)).map(function(xsext, i) {
+						this.stamp(xsext);
 						this.inheritType(xselem, xsext, "complexContent/extension");
 					}, this);
 					asArray(js.get(sf("%sattribute", ns_prefix), xstype)).map(function(xsattr, i) {
+						this.stamp(xsattr);
 						this.inheritAttribute(xselem, xsattr, xstype_name);
 					}, this);
 					asArray(js.get(sf("%ssequence.%selement", ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.stamp(xsel);
 						this.inheritElement(xselem, xsel, xsel['@_type']);
 					}, this);
 					asArray(js.get(sf("%ssequence.%ssequence.%selement", ns_prefix, ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.stamp(xsel);
 						this.inheritElement(xselem, xsel, xstype_name);
 					}, this);
 					asArray(js.get(sf("%ssequence.%sgroup", ns_prefix, ns_prefix), xstype)).map(function(xsgroup, i) {
+						this.stamp(xsgroup);
 						this.inheritGroup(xselem, xsgroup, xstype_name);
 					}, this);
 				},
@@ -338,6 +352,7 @@ $(["devtools/Editor<xml>"], {
 					}
 
 					js.set(at__ + ".attributes." + name, {
+						namespace: xsattribute[at__].xmlns,
 						kind: "attribute", 
 						type: ref || xsattribute['@_type'] || xsattribute_name,
 						'type-resolved': type,
@@ -347,6 +362,7 @@ $(["devtools/Editor<xml>"], {
 				inheritElement: function(xselem, xsel, xsel_name) {
 					var ref = xsel['@_ref'], name = xsel['@_name'] || ref;
 					var info = {
+						namespace: xsel[at__].xmlns,
 						kind: "element", 
 						type: xsel_name,
 						xs: xsel
