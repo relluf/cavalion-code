@@ -1,3 +1,6 @@
+### 2019-02-13 / 1.0.53
+- Stamping XSD elements in order to correctly regenerate namespace
+
 ### 2019-02-11 / 1.0.52
 - Thinking about using `vcl/Component.prototype.print` at application-, workspace- and project/editor- level
 - Improving `devtools/Editor<xsd>` better
