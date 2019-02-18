@@ -2,6 +2,21 @@
 
 var Parser = require("fast-xml-parser");
 
+function sikb(root) {
+	var arr = root['imsikb0101:FeatureCollectionIMSIKB0101']['imsikb0101:featureMember'];
+	var entityMap = {};
+	arr.forEach(function(_) {
+		var key = Object.keys(_)[0];
+		var arr = (entityMap[key] = entityMap[key] || []);
+		arr.push(_[key]);
+	});
+	return entityMap;
+}
+
+var utils = {
+	sikb: sikb
+};
+
 var styles = {
 	"#output": "background-color: #f0f0f0; border-right: 1px solid silver;"
 };
@@ -56,6 +71,8 @@ $([], { css: styles }, [
     	executesAction: "none",
         onChange: function() {
         	var scope = this.scope();
+        	
+        	
             scope.render.setTimeout("execute", 500);
         }
     }),
