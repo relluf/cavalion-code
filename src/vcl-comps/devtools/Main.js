@@ -30,6 +30,8 @@ var handlers = {
         var scope = this.scope();
         var me = this;
         
+        document.body.down("img").style.display = "none";
+        
         function createWorkspaces(workspaces) {
             workspaces.forEach(function (workspace) {
                 scope["workspace-needed"].execute({
@@ -375,6 +377,14 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     $("vcl/ui/Tabs", "workspaces-tabs", {
         align: "bottom",
         classes: "bottom",
+        onDblClick: function() { 
+        	var n = this._controls.length, me = this;
+        	this.app().prompt("Enter name for new workspace:", "ws" + n, function(res) {
+        		if(res) {
+        			me.up().qs("#workspace-needed").execute(res).setSelected(true);
+        		}
+        	})
+        },
         onChange: function() {
     		this._owner.emit("state-dirty");
         }
