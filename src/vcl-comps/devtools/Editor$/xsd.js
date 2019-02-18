@@ -317,6 +317,10 @@ $(["devtools/Editor<xml>"], {
 					if(xstype['@_substitutionGroup']) {
 						console.log("inheritType.@_substitutionGroup", xselem, xstype);
 					}
+					asArray(js.get(sf("%ssimpleContent.%sextension", ns_prefix, ns_prefix), xstype)).map(function(xsext, i) {
+						this.stamp(xsext);
+						this.inheritType(xselem, xsext, "simpleContent/extension");
+					}, this);
 					asArray(js.get(sf("%scomplexContent.%sextension", ns_prefix, ns_prefix), xstype)).map(function(xsext, i) {
 						this.stamp(xsext);
 						this.inheritType(xselem, xsext, "complexContent/extension");

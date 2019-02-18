@@ -76,7 +76,7 @@ $(["ui/Form"], {
         return this.inherited(arguments);
     }
 }, [
-    $("vcl/Action", "refresh", {
+    $(("vcl/Action"), "refresh", {
         hotkey: "MetaCtrl+R",
         onExecute: function (evt) {
             var scope = this.getScope();
@@ -113,7 +113,7 @@ $(["ui/Form"], {
             }
         }
     }),
-    $("vcl/Action", "save", {
+    $(("vcl/Action"), "save", {
         hotkey: "MetaCtrl+S",
         onExecute: function () {
             var scope = this.getScope();
@@ -152,7 +152,7 @@ $(["ui/Form"], {
                 });
         }
     }),
-    $("vcl/Action", "format", {
+    $(("vcl/Action"), "format", {
         hotkey: "MetaCtrl+Shift+F",
         onExecute: function () {
             var Xml = require("util/Xml");
@@ -175,7 +175,7 @@ $(["ui/Form"], {
             }
         }
     }),
-    $("vcl/Action", "toggle-wrap", {
+    $(("vcl/Action"), "toggle-wrap", {
         hotkey: "MetaCtrl+Shift+W",
         onExecute: function (evt) {
             var editor = this.scope().ace.getEditor();
@@ -183,7 +183,7 @@ $(["ui/Form"], {
             evt.preventDefault();
         }
     }),
-    $("vcl/Action", "evaluate", {
+    $(("vcl/Action"), "evaluate", {
         hotkey: "MetaCtrl+Enter",
         onExecute: function() {
             var all = require("js/JsObject").all;
@@ -221,7 +221,7 @@ $(["ui/Form"], {
             }
         }
     }),
-    $("vcl/Action#focus-in-navigator", {
+    $(("vcl/Action"), "focus-in-navigator", {
     	hotkey: "MetaCtrl+48",
         onExecute: function(evt) {
             var app = this.getApp();
@@ -230,8 +230,8 @@ $(["ui/Form"], {
             	.execute({resource: resource}, this);
         }
     }),
-    $("vcl/ui/Ace", "ace"),
-    $("vcl/ui/Panel", "loading", {
+    $(("vcl/ui/Ace"), "ace"),
+    $(("vcl/ui/Panel"), "loading", {
         align: "none",
         autoSize: "both",
         css: {
