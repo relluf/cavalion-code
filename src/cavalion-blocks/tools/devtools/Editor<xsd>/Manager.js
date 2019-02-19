@@ -15,7 +15,7 @@ var sf = String.format;
 				schema2ns[parser.schema] = parser.xmlns[''];
 			});
 			
-			["stypes", "ctypes", "groups", "agroups", "elems", "attrs"].map(function(key) {
+			["stypes", "ctypes", "groups", "agroups", "elems", "attrs", "stars"].map(function(key) {
 				scope[key].setArray(workspaces.reduce(function(arr, workspace) {
 					var res = workspace.qsa("devtools/Editor<xsd>:root #" + key);
 					return (arr = arr.concat(res.reduce(function(items, array) {
@@ -39,7 +39,7 @@ var sf = String.format;
 					.qsa("vcl/ui/Console#console")
 					.map(function(console) {
 						list.getSelection(true).forEach(function(xselem) {
-							console.print(xselem['@_name'] || "?", xselem);
+							console.print(xselem['@_name'] || xselem.name || "?", xselem);
 						});
 					});
 			});
@@ -71,6 +71,7 @@ var sf = String.format;
 				scope.attrs.setOnFilterObject(!value.length ? null : filter);
 				scope.groups.setOnFilterObject(!value.length ? null : filter);
 				scope.agroups.setOnFilterObject(!value.length ? null : filter);
+				scope.stars.setOnFilterObject(!value.length ? null : filter);
 			}, 200);
 		} 
 	}
@@ -82,12 +83,14 @@ var sf = String.format;
 	["Array", "agroups" ],
 	["Array", "elems" ],
 	["Array", "attrs" ],
+	["Array", "stars" ],
 	
 	["Bar", [
 		["Input", "search-input", { classes: "search-top" }],
 	]],
 	["Tabs", "tabs", { align: "bottom", classes: "bottom" }, [
 		["Tab", { control: "console", text: locale("Console") }],
+		["Tab", { control: "allstars", text: "*" || locale("-/Star.symbol"), selected: true }],
 		["Tab", { control: "elements", text: locale("-/Element.plural"), selected: true }],
 		["Tab", { control: "attributes", text: locale("-/Attribute.plural") }],
 		["Tab", { control: "complexTypes", text: locale("-/ComplexType.plural") }],
@@ -100,6 +103,7 @@ var sf = String.format;
 	["List", "attributes", { autoColumns: true, visible: false, source: "attrs"} ],
 	["List", "elements", { autoColumns: true, visible: false, source: "elems"} ],
 	["List", "complexTypes", { autoColumns: true, visible: false, source: "ctypes"} ],
+	["List", "allstars", { autoColumns: true, visible: false, source: "stars"} ],
 	["List", "groupsl", { autoColumns: true, visible: false, source: "groups"} ],
 	["List", "attributeGroups", { autoColumns: true, visible: false, source: "agroups"} ],
 	["List", "simpleTypes", { autoColumns: true, visible: false, source: "stypes"} ],

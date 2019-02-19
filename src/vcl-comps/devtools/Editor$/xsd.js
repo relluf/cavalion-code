@@ -105,9 +105,10 @@ $(["devtools/Editor<xml>"], {
 	}
 }, [
 
-    $("vcl/data/Array", "ctypes"), $("vcl/data/Array", "elems"),
+    $(("vcl/data/Array"), "ctypes"), 
+    $(("vcl/data/Array"), "elems"),
     
-	$i("render", {
+	$i(("render"), {
 		onExecute: function() {
 
 	// Setup vars
@@ -161,10 +162,11 @@ $(["devtools/Editor<xml>"], {
 							return include;
 						})
 				),
+				stars: [],
+				attrs: asArray(js.get(sf("%sattribute", ns_prefix), schema)),
 				elems: asArray(js.get(sf("%selement", ns_prefix), schema)),
 				ctypes: asArray(js.get(sf("%scomplexType", ns_prefix), schema)),
 				stypes: asArray(js.get(sf("%ssimpleType", ns_prefix), schema)),
-				attrs: asArray(js.get(sf("%sattribute", ns_prefix), schema)),
 				groups: asArray(js.get(sf("%sgroup", ns_prefix), schema)),
 				agroups: asArray(js.get(sf("%sattributeGroup", ns_prefix), schema)),
 
@@ -195,6 +197,21 @@ $(["devtools/Editor<xml>"], {
 					
 					this.attrs.forEach(this.parseAttribute, this);
 					this.elems.forEach(this.parseElement, this);
+					
+					this.elems.forEach(function(elem) {
+						var at = elem[at__];
+						for(var k in at.attributes) {
+							var attribute = at.attributes[k];
+							this.stars.push({
+								xmlns: at.xmlns,
+								name: k,
+								element: elem['@_name'],
+								kind: attribute.kind,
+								type: attribute.type,
+								schema: at.schema
+							});
+						}
+					}, this);
 				},
 				
 				findType: function(name) {
@@ -413,7 +430,7 @@ $(["devtools/Editor<xml>"], {
 						return i1['@_name'] < i2['@_name'] ? -1 : 1;
 					}
 					
-					["stypes", "ctypes", "groups", "agroups", "elems", "attrs"].map(function(key) {
+					["stypes", "ctypes", "groups", "agroups", "elems", "attrs", "stars"].map(function(key) {
 						var included = [];
 						for(var k in me["included_" + key]) {
 							included = included.concat(me["included_" + key][k]);
@@ -448,20 +465,22 @@ $(["devtools/Editor<xml>"], {
 		}
 	}),
 	
-	$("vcl/data/Array", "imps"),
-	$("vcl/data/Array", "attrs"),
-	$("vcl/data/Array", "groups"),
-	$("vcl/data/Array", "agroups"),
-	$("vcl/data/Array", "elems"),
-	$("vcl/data/Array", "ctypes"),
-	$("vcl/data/Array", "stypes"),
+	$(("vcl/data/Array"), "imps"),
+	$(("vcl/data/Array"), "stars"),
+	$(("vcl/data/Array"), "attrs"),
+	$(("vcl/data/Array"), "groups"),
+	$(("vcl/data/Array"), "agroups"),
+	$(("vcl/data/Array"), "elems"),
+	$(("vcl/data/Array"), "ctypes"),
+	$(("vcl/data/Array"), "stypes"),
 	
-    $i("output", [
-    	$("vcl/ui/Bar", [
+    $i(("output"), [
+    	$(("vcl/ui/Bar"), [
     		$("vcl/ui/Input", "search-input", { classes: "search-top" }),
     	]),
-	    $i("tabs", [
+	    $i(("tabs"), [
 	    	$("vcl/ui/Tab", { text: locale("-/Import.plural"), control: "imports"  }),
+	    	$("vcl/ui/Tab", { text: "*" || locale("-/Star.symbol"), control: "allstars"}),
 	    	$("vcl/ui/Tab", { text: locale("-/Attribute.plural"), control: "attributes"}),
 	    	$("vcl/ui/Tab", { text: locale("-/Element.plural"), control: "elements" }),
 	    	$("vcl/ui/Tab", { text: locale("-/ComplexType.plural"), control: "complexTypes" }),
@@ -469,8 +488,9 @@ $(["devtools/Editor<xml>"], {
 	    	$("vcl/ui/Tab", { text: locale("-/SimpleType.plural"), control: "simpleTypes" }),
 	    	$("vcl/ui/Tab", { text: locale("-/AttributeGroup.plural"), control: "attributeGroups" })
 	    ]),
-	    $i("console", { visible: false }),
+	    $i(("console"), { visible: false }),
 	    $("vcl/ui/List", "imports", { autoColumns: true, source: "imps", visible: false, onDblClick: onDblClick }),
+	    $("vcl/ui/List", "allstars", { autoColumns: true, source: "stars", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "attributes", { autoColumns: true, source: "attrs", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "elements", { autoColumns: true, source: "elems", visible: false, onDblClick: onDblClick }),
 	    $("vcl/ui/List", "complexTypes", { autoColumns: true, source: "ctypes", visible: false, onDblClick: onDblClick }),
