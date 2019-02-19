@@ -24,7 +24,6 @@ $([], {}, [
 	$i("console", {
 		onEvaluate: function (expr) {
 		    var scope = this.scope(), app = this.app(), me = this;
-			var sel = this.vars("selection", false, []);
 		    var pr = this.print.bind(this);
 		
 		    function open(uri, opts) {
