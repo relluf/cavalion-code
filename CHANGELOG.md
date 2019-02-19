@@ -1,3 +1,12 @@
+### 2019-02-19 / 1.0.55
+- Added the "*"-tab to `devtools/Editor<xsd>`
+- Several adjustments made to use improved vcl/ui/Console
+- Further improving `devtools/Editor<xsd>`
+	- implemented xlink:href
+	- developing code generation iterations
+		- Writers
+		- Collectos
+
 ### 2019-02-13 / 1.0.53
 - Stamping XSD elements in order to correctly regenerate namespace
 
