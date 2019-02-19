@@ -4,17 +4,17 @@ var Console = require("blocks/Factory!Console");
 
 $("vcl/ui/Form", { 
 	activeControl: "console",
-	onLoad: function() {
-		var console = Console.newInstance(this, this._uri, { loaded: function() {}})
-			.setProperties({
-				align: "client", 
-				classes: "no-time bg-white",
-				parent: this
-			});
-		this.print = function() {
-			return console.print.apply(console, arguments);
-		};
-	}
+	// onLoad: function() {
+	// 	var console = Console.newInstance(this, this._uri, { loaded: function() {}})
+	// 		.setProperties({
+	// 			align: "client", 
+	// 			classes: "no-time bg-white",
+	// 			parent: this
+	// 		});
+	// 	this.print = function() {
+	// 		return console.print.apply(console, arguments);
+	// 	};
+	// }
 }, [
 	// Console.$("console", {align: "client", classes: "no-time",
  //   	onLoad: function() {
@@ -28,4 +28,10 @@ $("vcl/ui/Form", {
  //   		return eval(expr);
  //   	}
 	// })
+	["vcl/ui/Console", "console", {
+		classes: "no-time",
+		onLoad: function() {
+			this.print("ready", this);
+		}
+	}]
 ]);

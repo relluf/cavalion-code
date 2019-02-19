@@ -1,4 +1,4 @@
-"vcl/ui/FormContainer, vcl/ui/Tab, ace/range, locale";
+"use vcl/ui/FormContainer, vcl/ui/Tab, ace/range, locale";
 
 var Tab = {
     render: function () {
