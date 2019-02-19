@@ -91,7 +91,7 @@ var sf = String.format;
 	["Tabs", "tabs", { align: "bottom", classes: "bottom" }, [
 		["Tab", { control: "console", text: locale("Console") }],
 		["Tab", { control: "allstars", text: "*" || locale("-/Star.symbol"), selected: true }],
-		["Tab", { control: "elements", text: locale("-/Element.plural"), selected: true }],
+		["Tab", { control: "elements", text: locale("-/Element.plural") }],
 		["Tab", { control: "attributes", text: locale("-/Attribute.plural") }],
 		["Tab", { control: "complexTypes", text: locale("-/ComplexType.plural") }],
 		["Tab", { control: "simpleTypes", text: locale("-/SimpleType.plural") }],
@@ -103,7 +103,7 @@ var sf = String.format;
 	["List", "attributes", { autoColumns: true, visible: false, source: "attrs"} ],
 	["List", "elements", { autoColumns: true, visible: false, source: "elems"} ],
 	["List", "complexTypes", { autoColumns: true, visible: false, source: "ctypes"} ],
-	["List", "allstars", { autoColumns: true, visible: false, source: "stars"} ],
+	["List", "allstars", { autoColumns: true, visible: true, source: "stars"} ],
 	["List", "groupsl", { autoColumns: true, visible: false, source: "groups"} ],
 	["List", "attributeGroups", { autoColumns: true, visible: false, source: "agroups"} ],
 	["List", "simpleTypes", { autoColumns: true, visible: false, source: "stypes"} ],

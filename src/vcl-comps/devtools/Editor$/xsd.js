@@ -12,14 +12,14 @@ var sf = String.format;
 	function onDblClick() { 
 		// var console = this.scope().console; 
 		var console = this.up("devtools/Workspace<>").down("vcl/ui/Console#console");
-		this.getSelection(true).map(_ => console.print(_.__name || _['@_name'], _));
+		this.getSelection(true).map(_ => console.print(_.__name || _['@_name'] || _.name, _));
 		// this.scope().tabs.getControl(0).setSelected(true);
 		
 	}
 	function resolveUri(uri, me) {
 		if(uri.indexOf("http://schemas.opengis.net/") === 0) {
 			uri = "Library/opengis.net/" + uri.substring("http://schemas.opengis.net/".length);
-		} else if(uri.indexOf("http://www.w3.org/1999/") === 0) {
+		} else if(uri.indexOf("http://www.w3.org/1999/") === 0 || uri.indexOf("http://www.w3.org/2001/") === 0) {
 			uri = "Library/opengis.net/" + uri.substring("http://www.w3.org/1999/".length);
 		} else if(uri.indexOf("/") === -1) {
 			uri = js.up(me.vars(["resource.uri", true])) + "/" + uri;
@@ -42,7 +42,10 @@ var sf = String.format;
 	}
 	
 var xsTypes = {};
-["ID","anyType","anyURI","boolean","complexContent/extension","date","dateTime","decimal","double","duration","integer","nonNegativeInteger","positiveInteger","string","time","xs:anyURI","xs:boolean","xs:dateTime","xs:decimal","xs:double","xs:duration","xs:integer","xs:string"].map(_ => (xsTypes[_] = {xstype: _}));
+["ID","anyType","anyURI","boolean","complexContent/extension","date","dateTime",
+"decimal","double","duration","integer","nonNegativeInteger","positiveInteger",
+"string","time","xs:anyURI","xs:boolean","xs:dateTime","xs:decimal","xs:double",
+"xs:duration","xs:integer","xs:string"].map(_ => (xsTypes[_] = {xstype: _}));
 
 $(["devtools/Editor<xml>"], { 
 	handlers: {
@@ -100,14 +103,12 @@ $(["devtools/Editor<xml>"], {
 				scope.ctypes.setOnFilterObject(!value.length ? null : filter);
 				scope.elems.setOnFilterObject(!value.length ? null : filter);
 				scope.attrs.setOnFilterObject(!value.length ? null : filter);
+				scope.stars.setOnFilterObject(!value.length ? null : filter);
 			}, 200);
 		} 
 	}
 }, [
 
-    $(("vcl/data/Array"), "ctypes"), 
-    $(("vcl/data/Array"), "elems"),
-    
 	$i(("render"), {
 		onExecute: function() {
 
@@ -171,12 +172,12 @@ $(["devtools/Editor<xml>"], {
 				agroups: asArray(js.get(sf("%sattributeGroup", ns_prefix), schema)),
 
 				// imps_map: workspace.vars(["devtools/Editor<xsd>/imps_map", false, {}]),
-				elems_map: workspace.vars(["devtools/Editor<xsd>/elems_map", false, {}]),
-				attrs_map: workspace.vars(["devtools/Editor<xsd>/attrs_map", false, {}]),
-				ctypes_map: workspace.vars(["devtools/Editor<xsd>/ctypes_map", false, {}]),
-				stypes_map: workspace.vars(["devtools/Editor<xsd>/stypes_map", false, {}]),
-				groups_map: workspace.vars(["devtools/Editor<xsd>/groups_map", false, {}]),
-				agroups_map: workspace.vars(["devtools/Editor<xsd>/agroups_map", false, {}]),
+				elems_map: workspace.vars("devtools/Editor<xsd>/elems_map", false, {}),
+				attrs_map: workspace.vars("devtools/Editor<xsd>/attrs_map", false, {}),
+				ctypes_map: workspace.vars("devtools/Editor<xsd>/ctypes_map", false, {}),
+				stypes_map: workspace.vars("devtools/Editor<xsd>/stypes_map", false, {}),
+				groups_map: workspace.vars("devtools/Editor<xsd>/groups_map", false, {}),
+				agroups_map: workspace.vars("devtools/Editor<xsd>/agroups_map", false, {}),
 
 				log: function(elem, msg) {
 					if(msg instanceof Array) {
@@ -204,11 +205,14 @@ $(["devtools/Editor<xml>"], {
 							var attribute = at.attributes[k];
 							this.stars.push({
 								xmlns: at.xmlns,
+								namespace: attribute.namespace,
+								namespace_type: attribute.namespace_type,
 								name: k,
 								element: elem['@_name'],
 								kind: attribute.kind,
 								type: attribute.type,
-								schema: at.schema
+								schema: at.schema,
+								attribute: attribute
 							});
 						}
 					}, this);
@@ -225,16 +229,15 @@ $(["devtools/Editor<xml>"], {
 				},
 				findElement: function(name) {
 					// console.log("findElement", name, this.elems_map[name]);
-
 					return this.elems_map[name];
 				},
 
 				parseImport: function(xselem) {
-					var uri = xselem[at__] = resolveUri(xselem['@_schemaLocation'], me);
-
-					// parserNeeded(workspace, uri, function(parser) {
-						this.inheritImport(xselem, uri, parser);
-					// }.bind(this), true);
+					this.stamp(xselem);
+					
+					var uri = resolveUri(xselem['@_schemaLocation'], me);
+					xselem[at__].uri = uri;
+					this.inheritImport(xselem, uri, parser);
 				},
 				parseSimpleType: function(xselem, i) {
 					this.stypes_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
@@ -248,6 +251,8 @@ $(["devtools/Editor<xml>"], {
 						// js.set(at__ + ".source", "attributeGroup", xselem);
 						this.inheritAttributeGroup(xselem, xselem, xselem['@_name']);
 					// }
+					this.stamp(xselem);
+					this.inheritAttributeGroup(xselem, xselem, "root");
 				},
 				parseGroup: function(xselem, i) {
 					this.groups_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
@@ -256,11 +261,13 @@ $(["devtools/Editor<xml>"], {
 						// js.set(at__ + ".source", "group", xselem);
 						this.inheritGroup(xselem, xselem, xselem['@_name']);
 					// }
+					this.stamp(xselem);
+					// js.set(at__ + ".source", "attribute", xselem);
+					this.inheritGroup(xselem, xselem, "root");
 				},
 				parseComplexType: function(xselem, i) {
 					this.ctypes_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
 					// js.set(at__ + ".source", "complexType", xselem);
-					
 					// if(xselem[at__] === undefined) {
 						this.stamp(xselem);
 						this.inheritType(xselem, xselem, xselem['@_name']);
@@ -283,7 +290,7 @@ $(["devtools/Editor<xml>"], {
 								js.set(at__ + ".type-resolved", type, xselem);
 								this.inheritType(xselem, type, xselem['@_type']);
 							} else {
-								this.log(xselem, sf("@_type %s not found", xselem['@_type']));
+								this.log(xselem, sf("@_type %s not found (291)", xselem['@_type']));
 							}
 						} else if(xselem[sf("%scomplexType", ns_prefix)]) {
 							this.inheritType(xselem, xselem.complexType, "inline?");	
@@ -296,26 +303,20 @@ $(["devtools/Editor<xml>"], {
 					this.attrs_map[xmlns[''] + ":" + xselem['@_name']] = xselem;
 					this.stamp(xselem);
 					// js.set(at__ + ".source", "attribute", xselem);
-					if(xselem['@_type']) {
-						
-					} else if(xselem.simpleType) {
-						
-					}	
 					this.inheritAttribute(xselem, xselem, "root");
 				},
 
 				inheritImport: function(xselem, uri, parser) {
-					var me = this;
 					if(js.get(at__ + ".include", xselem) === true) {
-						
+						// not used
 						["stypes", "ctypes", "groups", "elems", "attrs"].map(function(key) {
-							me["included_" + key][uri] = [].concat(parser[key]);
-						});
+							this["included_" + key][uri] = [].concat(parser[key]);
+						}, this);
 						
 						// Really necessary?
-						scope['@owner'].setTimeout("refresh", function() {
-							me.reflect();
-						}, 200);
+						me.up().setTimeout("refresh", function() {
+							this.reflect();
+						}.bind(this), 200);
 					}
 				},			
 				inheritType: function(xselem, xstype, xstype_name, as_base) {
@@ -346,6 +347,10 @@ $(["devtools/Editor<xml>"], {
 						this.stamp(xsattr);
 						this.inheritAttribute(xselem, xsattr, xstype_name);
 					}, this);
+					asArray(js.get(sf("%sattributeGroup", ns_prefix), xstype)).map(function(xsattributegroup, i) {
+						this.stamp(xsattributegroup);
+						this.inheritAttributeGroup(xselem, xsattributegroup, xstype_name);
+					}, this);
 					asArray(js.get(sf("%ssequence.%selement", ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
 						this.stamp(xsel);
 						this.inheritElement(xselem, xsel, xsel['@_type']);
@@ -358,6 +363,10 @@ $(["devtools/Editor<xml>"], {
 						this.stamp(xsgroup);
 						this.inheritGroup(xselem, xsgroup, xstype_name);
 					}, this);
+					asArray(js.get(sf("%ssequence.%sattributeGroup", ns_prefix, ns_prefix), xstype)).map(function(xsattributegroup, i) {
+						this.stamp(xsattributegroup);
+						this.inheritAttributeGroup(xselem, xsattributegroup, xstype_name);
+					}, this);
 				},
 				inheritAttribute: function(xselem, xsattribute, xsattribute_name) {
 					var ref = xsattribute['@_ref'], type;
@@ -368,17 +377,26 @@ $(["devtools/Editor<xml>"], {
 							this.log(xselem, sf("@_ref %s not found", ref));
 						}
 					} else {
-						type = this.findType(xsattribute['@_type'] || xsattribute_name);
-						this.log(xselem, sf("@_type %s not found", xsattribute['@_type'] || xsattribute_name));
+						if(!(type = this.findType(xsattribute['@_type'] || xsattribute_name))) {
+							this.log(xselem, sf("@_type .%s. not found (380)", xsattribute['@_type'] || xsattribute_name));
+						}
 					}
 
-					js.set(at__ + ".attributes." + name, {
+					var info;
+					js.set(at__ + ".attributes." + name, (info = {
 						namespace: xsattribute[at__].xmlns,
+						reference: !!ref,
 						kind: "attribute", 
 						type: ref || xsattribute['@_type'] || xsattribute_name,
 						'type-resolved': type,
 						xs: xsattribute
-					}, xselem);
+					}), xselem);
+					
+					if(info['type-resolved']) {
+						/*- TODO not foolproof yet */
+						info.namespace_type = js.get(sf("type-resolved.%s.xmlns", at__), info);
+					}
+					
 				},
 				inheritElement: function(xselem, xsel, xsel_name) {
 					var ref = xsel['@_ref'], name = xsel['@_name'] || ref;
@@ -391,11 +409,17 @@ $(["devtools/Editor<xml>"], {
 
 					if(ref) {
 						info.type = ref;
+						info.reference = true;
 						if(!(info['type-resolved'] = this.elems_map[ref])) {
 							this.log(xselem, sf("@_ref %s not found", ref));
 						}
 					} else if(!(info['type-resolved'] = this.findType(info.type))) {
-						this.log(xselem, sf("%s not found", info.type || name));
+						this.log(xselem, sf("type %s not found (415)", info.type || name));
+					}
+					
+					if(info['type-resolved']) {
+						/*- TODO not foolproof yet */
+						info.namespace_type = js.get(sf("type-resolved.%s.xmlns", at__), info);
 					}
 					
 					js.set(at__ + ".attributes." + name, info, xselem);
@@ -416,11 +440,24 @@ $(["devtools/Editor<xml>"], {
 					if((ref = xsattributegroup['@_ref'])) {
 						if((ref = this.findAttributeGroup(ref))) {
 							js.set(at__ + ".ref-resolved", ref, xsattributegroup);
-							this.inheritType(xselem, ref, xsattributegroup['@_ref']);
+							this.inheritAttributeGroup(xselem, ref, xsattributegroup['@_ref']);
 						} else {
 							this.log(xselem, sf("@_ref %s not found", xsattributegroup['@_ref']));
 						}
 					}
+					
+					asArray(js.get(sf("%sattributeGroup", ns_prefix), xsattributegroup)).map(function(xsattrgroup, i) {
+						this.stamp(xsattrgroup);
+						this.inheritAttributeGroup(xselem, xsattrgroup, xsattrgroup['@ref']);
+					}, this);
+
+					["", "xs:", "xsd:"].map(function(ns_prefix) {
+						asArray(js.get(sf("%sattribute", ns_prefix), xsattributegroup)).map(function(xsattr, i) {
+							this.stamp(xsattr);
+							this.inheritAttribute(xselem, xsattr, xsattr['@_name']);
+						}, this);
+					}, this);
+
 				},
 				
 				reflect: function() { 
@@ -473,7 +510,7 @@ $(["devtools/Editor<xml>"], {
 	$(("vcl/data/Array"), "elems"),
 	$(("vcl/data/Array"), "ctypes"),
 	$(("vcl/data/Array"), "stypes"),
-	
+   
     $i(("output"), [
     	$(("vcl/ui/Bar"), [
     		$("vcl/ui/Input", "search-input", { classes: "search-top" }),
