@@ -22,9 +22,6 @@ function req() {
 
 $([], {}, [
 	$i("console", {
-		
-		// height: ["stored"],
-		
 		onEvaluate: function (expr) {
 		    var scope = this.scope(), app = this.app(), me = this;
 		    var pr = this.print.bind(this);

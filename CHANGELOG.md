@@ -1,5 +1,21 @@
+### 2019-02-19 / 1.0.55
+- Added the "*"-tab to `devtools/Editor<xsd>`
+- Several adjustments made to use improved vcl/ui/Console
+- Further improving `devtools/Editor<xsd>`
+	- implemented xlink:href
+	- developing code generation iterations
+		- Writers
+		- Collectos
+
+### 2019-02-13 / 1.0.53
+- Stamping XSD elements in order to correctly regenerate namespace
+
+### 2019-02-11 / 1.0.52
+- Thinking about using `vcl/Component.prototype.print` at application-, workspace- and project/editor- level
+- Improving `devtools/Editor<xsd>` better
+
 ### 2019-02-06 / 1.0.48
-- Advancing `devtoolls/Editor<xsd>`, loading all relevant XSD files in the workspace
+- Advancing `devtools/Editor<xsd>`, loading all relevant XSD files in the workspace
 
 ### 2019-02 / 1.0.45
 - Developing `devtools/Editor<xsd>`, gathering type info like attributes and relationships in order to auto-generate code templates for importing and exporting
