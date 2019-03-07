@@ -1,3 +1,10 @@
+### 2019-03-06 / 1.0.57
+- Wrapping up some coding around imsikb0101-13.5.0
+- Added dblclick handler to open new workspace
+- Improved user-facing messages when dealing with errors and non-existent resources in devtools/Editor<>
+- Improved devtools/Editor<xml> gml()-function
+- Manager.js: Adding all stars
+
 ### 2019-02-19 / 1.0.55
 - Added the "*"-tab to `devtools/Editor<xsd>`
 - Several adjustments made to use improved vcl/ui/Console
@@ -51,7 +58,7 @@
 
 >>![](https://i.snag.gy/7EJca1.jpg)
 
-- Finally using PouchDB as storage layer
+- Finally starting using PouchDB as storage layer
 - Bolder folder
 - Blending in Veldoffice/Velddata
 
