@@ -106,9 +106,16 @@ $(["ui/Form"], {
                         editor.setReadOnly(false);
                         editor.focus();
                         
+                        if(evt && res.status === 404) {
+                        	tab.app().confirm(String.format("404 - %s\n\nThis resource does not exist. Would you like to create it?", resource.uri), function(res) {
+	                        		alert(res);
+	                        	});
+                        }
+                        
                         scope.loading.hide();
                         tab.emit("resource-loaded");
-                        console.error(res);
+                        
+
                     });
             }
         }
@@ -147,8 +154,15 @@ $(["ui/Form"], {
                     resource.revision = res.revision;
                     tab.emit("resource-saved");
                 }).
-                catch(function(err) {
-                    alert(err.message);
+                catch(function(res) {
+                	var msg;
+                	if(res.status === 404) {
+	                    msg = "**WARNING*** - Changes have NOT been saved because the resource is non-existent. Would you like to try to create the resource?";
+                 	} else if(res.status === 409) {
+	                    msg = "**WARNING*** - The resource has not been saved because it has been changed since loading it. Copy the contents of the resource (to the clipboard eg.) before reloading it.";
+                 	}
+                 	alert(String.format("%s\n\n%s - %s", msg, res.status, res.statusText));
+                    scope.loading.hide();
                 });
         }
     }),
