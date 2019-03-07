@@ -25,6 +25,14 @@ var sf = String.format;
 				}, []));
 			});
 			
+			scope.stars.getArray().forEach(function(value, index, arr) {
+				if(value.attribute) {
+					value.documentation = js.get("attribute.xs.annotation.documentation", value) || js.get("attribute.type-resolved.annotation.documentation", value);
+				}
+			});
+			
+			scope.allstars.setSource(scope.stars);
+
 			this.qsa("List<>").forEach(list => list.setOnColumnGetValue(function(column, value, rowIndex, source) {
 				if(value && column._attribute === '@__') {
 					var schema = value.schema.split("/");
@@ -49,11 +57,11 @@ var sf = String.format;
 			
 			function filter(object) {
 				var values = me.getInputValue().toLowerCase().trim().split(" ");
-				var or = values.some(function(value) {
-					return Object.keys(object).some(function(key) {
-						return (""+object[key]).toLowerCase().indexOf(value) !== -1;
-					});
-				});
+				// var or = values.some(function(value) {
+				// 	return Object.keys(object).some(function(key) {
+				// 		return (""+object[key]).toLowerCase().indexOf(value) !== -1;
+				// 	});
+				// });
 				var and = values.every(function(value) {
 					return Object.keys(object).some(function(key) {
 						return (""+object[key]).toLowerCase().indexOf(value) !== -1;
@@ -103,7 +111,7 @@ var sf = String.format;
 	["List", "attributes", { autoColumns: true, visible: false, source: "attrs"} ],
 	["List", "elements", { autoColumns: true, visible: false, source: "elems"} ],
 	["List", "complexTypes", { autoColumns: true, visible: false, source: "ctypes"} ],
-	["List", "allstars", { autoColumns: true, visible: true, source: "stars"} ],
+	["List", "allstars", { autoColumns: true, visible: true, /*source: "stars" in onLoad */} ],
 	["List", "groupsl", { autoColumns: true, visible: false, source: "groups"} ],
 	["List", "attributeGroups", { autoColumns: true, visible: false, source: "agroups"} ],
 	["List", "simpleTypes", { autoColumns: true, visible: false, source: "stypes"} ],
