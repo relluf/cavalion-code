@@ -379,7 +379,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         classes: "bottom",
         onDblClick: function() { 
         	var n = this._controls.length, me = this;
-        	this.app().prompt("Enter name for new workspace:", "ws" + n, function(res) {
+        	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
         		if(res) {
         			me.up().qs("#workspace-needed").execute(res).setSelected(true);
         		}

@@ -224,6 +224,10 @@ $(["ui/Form"], {
     $(("vcl/Action"), "editor-needed", {
         onExecute: function(evt) {
             var scope = this.scope(), tab;
+            if(typeof evt === "string") {
+            	evt = { resource:{ uri: evt } };
+            }
+            
             if(!evt.parents) {
 	    		var tabs = scope['editors-tabs'].getControls();
 	    		tab = tabs.find(function(tab) {
@@ -368,6 +372,14 @@ $(["ui/Form"], {
                     }
                 }, 0);
                 this._owner.emit("state-dirty");
+            },
+            onDblClick: function() {
+            	var me = this;
+            	this.app().prompt("#editor-needed execute", String.format("Resource-%d", Date.now()), function(value) {
+            			if(value !== null) {
+            				me.up().qs("#editor-needed").execute(value).setSelected(true);
+            			}
+            	})
             }
         })
     ])

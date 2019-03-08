@@ -23,7 +23,6 @@ function render() {
     	}.bind(_));
     	_.setContent(markdown.renderJsonML(root));
     });
-    
 }        	
 
 var Handlers = {
@@ -45,7 +44,7 @@ $([], { handlers: Handlers }, [
     	align: "left", width: 475, action: "toggle-source",
     	executesAction: "none",
         onChange: function() { 
-        	this.setTimeout("render", render.bind(this), 500);
+        	this.setTimeout("render", render.bind(this), 750);
         }
     }),
     $("vcl/Action#toggle-source", {
