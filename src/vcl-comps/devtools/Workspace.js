@@ -1,4 +1,4 @@
-"use vcl/ui/FormContainer, vcl/ui/Tab, ace/range, locale";
+"use vcl/ui/Ace, vcl/ui/FormContainer, vcl/ui/Tab, ace/range, locale";
 
 var Tab = {
     render: function () {
@@ -16,7 +16,7 @@ var Tab = {
         if (this.getVar("modified")) {
             html = "* " + html;
         }
-        var ace = this.qsa("vcl/ui/Ace")[0];
+        var ace = this.qs("vcl/ui/Ace");
         if(ace) {
             html += String.format(" <span class='hashcode'>[%s]</span>",
                 ace.hashCode());
@@ -227,6 +227,7 @@ $(["ui/Form"], {
             if(typeof evt === "string") {
             	evt = { resource:{ uri: evt } };
             }
+            if(!evt.resource) { evt.resource = { uri: "" } };
             
             if(!evt.parents) {
 	    		var tabs = scope['editors-tabs'].getControls();
@@ -356,7 +357,7 @@ $(["ui/Form"], {
         $("vcl/ui/Panel", "inspector-panel", { align: "client", visible: false })
     ]),
 
-    $("vcl/ui/Panel#editors", { align: "client", css: "background-color: red;" }, [
+    $("vcl/ui/Panel#editors", { align: "client", css: "background-color: silver;" }, [
         $("vcl/ui/Tabs", "editors-tabs", {
             onChange: function(tab, previous) {
 // TODO tell application to render it's title
