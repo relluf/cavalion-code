@@ -8,7 +8,7 @@ $([], {
 	onLoad: function() {
 		if(EM.prefix !== prefix) {
 			EM.prefix = prefix;
-			this.app().qs("vcl/ui/Console#console").print("loaded-BBT-153", this);
+			this.app().qs("vcl/ui/Console#console").print("loaded-BBT-153 (entities/EM prefixed)", this);
 		}
 		return this.inherited(arguments);
 	}
