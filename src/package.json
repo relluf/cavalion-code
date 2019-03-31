@@ -7,8 +7,10 @@
     "cavalion-blocks": "^0.8.9",
     "cavalion-js": "^1.0.18",
     "cavalion-vcl": "^1.0.33",
+    "dropbox": "^4.0.17",
     "dygraphs": "^2.1.0",
-    "ol": "^5.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "ol": "^5.3.1",
     "veldapps-v7": "^1.0.1",
     "veldoffice-js": "^1.0.28"
   },
