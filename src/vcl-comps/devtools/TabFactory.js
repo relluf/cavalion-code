@@ -5,9 +5,11 @@ var FormContainer = require("vcl/ui/FormContainer");
 
 
 function Tab_oncloseclick() {
-	this._control._form ? 
-		this._control._form.close() : 
-		this.destroy();
+	// this._control._form ? 
+	// 	this._control._form.close() : 
+	// 	this.destroy();
+	this._control._form && this._control._form.destroy();
+	this.destroy();
 }
 
 function FormContainer_dispatchChildEvent(component, name, evt, f, args) {
