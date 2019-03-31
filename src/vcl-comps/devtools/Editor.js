@@ -114,8 +114,6 @@ $(["ui/Form"], {
                         
                         scope.loading.hide();
                         tab.emit("resource-loaded");
-                        
-
                     });
             }
         }
@@ -160,8 +158,11 @@ $(["ui/Form"], {
 	                    msg = "**WARNING*** - Changes have NOT been saved because the resource is non-existent. Would you like to try to create the resource?";
                  	} else if(res.status === 409) {
 	                    msg = "**WARNING*** - The resource has not been saved because it has been changed since loading it. Copy the contents of the resource (to the clipboard eg.) before reloading it.";
+                 	} else {
+                 		console.error(res);
+                 		msg = res.message;
                  	}
-                 	alert(String.format("%s\n\n%s - %s", msg, res.status, res.statusText));
+                 	msg && alert(String.format("%s\n\n%s - %s", msg, res.status, res.statusText));
                     scope.loading.hide();
                 });
         }
