@@ -1,4 +1,4 @@
-"js/Method, vcl/ui/Ace, vcl/ui/Tab, vcl/ui/Panel, vcl/ui/Bar, vcl/ui/FormContainer, util/HotkeyManager";
+"js/Method, vcl/ui/Ace, vcl/ui/Tab, vcl/ui/Panel, vcl/ui/Bar, vcl/ui/FormContainer, util/HotkeyManager, util/net/Url, jquery";
 
 var Ace = require("vcl/ui/Ace");
 var Tab = require("vcl/ui/Tab");
@@ -30,8 +30,8 @@ var handlers = {
         var scope = this.scope();
         var me = this;
         
-        document.body.down("img").style.display = "none";
-        
+        // document.body.qsa("img").map(_ => (_ && _.style.display = "none"));
+
         function createWorkspaces(workspaces) {
             workspaces.forEach(function (workspace) {
                 scope["workspace-needed"].execute({
@@ -80,8 +80,8 @@ var handlers = {
         });
 
         var console_scope = this.app().scope().console.scope();
-        console_scope.toolbar.setVisible(false);
-        console_scope.size_handle.setParent(scope['workspaces-tabs']);
+        console_scope.toolbar && console_scope.toolbar.setVisible(false);
+        console_scope.size_handle && console_scope.size_handle.setParent(scope['workspaces-tabs']);
         
         this.app().qs("vcl/ui/Console#console").print("devtools/Main", this);
 
