@@ -287,18 +287,35 @@ $("vcl/ui/Form", {
                     display: "none"
                 },
                 "&.no-icon >.icon": "width:14px;",
+                //
+            	">.text": "padding-left:0;",
                 ">.icon": {
-                    width: "30px",
+                    width: "32px",
                     "background-repeat": "no-repeat",
-                    "background-position-x": "right",
+                    "background-position-x": "14px",
                     "background-position-y": "2px",
+					"background-size": "16px 16px"
                 },
                 "&.folder >.icon": {
-                    "background-image": "url(/shared/vcl/images/folder16.png)",
+                    // "background-image": "url(https://www.svgrepo.com/show/122150/folder.svg)",
+                    "background-image": "url(https://image.flaticon.com/icons/svg/148/148953.svg)"
                 },
                 "&.file >.icon": {
-                    "background-image": "url(/shared/vcl/images/file16.png)",
+                	// "background-image": "url(https://image.flaticon.com/icons/svg/148/148964.svg)",
+                    "background-image": "url(https://image.flaticon.com/icons/svg/660/660720.svg)",
                 },
+                // ">.icon": {
+                //     width: "30px",
+                //     "background-repeat": "no-repeat",
+                //     "background-position-x": "right",
+                //     "background-position-y": "2px",
+                // },
+                // "&.folder >.icon": {
+                //     "background-image": "url(/shared/vcl/images/folder16.png)",
+                // },
+                // "&.file >.icon": {
+                //     "background-image": "url(/shared/vcl/images/file16.png)",
+                // },
                 ">.text>.desc": {
                     "font-size": "7.5pt",
                     color: "silver",
