@@ -26,7 +26,7 @@ $([], {
         var tab = this.up("vcl/ui/Tab");
         var scope = this.scope();
         
-        var sourceUri = tab.getVar("resource.uri", true);
+        var sourceUri = this.getVar("resource.uri", true);
         var uri = sourceUri.split(".");
         var ext = uri.pop(), index;
         
@@ -92,8 +92,14 @@ $([], {
             var root = scope.host.getControls()[0];
             
             while(root) {
-            	root && root.destroy();
-            	root = scope.host.getControls()[0];
+            	try {
+	            	root && root.destroy();
+	            	root = scope.host.getControls()[0];
+            	} catch(e) {
+            		alert(e.message);
+            		console.error(e);
+            		root = null;
+            	}
             }
             factory.load(scope.ace.getValue(), 
                 function() {
