@@ -147,6 +147,9 @@ $(["devtools/Editor<xml>"], {
 				included_agroups: {},
 				
 				stamp: function(xsel) {
+					if(!js.get(at__ + ".parser", xsel)) {
+						js.set(at__ + ".parser", this, xsel);
+					}
 					if(!js.get(at__ + ".schema", xsel)) {
 						js.set(at__ + ".schema", schema_id, xsel);
 					}
