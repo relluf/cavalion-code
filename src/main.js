@@ -31,6 +31,8 @@ require.config({
         "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
+        
+        "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
 
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
@@ -347,6 +349,14 @@ define("Framework7", [
     
 	return Framework7;
 });
+define("dropbox", [
+	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
+	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
+	"node_modules/dropbox/dist/Dropbox-sdk.js", 
+	"node_modules/dropbox/dist/DropboxTeam-sdk.js"
+], function(dbx) {
+	return dbx;
+});
 define("template7", ["Framework7"], function() {
 	
 	Template7.registerHelper("l", function (str) {
@@ -518,6 +528,20 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 window.locale_base = "locales/";
 window.loc = "en-US";
 
+define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
+	return (Component.prototype.print = function() {
+		var args = js.copy_args(arguments);
+		if(this.qsa("vcl/ui/Console#console").map(function(console, i) {
+			i === 0 && console.print.apply(console, args);
+			return console;
+		}).length === 0) {
+			bubble = this.up();
+			if(typeof bubble.print === "function") {
+				bubble.print.apply(bubble, args);
+			}
+		}
+	});
+});
 define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects"], function(Component, objects) {
 	var V7 = {objects: objects}, property = "cavalion:vcl/Component";
 	js.override(Component.prototype, {
@@ -608,6 +632,7 @@ define(function(require) {
 	var override = require("override");
 
 	require("vcl/Component.read/writeStorage->PouchDB");
+	require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
 	
