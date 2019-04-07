@@ -1,3 +1,8 @@
+### 2019-04-06 / 1.0.58
+- "No more bitmaps"-update
+- Showing min/maxOccurs in (xsd manager)
+- Advancing devtools/Workspace<Veldoffice>
+
 ### 2019-03-06 / 1.0.57
 - Wrapping up some coding around imsikb0101-13.5.0
 - Added dblclick handler to open new workspace
