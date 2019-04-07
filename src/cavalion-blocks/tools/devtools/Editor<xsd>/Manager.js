@@ -27,6 +27,8 @@ var sf = String.format;
 			
 			scope.stars.getArray().forEach(function(value, index, arr) {
 				if(value.attribute) {
+					value.minOccurs = value.attribute.xs['@_minOccurs'] || 1;
+					value.maxOccurs = value.attribute.xs['@_maxOccurs'] || 1;
 					value.documentation = js.get("attribute.xs.annotation.documentation", value) || js.get("attribute.type-resolved.annotation.documentation", value);
 				}
 			});
@@ -81,7 +83,10 @@ var sf = String.format;
 				scope.agroups.setOnFilterObject(!value.length ? null : filter);
 				scope.stars.setOnFilterObject(!value.length ? null : filter);
 			}, 200);
-		} 
+		},
+		"#allstars loaded": function() {
+			//
+		}
 	}
 }, [
 
