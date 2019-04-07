@@ -354,14 +354,6 @@ $(["devtools/Editor<xml>"], {
 						this.stamp(xsattributegroup);
 						this.inheritAttributeGroup(xselem, xsattributegroup, xstype_name);
 					}, this);
-					asArray(js.get(sf("%ssequence.%selement", ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
-						this.stamp(xsel);
-						this.inheritElement(xselem, xsel, xsel['@_type']);
-					}, this);
-					asArray(js.get(sf("%ssequence.%ssequence.%selement", ns_prefix, ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
-						this.stamp(xsel);
-						this.inheritElement(xselem, xsel, xstype_name);
-					}, this);
 					asArray(js.get(sf("%ssequence.%sgroup", ns_prefix, ns_prefix), xstype)).map(function(xsgroup, i) {
 						this.stamp(xsgroup);
 						this.inheritGroup(xselem, xsgroup, xstype_name);
@@ -369,6 +361,14 @@ $(["devtools/Editor<xml>"], {
 					asArray(js.get(sf("%ssequence.%sattributeGroup", ns_prefix, ns_prefix), xstype)).map(function(xsattributegroup, i) {
 						this.stamp(xsattributegroup);
 						this.inheritAttributeGroup(xselem, xsattributegroup, xstype_name);
+					}, this);
+					asArray(js.get(sf("%ssequence.%selement", ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.stamp(xsel);
+						this.inheritElement(xselem, xsel, xsel['@_type']);
+					}, this);
+					asArray(js.get(sf("%ssequence.%ssequence.%selement", ns_prefix, ns_prefix, ns_prefix), xstype)).map(function(xsel, i) {
+						this.stamp(xsel);
+						this.inheritElement(xselem, xsel, xstype_name);
 					}, this);
 				},
 				inheritAttribute: function(xselem, xsattribute, xsattribute_name) {
