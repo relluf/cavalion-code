@@ -1,4 +1,4 @@
-### 2019-04-06 / 1.0.58
+### 2019-04-06 / 1.0.59
 - "No more bitmaps"-update
 - Showing min/maxOccurs in (xsd manager)
 - Advancing devtools/Workspace<Veldoffice>
