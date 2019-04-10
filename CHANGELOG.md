@@ -1,3 +1,6 @@
+### 2019-04-10 / 1.0.60
+- Removed devtools/Workspace<> instances from app.js
+
 ### 2019-04-06 / 1.0.59
 - "No more bitmaps"-update
 - Showing min/maxOccurs in (xsd manager)
