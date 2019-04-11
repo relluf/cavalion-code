@@ -352,8 +352,8 @@ define("Framework7", [
 define("dropbox", [
 	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
 	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
-	"node_modules/dropbox/dist/Dropbox-sdk.js", 
-	"node_modules/dropbox/dist/DropboxTeam-sdk.js"
+	"node_modules/dropbox/dist/Dropbox-sdk", 
+	"node_modules/dropbox/dist/DropboxTeam-sdk"
 ], function(dbx) {
 	return dbx;
 });
