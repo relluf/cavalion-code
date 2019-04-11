@@ -11,6 +11,12 @@ var styles = {
 
 $([], { 
 	css: styles,
+	onActivate: function() {
+		this.setTimeout("activate->refresh", function() {
+			this.down("#session-bar #refresh").execute();
+		}.bind(this), 200);
+		return this.inherited(arguments);
+	},
 	onLoad: function() {
 		var Blocks = require("blocks/Blocks");
 		Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
