@@ -525,9 +525,6 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 	return Blocks;
 });
 
-window.locale_base = "locales/";
-window.loc = "en-US";
-
 define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
 	return (Component.prototype.print = function() {
 		var args = js.copy_args(arguments);
@@ -604,9 +601,11 @@ define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], fu
 	};
 });
 
+window.locale_base = "locales/";
+window.loc = "en-US";
 define(function(require) {
-	require("pace");
 	
+	require("pace");
 	require("stylesheet!styles.less");
 
 	/*- Class/Type System, Tools, etc. */	
@@ -637,59 +636,6 @@ define(function(require) {
 	window.j$ = JsObject.$;
 	
 	ComponentNode.initialize();
-
-	override(Factory, "load", function(inherited) {
-		
-		return function(name, parentRequire, load, config) {
-			
-			var local = name.indexOf("local/") === 0;
-			var app = !local && name.indexOf("app/") === 0;
-
-			if(!local && !app) {
-				// return Factory.load("local/" + name, parentRequire, load, config);
-			}
-
-			// function f(source) {
-			// 	var factory = new Factory(parentRequire, name, Factory.makeTextUri(name) + ".LOCAL");
-			// 	factory.load(source, function() {
-			// 		load(factory, source);
-			// 	});
-			// }
-			inherited.apply(this, [name, parentRequire, load, config]);
-			
-			// [].db.get("block:" + name, {}, function(err, doc) {
-			// 	if(!err) {
-			// 		function loaded_rev(factory, source) {
-			// 			if(doc.source !== source) {
-			// 				[].db.put({
-			// 					_id: "block:" + name,
-			// 					_rev: doc._rev,
-			// 					source: source,
-			// 					uri: factory._uri
-			// 				}).then(function() {
-			// 					console.log("updated", name);
-			// 				});
-			// 			}
-			// 			return load.apply(this, arguments);
-			// 		}
-					
-			// 		// inherited.apply(this, [name, parentRequire, loaded_rev, config]);
-			// 		f(doc.source);
-			// 	} else {
-			// 		function loaded(factory, source) {
-			// 			[].db.put({
-			// 				_id: "block:" + name,
-			// 				source: source,
-			// 				uri: factory._uri
-			// 			});
-			// 			return load.apply(this, arguments);
-			// 		}
-					
-			// 		inherited.apply(this, [name, parentRequire, loaded, config]);
-			// 	}
-			// });
-		};
-	});
 
 	var app, url = new Url(); 
 	if((app = url.getParamValue("app"))) {
