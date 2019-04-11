@@ -1,4 +1,5 @@
-### 2019-04-11 / 1.0.61
+### 2019-04-11 / 1.0.62
+- Logging version during startup
 - Tuning storage for devtools/Workspace<> settings
 
 ### 2019-04-10 / 1.0.60

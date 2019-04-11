@@ -83,7 +83,8 @@ var handlers = {
         console_scope.toolbar && console_scope.toolbar.setVisible(false);
         console_scope.size_handle && console_scope.size_handle.setParent(scope['workspaces-tabs']);
         
-        this.app().qs("vcl/ui/Console#console").print("devtools/Main", this);
+        var version = document.qs("html head script").text.split("\n")[1].split("\"")[3] || "from source";
+        this.app().print("devtools/Main - " + version, this);
 
         return this.inherited(arguments);
     },
