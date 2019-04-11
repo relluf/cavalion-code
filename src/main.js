@@ -630,7 +630,7 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
-	require("vcl/Component.read/writeStorage->PouchDB");
+	// require("vcl/Component.read/writeStorage->PouchDB");
 	require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
