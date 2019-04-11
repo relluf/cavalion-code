@@ -539,7 +539,7 @@ define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
 		}
 	});
 });
-define("vcl/Component.read/writeStorage->PouchDB", ["vcl/Component", "v7/objects"], function(Component, objects) {
+define("vcl/Component.read/writeStorage->V7.objects", ["vcl/Component", "v7/objects"], function(Component, objects) {
 	var V7 = {objects: objects}, property = "cavalion:vcl/Component";
 	js.override(Component.prototype, {
         readStorage: function (key, callback, errback) {
@@ -630,7 +630,7 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
-	// require("vcl/Component.read/writeStorage->PouchDB");
+	// require("vcl/Component.read/writeStorage->V7.objects");
 	require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;

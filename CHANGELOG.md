@@ -1,3 +1,6 @@
+### 2019-04-11 / 1.0.61
+- Tuning storage for devtools/Workspace<> settings
+
 ### 2019-04-10 / 1.0.60
 - Removed devtools/Workspace<> instances from app.js
 
