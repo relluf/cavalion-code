@@ -4,7 +4,7 @@ var Method = require("js/Method");
 var Resources = require("devtools/Resources");
 var NavigatorNode = require("devtools/NavigatorNode");
 
-var needsParent = ["src", "build", "vcl-comps", "css", "images", "img", "lib", "pages"];
+var needsParent = ["src", "build", "vcl-comps", "css", "images", "img", "lib", "pages", "cavalion-blocks"];
 function getNodeText(uri, usedNames) {
 	var r = []; usedNames = usedNames || [];
 	r.push((uri = uri.split("/")).pop());
@@ -117,7 +117,7 @@ $("vcl/ui/Form", {
 }, [
     $("vcl/data/Array", "search-results", {}),
     
-    $("vcl/Action", "search-open", {
+    $(("vcl/Action"), "search-open", {
         onExecute: function (evt) {
             var list = this.scope('search-list');
             var a = this.up("devtools/Workspace<>:root").down("#editor-needed");
@@ -126,7 +126,7 @@ $("vcl/ui/Form", {
             }, this);
         }
     }),
-    $("vcl/Action", "search-focus", {
+    $(("vcl/Action"), "search-focus", {
         hotkey: "MetaCtrl+191|Alt+F",
         onExecute: function () {
             var scope = this.getScope();
@@ -140,7 +140,7 @@ $("vcl/ui/Form", {
             this.setVar("previous", now);
         }
     }),
-    $("vcl/Action", "search", {
+    $(("vcl/Action"), "search", {
         onExecute: function () {
             var scope = this.getScope();
             var text = scope['search-input'].getInputValue();
@@ -177,7 +177,7 @@ $("vcl/ui/Form", {
                     }));
         }
     }),
-    $("vcl/Action", "resource-focus", {
+    $(("vcl/Action"), "resource-focus", {
         onExecute: function(evt) {
             var scope = this.getScope();
             var names = evt.resource.uri.split("/");
@@ -223,8 +223,8 @@ $("vcl/ui/Form", {
             
         }
     }),
-    $("vcl/Action", "resource-new", {}),
-    $("vcl/Action", "resource-delete", {}),
+    $(("vcl/Action"), "resource-new", {}),
+    $(("vcl/Action"), "resource-delete", {}),
     $("vcl/ui/Bar", "search-bar", { classes: "no-border" }, [
         $("vcl/ui/Input", "search-input", {
             placeholder: "Filter (⌥+F)",
@@ -670,7 +670,8 @@ $("vcl/ui/Form", {
             content: "#",
             attribute: ".",
             onGetValue: function (value, row, source) {
-                return [String.format("%H <span> - %H</span>", value.name, value.uri)];
+                return [String.format("%H <span> - %H</span>", value.name, 
+                	value.uri.replace(/^Workspaces\/[^\/]*\//, "../"))];
             },
             onRenderCell: function (cell, value, column, row, source, orgValue) {
                 var classes = cell.className.split(" ");

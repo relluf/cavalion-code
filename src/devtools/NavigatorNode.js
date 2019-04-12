@@ -47,7 +47,10 @@ define(function(require) {
                 //node.setText(root ? String.format("%H <span class='desc'>- %H</span>", item.name, item.uri) : item.name);
                 var item = this.vars("resource") || {};
                 if (this.hasClass("root")) {
-                    this._nodes.text.innerHTML = String.format("%H&nbsp;&nbsp;<span class='desc'>%H</span>", item.name, item.uri);
+                    this._nodes.text.innerHTML = String.format(
+                    	"%H&nbsp;&nbsp;<span class='desc'>%H</span>", 
+                    	item.name, 
+                    	item.uri.replace(/^Workspaces\/[^\/]*\//, "../"));
                 } else {
                     this._nodes.text.innerHTML = String.format("%H", item.name);
                 }
