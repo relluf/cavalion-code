@@ -4,18 +4,15 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "cavalion-blocks": "^0.8.9",
+    "cavalion-blocks": "^0.9.3",
     "cavalion-js": "^1.0.19",
     "cavalion-vcl": "^1.0.34",
     "dropbox": "^4.0.17",
     "dygraphs": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",
-    "ol": "^5.3.1",
+    "ol": "^5.3.2",
     "veldapps-v7": "^1.0.1",
-    "veldoffice-js": "^1.0.28"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.3"
+    "veldoffice-js": "^1.0.29"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
