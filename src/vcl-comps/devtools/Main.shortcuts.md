@@ -10,6 +10,7 @@
 - **Ctrl+Alt+Cmd+[]** - Move tab active workspace 
 - **Ctrl+F11** - Show/Hide Tabs
 - **Ctrl+Alt+F11** - Toggle Workspace Tabs
+- **Ctrl+Alt+Plus** - Add Workspace
 
 ## Navigator
 - **F5** - Refresh children focused node or root node

@@ -391,6 +391,11 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         }
     }),
     
+    $("vcl/Action", "workspaces-tabs-dblclick", {
+		hotkey: "Ctrl+Alt+187",
+		onExecute: function() { this.scope("workspaces-tabs").ondblclick({}); }
+    }),
+    
     $("vcl/Action", "open_form", {
         left: 96,
         onExecute: function onExecute(uri, options) {
