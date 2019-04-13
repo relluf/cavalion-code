@@ -106,7 +106,7 @@ $("vcl/ui/Form", {
         	// console.log("fetched uris", json);
 	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
             me.apply("Resources.index");
-            scope.tree.setTimeout("refresh", 100);
+            // scope.tree.setTimeout("refresh", 100);
             // scope.tree.dispatch("nodesneeded", null);
         });
         
@@ -267,7 +267,7 @@ $("vcl/ui/Form", {
             }
         })
     ]),
-    $("vcl/ui/Tree", "tree", {
+    $(("vcl/ui/Tree"), "tree", {
         css: {
 			".{Node}.root-invisible": {
 				"> *:not(ol)": "display:none;",
@@ -284,6 +284,7 @@ $("vcl/ui/Form", {
                 ">.checkbox": {
                     position: "absolute",
                     right: "4px",
+                    "z-index": "1",
                     display: "none"
                 },
                 "&.no-icon >.icon": "width:14px;",
@@ -327,7 +328,7 @@ $("vcl/ui/Form", {
 	            	}
 	            }
             },
-            "&.checking .{./Node}.folder >.checkbox": {
+            "&.checking .{./Node}.folder:not(.favorite):not(.root-invisible) >.checkbox": {
                 display: "block"
             },
             "&.busy": {
@@ -545,15 +546,43 @@ $("vcl/ui/Form", {
 	   		vars: { resource: { type: "Folder", uri: "", name: "Remote Files" } },
     		classes: "root-invisible", // classes: "root",
     		expanded: true,
+    		onLoad: function() {
+    			this.vars("static-nodes", [].concat(this._controls));
+    		},
 	        onNodesNeeded: function (parent) {
 	            var owner = this._owner;
 	            var root = parent === this;
 	
-	            var uri = parent.getVar("resource.uri") || "";
-	            var control = parent.getVar("control");
-	            var uris = this._owner.getVar("uris");
+	            var uri = parent.vars("resource.uri") || "";
+	            var control = parent.vars("control");
+	            var uris = this._owner.vars("uris");
 	            
-	            if(!uris) return;
+	if(!uris) return;
+	if(!uris.hasOwnProperty("splice")) {
+		/* OMG, ugly hack, what was wrong with me?! */
+	    Method.override(uris, {
+	        splice: function(index, count) {
+	        	for(var i = 0; i < count; ++i) {
+	        		var node = uriNodes[this[index + i]];
+	        		node && node.destroy();
+	        	}
+	        	return Method.callInherited(this, arguments);
+	        },
+	        push: function() {
+	        	for(var i= 0; i < arguments.length; ++i) {
+	        		createUriNode(arguments[i]).setIndex(0);
+	        	}
+	        	return Method.callInherited(this, arguments);
+	        }
+	    });
+	}
+	            
+	            var favorites = this.vars(["favorites", true]) || [];
+	            favorites.forEach(function(uri) {
+	            	if(uris.indexOf(uri) === -1) {
+	            		Array.prototype.push.apply(uris, [uri]);
+	            	}
+	            });
 	            
 	            uris = uris.sort(function(i1, i2) {
 	            	return i1 < i2 ? -1 : 1;
@@ -563,6 +592,7 @@ $("vcl/ui/Form", {
 		            var uriNodes = {};
 					function createUriNode(uri) {
 		                var node = new NavigatorNode(owner);
+		                var favorite = favorites.indexOf(uri) !== -1;
 		                
 		                uri = uri.split(";");
 		                
@@ -573,6 +603,7 @@ $("vcl/ui/Form", {
 		                };
 		
 		                root && node.addClass("root");
+		                favorite && node.addClass("favorite");
 		                node.setVar("resource", item);
 		                
 		                node.setChecked(true);
@@ -582,22 +613,6 @@ $("vcl/ui/Form", {
 		            }            
 		            
 		            uris.forEach(createUriNode);
-		            
-		            Method.override(uris, {
-			            splice: function(index, count) {
-			            	for(var i = 0; i < count; ++i) {
-			            		var node = uriNodes[this[index + i]];
-			            		node && node.destroy();
-			            	}
-			            	return Method.callInherited(this, arguments);
-			            },
-			            push: function() {
-			            	for(var i= 0; i < arguments.length; ++i) {
-			            		createUriNode(arguments[i]).setIndex(0);
-			            	}
-			            	return Method.callInherited(this, arguments);
-			            }
-		            });
 	            }
 	            
 	            var r = this.apply("Resources.list", [uri]).
@@ -640,7 +655,7 @@ $("vcl/ui/Form", {
 	        }
     	})
     ]),
-    $("vcl/ui/List", "search-list", { action: "search-open", source: "search-results", visible: false,
+    $(("vcl/ui/List"), "search-list", { action: "search-open", source: "search-results", visible: false,
         css: {
             "background-color": "white",
             ".{./ListHeader}": {
