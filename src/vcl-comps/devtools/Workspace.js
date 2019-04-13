@@ -104,25 +104,8 @@ var Utils = {
 };
 
 $(["ui/Form"], {
-    onActivate: function() {
-    	/*- TODO describe why a timeout is necessary */
-        this.getApp().setTimeout({
-            name: "devtools/Workspace<>.activate", 
-            f: function(me) {
-            	// debugger;
-                me.qsa(["vcl/ui/Tab[uri=devtools/Workspace][selected=true]", 
-                    "vcl/ui/Ace"].join(" ")).focus();
-            }, 
-            ms: 200, 
-            args: [this]
-        });
-        this.setSelected(true);
-    },
-    onDeactivate: function() {
-    	this.setSelected(false);
-    },
     onLoad: function() {
-        var scope = this.getScope();
+        var scope = this.scope();
         this.readStorage("state", function(value) {
             Utils.setState(JSON.parse(value) || {workspace:0}, scope);
         });
@@ -141,7 +124,31 @@ $(["ui/Form"], {
         	return this.inherited(arguments);
         });
         
+        this.open = function(evt) {
+        	if(typeof evt === "string") {
+        		evt = {resource:{uri: evt}, selected: true};
+        	}
+        	scope['editor-needed'].execute(evt);
+        };
+        
         return this.inherited(arguments);
+    },
+    onActivate: function() {
+    	/*- TODO describe why a timeout is necessary */
+        this.getApp().setTimeout({
+            name: "devtools/Workspace<>.activate", 
+            f: function(me) {
+            	// debugger;
+                me.qsa(["vcl/ui/Tab[uri=devtools/Workspace][selected=true]", 
+                    "vcl/ui/Ace"].join(" ")).focus();
+            }, 
+            ms: 200, 
+            args: [this]
+        });
+        this.setSelected(true);
+    },
+    onDeactivate: function() {
+    	this.setSelected(false);
     }
 }, [
     $(["devtools/TabFactory"], "editor-factory", {
