@@ -112,7 +112,7 @@ var sf = String.format;
 		["Tab", { control: "groupsl", text: locale("-/Group.plural") }]
 	]],
 	
-	["Console", "console", { visible: false }],
+	
 	["List", "attributes", { autoColumns: true, visible: false, source: "attrs"} ],
 	["List", "elements", { autoColumns: true, visible: false, source: "elems"} ],
 	["List", "complexTypes", { autoColumns: true, visible: false, source: "ctypes"} ],
@@ -120,5 +120,6 @@ var sf = String.format;
 	["List", "groupsl", { autoColumns: true, visible: false, source: "groups"} ],
 	["List", "attributeGroups", { autoColumns: true, visible: false, source: "agroups"} ],
 	["List", "simpleTypes", { autoColumns: true, visible: false, source: "stypes"} ],
-
+	
+	["Console", "console", { visible: false }]
 ]];
