@@ -1,11 +1,13 @@
 function ls(k) { var r = localStorage[k]; if(r) { console.log(k, r); return r; } }
-var cavalion_js = ls('cavalion-js-path') || "node_modules/cavalion-js/src/";
-var cavalion_vcl = ls('cavalion-vcl-path') || "node_modules/cavalion-vcl/src";
-var cavalion_blocks = ls('cavalion-blocks-path') || "node_modules/cavalion-blocks/src";
-var veldoffice_js = ls('veldoffice-js-path') || "node_modules/veldoffice-js/src/";
+
+var cavalion_js = ls('cavalion-js-path') || "../lib/node_modules/cavalion-js/src/";
+var cavalion_vcl = ls('cavalion-vcl-path') || "../lib/node_modules/cavalion-vcl/src";
+var cavalion_blocks = ls('cavalion-blocks-path') || "../lib/node_modules/cavalion-blocks/src";
+var veldapps_v7 = ls('veldapps-v7-path') || "../lib/node_modules/veldapps-v7/src";
+var veldoffice_js = ls('veldoffice-js-path') || "../lib/node_modules/veldoffice-js/src/";
+var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
 less = { logLevel: 0 };
-
 require.config({
     paths: {
         "cavalion-blocks/$HOME": "/home",
@@ -45,32 +47,32 @@ require.config({
 		"leaflet": veldoffice_js + "leafletjs.com",
 
 		/*- bower */
-        "ace": "bower_components/ace/lib/ace",
-        "less": "bower_components/less/dist/less",
-        "jquery": "bower_components/jquery/dist/jquery",
-        "moment": "bower_components/moment/moment",
-        "moment-locale": "bower_components/moment/locale",
-        // "csv-js": "bower_components/CSV-JS/csv",
-        // "relational-pouch": "bower_components/relational-pouch/dist/pouchdb.relational-pouch",
-        "backbone": "bower_components/backbone/backbone",
-        "underscore": "bower_components/underscore/underscore",
-        "js-yaml": "bower_components/js-yaml/dist/js-yaml",
+        "ace": "../lib/bower_components/ace/lib/ace",
+        "less": "../lib/bower_components/less/dist/less",
+        "jquery": "../lib/bower_components/jquery/dist/jquery",
+        "moment": "../lib/bower_components/moment/moment",
+        "moment-locale": "../lib/bower_components/moment/locale",
+        // "csv-js": "../lib/bower_components/CSV-JS/csv",
+        // "relational-pouch": "../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        "backbone": "../lib/bower_components/backbone/backbone",
+        "underscore": "../lib/bower_components/underscore/underscore",
+        "js-yaml": "../lib/bower_components/js-yaml/dist/js-yaml",
         
         /*- dojo */
-        "dojo": "bower_components/dojo",
-        "dgrid": "bower_components/dgrid",
-        "dstore": "bower_components/dstore",
+        "dojo": "../lib/bower_components/dojo",
+        "dgrid": "../lib/bower_components/dgrid",
+        "dstore": "../lib/bower_components/dstore",
 
 		/*- amcharts3 */
-        "amcharts": "bower_components/amcharts3/amcharts/amcharts",
-        "amcharts.funnel": "bower_components/amcharts3/amcharts/funnel",
-        "amcharts.gauge": "bower_components/amcharts3/amcharts/gauge",
-        "amcharts.pie": "bower_components/amcharts3/amcharts/pie",
-        "amcharts.radar": "bower_components/amcharts3/amcharts/radar",
-        "amcharts.serial": "bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "bower_components/amcharts3/amcharts/xy",
+        "amcharts": "../lib/bower_components/amcharts3/amcharts/amcharts",
+        "amcharts.funnel": "../lib/bower_components/amcharts3/amcharts/funnel",
+        "amcharts.gauge": "../lib/bower_components/amcharts3/amcharts/gauge",
+        "amcharts.pie": "../lib/bower_components/amcharts3/amcharts/pie",
+        "amcharts.radar": "../lib/bower_components/amcharts3/amcharts/radar",
+        "amcharts.serial": "../lib/bower_components/amcharts3/amcharts/serial",
+        "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy",
 
-        "fast-xml-parser": "fast-xml-parser/parser",
+        "fast-xml-parser": "../lib/fast-xml-parser/parser",
 
 		"dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph"
         
@@ -122,6 +124,8 @@ require.config({
     }
 });
 
+window.locale_base = "locales/";
+window.loc = "en-US";
 window.req = function req() {
 	if(arguments.length == 1) {
     	try {
@@ -133,9 +137,8 @@ window.req = function req() {
 	    require(modules, resolve, reject);
 	});
 };
-var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
-define("pace", ["bower_components/PACE/pace", "stylesheet!bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
+define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			restartOnRequestAfter: true, 
 			restartOnPushState: true,
@@ -268,11 +271,11 @@ define("Framework7/plugins/esc-is-back", [], function() {
 	return selectors;
 });
 define("Framework7", [
-	"bower_components/framework7/dist/js/framework7", 
+	"../lib/bower_components/framework7/dist/js/framework7", 
 	"Framework7/plugins/auto-back-title", "Framework7/plugins/esc-is-back",
-	"stylesheet!bower_components/font-awesome/css/font-awesome.css",
-	"stylesheet!bower_components/framework7/dist/css/framework7.css", 
-	"stylesheet!bower_components/framework7-icons/css/framework7-icons.css"
+	"stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css",
+	"stylesheet!../lib/bower_components/framework7/dist/css/framework7.css", 
+	"stylesheet!../lib/bower_components/framework7-icons/css/framework7-icons.css"
 ], function(Framework7) {
 	
 	Template7.registerHelper("l", function (str) {
@@ -350,10 +353,10 @@ define("Framework7", [
 	return Framework7;
 });
 define("dropbox", [
-	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
-	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
 	"node_modules/dropbox/dist/Dropbox-sdk", 
 	"node_modules/dropbox/dist/DropboxTeam-sdk"
+	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
+	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
 ], function(dbx) {
 	return dbx;
 });
@@ -449,9 +452,8 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 	return L;
 });
 
-define("pouchdb", [
-	"bower_components/pouchdb/dist/pouchdb", "bower_components/pouchdb-find/dist/pouchdb.find", 
-	"bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], 
+define("pouchdb", ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
+	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], 
 function(pouchdb, find, relational, memory) {
 	
 	/*- hacked pouchdb.memory */
@@ -463,10 +465,10 @@ function(pouchdb, find, relational, memory) {
 	pouchdb.plugin(memory);
 	return pouchdb;
 });
-define("font-awesome", ["stylesheet!bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
+define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
-define("markdown", ["bower_components/markdown/lib/markdown"], function() {
+define("markdown", ["../lib/bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 define("override", function() {
@@ -601,8 +603,6 @@ define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], fu
 	};
 });
 
-window.locale_base = "locales/";
-window.loc = "en-US";
 define(function(require) {
 	
 	require("pace");
