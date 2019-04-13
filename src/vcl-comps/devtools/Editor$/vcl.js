@@ -90,7 +90,8 @@ $([], {
                         			c.setParent(scope.host);
                         		}
                         	});
-                        }     
+                        }
+                        scope.host.up("devtools/Workspace<>").print(root);
                     } catch(e) {
                         alert(e.message); 
                     }
@@ -101,6 +102,7 @@ $([], {
                 	if(e instanceof Error) {
                     	console.error(e);
                 		alert(e.message);
+                		scope.host.up().print(e);
                 	}
 				});
 
