@@ -14,6 +14,14 @@ define("veldoffice/models", ["home/Projects/V7/src/node_modules/veldoffice-js/sr
 });
 
 $([], {
+	vars: {
+		favorites: [
+			"Workspaces/veldapps.com/Veldoffice/veldoffice-rapportage-scripts",
+			"Workspaces/veldapps.com/Veldoffice/veldoffice-rapportage-vcl",
+			"Workspaces/veldapps.com/veldapps-vo",
+			"Workspaces/veldapps.com/veldoffice-js/src/veldapps.com/veldoffice"
+		]
+	},
 	onLoad: function() {
 		window.veldapps = { EM: EM, Session: Session };
 		window.EM = EM;
