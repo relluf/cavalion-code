@@ -1,6 +1,6 @@
-"bower_components/papaparse/papaparse";
+"lib/bower_components/papaparse/papaparse";
 
-var Parser = require("bower_components/papaparse/papaparse");
+var Parser = require("lib/bower_components/papaparse/papaparse");
 
 $([], {
     onLoad: function() {
