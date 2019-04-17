@@ -1,1 +1,0 @@
-$(["devtools/Workspace<Veldoffice>"], {}, []);
