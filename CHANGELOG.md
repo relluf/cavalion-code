@@ -1,3 +1,21 @@
+### 2019-04-16 / 1.0.64
+- Console: edit(ws)
+- Workspace<>: favorites!
+- Fixing some lib issues with bower_components
+- Workspace/App: working on Component.prototype.open() implemention 
+
+### 2019-04-13 / 1.0.63
+- Refactoring modules: js, vcl, blocks, code, devtools, ide
+- Refactoring project structure to match layout of V7
+	- lib/bower_components
+	- lib/node_modules
+	- src/cavalion-blocks/
+	- src/vcl-comps/
+- ui/forms/util/Console: adding ws, ace, host, root, etc.
+- Implemented Component.prototype.open() in devtools/Workspace->editor-needed and devtools/Main->workspace-needed
+- Doing some work on devtools/Navigator and devtools/Workspace<> in order to support "workspace specific favorites"
+- Introducing `setPaths()` in ui/forms/util/Console
+
 ### 2019-04-11 / 1.0.62
 - Logging version during startup
 - Tuning storage for devtools/Workspace<> settings

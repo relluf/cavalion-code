@@ -1,7 +1,6 @@
 .DS_Store
 .svn
-src/bower_components
-src/bower_components1
-src/node_modules
+lib/bower_components
+lib/node_modules
 node_modules
 build/
