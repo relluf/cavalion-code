@@ -1,6 +1,6 @@
-"use js";
+"use vcl/Component";
 
-var js = require("js");
+var Component = require("vcl/Component");
 
 function setPaths() {
 	localStorage.setItem("cavalion-js-path", "/home/Workspaces/cavalion.org/cavalion-js/src/");
@@ -10,6 +10,19 @@ function setPaths() {
 	localStorage.setItem("cavalion-ide-path", "/home/Workspaces/cavalion.org/cavalion-ide/src/");
 	localStorage.setItem("veldoffice-js-path", "/home/Workspaces/veldapps.com/veldoffice-js/src/");
 	localStorage.setItem("veldapps-v7-path", "/home/Workspaces/veldapps.com/V7/src/");
+}
+function edit(component) {
+	var uri = component && component._uri;
+	var app = component && component.app();
+	
+	if(typeof uri === "string" && uri.indexOf("devtools/Workspace<") === 0) {
+		var keys = Component.getKeysByUri(uri);
+		return component.app().open("code").then(function(workspace) {
+			return workspace.open("Workspaces/cavalion.org/cavalion-devtools/src/vcl-comps/devtools/Workspace$/" + keys.specializer + ".js");
+			// .then(function(editor) {
+			// });
+		});
+	}
 }
 
 $([], {}, [
