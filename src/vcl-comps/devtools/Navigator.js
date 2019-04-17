@@ -577,7 +577,7 @@ $("vcl/ui/Form", {
 	    });
 	}
 	            
-	            var favorites = this.vars(["favorites", true]) || [];
+	            var favorites = this.vars(["#navigator favorites", true]) || [];
 	            favorites.forEach(function(uri) {
 	            	if(uris.indexOf(uri) === -1) {
 	            		Array.prototype.push.apply(uris, [uri]);
@@ -607,7 +607,7 @@ $("vcl/ui/Form", {
 		                node.setVar("resource", item);
 		                
 		                node.setChecked(true);
-		                node.setExpandable(true);
+		                node.setExpandable(item.type === "Folder");//true);
 		                node.setParent(parent);
 		                return (uriNodes[uri[1]] = node);
 		            }            
