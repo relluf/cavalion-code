@@ -7,7 +7,7 @@ var FormContainer = require("vcl/ui/FormContainer");
 
 var handlers = {
 	loaded: function() {
-		var scope = this.scope();
+		var scope = this.scope(), me = this;
 		this.open = function(uri, opts) {
 			if(typeof uri === "string") {
 				opts = opts || {};
@@ -16,17 +16,28 @@ var handlers = {
 				opts = uri;
 				uri = opts.uri;
 			}
-			if(opts.modal === true) {
-				alert("don't know about modal");
-				scope.openform_modal.execute(opts);
-			} else {
-				// this.down("devtools/Main<>:root #open_form").execute(opts.uri, opts);
-				if(!opts.workspace) {
-					opts.workspace = {name: opts.name || uri};
-					opts.selected = true;
+			return new Promise(function(resolve, reject) {
+				if(opts.modal === true) {
+					alert("don't know about modal");
+					resolve(scope.openform_modal.execute(opts));
+				} else {
+					// this.down("devtools/Main<>:root #open_form").execute(opts.uri, opts);
+					if(!opts.workspace) {
+						opts.workspace = {name: opts.name || uri};
+						opts.selected = true;
+					}
+					var tab = me.down("devtools/Main<>:root #workspace-needed").execute(opts);
+					var ws = tab._control && tab._control._form;
+					if(ws) {
+						resolve(ws);
+					} else {
+						tab._control.once("formloaded", function() {
+							ws = tab._control && tab._control._form;
+							resolve(ws);
+						});
+					}
 				}
-				this.down("devtools/Main<>:root #workspace-needed").execute(opts);
-			}
+			});
 		};
 	}
 };

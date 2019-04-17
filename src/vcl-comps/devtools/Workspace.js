@@ -354,7 +354,7 @@ $(["ui/Form"], {
             $(["ui/controls/SizeHandle"], { classes: "horizontal", vars: "control: left-sidebar;" })
         ]),
 
-        $(["./Navigator"], "navigator"),
+        $(["./Navigator<>"], "navigator"),
         $(["./Bookmarks"], "bookmarks", { align: "client", visible: false }),
         $(["./Outline"], "outline", { _align: "client", visible: false }),
         $(["./OpenTabs"], "openTabs", { visible: false }),
