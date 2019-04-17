@@ -14,6 +14,7 @@ require.config({
         "home": "/home",
         // "v7": "node_modules/veldapps-v7/src/v7",
         "v7": "/home/Projects/V7/src/v7",
+        "lib": "../lib",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
@@ -353,8 +354,8 @@ define("Framework7", [
 	return Framework7;
 });
 define("dropbox", [
-	"node_modules/dropbox/dist/Dropbox-sdk", 
-	"node_modules/dropbox/dist/DropboxTeam-sdk"
+	"../lib/node_modules/dropbox/dist/Dropbox-sdk", 
+	"../lib/node_modules/dropbox/dist/DropboxTeam-sdk"
 	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
 	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
 ], function(dbx) {
@@ -528,18 +529,30 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 });
 
 define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
-	return (Component.prototype.print = function() {
-		var args = js.copy_args(arguments);
-		if(this.qsa("vcl/ui/Console#console").map(function(console, i) {
-			i === 0 && console.print.apply(console, args);
-			return console;
-		}).length === 0) {
-			bubble = this.up();
-			if(typeof bubble.print === "function") {
-				bubble.print.apply(bubble, args);
+	// return (Component.prototype.print = function() {
+	// 	var args = js.copy_args(arguments);
+	// 	if(this.qsa("vcl/ui/Console#console").map(function(console, i) {
+	// 		i === 0 && console.print.apply(console, args);
+	// 		return console;
+	// 	}).length === 0) {
+	// 		bubble = this.up();
+	// 		if(typeof bubble.print === "function") {
+	// 			bubble.print.apply(bubble, args);
+	// 		}
+	// 	}
+	// });
+	js.override(Component.prototype, {
+		print: function() {
+			if(this._isRoot) {
+				var console = this.down("vcl/ui/Console#console");
+				if(console) {
+					return console.print.apply(console, arguments);
+				}
 			}
+			return this.inherited(arguments);
 		}
 	});
+	
 });
 define("vcl/Component.read/writeStorage->V7.objects", ["vcl/Component", "v7/objects"], function(Component, objects) {
 	var V7 = {objects: objects}, property = "cavalion:vcl/Component";
