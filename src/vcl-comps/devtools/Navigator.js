@@ -585,7 +585,8 @@ $("vcl/ui/Form", {
 	            });
 	            
 	            uris = uris.sort(function(i1, i2) {
-	            	return i1 < i2 ? -1 : 1;
+	            	var e1 = i1.endsWith(";File"), e2 = i2.endsWith(";File");
+	            	return e1 === e2 ? i1 < i2 ? -1 : 1 : e1 ? 1 : -1;
 	            });
 	            
 	            if(root) {

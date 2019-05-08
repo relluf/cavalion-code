@@ -341,7 +341,7 @@ $(["ui/Form"], {
             // 	.execute({resource: resource}, this);
         }
     }),
-
+    
     $("vcl/ui/Panel#left-sidebar", { align: "left", css: "border-right: 1px solid gray;", width: 375 }, [
     	
         $("vcl/ui/Tabs#left-sidebar-tabs", [

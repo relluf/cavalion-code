@@ -2,6 +2,7 @@
 
 var Ace = require("vcl/ui/Ace");
 var Tab = require("vcl/ui/Tab");
+var Control = require("vcl/Control");
 var Method = require("js/Method");
 var HotkeyManager = require("util/HotkeyManager");
 var Url = require("util/net/Url");
@@ -123,20 +124,20 @@ var handlers = {
 		function create_callback_sidebar(hotkey, index) {
 			return function(evt, type) {
 				evt.preventDefault();
-				var sidebar = me.app().qs("devtools/Workspace<>:root:selected #left-sidebar");
-				if(sidebar && !sidebar.isVisible()) {
+				
+				var ws = me.down("devtools/Workspace<>:root:selected");
+				var sidebar = ws.down("#left-sidebar");
+				if(!sidebar.isVisible()) {
 					sidebar.show();
 				}
-				
-				var tabs = me.down("devtools/Workspace<>:root[selected=true]")
-					.down("#left-sidebar-tabs");
-				var tab = tabs.qsa("< vcl/ui/Tab")[index];
-				if(tab.isSelected()) {
-					var control = js.get("_control._activeControl", tab);
-					if(control) control.setFocus();
-				} else {
+				sidebar.update(function() {
+					var tabs = me.down("devtools/Workspace<>:root:selected #left-sidebar-tabs");
+					var tab = tabs._controls.filter(_ => _ instanceof Control)[index];
 					tab.setSelected(true);
-				}
+					tab.update(function() {
+						focusSidebar(ws, sidebar);	
+					});
+				});		
 			};
 		}
 		function create_callback_activateWS(hotkey, index) {
@@ -171,12 +172,15 @@ var handlers = {
 		}
 		
 		function toggleSidebar(evt) {
-			var q = me.app().qsa("devtools/Workspace<>:root:selected #left-sidebar");
-			if(q.length && q[0].isVisible()) {
-				q.hide();
+			var ws = me.qs("devtools/Workspace<>:root:selected");
+			var sidebar = ws.qs("#left-sidebar");
+			if(sidebar.isVisible()) {
+				sidebar.hide();
 			} else {
-				q.show();
-				me.app().scope("client").updateChildren(true, true);
+				sidebar.show();
+				sidebar.update(function() {
+					focusSidebar(ws, sidebar);
+				});
 			}
 		}
 		
@@ -248,8 +252,25 @@ function forceUpdate(control) {
 		c._controls && c._controls.forEach(loop);
 	}(control));
 }
+function focusSidebar(ws, sidebar) {
+	var tab = ws.qs("#left-sidebar < vcl/ui/Tab:selected");
+	if(tab && tab._control) {
+		var input = tab._control.qs("< vcl/ui/Input");
+		if(input) {
+    		if(!input.isFocused()) {
+    			// console.log("focus sidebar");
+    			input.setFocus();
+    		} else {
+    			console.log("focus editor");
+    			me.down('*:selected #editor-setfocus').execute(evt, me);
+    		}
+		}
+	}
+}
 
 $(["ui/Form"], { css: styles, handlers: handlers }, [
+    $(["devtools/DragDropHandler"]),
+    $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false}),
     $(["devtools/TabFactory"], "workspaces-new", {
         vars: {
             parents: {
@@ -272,7 +293,24 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
             return tab;
         }
     }),
-    $("vcl/Action", "toggle-workspace-tabs", {
+    
+    $(("vcl/ui/Tabs"), "workspaces-tabs", {
+        align: "bottom",
+        classes: "bottom",
+        onDblClick: function() { 
+        	var n = this._controls.length, me = this;
+        	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
+        		if(res) {
+        			me.up().qs("#workspace-needed").execute(res).setSelected(true);
+        		}
+        	})
+        },
+        onChange: function() {
+    		this._owner.emit("state-dirty");
+        }
+    }),
+    
+    $(("vcl/Action"), "toggle-workspace-tabs", {
     	hotkey: "Ctrl+F12", // euh ,responds to F11 instead?
     	onExecute: function() {
     		var visible = this._tag;
@@ -287,14 +325,29 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		this._tag = !this._tag;
     	}	
     }),
-    $("vcl/Action", "toggle-workspaces-tabs", {
+    $(("vcl/Action"), "toggle-workspaces-tabs", {
     	hotkey: "Ctrl+Alt+F12", // euh ,responds to F11 instead?
     	onExecute: function() {
     		var tabs = this.app().down("devtools/Main<> #workspaces-tabs");
     		tabs.setVisible(!tabs.getVisible());
     	}	
     }),
-    $("vcl/Action", "workspace-needed", {
+    
+    $(("vcl/Action"), "workspace-find", {
+    	hotkey: "Alt+F",
+    	onExecute: function() {
+    		var ws = this.up().down("devtools/Workspace<>:root:selected");
+    		var sidebar = ws.down("#left-sidebar");
+    		// if(!sidebar.isVisible()) {
+    			sidebar.show();
+				sidebar.update(function() {
+					focusSidebar(ws, sidebar);
+				});
+    		// }
+    	}
+    }),
+
+    $(("vcl/Action"), "workspace-needed", {
         onExecute: function(evt) {
         	if(typeof evt === "string") {
         		evt = { workspace: {name: evt} };
@@ -314,7 +367,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		return tab;
         }
     }),
-    $("vcl/Action", "workspace-activate", {
+    $(("vcl/Action"), "workspace-activate", {
     	// hotkey: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(keyCode) { 
     	// 	return "Ctrl+" + (48 + keyCode); }).join("|"),
     	onExecute: function(evt) {
@@ -332,7 +385,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
             }
     	}
     }),
-    $("vcl/Action", "workspaces-tabs::next-previous", {
+    $(("vcl/Action"), "workspaces-tabs::next-previous", {
     	hotkey: "Ctrl+Alt+219|Ctrl+Alt+221",
     	onExecute: function(evt) {
     		var method = evt.keyCode === 219 ? "Previous" : "Next";
@@ -340,18 +393,26 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		evt.preventDefault();
     	}
     }),
-    $("vcl/Action", "workspace-left-sidebar-tabs::next-previous", {
+    $(("vcl/Action"), "workspace-left-sidebar-tabs::next-previous", {
     	hotkey: "Ctrl+32|Ctrl+Shift+32",
     	onExecute: function(evt) {
-			var tabs = this.up()
-				.down("devtools/Workspace<>:root[selected=true]")
-				.down("#left-sidebar-tabs");
-    		
-    		tabs["select" + (evt.shiftKey ? "Previous" : "Next")]();
+			var ws = this.up().down("devtools/Workspace<>:root:selected");
+			var tabs = ws.down("#left-sidebar-tabs");
+			var sidebar = ws.down("#left-sidebar");
+			
+			if(!sidebar.isVisible()) {
+				sidebar.show();
+				sidebar.update(function() {
+					focusSidebar(ws, sidebar);
+				});
+			} else {
+	    		tabs["select" + (evt.shiftKey ? "Previous" : "Next")]();
+			}
+
     		evt.preventDefault();
     	}
     }),
-    $("vcl/Action#workspace-move-left", {
+    $(("vcl/Action"), "workspace-move-left", {
 		hotkey: "Ctrl+Alt+Meta+219",
     	onExecute: function() {
     		var tab = this._owner.qs("vcl/ui/Tab:selected:childOf(workspaces-tabs)");
@@ -361,7 +422,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		}
     	}
     }),
-    $("vcl/Action#workspace-move-right", {
+    $(("vcl/Action"), "workspace-move-right", {
 		hotkey: "Ctrl+Alt+Meta+221",
     	onExecute: function() {
     		var tab = this._owner.qs("vcl/ui/Tab:selected:childOf(workspaces-tabs)");
@@ -369,34 +430,11 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     		tab.setIndex(index + 1);
     	}
     }),
-    $("vcl/Action", "F5-blocker", {
-        hotkey: "F5|MetaCtrl+R",
-        onExecute: function(evt) {
-            evt.preventDefault();
-        }
-    }),
-    $("vcl/ui/Tabs", "workspaces-tabs", {
-        align: "bottom",
-        classes: "bottom",
-        onDblClick: function() { 
-        	var n = this._controls.length, me = this;
-        	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
-        		if(res) {
-        			me.up().qs("#workspace-needed").execute(res).setSelected(true);
-        		}
-        	})
-        },
-        onChange: function() {
-    		this._owner.emit("state-dirty");
-        }
-    }),
-    
-    $("vcl/Action", "workspaces-tabs-dblclick", {
+    $(("vcl/Action"), "workspaces-tabs-dblclick", {
 		hotkey: "Ctrl+Alt+187",
 		onExecute: function() { this.scope("workspaces-tabs").ondblclick({}); }
     }),
-    
-    $("vcl/Action", "open_form", {
+    $(("vcl/Action"), "open_form", {
         left: 96,
         onExecute: function onExecute(uri, options) {
         	/** options: 
@@ -492,8 +530,11 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         },
         top: 232
     }),
+    $(("vcl/Action"), "F5-blocker", {
+        hotkey: "F5|MetaCtrl+R",
+        onExecute: function(evt) {
+            evt.preventDefault();
+        }
+    })
 
-    $(["devtools/DragDropHandler"]),
-
-    $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false})
 ]);
