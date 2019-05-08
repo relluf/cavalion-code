@@ -9,6 +9,7 @@
     "cavalion-vcl": "^1.0.35",
     "dropbox": "^4.0.17",
     "dygraphs": "^2.1.0",
+    "framework7": "^4.2.2",
     "isomorphic-fetch": "^2.2.1",
     "ol": "^5.3.2",
     "veldapps-v7": "^1.0.1",
