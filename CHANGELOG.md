@@ -1,3 +1,31 @@
+# Features/Low Hanging Fruit
+
+Getting more and more comfortable with PouchDB. Still I am merely using 5% of its features. VA.objects seems to be succesful.
+
+* More offline first in cavalion-code
+	* Persist vcl/Component state in VA.objects-like manner
+	* Server is the prototype, mothership
+
+
+### 2019-06-08 / 1.0.68
+- Bumped up to 68, improving Navigator, Editor<folder>, App, Main
+- Commiting more `devtools/Workspace<>` implementations. These will become the core functionality on which user will base their workspaces. Static workspaces is a good thing.
+- Working on OpenLayers
+- Introducing RWR (Rapid Window Recognition, something is  being rendered when the window blurs (devtools/App.js)
+
+>>>>> ![](https://i.snag.gy/NgQs3m.jpg?2x)
+
+- Advancing `devtools/Editor<folder>` (_though I guess this code will dissapear here and move to local resources_). Explode models, it's fun:
+
+>>>>> ![](https://i.snag.gy/UAlEFY.jpg?2x)
+
+### 2019-06-05 / 1.0.65
+- Fixed (some of) devtools/Navigator's indexing issue(s)
+- Introducing window blurred feature
+
+### 2019-05-08
+- Fixed several issues concerning focussing elements using the various sidebar related keyboard shortcuts
+
 ### 2019-04-16 / 1.0.64
 - Console: edit(ws)
 - Workspace<>: favorites!
