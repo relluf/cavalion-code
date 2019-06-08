@@ -4,6 +4,7 @@ var Ace = require("vcl/ui/Ace");
 var Method = require("js/Method");
 var Factory = require("vcl/Factory");
 var FormContainer = require("vcl/ui/FormContainer");
+var Panel = require("vcl/ui/Panel");
 
 var handlers = {
 	loaded: function() {
@@ -39,6 +40,101 @@ var handlers = {
 				}
 			});
 		};
+
+		var blurred = new Panel();
+		blurred.hide();
+		blurred.setCss({
+			"": "z-index:999999;font-size:55pt;text-align:center;padding-top:25%;font-family:Lucida Grande, Arial, sans-serif; font-weight:bold;",
+			".name": "padding:30px 40px; border-radius:160px;border:15px solid maroon; padding-top: 10px; padding-bottom: 40px;",
+			".host": "color:white;font-size:18pt;",
+			"background-color":"rgba(255,255,255,0.5)",
+			"&.maroon": {
+				"color":"maroon",
+				".name": {
+					"background-color":"rgba(255,69,0,0.75)"
+				}
+			},
+			"&.navy": {
+				"color":"navy",
+				// "background-color":"rgba(0, 123, 255, 0.25)",
+				".name": {
+					"border-color":"navy",
+					"background-color":"rgba(0, 123, 255, 0.5)"
+				}
+			},
+			
+		});
+		blurred.setAlignNode(document.body);
+		blurred.setAlign("client");
+		blurred.setClasses(Math.random() > 0.5 ? "navy" : "maroon");
+		blurred.setParentNode(document.body);
+		blurred._onClick = function() { this.hide(); };
+
+		var timeout;
+		function update(hidden) {
+			var tab = me.qs("devtools/Workspace<>:root:selected devtools/Editor<>:root");
+			var s = js.sf("%H", document.title.split("[").pop().split("]").shift());
+			tab = tab || { _name: "unknown" };
+			blurred.setContent("<span class='name'>" + s + "</span><div class='host'>" + js.sf("%H @ %H", tab._name.split("/").pop(), location.host) + "</div>");
+			
+			if(timeout) clearTimeout(timeout);
+			if(hidden) {
+				timeout = setTimeout(function() { 
+					blurred.show(); }, 500);
+			} else {
+				blurred.hide();
+			}
+		}
+
+		// TODO detect keyup Cmd		
+		"alert,confirm,prompt".split(",").map(function(method) {
+			var impl = window[method];
+			window[method] = function() {
+				blurred.vars("dialog-activated", true);
+				try {
+					return impl.apply(this, arguments);
+				} finally {
+					// VA.util.nextTick(function() {
+					// 	me.print("finally, nextTick, timeout set to hide");
+					// 	update(false);
+					// 	me.print("modal gone");
+					// 	update(false);
+					// }, 0);
+				}
+			};
+		});
+
+		var mousemoved = 0;
+		window.addEventListener("focus", function(e) { 
+			if(blurred.vars("dialog-activated") === true) {
+				update(false);
+			}
+		}, false);
+		window.addEventListener("blur", function(e) { 
+			if(!blurred._visible) {
+				update(true);
+				mousemoved = 0;
+			}
+		}, false);
+		window.addEventListener("keyup", function(e) { 
+			if(blurred._visible) {
+				update(false); 
+			}
+		}, false);
+		window.addEventListener("mousemove", function(e) { 
+			if(mousemoved++ > 5) {
+				// it seems Chrome receives 1 mousemove every time the mouse enter a non-focused browser window.
+				if(blurred._visible && !document.hidden) {
+					update(false); 
+				}
+			}
+		}, false);
+		// window.addEventListener("visibilitychange", function(e) {
+		// 	// console.log(e.type, e);
+		// 	// update(document.hidden);
+		// }, false);
+		
+		update(document.hidden);
 	}
 };
 
@@ -65,7 +161,6 @@ var handlers = {
 	        }
 	    },
 	});
-	
 	/*- disable Ctrl+Shift+D */
 	Method.override(Ace.prototype, "onnodecreated", function() {
 	    var r = this.inherited(arguments);
@@ -100,7 +195,6 @@ var handlers = {
 			return r;
 		}
 	});
-
 } ());
 
 $(["App.v1.console"], { title: "Code", icon: "images/favicon.ico", handlers: handlers }, [

@@ -51,21 +51,19 @@ $("vcl/ui/Form", {
         var lists = {};
         var index = {};
         var uris = [];
-
+        
+        me.setVar("uris", uris);
         me.setVar("index", index);
-        // me.setVar("uris", uris);
-
         me.setVar("Resources", {
             index: function () {
+            	if(!uris.length) return;
+            	
                 var run = ++indexing;
                 scope['search-input'].addClass("searching");
                 return Resources.index(uris).
                     then(function (res) {
                         if (run === indexing) {
-                            // for (var k in index) {
-                            //     delete index[k];
-                            // }
-                            for (k in lists) {
+                            for (var k in lists) {
                                 if (lists[k] instanceof Array) {
                                     index[k] = lists[k];
                                 }
@@ -102,15 +100,6 @@ $("vcl/ui/Form", {
         	}
         });
             
-        this.readStorage("uris", function (json) {
-        	// console.log("fetched uris", json);
-	        me.setVar("uris", uris = json ? JSON.parse(json) : []);
-            me.apply("Resources.index");
-            // scope.tree.setTimeout("refresh", 100);
-            // scope.tree.dispatch("nodesneeded", null);
-        });
-        
-
         return this.inherited(arguments);
     }
 
@@ -615,6 +604,10 @@ $("vcl/ui/Form", {
 		            
 		            uris.forEach(createUriNode);
 	            }
+	        	// console.log("timeout set to refresh index based on uris")
+	        	// owner.setTimeout("refresh-index", function() {
+					this.apply("Resources.index");
+	        	// }, 250);
 	            
 	            var r = this.apply("Resources.list", [uri]).
 		            then(function (res) {

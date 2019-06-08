@@ -262,7 +262,7 @@ function focusSidebar(ws, sidebar) {
     			input.setFocus();
     		} else {
     			console.log("focus editor");
-    			me.down('*:selected #editor-setfocus').execute(evt, me);
+    			ws.down('*:selected #editor-setfocus').execute({}, ws);
     		}
 		}
 	}
