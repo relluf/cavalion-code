@@ -14,6 +14,7 @@ require.config({
         "home": "/home",
         // "v7": "node_modules/veldapps-v7/src/v7",
         "v7": "/home/Projects/V7/src/v7",
+        "va": "/home/Projects/V7/src/va",
         "lib": "../lib",
 
         /*- bangers! */
@@ -63,7 +64,7 @@ require.config({
         "dojo": "../lib/bower_components/dojo",
         "dgrid": "../lib/bower_components/dgrid",
         "dstore": "../lib/bower_components/dstore",
-
+        
 		/*- amcharts3 */
         "amcharts": "../lib/bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../lib/bower_components/amcharts3/amcharts/funnel",
@@ -271,7 +272,7 @@ define("Framework7/plugins/esc-is-back", [], function() {
 	
 	return selectors;
 });
-define("Framework7", [
+define(("Framework7"), [
 	"../lib/bower_components/framework7/dist/js/framework7", 
 	"Framework7/plugins/auto-back-title", "Framework7/plugins/esc-is-back",
 	"stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css",
@@ -353,7 +354,7 @@ define("Framework7", [
     
 	return Framework7;
 });
-define("dropbox", [
+define(("dropbox"), [
 	"../lib/node_modules/dropbox/dist/Dropbox-sdk", 
 	"../lib/node_modules/dropbox/dist/DropboxTeam-sdk"
 	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
@@ -453,7 +454,7 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 	return L;
 });
 
-define("pouchdb", ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
+define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
 	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", "pouchdb.memory"], 
 function(pouchdb, find, relational, memory) {
 	
@@ -526,6 +527,10 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
 	
 	return Blocks;
+});
+
+define("ol", ["script!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js", "stylesheet!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"], function(ol) {
+	return ol;
 });
 
 define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
