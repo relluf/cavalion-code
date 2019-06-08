@@ -232,7 +232,7 @@ $(["ui/Form"], {
         onExecute: function(evt) {
             var scope = this.scope(), tab;
             if(typeof evt === "string") {
-            	evt = { resource:{ uri: evt } };
+            	evt = { resource:{ uri: evt, type: evt.startsWith("folder:") ? "Folder" : "File" } };
             }
             if(!evt.resource) { evt.resource = { uri: "" } };
             

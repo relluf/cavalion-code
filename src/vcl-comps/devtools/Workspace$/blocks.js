@@ -8,14 +8,13 @@ var Dropbox = require("dropbox").Dropbox;
 $(["devtools/Workspace"], {
 	vars: {
 		dbx: new Dropbox({accessToken:DBX_XS_TOKEN}),
-		favorites: [
+		"#navigator favorites": [
 			"Workspaces/cavalion.org/cavalion-blocks/src/prototypes",
 			"Workspaces/cavalion.org/cavalion-devtools/src/cavalion-blocks/devtools",
 			"Workspaces/cavalion.org/cavalion-ide/src/cavalion-blocks/ide"
 		]
 	}
 },  [
-
 	$i("navigator", [
 		$i("tree", [
 	
@@ -48,5 +47,4 @@ $(["devtools/Workspace"], {
 		
 		])	
 	])
-	
 ]);
