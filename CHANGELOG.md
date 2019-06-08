@@ -6,6 +6,9 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 
+### 2019-06-08 / 1.0.69
+- Fixed some issue with Component.prototype.getKeysByUri
+- Removed devtools/Workspace<>-descendants from the build
 
 ### 2019-06-08 / 1.0.68
 - Bumped up to 68, improving Navigator, Editor<folder>, App, Main
