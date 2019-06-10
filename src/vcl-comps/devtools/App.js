@@ -44,10 +44,10 @@ var handlers = {
 		var blurred = new Panel();
 		blurred.hide();
 		blurred.setCss({
-			"": "z-index:999999;font-size:55pt;text-align:center;padding-top:25%;font-family:Lucida Grande, Arial, sans-serif; font-weight:bold;",
+			"": "z-index:999999;font-size:55pt;text-align:center;padding-top:5%;font-family:Lucida Grande, Arial, sans-serif; font-weight:bold;pointer-events:none;",
 			".name": "padding:30px 40px; border-radius:160px;border:15px solid maroon; padding-top: 10px; padding-bottom: 40px;",
 			".host": "color:white;font-size:18pt;",
-			"background-color":"rgba(255,255,255,0.5)",
+			// "background-color":"rgba(255,255,255,0.5)",
 			"&.maroon": {
 				"color":"maroon",
 				".name": {
@@ -68,7 +68,7 @@ var handlers = {
 		blurred.setAlign("client");
 		blurred.setClasses(Math.random() > 0.5 ? "navy" : "maroon");
 		blurred.setParentNode(document.body);
-		blurred._onClick = function() { this.hide(); };
+		// blurred._onClick = function() { this.hide(); };
 
 		var timeout;
 		function update(hidden) {
@@ -121,8 +121,13 @@ var handlers = {
 				update(false); 
 			}
 		}, false);
+		window.addEventListener("mouseup", function(e) { 
+			if(blurred._visible) {
+				update(false); 
+			}
+		}, false);
 		window.addEventListener("mousemove", function(e) { 
-			if(mousemoved++ > 5) {
+			if(mousemoved++ > 2) {
 				// it seems Chrome receives 1 mousemove every time the mouse enter a non-focused browser window.
 				if(blurred._visible && !document.hidden) {
 					update(false); 
