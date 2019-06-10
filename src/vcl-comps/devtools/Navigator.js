@@ -115,20 +115,6 @@ $("vcl/ui/Form", {
             }, this);
         }
     }),
-    $(("vcl/Action"), "search-focus", {
-        hotkey: "MetaCtrl+191|Alt+F",
-        onExecute: function () {
-            var scope = this.getScope();
-            var previous = this.getVar("previous");
-            var now = Date.now();
-            if(previous !== undefined && now - previous < 175) {
-                scope['search-input'].setValue("");
-                scope['search-input'].fire("onChange", [true]); // FIXME
-            }
-            scope['search-input'].setFocus(true);
-            this.setVar("previous", now);
-        }
-    }),
     $(("vcl/Action"), "search", {
         onExecute: function () {
             var scope = this.getScope();
@@ -392,9 +378,17 @@ $("vcl/ui/Form", {
                 evt.shiftKey === true) && 
                 (resource = component.getVar("resource"))
             ) {
-            	this.up("devtools/Workspace<>:root")
-            		.down("#editor-needed")
-            		.execute({resource: resource, selected: true});
+            	
+            	// TODO some sort of registration needed...
+            	if(resource.uri.startsWith("pdokviewer://")) {
+	            	this.up("devtools/Workspace<>:root")
+	            		.down("#editor-needed")
+	            		.execute({resource: "veldapps/maps/OpenLayers<PDOK>", selected: true});
+            	} else {
+	            	this.up("devtools/Workspace<>:root")
+	            		.down("#editor-needed")
+	            		.execute({resource: resource, selected: true});
+            	}
             	evt.preventDefault();
             	return false;
             }
@@ -531,7 +525,7 @@ $("vcl/ui/Form", {
 			}
 		}
     }, [
-    	$("devtools/NavigatorNode", "fs", {
+    	$(("devtools/NavigatorNode"), "fs", {
 	   		vars: { resource: { type: "Folder", uri: "", name: "Remote Files" } },
     		classes: "root-invisible", // classes: "root",
     		expanded: true,
@@ -675,7 +669,7 @@ $("vcl/ui/Form", {
             }
         }
     }, [
-        $("vcl/ui/ListColumn", {
+        $(("vcl/ui/ListColumn"), {
             content: "#",
             attribute: ".",
             onGetValue: function (value, row, source) {
