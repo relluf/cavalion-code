@@ -1,4 +1,4 @@
-"fast-xml-parser";
+"use fast-xml-parser";
 
 var Parser = require("fast-xml-parser");
 
