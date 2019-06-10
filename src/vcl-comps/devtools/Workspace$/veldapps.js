@@ -15,11 +15,11 @@ define("veldoffice/models", ["home/Projects/V7/src/node_modules/veldoffice-js/sr
 
 $([], {
 	vars: {
-		favorites: [
-			"Workspaces/veldapps.com/Veldoffice/veldoffice-rapportage-scripts",
-			"Workspaces/veldapps.com/Veldoffice/veldoffice-rapportage-vcl",
+		"#navigator favorites": [
+			"Library/cavalion-blocks",
 			"Workspaces/veldapps.com/veldapps-vo",
-			"Workspaces/veldapps.com/veldoffice-js/src/veldapps.com/veldoffice"
+			"Workspaces/veldapps.com/veldoffice-js/src",
+			"Workspaces/veldapps.com/veldoffice-js/src/veldapps.com/veldoffice;veldoffice-js/src/veldapps.com/veldoffice;Folder"
 		]
 	},
 	onLoad: function() {
