@@ -6,6 +6,12 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 
+### 2019-06-10 / 1.0.70
+- OpenLayers 5 related adjustments
+- Blurred got some tweaks
+- Integrating PDOK viewer catalog in devtools/Navigator - this is fun! :-)
+- Introducing `utils/asarray` (and utils as a matter of fact)
+
 ### 2019-06-08 / 1.0.69
 - Fixed some issue with Component.prototype.getKeysByUri
 - Removed devtools/Workspace<>-descendants from the build
