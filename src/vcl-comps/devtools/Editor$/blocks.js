@@ -83,7 +83,7 @@ $([], {
         this.setTimeout("alignControls", 32);
     }
 }, [
-	$("vcl/Action#instantiate", {
+	$(("vcl/Action"), "instantiate", {
 		onExecute: function(evt) {
 			var scope = this.scope(), uri = evt.uri;
         	if(!scope.host.isVisible()) { return; } //TODO shouldn't be here
@@ -131,7 +131,7 @@ $([], {
 
 		}
 	}),
-    $("vcl/Action#toggle-source", {
+    $(("vcl/Action"), "toggle-source", {
         hotkey: "Shift+MetaCtrl+S",
         selected: "state",
         visible: "state",
@@ -141,7 +141,7 @@ $([], {
         	this.setState(!this.getState());
         }
     }),
-    $("vcl/Action#toggle-component", {
+    $(("vcl/Action"), "toggle-component", {
         hotkey: "Shift+MetaCtrl+C",
         selected: "state",
         visible: "state",
@@ -153,7 +153,7 @@ $([], {
         	// preview.setSelected(!preview.isSelected());
         }
     }),
-    $("vcl/Action#toggle-instantiate", {
+    $(("vcl/Action"), "toggle-instantiate", {
         hotkey: "Shift+MetaCtrl+X",
 		onExecute: function(evt) {
 			// TODO source might be lost because of #refresh
