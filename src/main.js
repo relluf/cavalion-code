@@ -530,8 +530,48 @@ define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factor
 	return Blocks;
 });
 
-define("ol", ["script!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js", "stylesheet!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"], function(ol) {
-	return ol;
+define("ol", ["script!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js", "stylesheet!https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"], function() {
+	
+	ol.convert = (function(){
+		return function convert(value, properties) {
+			function instantiate(def, properties) {
+			
+				var values = def[1] || {};
+				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
+			
+				for(var name in values) {
+					var value = values[name];
+					values[name] = convert(value, properties);
+				}
+				
+				/*- jshint:evil */
+				return eval(code);
+			}
+		
+			// TODO escape with backslash
+			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
+				return properties[value.substring(1)];
+			}
+			
+			if(!(value instanceof Array)) {
+				return value;
+			}
+				
+			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
+				return value.map(function(val) {
+					return convert(val, properties);
+				});
+			}
+			
+			if(value[0].indexOf("ol:") === 0) {
+				value = instantiate(value, properties);
+			}
+			
+			return value;
+		};
+	}())
+	
+	return arguments[0];
 });
 
 define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
