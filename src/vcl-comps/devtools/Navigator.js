@@ -106,12 +106,24 @@ $("vcl/ui/Form", {
 }, [
     $("vcl/data/Array", "search-results", {}),
     
+    
+    // TODO search-open-pdokviewer-metadata (per resource group/package)
+    // TODO pdok/viewer/Layer
+    // TODO search-open-devtools/Resource
     $(("vcl/Action"), "search-open", {
         onExecute: function (evt) {
-            var list = this.scope('search-list');
-            var a = this.up("devtools/Workspace<>:root").down("#editor-needed");
+            var list = this.scope('search-list'), me = this;
+            var ws = this.up("devtools/Workspace<>:root");
+            var a = ws.down("#editor-needed");
+            
             list.getSelection(true).forEach(function (resource) {
-            	a.execute({resource: resource, selected: true});
+            	// TODO some sort of registration needed...
+            	if(resource.uri.startsWith("pdokviewer-metadata/")) {
+            		ws.qsa("veldapps/OpenLayers<PDOK> #layer-needed")
+            			.execute({layer: resource});
+            	} else {
+	            	a.execute({resource: resource, selected: true});
+            	}
             }, this);
         }
     }),
@@ -375,22 +387,15 @@ $("vcl/ui/Form", {
 
 			/*- Open Resource - Use Shift to open folders */
             if (name === "dblclick" && (component.hasClass("file") || 
-                evt.shiftKey === true) && 
-                (resource = component.getVar("resource"))
+                evt.shiftKey === true)
             ) {
-            	
-            	// TODO some sort of registration needed...
-            	if(resource.uri.startsWith("pdokviewer://")) {
-	            	this.up("devtools/Workspace<>:root")
-	            		.down("#editor-needed")
-	            		.execute({resource: "veldapps/maps/OpenLayers<PDOK>", selected: true});
-            	} else {
+            	if((resource = component.getVar("resource"))) {
 	            	this.up("devtools/Workspace<>:root")
 	            		.down("#editor-needed")
 	            		.execute({resource: resource, selected: true});
+	            	evt.preventDefault();
+	            	return false;
             	}
-            	evt.preventDefault();
-            	return false;
             }
 
 			/*- Index Folder Resource */
