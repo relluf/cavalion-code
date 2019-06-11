@@ -6,6 +6,9 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 
+### 2019-06-10 / 1.0.71
+- Hacking at and with PDOK, will result in some future refactorings
+
 ### 2019-06-10 / 1.0.70
 - OpenLayers 5 related adjustments
 - Blurred got some tweaks

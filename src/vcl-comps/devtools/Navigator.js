@@ -117,7 +117,7 @@ $("vcl/ui/Form", {
             var a = ws.down("#editor-needed");
             
             list.getSelection(true).forEach(function (resource) {
-            	// TODO some sort of registration needed...
+            	// TODO some sort of registration ROUTING(!!!) needed...
             	if(resource.uri.startsWith("pdokviewer-metadata/")) {
             		ws.qsa("veldapps/OpenLayers<PDOK> #layer-needed")
             			.execute({layer: resource});
