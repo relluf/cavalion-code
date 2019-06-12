@@ -144,19 +144,21 @@ $("vcl/ui/Form", {
 
             for (var k in index) {
                 index[k].forEach(function (item) {
-                	item.uri = k ? (k + "/" + item.name) : item.name;
+                	if(!item.uri) {
+                		item.uri = k ? (k + "/" + item.name) : item.name;
+                	}
                     if (item.name === text) {
                         exacts.push(item);
                     } else if (item.name.toLowerCase() === lower) {
                         lowers.push(item);
                     } else if (item.name.toLowerCase().indexOf(lower) !== -1) {
                         names.push(item);
-                    } else if ((k + "/" + item.name).toLowerCase().indexOf(lower) !== -1) {
+                    } else if (item.uri.toLowerCase().indexOf(lower) !== -1) {
                         uris.push(item);
                     }
                 });
             }
-
+console.log("uris", uris); this.print("uris", uris);
             scope['search-results'].setArray(
                 [exacts.sort(sort), lowers, names, uris].
                     reduce(function (prev, curr) {
@@ -216,20 +218,20 @@ $("vcl/ui/Form", {
         $("vcl/ui/Input", "search-input", {
             placeholder: "Filter (⌥+F)",
             classes: "search-top",
-            onDblClick: function() {
+            onDblClick() {
 //                this.fire("onChange", [false]);
                 var scope = this.getScope();
                 scope['search-list'].hide();
                 this.setValue("");
                 this._nodes.input.value = "";
             },
-            onFocus: function () {
+            onFocus() {
                 this.fire("onChange", [!this.getInputValue()]);
             },
-            onBlur: function () {
+            onBlur() {
                 this.fire("onChange", [false]);
             },
-            onChange: function (evt) {
+            onChange(evt) {
                 var scope = this.getScope();
                 var value = this.getInputValue();
                 var hasChecking = scope.tree.hasClass("checking");
