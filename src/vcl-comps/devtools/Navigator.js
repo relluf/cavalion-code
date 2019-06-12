@@ -118,7 +118,7 @@ $("vcl/ui/Form", {
             
             list.getSelection(true).forEach(function (resource) {
             	// TODO some sort of registration ROUTING(!!!) needed...
-            	if(resource.uri.startsWith("pdokviewer-metadata/")) {
+            	if(resource.uri.startsWith("pdok.nl/viewer-metadata/")) {
             		ws.qsa("veldapps/OpenLayers<PDOK> #layer-needed")
             			.execute({layer: resource});
             	} else {
@@ -158,7 +158,7 @@ $("vcl/ui/Form", {
                     }
                 });
             }
-console.log("uris", uris); this.print("uris", uris);
+
             scope['search-results'].setArray(
                 [exacts.sort(sort), lowers, names, uris].
                     reduce(function (prev, curr) {
