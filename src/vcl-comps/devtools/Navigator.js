@@ -1,4 +1,4 @@
-"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources, js/Method";
+"vcl/ui/Node, vcl/ui/ListHeader, devtools/NavigatorNode, devtools/Resources, js/Method, v7/pdok/viewer-metadata, v7/pdok/themes";
 
 var Method = require("js/Method");
 var Resources = require("devtools/Resources");
@@ -117,9 +117,15 @@ $("vcl/ui/Form", {
             var a = ws.down("#editor-needed");
             
             list.getSelection(true).forEach(function (resource) {
+            	var metadata = require("v7/pdok/viewer-metadata");
+            	var themes = require("v7/pdok/themes");
+            	
             	// TODO some sort of registration ROUTING(!!!) needed...
-            	if(resource.uri.startsWith("pdok.nl/viewer-metadata/")) {
-            		ws.qsa("veldapps/OpenLayers<PDOK> #layer-needed")
+            	if(resource.uri.startsWith(metadata.uri)) {
+            		ws.qsa("veldapps/OpenLayers<PDOK-v1> #layer-needed")
+            			.execute({layer: resource});
+            	} else if(resource.uri.startsWith(themes.uri)) {
+            		ws.qsa("veldapps/OpenLayers<PDOK-v2> #layer-needed")
             			.execute({layer: resource});
             	} else {
 	            	a.execute({resource: resource, selected: true});
