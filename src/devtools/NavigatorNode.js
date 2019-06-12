@@ -70,6 +70,11 @@ define(function(require) {
         properties: {
             onChange: {
                 type: Type.EVENT
+            },
+            checked: {
+            	type: Type.BOOLEAN,
+            	get: Function,
+            	set: Function
             }
         }
     }));

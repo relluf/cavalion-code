@@ -61013,6 +61013,11 @@ define('devtools/NavigatorNode',['require','js/defineClass','vcl/EventDispatcher
         properties: {
             onChange: {
                 type: Type.EVENT
+            },
+            checked: {
+            	type: Type.BOOLEAN,
+            	get: Function,
+            	set: Function
             }
         }
     }));
