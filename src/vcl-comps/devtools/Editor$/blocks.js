@@ -15,8 +15,7 @@ var styles = {
 var handlers = { /*- onLoad: function() { /* DOESN'T SEEM TO WORK */ };
 
 function print(comp, msg, value) {
-	comp.up("devtools/Workspace<>:selected")
-		.qsa("devtools/Console<> #console")
+	comp.up("devtools/Workspace<>:selected").qsa("devtools/Console<> #console")
 		.print(msg, value);
 }
 
