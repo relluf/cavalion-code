@@ -150,9 +150,10 @@ $("vcl/ui/Form", {
 
             for (var k in index) {
                 index[k].forEach(function (item) {
-                	if(!item.uri) {
-                		item.uri = k ? (k + "/" + item.name) : item.name;
-                	}
+                	// if(!item.uri) { // TODO get rid of this
+                	// 	item.uri = k ? (k + "/" + item.name) : item.name;
+                	// }
+                	
                     if (item.name === text) {
                         exacts.push(item);
                     } else if (item.name.toLowerCase() === lower) {
@@ -162,6 +163,7 @@ $("vcl/ui/Form", {
                     } else if (item.uri.toLowerCase().indexOf(lower) !== -1) {
                         uris.push(item);
                     }
+                	
                 });
             }
 
@@ -259,6 +261,14 @@ $("vcl/ui/Form", {
                 if (typeof evt !== "boolean") {
                     scope.search.execute(evt);
                 }
+            },
+            onKeyUp(evt) {
+            	if(evt.keyCode === 13) {
+this.print("keyUp13", evt);
+					if(evt.metaKey === true && evt.shiftKey === true) {
+            			this.udown("fs").toggle("visible");
+					}
+            	}
             }
         })
     ]),

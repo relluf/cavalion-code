@@ -150,6 +150,9 @@ define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_co
 		return pace; 
 	});
 	
+define("B", ["blocks/Factory"], function() {
+	return require("blocks/Blocks");
+});
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
@@ -595,7 +598,11 @@ define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
 					return console.print.apply(console, arguments);
 				}
 			}
-			return this.inherited(arguments);
+			var args = js.copy_args(arguments); args.callee = arguments.callee;
+			if(typeof args[0] === "string") {
+				args[0] = js.sf("[%s] %s", this.getUri().split("/").pop(), args[0]);
+			}
+			return this.inherited(args);
 		}
 	});
 	
@@ -693,6 +700,7 @@ define(function(require) {
 	require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
+	window.B = require("B")
 	
 	ComponentNode.initialize();
 

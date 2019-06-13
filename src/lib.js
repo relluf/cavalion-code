@@ -18492,6 +18492,11 @@ define('vcl/Component',['require','js/defineClass','js/Type','js/Property','./Li
             },
             hasPropertyValue: function (name) {
                 return this['@properties'][name] !== undefined;
+            },
+            toggle: function(name) {
+            	var value = this.defineProperties()[name].get(this);
+            	var values = {}; values[name] = !value;
+            	this.setProperties(values);
             }
         },
         statics: {
@@ -22910,6 +22915,9 @@ define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_co
 		return pace; 
 	});
 	
+define("B", ["blocks/Factory"], function() {
+	return require("blocks/Blocks");
+});
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
@@ -23355,7 +23363,11 @@ define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
 					return console.print.apply(console, arguments);
 				}
 			}
-			return this.inherited(arguments);
+			var args = js.copy_args(arguments); args.callee = arguments.callee;
+			if(typeof args[0] === "string") {
+				args[0] = js.sf("[%s] %s", this.getUri().split("/").pop(), args[0]);
+			}
+			return this.inherited(args);
 		}
 	});
 	
@@ -23422,7 +23434,7 @@ define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], fu
 	};
 });
 
-define('main',['require','pace','stylesheet!styles.less','js','less','blocks-js','font-awesome','console/Printer','locale!en-US','PageVisibility','Element','console/node/vcl/Component','vcl/Component','vcl/Factory','util/net/Url','js/JsObject','override','vcl/Component.prototype.print'],function(require) {
+define('main',['require','pace','stylesheet!styles.less','js','less','blocks-js','font-awesome','console/Printer','locale!en-US','PageVisibility','Element','console/node/vcl/Component','vcl/Component','vcl/Factory','util/net/Url','js/JsObject','override','vcl/Component.prototype.print','B'],function(require) {
 	
 	require("pace");
 	require("stylesheet!styles.less");
@@ -23453,6 +23465,7 @@ define('main',['require','pace','stylesheet!styles.less','js','less','blocks-js'
 	require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
+	window.B = require("B")
 	
 	ComponentNode.initialize();
 
@@ -61245,7 +61258,7 @@ define('devtools/Resources-node',['require','jquery','js'],function(require) {
 							
 							if(!files[item_path]) {
 								dirs[dir].push(files[item_path] = js.mixIn(
-										item, {name: name, uri: dir}));
+										item, {name: name, uri: dir + "/" + name}));
 							} else {
 								// console.log("duplicate", item.path)
 							}
@@ -61316,7 +61329,6 @@ define('devtools/Resources-node',['require','jquery','js'],function(require) {
 define('devtools/Resources',['devtools/Resources-node'], function(Resources) {
 	return Resources;
 });
-
 define('vcl/data/Array',['require','js/defineClass','js/Type','../../data/Source','../../data/SourceEvent','../Component'],function(require) {
 
 	var Array = require("js/defineClass");

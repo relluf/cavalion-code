@@ -6,7 +6,9 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 
-### 2019-06-12 / 1.0.75
+### 2019-06-13 / 1.0.78
+
+### 2019-06-12 / 1.0.77
 - Still working on PDOK
 - Fixed an issue in Navigator where searching resources by uri turned out to be pretty buggy (whole thing needs a rewrite, but hey, what else is new)
 
