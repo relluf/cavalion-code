@@ -33,7 +33,7 @@ define(function(require) {
 							
 							if(!files[item_path]) {
 								dirs[dir].push(files[item_path] = js.mixIn(
-										item, {name: name, uri: dir}));
+										item, {name: name, uri: dir + "/" + name}));
 							} else {
 								// console.log("duplicate", item.path)
 							}
