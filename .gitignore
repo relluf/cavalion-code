@@ -3,4 +3,9 @@
 lib/bower_components
 lib/node_modules
 node_modules
+src/cavalion-blocks/
 build/
+lib/package-lock.json
+src/.ignore
+src/pages/eae
+src/vcl-comps/veldoffice

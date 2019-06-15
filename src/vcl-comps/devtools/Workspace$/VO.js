@@ -9,7 +9,7 @@ $(["devtools/Workspace<Veldoffice>"], {
 			fs.removeClass("root-invisible");
 			fs.setExpanded(false);
 			
-			B.instantiate("veldapps/OpenLayers<PDOK-v2>", { owner: this }).then(_ => _.setParent(this.down("#editors")));
+			B.instantiate("veldapps/OpenLayers<PDOK-v2.default-layers>", { owner: this }).then(_ => _.setParent(this.down("#editors")));
 		}
 	}
 }, [
