@@ -598,11 +598,11 @@ define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
 					return console.print.apply(console, arguments);
 				}
 			}
-			var args = js.copy_args(arguments); args.callee = arguments.callee;
-			if(typeof args[0] === "string") {
-				args[0] = js.sf("[%s] %s", this.getUri().split("/").pop(), args[0]);
-			}
-			return this.inherited(args);
+			// var args = js.copy_args(arguments); args.callee = arguments.callee;
+			// if(typeof args[0] === "string") {
+			// 	args[0] = js.sf("[%s] %s", this.getUri().split("/").pop(), args[0]);
+			// }
+			return this.inherited(arguments);
 		}
 	});
 	
@@ -721,5 +721,6 @@ define(function(require) {
 	
 	Factory.require(app, function(factory) {
 		factory.newInstance();
+		document.body.removeChild(document.getElementById("devtools-loading"));
 	});
 });
