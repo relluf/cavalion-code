@@ -294,16 +294,23 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
         }
     }),
     
-    $(("vcl/ui/Tabs"), "workspaces-tabs", {
-        align: "bottom",
-        classes: "bottom",
-        onDblClick: function() { 
-        	var n = this._controls.length, me = this;
+    $(("vcl/Action"), "workspace-prompt-new", {
+    	hotkey: "Shift+121",
+    	onExecute: function(evt) {
+        	var n = this.udown("#workspaces-tabs")._controls.length, me = this;
         	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
         		if(res) {
         			me.up().qs("#workspace-needed").execute(res).setSelected(true);
         		}
         	})
+    	}
+    }),
+    
+    $(("vcl/ui/Tabs"), "workspaces-tabs", {
+        align: "bottom",
+        classes: "bottom",
+        onDblClick: function(evt) { 
+        	this.udown("#workspace-prompt-new").execute(evt);
         },
         onChange: function() {
     		this._owner.emit("state-dirty");
