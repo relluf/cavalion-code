@@ -81,78 +81,106 @@ function getPosts(arr, posts) {
 	return posts;
 }
 
-var styles = {
-	".vcl-ui-Tree li": "list-style-type: none;",
-	".vcl-ui-Tree li img:not(:hover)": "max-width: 64px; max-height: 64px;",
-	"#preview": "border-left: 1px solid silver; background-color: #f9f9f9; padding: 20px;",
-	"#preview img:not(:hover)": "max-width: 90%; max-height: 800px;"
-};
-
-["Container", { css: styles, handlers: {
-	"#posts onFilterObject": function(obj) {
-		var q = this.scope().search.getInputValue();
-		if(q === "") return false;
-		return JSON.stringify(obj).toLowerCase().indexOf(q.toLowerCase()) === -1; 
-	},
-	"#search onChange": function() {
-		var posts = this.scope().posts;
-		this.setTimeout(function() { posts.updateFilter(); }, 200);
-	},
-	"loaded": function() {
-		// Get all resource uris to Markdown-files (.md extensions)
-		
-		var all = [], uris = [];
-		var posts = this.scope().posts, status = this.scope().status;
-		var mds = this.app()
-			.qsa("devtools/Workspace<>:root #editors-tabs < vcl/ui/Tab")
-			.filter(_ => (_.vars(["resource.uri"]) || "").endsWith(".md"))
-			.map(_ => _.vars(["resource.uri"]));
+["Container", { 
+	css: {
+		".vcl-ui-Tree li": "list-style-type: none;",
+		".vcl-ui-Tree li img:not(:hover)": "max-width: 64px; max-height: 64px;",
+		"#preview": "border-left: 1px solid silver; background-color: #f9f9f9; padding: 20px;",
+		"#preview img:not(:hover)": "max-width: 90%; max-height: 800px;"
+	}, 
+	handlers: {
+	    onDispatchChildEvent(component, name, evt, f, args) {
+	        if (name.indexOf("key") === 0) {
+	            var scope = this.scope();
+				if (component === scope['search-input']) {
+	                if ([13, 27, 33, 34, 38, 40].indexOf(evt.keyCode) !== -1) {
+	                    var list = scope.list;
+	                    if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
+	                        list.setSelection([0]);
+	                    } else if(evt.keyCode === 27) {
+			                scope['search-input'].setValue("");
+			                scope['search-input'].fire("onChange", [true]); // FIXME
+	                    }
+	
+                        list.dispatch(name, evt);
+	                    evt.preventDefault();
+	                }
+	            }
+	        }
+	        // return this.inherited(arguments);
+	    },
+		"#posts onFilterObject": function(obj) {
+			var q = this.udown("#search-input").getInputValue().toLowerCase();
+			if(q === "") return false;
 			
-		this.vars("mds", mds);
-			
-		function tick() { 
-			if(mds.length) {
-				next(); 
-			}
-			posts.setTimeout(function() { 
-				// TODO this if(all.length) { ... } should not be necessay
-				if(all.length) {
-					posts.setArray(all.sort(function(i1, i2) {
-						return i1.date > i2.date ? -1 : 1;
-					})); 
-					// TODO this is a bug, should not be needed
-					posts.notifyEvent("changed");
-				}
-				status.setContent(String.format("%d post%s found", 
-					all.length, all.length === 1 ? "": "s"));
-			}, 200);
-		}
-		function next() {
-			var uri = mds.pop();
-			Resources.get(uri).then(function(resource) {
-				getPosts(markdown.toHTMLTree(resource.text)).forEach(function(post) {
-					post.file = uri.split("/").pop();
-					post.uri = uri;
-					all.push(post);
-				});
-				tick();
-			}).catch(function(e) {
-				tick();
+			// var text = obj._text || (obj._text = JSON.stringify(obj).toLowerCase());
+			var text = JSON.stringify(obj).toLowerCase();
+			return !q.split(" ").every(function(term) {
+				return text.includes(term);
 			});
-		}	
-		tick();
-	}}
+		},
+		"#search-input onKeyDown": function() {
+		},
+		"#search-input onChange": function() {
+			var posts = this.scope().posts;
+			this.setTimeout(function() { posts.updateFilter(); }, 500);
+		},
+		"loaded": function() {
+			// Get all resource uris to Markdown-files (.md extensions)
+			
+			var all = [], uris = [];
+			var posts = this.scope().posts, status = this.scope().status;
+			var mds = this.app()
+				.qsa("devtools/Workspace<>:root #editors-tabs < vcl/ui/Tab")
+				.filter(_ => (_.vars(["resource.uri"]) || "").endsWith(".md"))
+				.map(_ => _.vars(["resource.uri"]));
+				
+			this.vars("mds", mds);
+				
+			function tick() { 
+				if(mds.length) {
+					next(); 
+				}
+				posts.setTimeout(function() { 
+					// TODO this if(all.length) { ... } should not be necessay
+					if(all.length) {
+						posts.setArray(all.sort(function(i1, i2) {
+							return i1.date > i2.date ? -1 : 1;
+						})); 
+						// TODO this is a bug, should not be needed
+						posts.notifyEvent("changed");
+					}
+					status.setContent(String.format("%d post%s found", 
+						all.length, all.length === 1 ? "": "s"));
+				}, 200);
+			}
+			function next() {
+				var uri = mds.pop();
+				Resources.get(uri).then(function(resource) {
+					getPosts(markdown.toHTMLTree(resource.text)).forEach(function(post) {
+						post.file = uri.split("/").pop();
+						post.uri = uri;
+						all.push(post);
+					});
+					tick();
+				}).catch(function(e) {
+					tick();
+				});
+			}	
+			tick();
+		},
+	}
 }, [
 	["vcl-data:Array", "posts"],
 	["vcl-ui:Node", {
 		text: locale("Posts.text"),
 		classes: "folder seperator",
-		onLoad: function() {
+		onLoad() {
 			var tree = this.up("devtools/Workspace<>").down("devtools/Navigator<>#tree");
 			this.setParent(tree);
 			this.expand();
 		},
-		onNodesNeeded: function(parent) {
+		onNodesNeeded(parent) {
 			var app = this.app(), owner = this._owner;
 				
 			if(parent === this) {
@@ -211,11 +239,11 @@ var styles = {
 	
 	["Container", { align: "left", width: 500 }, [
 		["Bar", [
-			["vcl-ui:Input", "search", { placeholder: locale("Search.placeholder") }],
+			["vcl-ui:Input", "search-input", { placeholder: locale("Search.placeholder") }],
 			["vcl-ui:Element", "status"]
 		]],
 		
-		["vcl-ui:List", {
+		["vcl-ui:List", "list", {
 			autoColumns: true,
 			source: "posts",
 			onSelectionChange: function() {
