@@ -125,7 +125,7 @@ $("vcl/ui/Form", {
             		ws.qsa("veldapps/OpenLayers<PDOK-v1> #layer-needed")
             			.execute({layer: resource});
             	} else if(resource.uri.startsWith(themes.uri)) {
-            		ws.qsa("veldapps/OpenLayers<PDOK-v2> #layer-needed")
+            		ws.qsa("veldapps/OpenLayers<>:root #layer-needed")
             			.execute({layer: resource});
             	} else {
 	            	a.execute({resource: resource, selected: true});
