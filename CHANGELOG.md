@@ -6,6 +6,10 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 
+### 2019-06-19 / 1.0.81
+- New build for PDOK stuff
+- Cleaning up workspaces that should live in server2/Dropbox/local PouchDB
+
 ### 2019-06-14 / 1.0.80
 - Working PDOK and veldoffice-geografie
 
