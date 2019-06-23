@@ -5,8 +5,8 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 * More offline first in cavalion-code
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
-
-### 2019-06-23 / 1.0.82
+---
+### 2019-06-23 / 1.0.83
 - Cleaning up around `vcl/Component.prototype.print()`
 
 ### 2019-06-19 / 1.0.81
