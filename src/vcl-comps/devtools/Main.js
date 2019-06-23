@@ -85,7 +85,7 @@ var handlers = {
         console_scope.size_handle && console_scope.size_handle.setParent(scope['workspaces-tabs']);
         
         var version = document.qs("html head script").text.split("\n")[1].split("\"")[3] || "from source";
-        this.app().print("devtools/Main - " + version, this);
+        this.app().print("running " + version, this);
 
         return this.inherited(arguments);
     },

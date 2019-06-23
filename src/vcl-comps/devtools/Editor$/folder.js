@@ -110,8 +110,6 @@ $([], {
 	    			return folders.indexOf(path) === index;
 	    		});
 	    		
-	    	app.print("folders", folders);
-	    	
 			resources.forEach(function(resource, i) {
 				if(resource.uri.split("/").length === 1) {
 	    			var tab = editor_needed.execute({

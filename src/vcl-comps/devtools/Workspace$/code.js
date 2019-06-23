@@ -18,7 +18,7 @@ $(["devtools/Workspace"], {
 
 			var this_index = this.up("vcl/ui/Tab").getIndex(), tab;
 			this.udown("#workspace-needed").execute({workspace:{name: "code/build", selected: false}}).setIndex(this_index + 1);
-			this.udown("#workspace-needed").execute({workspace:{name: "code/Apps", selected: false}}).setIndex(this_index + 2);
+			this.udown("#workspace-needed").execute({workspace:{name: "code/apps", text: "apps", content: "_apps", selected: false}}).setIndex(this_index + 2);
 		}
 	}
 });
