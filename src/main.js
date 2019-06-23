@@ -577,36 +577,6 @@ define("ol", ["script!https://cdn.rawgit.com/openlayers/openlayers.github.io/mas
 	return arguments[0];
 });
 
-define("vcl/Component.prototype.print", ["vcl/Component"], function(Component) {
-	// return (Component.prototype.print = function() {
-	// 	var args = js.copy_args(arguments);
-	// 	if(this.qsa("vcl/ui/Console#console").map(function(console, i) {
-	// 		i === 0 && console.print.apply(console, args);
-	// 		return console;
-	// 	}).length === 0) {
-	// 		bubble = this.up();
-	// 		if(typeof bubble.print === "function") {
-	// 			bubble.print.apply(bubble, args);
-	// 		}
-	// 	}
-	// });
-	js.override(Component.prototype, {
-		print: function() {
-			if(this._isRoot) {
-				var console = this.down("vcl/ui/Console#console");
-				if(console) {
-					return console.print.apply(console, arguments);
-				}
-			}
-			// var args = js.copy_args(arguments); args.callee = arguments.callee;
-			// if(typeof args[0] === "string") {
-			// 	args[0] = js.sf("[%s] %s", this.getUri().split("/").pop(), args[0]);
-			// }
-			return this.inherited(arguments);
-		}
-	});
-	
-});
 define("vcl/Component.read/writeStorage->V7.objects", ["vcl/Component", "v7/objects"], function(Component, objects) {
 	var V7 = {objects: objects}, property = "cavalion:vcl/Component";
 	js.override(Component.prototype, {
@@ -697,7 +667,7 @@ define(function(require) {
 	var override = require("override");
 
 	// require("vcl/Component.read/writeStorage->V7.objects");
-	require("vcl/Component.prototype.print");
+	// require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
 	window.B = require("B")
