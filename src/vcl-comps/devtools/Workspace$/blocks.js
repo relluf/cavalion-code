@@ -9,10 +9,12 @@ $(["devtools/Workspace"], {
 	vars: {
 		dbx: new Dropbox({accessToken:DBX_XS_TOKEN}),
 		"#navigator favorites": [
-			"Workspaces/cavalion.org/cavalion-blocks/src/;src",
-			"Workspaces/cavalion.org/cavalion-blocks/src/prototypes",
+			"Workspaces/cavalion.org/cavalion-blocks/src/prototypes;blocks/prototypes",
+			"Workspaces/cavalion.org/cavalion-blocks/src/;blocks/src",
+			"Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/console",
 			"Workspaces/cavalion.org/cavalion-devtools/src/cavalion-blocks/devtools",
-			"Workspaces/cavalion.org/cavalion-ide/src/cavalion-blocks/ide"
+			"Workspaces/cavalion.org/cavalion-ide/src/cavalion-blocks/ide",
+			"Workspaces/veldapps.com/veldapps-vo/src/cavalion-blocks;veldapps",
 		]
 	}
 },  [
