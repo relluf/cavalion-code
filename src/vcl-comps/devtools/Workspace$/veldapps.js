@@ -6,7 +6,6 @@ var EM = require("veldoffice/EM");
 
 
 var app = Application.get();
-var consol3 = app.qs("#console");
 var PouchDB = require("pouchdb");
 
 define("veldoffice/models", ["home/Projects/V7/src/node_modules/veldoffice-js/src/veldapps.com/veldoffice/models"], function(models) {
@@ -16,10 +15,10 @@ define("veldoffice/models", ["home/Projects/V7/src/node_modules/veldoffice-js/sr
 $([], {
 	vars: {
 		"#navigator favorites": [
-			"Library/cavalion-blocks",
 			"Workspaces/veldapps.com/veldapps-vo",
-			"Workspaces/veldapps.com/veldoffice-js/src",
-			"Workspaces/veldapps.com/veldoffice-js/src/veldapps.com/veldoffice;veldoffice-js/src/veldapps.com/veldoffice;Folder"
+			"Workspaces/veldapps.com/Veldoffice/veldoffice-js/src/veldapps.com;veldapps-js",
+			"Workspaces/veldapps.com/veldapps-vo/src/cavalion-blocks;veldapps-blocks",
+			"Workspaces/veldapps.com/veldapps-vo/src/cavalion-blocks;cavalion-blocks/veldapps"
 		]
 	},
 	onLoad: function() {
@@ -29,7 +28,7 @@ $([], {
 		
 		window.v7o_db = new PouchDB("v7-objects");
 
-		consol3.log("veldapps loaded", veldapps);
+		this.print("veldapps loaded", veldapps);
 		return this.inherited(arguments);
 	}
 }, []);
