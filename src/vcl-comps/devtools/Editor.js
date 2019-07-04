@@ -215,10 +215,11 @@ $(["ui/Form"], {
 
 
             function pr() {
-                scope['@app'].emit("print", arguments);
+                app.print.apply(app, arguments);
             }
 
-            var scope = this.getScope();
+			var app = this.app();
+            var scope = this.scope();
             var text = scope.ace.getEditor().getSession().getValue();
 
             if(text.charAt(0) === "{") {
@@ -227,12 +228,10 @@ $(["ui/Form"], {
             try {
                 var value = eval(text);
                 if(value !== undefined) {
-                    scope['@app'].emit("print", value);
-                    //console.log(value);
+                    pr(value);
                 }
             } catch(e) {
-                scope['@app'].emit("print", e);
-                //console.log(e);
+            	pr(e);
             }
         }
     }),
