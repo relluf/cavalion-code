@@ -6,6 +6,10 @@ Getting more and more comfortable with PouchDB. Still I am merely using 5% of it
 	* Persist vcl/Component state in VA.objects-like manner
 	* Server is the prototype, mothership
 ---
+
+### 2019-08-31
+- Updating for TO
+
 ### 2019-07-03 / 1.0.84
 - Tweaking blurry's position
 - Cleaning up
