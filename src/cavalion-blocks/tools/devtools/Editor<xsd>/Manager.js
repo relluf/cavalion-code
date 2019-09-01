@@ -1,5 +1,20 @@
 var sf = String.format;
 
+// var XSD_NS = "http://www.w3.org/2001/XMLSchema";
+var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
+
+	function js_getXs(path, elem) {
+	    var r;
+	    XS_NAMESPACE_PREFIXES.some(function(prefix) {
+	        var namePath = path.split(".").map(part => 
+	                js.sf(part, prefix)).join(".");
+
+	        r = r || js.get(namePath, elem);
+	    });
+	    return r;
+	}
+	
+
 ["Container", { 
 	css: {
 		"": "background-color: #f0f0f0; border-right: 1px solid silver;"
@@ -29,7 +44,11 @@ var sf = String.format;
 				if(value.attribute) {
 					value.minOccurs = value.attribute.xs['@_minOccurs'] || 1;
 					value.maxOccurs = value.attribute.xs['@_maxOccurs'] || 1;
-					value.documentation = js.get("attribute.xs.annotation.documentation", value) || js.get("attribute.type-resolved.annotation.documentation", value);
+					value.documentation = js_getXs("%sannotation.%sdocumentation", js.get("attribute.xs", value)) , js_getXs("%sannotation.%sdocumentation", js.get("attribute.type-resolved", value));
+					
+					if(value.documentation && value.documentation['#text']) {
+						value.documentation = value.documentation["#text"];
+					}
 				}
 			});
 			
@@ -85,7 +104,6 @@ var sf = String.format;
 			}, 200);
 		},
 		"#allstars loaded": function() {
-			//
 		}
 	}
 }, [

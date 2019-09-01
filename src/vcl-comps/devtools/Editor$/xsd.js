@@ -39,13 +39,15 @@ var sf = String.format;
 		
 	}
 	function resolveUri(uri, me) {
-		var url_map = me.vars(["devtools/Editor<xsd>/url_map"]);
+		var url_map = me.vars(["devtools/Editor<xsd>/url_map"]) || {};
 		var v = url_map[uri];
 		if(v) return v;
 		
 		me.print("resolveUri-" + uri, url_map);
 		
-		if(uri.indexOf("http://schemas.opengis.net/") === 0) {
+		if(uri.indexOf("https://schema.broservices.nl/") === 0) {
+			uri = "Library/schema.broservices.nl/" + uri.substring("https://schema.broservices.nl/".length);
+		} else if(uri.indexOf("http://schemas.opengis.net/") === 0) {
 			uri = "Library/opengis.net/" + uri.substring("http://schemas.opengis.net/".length);
 		} else if(uri.indexOf("http://www.w3.org/1999/") === 0 || uri.indexOf("http://www.w3.org/2001/") === 0) {
 			uri = "Library/opengis.net/" + uri.substring("http://www.w3.org/1999/".length);
