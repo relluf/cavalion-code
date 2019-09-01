@@ -12,10 +12,16 @@ require.config({
     paths: {
         "cavalion-blocks/$HOME": "/home",
         "home": "/home",
+        "$HOME": "/home",
         // "v7": "node_modules/veldapps-v7/src/v7",
-        "v7": "/home/Projects/V7/src/v7",
-        "va": "/home/Projects/V7/src/va",
+        // "v7": "/home/Projects/V7/src/v7",
+        // "va": "/home/Projects/V7/src/va",
+        "v7": veldapps_v7 + "/v7",
+        "va": veldapps_v7 + "/va",
         "lib": "../lib",
+        
+        "Projects": "/home/Projects",
+        "Library": "/home/Library",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
