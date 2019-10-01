@@ -16,6 +16,7 @@
 .vcl-ui-Bar.bottom {
   padding-top: 0px;
   border-top: 1px solid silver;
+  margin-top: 2px;
 }
 .vcl-ui-Bar.sizeable {
   padding-right: 10px;
@@ -41,6 +42,9 @@
 .vcl-ui-Bar > [id$=-tabs] .vcl-ui-Tab.selected {
   background-color: white;
   border-color: gray;
+}
+.vcl-ui-Bar.bottom > [id$=-tabs] .vcl-ui-Tab.selected {
+  border: 1px inset;
 }
 
 

@@ -18,6 +18,8 @@ require.config({
         // "va": "/home/Projects/V7/src/va",
         "v7": veldapps_v7 + "/v7",
         "va": veldapps_v7 + "/va",
+        "VA": veldapps_v7 + "/VA",
+        
         "lib": "../lib",
         
         "Projects": "/home/Projects",
@@ -156,6 +158,33 @@ define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_co
 		return pace; 
 	});
 	
+define("ArrayFactory", function() {
+	return {
+		create: function(options, callback) {
+			var r = [];
+			var inc = options.inclusive === true;
+	
+	//			if(options.inclusive === true && options.hasOwnProperty("end") && options.hasOwnProperty("step")) {
+	//				options.end += options.step;
+	//			}
+	
+			for(var i = options.start; inc ? i <= options.end : i < options.end; i += options.step) {
+				if(typeof callback === "function") {
+					var item = callback(i, options, arr);
+					if(item !== undefined) {
+						r.push(item);
+					}
+				} else {
+					r.push(i);
+				}
+			}
+			return r;
+		},
+		from: function(a) {
+			return Array.from(a || []);
+		}
+	};
+});
 define("B", ["blocks/Factory"], function() {
 	return require("blocks/Blocks");
 });

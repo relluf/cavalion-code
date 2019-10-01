@@ -17,7 +17,6 @@ $("vcl/ui/Panel", {
 			},
 			drop: function(evt) {
 				console.log(js.get("dataTransfer.files.length", evt));
-				
 				evt.preventDefault();
 				me.setVisible(false);
 			}

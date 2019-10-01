@@ -6,14 +6,14 @@
   "dependencies": {
     "cavalion-blocks": "^0.9.9",
     "cavalion-js": "^1.0.30",
-    "cavalion-vcl": "^1.0.58",
+    "cavalion-vcl": "^1.0.59",
     "dropbox": "^4.0.30",
     "dygraphs": "^2.1.0",
-    "framework7": "^4.5.0",
+    "framework7": "^4.5.2",
     "isomorphic-fetch": "^2.2.1",
     "proj4": "^2.5.0",
     "veldapps-v7": "^1.0.7",
-    "veldoffice-js": "^1.0.43"
+    "veldoffice-js": "^1.0.44"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
