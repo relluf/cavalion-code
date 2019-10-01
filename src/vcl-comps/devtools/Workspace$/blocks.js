@@ -1,6 +1,6 @@
 "use vcl/ui/Node, dropbox";
 
-var DBX_XS_TOKEN = "4OZtEz8LDp4AAAAAAABDHXHMmiCnPt51rdSbcyzWv9VkGCwLXHWK5B7e6S1D_Grb";
+var DBX_XS_TOKEN = "4OZtEz8LDp4AAAAAAABLV81n84RSnHKyv9kCTgtYwfICAiQJ4RREDPS1MSNDEl1_";
 
 var Node_ = require("vcl/ui/Node");
 var Dropbox = require("dropbox").Dropbox;

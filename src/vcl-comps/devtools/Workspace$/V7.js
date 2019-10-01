@@ -2,16 +2,19 @@ $([], {
 	vars: {
 		"#navigator favorites": [
 			"Workspaces/veldapps.com/V7/CHANGELOG.md;;File",
-			"Workspaces/veldapps.com/V7/src",
-			"Workspaces/veldapps.com/V7/src/va/veldoffice"
+			// "Workspaces/veldapps.com/V7/docs;V7/docs",
+			"Workspaces/veldapps.com/V7/build;build",
+			"Workspaces/veldapps.com/V7/src;src",
+			"Workspaces/veldapps.com/V7/src/va/veldoffice",
+			"Workspaces/veldapps.com/V7/tools",
 		],
 		"additional-workspaces": ["build", "va", "va/veldoffice"]
 	},
 	handlers: {
 		loaded: function() {
 			var app = this.app();
-			require(["v7/objects"], function(OM) {
-				app.print("window.OM = require('v7/objects')", window.OM = OM);
+			require(["va/objects"], function(OM) {
+				app.print("window.OM = require('va/objects')", window.OM = OM);
 			});
 
 			var keys = require("vcl/Component").getKeysByUri;
@@ -30,7 +33,11 @@ $([], {
 						selected: false
 					}
 				});
-				tab.setIndex(ws_index + index + 1);
+				if(ws === "build") {
+					tab.setIndex(ws_index + index);
+				} else {
+					tab.setIndex(ws_index + index + 1);
+				}
 				return tab;
 			});
 		}
