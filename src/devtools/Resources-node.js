@@ -9,6 +9,7 @@ define(function(require) {
 		return Promise.resolve(request);
 	}
 	function adjust(uri) {
+		if(uri.charAt(0) === "/") uri = uri.substring(1);
 		return BASE_URL + (window.escape(uri) || "");
 	}
 
