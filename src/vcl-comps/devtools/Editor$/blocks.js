@@ -171,7 +171,7 @@ $([], {
 
     $i("ace", { align: "left", width: 750 }),
     
-	$("vcl/ui/Tabs#bottom-tabs", { align: "bottom", classes: "bottom", autoSize: "height" }, [
+	$("vcl/ui/Tabs#bottom-tabs", { align: "bottom", classes: "bottom inset", autoSize: "height" }, [
     	$("vcl/ui/Tab", { action: "toggle-source", text: locale("Source"), control: "ace", groupIndex: -2, visible: "always" }),
     	$("vcl/ui/Tab", { action: "toggle-component", text: locale("Component"), control: "host", groupIndex: -3, visible: "always" })
 	]),

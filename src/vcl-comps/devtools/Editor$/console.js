@@ -66,7 +66,7 @@ $([], {
     }),
     
     $("vcl/ui/Tabs", "tabs", {
-        align: "bottom", classes: "bottom", autoSize: "height"
+        align: "bottom", classes: "bottom inset", autoSize: "height"
     }, [
         $("vcl/ui/Tab", "source-tab", {
             text: "Source", control: "ace"
