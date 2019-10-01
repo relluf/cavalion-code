@@ -64,6 +64,8 @@ var handlers = {
 			},
 			
 		});
+		blurred.setOwner(this);
+		blurred.setName("blurry");
 		blurred.setAlignNode(document.body);
 		blurred.setAlign("client");
 		blurred.setClasses(Math.random() < 0.95 ? "navy" : "maroon");

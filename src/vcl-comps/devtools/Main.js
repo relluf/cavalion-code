@@ -269,7 +269,7 @@ function focusSidebar(ws, sidebar) {
 }
 
 $(["ui/Form"], { css: styles, handlers: handlers }, [
-    $(["devtools/DragDropHandler"]),
+    $(["devtools/DragDropHandler<dropbox>"]),
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false}),
     $(["devtools/TabFactory"], "workspaces-new", {
         vars: {
@@ -295,12 +295,24 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     }),
     
     $(("vcl/Action"), "workspace-prompt-new", {
-    	hotkey: "Shift+121",
+    	hotkey: "Shift+122",
     	onExecute: function(evt) {
         	var n = this.udown("#workspaces-tabs")._controls.length, me = this;
         	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
         		if(res) {
         			me.up().qs("#workspace-needed").execute(res).setSelected(true);
+        		}
+        	})
+    	}
+    }),
+    
+    $(("vcl/Action"), "workspace-prompt-new-resource", {
+    	hotkey: "Shift+121",
+    	onExecute: function(evt) {
+        	var editorNeeded = this.app().down("devtools/Workspace<>:root:selected #editor-needed");
+        	this.app().prompt("#editor-needed execute", "Resource-" + Math.random().toString(36).substring(2, 15), function(res) {
+        		if(res) {
+        			editorNeeded.execute(res).setSelected(true);
         		}
         	})
     	}

@@ -244,6 +244,10 @@ $(["ui/Form"], {
             }
     		if(!tab) {
     		    if(!evt.formUri) {
+    		    	this.vars("devtools/Editor")
+    		    }
+    		    
+    		    if(!evt.formUri) {
     			    var ext = (evt.resource.uri || "").split(".").pop();
     			    var path = evt.resource.uri ? evt.resource.uri.split("/") : [];
     			    if(evt.resource && evt.resource.type === "Folder") {

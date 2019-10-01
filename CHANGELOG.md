@@ -1,11 +1,7 @@
-# Features/Low Hanging Fruit
-
-Getting more and more comfortable with PouchDB. Still I am merely using 5% of its features. VA.objects seems to be succesful.
-
-* More offline first in cavalion-code
-	* Persist vcl/Component state in VA.objects-like manner
-	* Server is the prototype, mothership
----
+### 2019-09-01
+- Updating V7 dependency
+- Now using inset tabs for most bottom tabs (workspaces will remain default)
+- Working on devtools/Editor<>
 
 ### 2019-08-31 / 1.0.86
 - Updating for Docker container install

@@ -13,12 +13,35 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 	    });
 	    return r;
 	}
-	
+
+// JSON.stringify(this.sel[0], function(key, value) { return key === "@__" ? undefined : value; }.bind(this))	
 
 ["Container", { 
 	css: {
-		"": "background-color: #f0f0f0; border-right: 1px solid silver;"
+		"": "background-color: white; border-right: 1px solid silver;"
 	},
+   	onDispatchChildEvent: function (component, name, evt, f, args) {
+        if (name.indexOf("key") === 0) {
+            var scope = this.scope();
+            if (component === scope['search-input']) {
+                if ([13, 27, 33, 34, 38, 40].indexOf(evt.keyCode) !== -1) {
+                    this.qsa("List<>").forEach(function(list) {
+	                    if (list.isVisible()) {
+		                    if(evt.keyCode === 13 && list.getSelection().length === 0 && list.getCount()) {
+		                        list.setSelection([0]);
+		                    } else if(evt.keyCode === 27) {
+				                scope['search-input'].setValue("");
+				                scope['search-input'].fire("onChange", [true]); // FIXME
+		                    }
+	                        list.dispatch(name, evt);
+	                    }
+                    });
+                    evt.preventDefault();
+                }
+            }
+        }
+        return this.inherited(arguments);
+    },
 	handlers: {
 		"loaded": function() {
 			var scope = this.scope(),  me = this;
@@ -51,7 +74,6 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 					}
 				}
 			});
-			
 			scope.allstars.setSource(scope.stars);
 
 			this.qsa("List<>").forEach(list => list.setOnColumnGetValue(function(column, value, rowIndex, source) {
@@ -64,15 +86,22 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 
 			this.qsa("List<>").on("dblclick", function() {
 				var list = this;
-				this.up("devtools/Workspace<>:root")
-					.qsa("vcl/ui/Console#console")
-					.map(function(console) {
+				this.up("devtools/Workspace<>:root").qsa("vcl/ui/Console#console").forEach(function(console) {
 						list.getSelection(true).forEach(function(xselem) {
 							console.print(xselem['@_name'] || xselem.name || "?", xselem);
 						});
 					});
 			});
+			
+			this.qsa("List<>").on("selectionchange", function() {
+				var selection = this.getSelection(true);
+				var desc = this.udown("#description");
+				desc && desc.setContent(
+					selection.map(_ => _.documentation).filter(_ => _ !== undefined).join("<br>"));
+			});
+			
 		},
+    
 		"#search-input onChange": function() { 
 			var me = this, scope = me.scope();
 			
@@ -103,8 +132,7 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 				scope.stars.setOnFilterObject(!value.length ? null : filter);
 			}, 200);
 		},
-		"#allstars loaded": function() {
-		}
+		"#allstars loaded": function() {}
 	}
 }, [
 
@@ -119,6 +147,7 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 	["Bar", [
 		["Input", "search-input", { classes: "search-top" }],
 	]],
+	
 	["Tabs", "tabs", { align: "bottom", classes: "bottom" }, [
 		["Tab", { control: "console", text: locale("Console") }],
 		["Tab", { control: "allstars", text: "*" || locale("-/Star.symbol"), selected: true }],
@@ -130,7 +159,11 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 		["Tab", { control: "groupsl", text: locale("-/Group.plural") }]
 	]],
 	
-	
+	["Container", "description", { 
+		align: "right", content: "<i>Documentation</i>", width: 300,
+		css: "white-space: normal; padding: 16px; color: black;"
+	}],
+
 	["List", "attributes", { autoColumns: true, visible: false, source: "attrs"} ],
 	["List", "elements", { autoColumns: true, visible: false, source: "elems"} ],
 	["List", "complexTypes", { autoColumns: true, visible: false, source: "ctypes"} ],
@@ -138,6 +171,6 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 	["List", "groupsl", { autoColumns: true, visible: false, source: "groups"} ],
 	["List", "attributeGroups", { autoColumns: true, visible: false, source: "agroups"} ],
 	["List", "simpleTypes", { autoColumns: true, visible: false, source: "stypes"} ],
-	
+
 	["Console", "console", { visible: false }]
 ]];
