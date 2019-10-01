@@ -24,6 +24,7 @@ $(["ui/Form"], {
             "md": "markdown",
             "java": "java",
             "jsx": "jsx",
+            "rdf": "xml",
             "wsdl": "xml",
             "xsd": "xml",
             "xml": "xml",
@@ -118,8 +119,8 @@ $(["ui/Form"], {
             }
         }
     }),
-    $(("vcl/Action"), "save", {
-        hotkey: "MetaCtrl+S",
+    
+    $(("vcl/Action"), "save-resource", {
         onExecute: function () {
             var scope = this.getScope();
             var resource = this.getVar("resource", true);
@@ -167,6 +168,12 @@ $(["ui/Form"], {
                 });
         }
     }),
+    
+    $(("vcl/Action"), "save", {
+        hotkey: "MetaCtrl+S",
+        parent: "save-resource",
+        parentExecute: true
+    }),
     $(("vcl/Action"), "format", {
         hotkey: "MetaCtrl+Shift+F",
         onExecute: function () {
@@ -199,8 +206,8 @@ $(["ui/Form"], {
         }
     }),
     $(("vcl/Action"), "evaluate", {
-        hotkey: "MetaCtrl+Enter",
-        onExecute: function() {
+        hotkey: "MetaCtrl+Enter|Alt+MetaCtrl+Enter",
+        onExecute: function(evt) {
             var all = require("js/JsObject").all;
             var Deferred = require("js/Deferred");
 
@@ -213,14 +220,10 @@ $(["ui/Form"], {
                 return deferred;
             }
 
-
-            function pr() {
-                app.print.apply(app, arguments);
-            }
-
-			var app = this.app();
+			var app = this.app(), ws = this.up("devtools/Workspace<>:root");
             var scope = this.scope();
             var text = scope.ace.getEditor().getSession().getValue();
+            var printer = evt.altKey ? app : ws;
 
             if(text.charAt(0) === "{") {
                 text = "(" + text + ")";
@@ -228,10 +231,10 @@ $(["ui/Form"], {
             try {
                 var value = eval(text);
                 if(value !== undefined) {
-                    pr(value);
+                    printer.print(this, value);
                 }
             } catch(e) {
-            	pr(e);
+            	printer.print(this, e);
             }
         }
     }),

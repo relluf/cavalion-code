@@ -4,7 +4,7 @@
 var Resources = require("devtools/Resources");
 
 function allowResource(resource) {
-	return resource.uri.split("/").pop() !== ".DS_Store";
+	return [".git", ".svn", ".DS_Store"].indexOf(resource.uri.split("/").pop()) === -1;
 }
 function common(tab) {
 	var resource = tab.vars("resource");
@@ -65,7 +65,8 @@ $([], {
 	    				selected: i === 0,
 	    				owner: owner
 	    			});
-	    			if(resource.uri.split("/").pop().indexOf(".") === -1)  {
+	    			// if(resource.uri.split("/").pop().indexOf(".") === -1)  {
+	    			if(resource.type === "Folder") {
 	    				tab.addClass("bold");
 	    			}
 	    			tab.setCloseable(false);
@@ -110,25 +111,6 @@ $([], {
 	    			return folders.indexOf(path) === index;
 	    		});
 	    		
-			resources.forEach(function(resource, i) {
-				if(resource.uri.split("/").length === 1) {
-	    			var tab = editor_needed.execute({
-	    				parents: {container: scope['@owner'], tab: scope['editors-tabs']},
-	    				resource: resource,
-	    				selected: i === 0 && !folders.length,
-	    				owner: scope['@owner']
-	    			});
-	    			
-	    			// TODO folder-resource-loaded?
-	    			tab.on("resource-loaded", function() {
-	    				if(typeof resource.onGenerate === "function") {
-	    					tab.down("#ace").setValue(resource.onGenerate(tab));
-	    				}
-	    			});
-	    			
-	    			common(tab);
-				}
-			});
 			
 	    	var tabs = {};
 	    	folders.forEach(function(folder_uri, i) {
@@ -153,6 +135,25 @@ $([], {
     			common(tab);
 	    	});
 	    	
+			resources.forEach(function(resource, i) {
+				if(resource.uri.split("/").length === 1) {
+	    			var tab = editor_needed.execute({
+	    				parents: {container: scope['@owner'], tab: scope['editors-tabs']},
+	    				resource: resource,
+	    				selected: i === 0 && !folders.length,
+	    				owner: scope['@owner']
+	    			});
+	    			
+	    			// TODO folder-resource-loaded?
+	    			tab.on("resource-loaded", function() {
+	    				if(typeof resource.onGenerate === "function") {
+	    					tab.down("#ace").setValue(resource.onGenerate(tab));
+	    				}
+	    			});
+	    			
+	    			common(tab);
+				}
+			});
 		}
 	})
 ]);

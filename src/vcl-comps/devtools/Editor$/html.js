@@ -1,4 +1,4 @@
-"use pages/Controller";
+"use pages/Controller, Framework7";
 
 var q$ = require("jquery");
 
@@ -37,13 +37,33 @@ $([], {
 		return this.inherited(arguments);
 	}
 }, [
-    
-    $i("ace", {
-        align: "client",
+    $i(("ace"), {
+        onLoad: function() {
+        	var scope = this.scope();
+	        var uri = this.vars(["resource.uri"]);
+	        if(uri.indexOf("vcl-comps/f7/Page$/") !== -1) {
+	        	require(["Framework7", "font-awesome"]);
+	        	scope.preview.addClass("f7-body");
+	        }
+            if(uri.indexOf("index.html") !== -1) {
+            	scope.preview.setVisible(false);
+            }
+        	return this.inherited(arguments);
+        },
         onChange: function() {
-            var scope = this.getScope();
+        	this.setTimeout("render", function() {
+            	this.scope().render.execute();
+        	}.bind(this), 250);
+        },
+        align: "client"
+    }),
+    $(("vcl/Action"), "render", {
+    	onExecute: function(evt) {
+    		var scope = this.scope();
+    		evt = evt || {value: scope.ace.getValue()};
+    		
             /*- reference to root node of current HTML */
-            var root = this.scope().preview._node; 
+            var root = scope.preview._node; 
             /*- save all scrollTop values which are not equal to 0 */
             var pos = q$("*", root).toArray().filter(_ => _.scrollTop).map(_ => { 
             	var n = _, s = []; 
@@ -54,31 +74,25 @@ $([], {
             	} 
             	return [s.join(" > "), _.scrollTop];
             });
-        	scope.preview.setContent(this.getValue());
+        	var uri = this.vars(["resource.uri"]);
+            var data = this._owner.vars("data") || this.vars(["devtools/Editor<html>://" + uri]);
+            
+            try {
+        		scope.preview.setContent(Template7.compile(evt.value)(data));
+            } catch(e) {
+            	this.print(e);
+            	scope.preview.setContent(js.sf("<div style='padding:8px;background-color:red;color:white;font-weight:bold;'>%H</div>%s", e.message, evt.value));
+            }
         	
         	/* restore scrollTop positions */
-        	try { scope.preview.update(_ => 
-        		pos.forEach(p => 
-        			q$(p[0]).scrollTop(p[1])));
+        	try { 
+        		scope.preview.update(_ => pos.forEach(p => q$(p[0]).scrollTop(p[1])));
         	} catch(e) {
         		// Ni modo...
         	}
         },
-        onLoad: function() {
-        	var scope = this.scope();
-	        var uri = this.getVar("resource.uri", true);
-	        if(uri.indexOf("vcl-comps/f7/Page$/") !== -1) {
-	        	require(["Framework7", "font-awesome"]);
-	        	scope.preview.addClass("f7-body");
-	        }
-            if(uri.indexOf("index.html") !== -1) {
-            	scope.preview.setVisible(false);
-            }
-        	return this.inherited(arguments);
-        }
     }),
-    
-    $("vcl/ui/Panel", "preview", {
+    $(("vcl/ui/Panel"), "preview", {
         align: "right",
         width: 375,
         css: { 
@@ -93,5 +107,4 @@ $([], {
         },
         visible: true
     })
-
 ]);
