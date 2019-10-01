@@ -1,4 +1,4 @@
-### 2019-09-01
+### 2019-09-01 / 1.0.87
 - Updating V7 dependency
 - Now using inset tabs for most bottom tabs (workspaces will remain default)
 - Working on devtools/Editor<>
