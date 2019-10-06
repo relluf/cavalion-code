@@ -234,8 +234,8 @@ $(["devtools/Editor<xml>"], {
 					
 					this.elems.forEach(function(elem) {
 						var at = elem[at__];
-						for(var k in at.attributes) {
-							var attribute = at.attributes[k];
+						for(var k in at.features) {
+							var attribute = at.features[k];
 							this.stars.push({
 								xmlns: at.xmlns,
 								namespace: attribute.namespace,
@@ -251,8 +251,8 @@ $(["devtools/Editor<xml>"], {
 					}, this);
 					this.ctypes.forEach(function(ctype) {
 						var at = ctype[at__];
-						for(var k in at.attributes) {
-							var attribute = at.attributes[k];
+						for(var k in at.features) {
+							var attribute = at.features[k];
 							this.stars.push({
 								xmlns: at.xmlns,
 								namespace: attribute.namespace,
@@ -445,13 +445,17 @@ me.print("parseElement.notHandled", xselem);
 						}
 					}
 
-					var info;
-					js.set(at__ + ".attributes." + name, (info = {
+					var info, x;
+					js.set(at__ + ".features." + name, (info = {
 						namespace: xsattribute[at__].xmlns,
 						reference: !!ref,
 						kind: "attribute", 
 						type: ref || xsattribute['@_type'] || xsattribute_name,
 						'type-resolved': type,
+						cardinality: [
+							typeof (x=xsattribute['@_minOccurs']) === "number" ? x : x || 1, 
+							typeof (x=xsattribute['@_maxOccurs']) === "number" ? x : x || 1
+						].join("-"),
 						xs: xsattribute
 					}), xselem);
 					
@@ -467,6 +471,10 @@ me.print("parseElement.notHandled", xselem);
 						namespace: xsel[at__].xmlns,
 						kind: "element", 
 						type: xsel_name,
+						cardinality: [
+							typeof (x=xsel['@_minOccurs']) === "number" ? x : x || 1, 
+							typeof (x=xsel['@_maxOccurs']) === "number" ? x : x || 1
+						].join("-"),
 						xs: xsel
 					};
 
@@ -492,7 +500,7 @@ me.print("parseElement.notHandled", xselem);
 						info.namespace_type = js.get(sf("type-resolved.%s.xmlns", at__), info);
 					}
 					
-					js.set(at__ + ".attributes." + name, info, xselem);
+					js.set(at__ + ".features." + name, info, xselem);
 				},
 				inheritGroup: function(xselem, xsgroup, xsgroup_name) {
 					var ref;
