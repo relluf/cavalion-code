@@ -247,6 +247,15 @@ $(["ui/Form"], {
     		    	this.vars("devtools/Editor")
     		    }
     		    
+    		    if(evt.resource.contentType) {
+    		    	var type = evt.resource.contentType.split("/").pop();
+    		    	evt.editorUri = js.sf("devtools/Editor<%s>", type);
+    		    }
+    		    if(evt.editorUri) {
+    		    	// TODO form <---> editor
+    		    	evt.formUri = evt.editorUri;
+    		    }
+    		    
     		    if(!evt.formUri) {
     			    var ext = (evt.resource.uri || "").split(".").pop();
     			    var path = evt.resource.uri ? evt.resource.uri.split("/") : [];
@@ -386,12 +395,13 @@ $(["ui/Form"], {
                 this._owner.emit("state-dirty");
             },
             onDblClick: function() {
-            	var me = this;
-            	this.app().prompt("#editor-needed execute", String.format("Resource-%d", Date.now()), function(value) {
+            	var me = this, parent = this.up().qsa("devtools/Editor<>:root:visible").pop();
+            	parent = parent ? js.up(parent.vars(["resource.uri"])) : "Projects/tmp";
+            	this.app().prompt("#editor-needed execute", parent + "/Resource-" + Math.random().toString(36).substring(2, 15), function(value) {
             			if(value !== null) {
             				me.up().qs("#editor-needed").execute(value).setSelected(true);
             			}
-            	})
+            	});
             }
         })
     ])

@@ -497,7 +497,7 @@ this.print("keyUp13", evt);
 	            });
             }
             
-            var r = this.apply("Resources.list", [uri]).
+            var r = this._owner.apply("Resources.list", [uri]).
 	            then(function (res) {
 	            	res.sort(function(i1, i2) {
 	            		if(i1.type === i2.type) {
@@ -563,105 +563,108 @@ this.print("keyUp13", evt);
 	            var control = parent.vars("control");
 	            var uris = this._owner.vars("uris");
 	            
-	if(!uris) return;
-	if(!uris.hasOwnProperty("splice")) {
-		/* OMG, ugly hack, what was wrong with me?! */
-	    Method.override(uris, {
-	        splice: function(index, count) {
-	        	for(var i = 0; i < count; ++i) {
-	        		var node = uriNodes[this[index + i]];
-	        		node && node.destroy();
-	        	}
-	        	return Method.callInherited(this, arguments);
-	        },
-	        push: function() {
-	        	for(var i= 0; i < arguments.length; ++i) {
-	        		createUriNode(arguments[i]).setIndex(0);
-	        	}
-	        	return Method.callInherited(this, arguments);
-	        }
-	    });
-	}
+				if(uris) {
+					if(!uris.hasOwnProperty("splice")) {
+						/* OMG, ugly hack, what was wrong with me?! */
+					    Method.override(uris, {
+					        splice: function(index, count) {
+					        	for(var i = 0; i < count; ++i) {
+					        		var node = uriNodes[this[index + i]];
+					        		node && node.destroy();
+					        	}
+					        	return Method.callInherited(this, arguments);
+					        },
+					        push: function() {
+					        	for(var i= 0; i < arguments.length; ++i) {
+					        		createUriNode(arguments[i]).setIndex(0);
+					        	}
+					        	return Method.callInherited(this, arguments);
+					        }
+					    });
+					}
 	            
-	            var favorites = this.vars(["#navigator favorites", true]) || [];
-	            favorites.forEach(function(uri) {
-	            	if(uris.indexOf(uri) === -1) {
-	            		Array.prototype.push.apply(uris, [uri]);
-	            	}
-	            });
-	            
-	            uris = uris.sort(function(i1, i2) {
-	            	var e1 = i1.endsWith(";File"), e2 = i2.endsWith(";File");
-	            	return e1 === e2 ? i1 < i2 ? -1 : 1 : e1 ? 1 : -1;
-	            });
-	            
-	            if(root) {
-		            var uriNodes = {};
-					function createUriNode(uri) {
-		                var node = new NavigatorNode(owner);
-		                var favorite = favorites.indexOf(uri) !== -1;
-		                
-		                uri = uri.split(";");
-		                
-		                var item = {
-		                	uri:	uri[0], 
-		                	name:	uri[1] || getNodeText(uri[0]),
-		                	type:	uri[2] || "Folder"
-		                };
-		
-		                root && node.addClass("root");
-		                favorite && node.addClass("favorite");
-		                node.setVar("resource", item);
-		                
-		                node.setChecked(true);
-		                node.setExpandable(item.type === "Folder");//true);
-		                node.setParent(parent);
-		                return (uriNodes[uri[1]] = node);
-		            }            
+		            var favorites = this.vars(["#navigator favorites", true]) || [];
+		            favorites.forEach(function(uri) {
+		            	if(uris.indexOf(uri) === -1) {
+		            		Array.prototype.push.apply(uris, [uri]);
+		            	}
+		            });
 		            
-		            uris.forEach(createUriNode);
-	            }
-	        	// console.log("timeout set to refresh index based on uris")
-	        	// owner.setTimeout("refresh-index", function() {
-					this.apply("Resources.index");
-	        	// }, 250);
+		            uris = uris.sort(function(i1, i2) {
+		            	var e1 = i1.endsWith(";File"), e2 = i2.endsWith(";File");
+		            	return e1 === e2 ? i1 < i2 ? -1 : 1 : e1 ? 1 : -1;
+		            });
+		            
+		            if(root) {
+			            var uriNodes = {};
+						function createUriNode(uri) {
+			                var node = new NavigatorNode(owner);
+			                var favorite = favorites.indexOf(uri) !== -1;
+			                
+			                uri = uri.split(";");
+			                
+			                var item = {
+			                	uri:	uri[0], 
+			                	name:	uri[1] || getNodeText(uri[0]),
+			                	type:	uri[2] || "Folder"
+			                };
+			
+			                root && node.addClass("root");
+			                favorite && node.addClass("favorite");
+			                node.setVar("resource", item);
+			                
+			                node.setChecked(true);
+			                node.setExpandable(item.type === "Folder");//true);
+			                node.setParent(parent);
+			                return (uriNodes[uri[1]] = node);
+			            }            
+			            
+			            uris.forEach(createUriNode);
+		            }
+		        	// console.log("timeout set to refresh index based on uris")
+		        	// owner.setTimeout("refresh-index", function() {
+						this.apply("Resources.index");
+		        	// }, 250);
+				}
 	            
-	            var r = this.apply("Resources.list", [uri]).
-		            then(function (res) {
-		            	res.sort(function(i1, i2) {
-		            		if(i1.type === i2.type) {
-		            			return i1.name < i2.name ? -1 : 1;
-		            		}
-		            		return i1.type !== "Folder" ? 1 : -1;
-		            	});
-		            	parent.beginLoading();
-		                res.forEach(function (item, index) {
-		                    var node = new NavigatorNode(owner);
-		                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
-	
-		                    node.setVar("resource", item);
-		                    root && node.addClass("root");
-		                    
-		                    root === true && index === 0 && node.addClass("seperator top");
-	
+	            var r = this.apply("Resources.list", [uri]).then(function (res) {
+	            	res.sort(function(i1, i2) {
+	            		if(i1.type === i2.type) {
+	            			return i1.name < i2.name ? -1 : 1;
+	            		}
+	            		return i1.type !== "Folder" ? 1 : -1;
+	            	});
+	            	parent.beginLoading();
+	                res.forEach(function (item, index) {
+	                    var node = new NavigatorNode(owner);
+	                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
+
+	                    node.setVar("resource", item);
+	                    root && node.addClass("root");
+	                    
+	                    root === true && index === 0 && node.addClass("seperator top");
+
+	                    if(uris) {
 		                    var checked = false;
 		                    for(var i = 0; i < uris.length && !checked; ++i) {
 		                    	checked = uris[i].indexOf(item.uri) === 0;
 		                    }
-	
+
 		                    if(checked && uris.indexOf(item.uri) === -1) {
 		                    	node.addClass("opaque");
 		                    }
-		                    node.setChecked(checked);
-		                    if (control) {
-		                        node.setVar("control", control);
-		                    }
-		                    node.setExpandable(item.type.indexOf("Folder") !== -1);
-		                    node.setParent(parent);
-		                });
-		            	parent.endLoading();
-		                return res;
-		            });
+	                    }
+	                    
+	                    node.setChecked(checked);
+	                    if (control) {
+	                        node.setVar("control", control);
+	                    }
+	                    node.setExpandable(item.type.indexOf("Folder") !== -1);
+	                    node.setParent(parent);
+	                });
+	            	parent.endLoading();
+	                return res;
+	            });
 	            return r;
 	        }
     	})
