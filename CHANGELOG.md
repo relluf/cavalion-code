@@ -1,3 +1,12 @@
+### 2019-10-06 / 1.0.88
+- Adding search feature to devtools/Editor<csv>
+- Introducing devtools/Editor<tsv>
+- Improving devtools/Editor<>
+	- resource.contentType (application/json)
+	- improving UX non-existent resource messages (still horrible though)
+- Introducing **devtools/Resources-pouchdb**, finally ;-)
+![](https://i.snipboard.io/VAwKOF.jpg?2x)
+
 ### 2019-09-01 / 1.0.87
 - Updating V7 dependency
 - Now using inset tabs for most bottom tabs (workspaces will remain default)
