@@ -173,7 +173,8 @@ function getPosts(arr, posts) {
 }, [
 	["vcl-data:Array", "posts"],
 	["vcl-ui:Node", {
-		text: locale("Posts.text"),
+		textReflects: "textContent",
+		text: js.sf("%H", "devtools/Editor<md> #posts"),
 		classes: "folder seperator",
 		onLoad() {
 			var tree = this.up("devtools/Workspace<>").down("devtools/Navigator<>#tree");

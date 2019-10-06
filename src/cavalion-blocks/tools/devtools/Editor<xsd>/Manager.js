@@ -14,7 +14,7 @@ var XS_NAMESPACE_PREFIXES = ['', 'xs:', 'xsd:'];
 	    return r;
 	}
 
-// JSON.stringify(this.sel[0], function(key, value) { return key === "@__" ? undefined : value; }.bind(this))	
+// #1247.setValue(JSON.stringify(this.sel[0], function(key, value) { return ["parser", "type-resolved"].includes(key) ? undefined : value; }.bind(this)))
 
 ["Container", { 
 	css: {
