@@ -37,8 +37,14 @@ $(["ui/Form"], {
         ed.renderer.setHScrollBarAlwaysVisible(false);
         ed.setScrollSpeed(2);
 
-        var ext = (tab.getVar("resource.uri") || "").split(".").pop();
+        var resource = tab.vars(["resource"]);
+        var name = resource.name || (resource.uri || "").split("/").pop();
+        var ext = name.split(".").pop();
         var session = ed.getSession();
+
+        if((!ext || name.indexOf(".") === -1) && resource.contentType) {
+        	ext = resource.contentType.split("/").pop();
+        }
         
         var mode = "ace/mode/" + (ExtensionToMode[ext || this.getSpecializer()] || (ext || "js"));
         
@@ -109,7 +115,11 @@ $(["ui/Form"], {
                         
                         if(evt && res.status === 404) {
                         	tab.app().confirm(String.format("404 - %s\n\nThis resource does not exist. Would you like to create it?", resource.uri), function(res) {
-	                        		alert(res);
+                        			if(res === true) {
+                        				Resources.create(resource.uri, resource)
+                        					.then(_ => editor.print(_))
+                        					.catch(_ => editor.print(_));
+                        			}
 	                        	});
                         }
                         
@@ -156,7 +166,16 @@ $(["ui/Form"], {
                 catch(function(res) {
                 	var msg;
                 	if(res.status === 404) {
-	                    msg = "**WARNING*** - Changes have NOT been saved because the resource is non-existent. Would you like to try to create the resource?";
+	                    // msg = "**WARNING*** - Changes have NOT been saved because the resource is non-existent. Would you like to try to create the resource?";
+	                    
+                    	tab.app().confirm(String.format("404 - %s\n\nThis resource does not exist. Would you like to create it?", resource.uri), function(res) {
+                    			if(res === true) {
+                    				Resources.create(resource.uri, resource)
+                    					.then(_ => editor.print(_))
+                    					.catch(_ => editor.print(_));
+                    			}
+                        	});
+
                  	} else if(res.status === 409) {
 	                    msg = "**WARNING*** - The resource has not been saved because it has been changed since loading it. Copy the contents of the resource (to the clipboard eg.) before reloading it.";
                  	} else {
