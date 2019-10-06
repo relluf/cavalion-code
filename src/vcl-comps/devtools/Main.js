@@ -309,12 +309,20 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     $(("vcl/Action"), "workspace-prompt-new-resource", {
     	hotkey: "Shift+121",
     	onExecute: function(evt) {
+        	var me = this, parent = this.up().qsa("devtools/Editor<>:root:visible").pop();
+        	parent = parent ? js.up(parent.vars(["resource.uri"])) : "tmp";
         	var editorNeeded = this.app().down("devtools/Workspace<>:root:selected #editor-needed");
-        	this.app().prompt("#editor-needed execute", "Resource-" + Math.random().toString(36).substring(2, 15), function(res) {
-        		if(res) {
-        			editorNeeded.execute(res).setSelected(true);
-        		}
-        	})
+        	this.app().prompt("#editor-needed execute", parent + "/Resource-" + Math.random().toString(36).substring(2, 15), function(value) {
+        			if(value !== null) {
+        				editorNeeded.execute(value).setSelected(true);
+        			}
+        	});
+    		
+        	// this.app().prompt("#editor-needed execute", "Resource-" + Math.random().toString(36).substring(2, 15), function(res) {
+        	// 	if(res) {
+        	// 		editorNeeded.execute(res).setSelected(true);
+        	// 	}
+        	// })
     	}
     }),
     
