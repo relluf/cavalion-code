@@ -32,8 +32,8 @@ $([], {}, [
 
 			var app = this.app();
             var ws = app.down("devtools/Workspace<>:root:selected:visible");
-            var ace = ws && ws.down("devtools/Editor<>:root:visible #ace");
-            var host = ws && ws.down("devtools/Editor<>:root:visible #host");
+            var ace = ws && ws.qsa("devtools/Editor<>:root:visible #ace").pop();
+            var host = ws && ws.qsa("devtools/Editor<>:root:visible #host").pop();
             var root = ace && ace.up().down(":root");
             var pr = this.print.bind(this);
 
