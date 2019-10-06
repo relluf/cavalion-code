@@ -1,11 +1,15 @@
 ### vcl/Component-type browser
 
-In, through vcl/ui/Console, of course. (And most of)the work is already done, it seems:
+Maybe introduce a **Classes**-tab in `#left-sidebar`. In, through a vcl/ui/Console, of course. (And most of)the work is already done, it seems:
 
 >> ![](https://i.snipboard.io/57wgtC.jpg?2x)
 >> ![](https://i.snipboard.io/QrI3Gm.jpg?2x)
 
 Events...?
+
+### devtools/Editor<xsd>/Manager
+
+Eigenlijk zou je bij de `XSD->types/writers/collectors generator` een output-workspace moeten aanmaken. De resources die in die workspace worden geladen worden in een unieke database zodat de output een mobiel/atomair-shareable ding wordt?
 
 ### devtools/Editor<md>/PostParser
 
