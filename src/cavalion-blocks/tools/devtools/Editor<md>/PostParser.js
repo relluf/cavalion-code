@@ -83,6 +83,7 @@ function getPosts(arr, posts) {
 
 ["Container", { 
 	css: {
+		"": "background-color: white;",
 		".vcl-ui-Tree li": "list-style-type: none;",
 		".vcl-ui-Tree li img:not(:hover)": "max-width: 64px; max-height: 64px;",
 		"#preview": "border-left: 1px solid silver; background-color: #f9f9f9; padding: 20px;",

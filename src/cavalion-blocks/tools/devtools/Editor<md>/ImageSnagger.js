@@ -22,6 +22,7 @@ function findImages(arr, r) {
 }
 
 var styles = {
+	"": "background-color: white;",
 	".vcl-ui-Tree li": "list-style-type: none;",
 	".vcl-ui-Tree li img:not(:hover)": "max-width: 64px; max-height: 64px;",
 	"#preview": "padding: 20px;",
