@@ -6,11 +6,11 @@ function getDb() { return OM.db; }
 		var fs = ws.down("#tree < #fs");
 		var NavigatorNode = fs.constructor;
 
-		var node = new NavigatorNode({
+		new NavigatorNode({
 			vars: { 
 				resource: { 
-					uri: "pouchdb://va_objects",
-					name: "va-objects", 
+					uri: "pouchdb://va_objects/",
+					name: "VA/objects", 
 					type: "Folder"
 				}
 			},
@@ -25,17 +25,22 @@ function getDb() { return OM.db; }
 
 		// must have a Resources implementation, take it from fs		
 		this.setVar("Resources", fs.getVar("Resources"));
-		// require("devtools/Resources-pouchdb").list = function(uri) {
-		// 	var db = uri.split("/").shift(); 
+		// require("devtools/Resources-pouchdb").list = function(parent) {
+		// 	var db = parent.split("/").shift(); 
+			
+		// 	if(!parent.endsWith("/")) parent += "/";
 
-		// 	if(!uri.endsWith("/")) uri += "/";
-
- 	// 		return getDb(uri).allDocs().then(function(all) {
- 	// 			var all = all.rows.map(_ => db + "/" + _.id);
-	 //			return all.filter(db_id => db_id.startsWith(uri))
-		// 			.map(db_id => db_id.substring(uri.length).split("/").shift())
-		// 			.filter(function(name, index, arr) { return name.length > 0 && arr.indexOf(name) === index; })
-		// 			.map(name => ({name: name, uri: uri + name, type: all.indexOf(uri + name) !== -1 ? "File" : "Folder"}));
+ 	// 		return getDb(parent).allDocs().then(function(res) {
+ 	// 			var all = res.rows.map(_ => db + "/" + _.id);
+ 	// 			return all.filter(uri => uri.startsWith(parent))
+		// 			.map(uri => uri.substring(parent.length).split("/").shift())
+		// 			.filter(function(name, index, arr) { return arr.indexOf(name) === index; })
+		// 			.map(name => ({
+		// 				name: name, uri: parent + (name || "/"), 
+		// 				type: all.indexOf(parent + name) !== -1 ? "File" : "Folder",
+		// 				expandable: true,
+		// 				contentType: "application/json"
+		// 			}));
  	// 		});
 		// };
 	},

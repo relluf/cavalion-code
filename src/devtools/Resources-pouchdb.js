@@ -8,6 +8,9 @@ define(function(require) {
 			
 			cavalion-code/vcl-comps/devtools/Workspace$/V7.js
 			cavalion-docs/vcl-comps/devtools/Workspace$/V7.js
+			
+		### 2019-10-08
+		- list() now also returns /
 
 	*/
 	
@@ -25,19 +28,20 @@ define(function(require) {
 		index: function(uris) {
 			return Promise.resolve([]);
 		},
-		list: function(uri) {
-			var db = uri.split("/").shift(); 
+		list: function(parent) {
+			var db = parent.split("/").shift(); 
+			
+			if(!parent.endsWith("/")) parent += "/";
 
-			if(!uri.endsWith("/")) uri += "/";
-
- 			return getDb(uri).allDocs().then(function(all) {
- 				var all = all.rows.map(_ => db + "/" + _.id);
-	 			return all.filter(db_id => db_id.startsWith(uri))
-					.map(db_id => db_id.substring(uri.length).split("/").shift())
-					.filter(function(name, index, arr) { return name.length > 0 && arr.indexOf(name) === index; })
+ 			return getDb(parent).allDocs().then(function(res) {
+ 				var all = res.rows.map(_ => db + "/" + _.id);
+ 				return all.filter(uri => uri.startsWith(parent))
+					.map(uri => uri.substring(parent.length).split("/").shift())
+					.filter(function(name, index, arr) { return arr.indexOf(name) === index; })
 					.map(name => ({
-						name: name, uri: uri + name, 
-						type: all.indexOf(uri + name) !== -1 ? "File" : "Folder",
+						name: name, uri: parent + (name || "/"), 
+						type: all.indexOf(parent + name) !== -1 ? "File" : "Folder",
+						expandable: true,
 						contentType: "application/json"
 					}));
  			});
@@ -47,7 +51,7 @@ define(function(require) {
 			uri = uri.split("/");
 			return getDb(uri.shift()).get(uri.join("/")).then(function(res) {
 				var text = js.get("devtools:resource.text", res);
-				if(!text) {
+				if(typeof text !== "string") {
 					text = js.b(JSON.stringify(res));
 				}
 				return res && {
@@ -66,7 +70,10 @@ define(function(require) {
 		},
 		'delete': function(uri) {
 			uri = uri.split("/");
-			return getDb(uri.shift()).remove(uri.join("/"));
+			var db = getDb(uri.shift());
+			return db.get(uri.join("/")).then(function(doc) {
+				return db.remove(doc);
+			});
 		},
 		update: function(uri, resource) {
 			uri = uri.split("/");
