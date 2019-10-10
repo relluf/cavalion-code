@@ -527,7 +527,9 @@ this.print("keyUp13", evt);
 	                    if (control) {
 	                        node.setVar("control", control);
 	                    }
-	                    node.setExpandable(item.type.indexOf("Folder") !== -1);
+	                    
+console.log(node, js.sf("expandable: %s", item.expandable));
+	                    node.setExpandable(item.expandable || item.type.indexOf("Folder") !== -1);
 	                    node.setParent(parent);
 	                });
 	            	parent.endLoading();
@@ -614,7 +616,8 @@ this.print("keyUp13", evt);
 			                node.setVar("resource", item);
 			                
 			                node.setChecked(true);
-			                node.setExpandable(item.type === "Folder");//true);
+	                    	node.setExpandable(item.expandable || item.type.indexOf("Folder") !== -1);
+			                // node.setExpandable(item.type === "Folder");//true);
 			                node.setParent(parent);
 			                return (uriNodes[uri[1]] = node);
 			            }            
@@ -637,7 +640,7 @@ this.print("keyUp13", evt);
 	            	parent.beginLoading();
 	                res.forEach(function (item, index) {
 	                    var node = new NavigatorNode(owner);
-	                    item.uri = uri !== "" ? (uri + "/" + item.name) : item.name;
+	                    item.uri = item.uri || (uri !== "" ? (uri + "/" + item.name) : item.name);
 
 	                    node.setVar("resource", item);
 	                    root && node.addClass("root");
@@ -659,7 +662,8 @@ this.print("keyUp13", evt);
 	                    if (control) {
 	                        node.setVar("control", control);
 	                    }
-	                    node.setExpandable(item.type.indexOf("Folder") !== -1);
+	                    node.setExpandable(item.expandable || item.type.indexOf("Folder") !== -1);
+	                    // node.setExpandable(item.type.indexOf("Folder") !== -1);
 	                    node.setParent(parent);
 	                });
 	            	parent.endLoading();
