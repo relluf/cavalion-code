@@ -4,7 +4,7 @@
 - Improving devtools/Editor<>
 	- resource.contentType (application/json)
 	- improving UX non-existent resource messages (still horrible though)
-- Introducing **devtools/Resources-pouchdb**, finally ;-)
+- Introducing **devtools/Resources-pouchdb**, finally ;-) . 
 ![](https://i.snipboard.io/VAwKOF.jpg?2x)
 
 ### 2019-09-01 / 1.0.87
