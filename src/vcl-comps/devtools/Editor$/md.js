@@ -16,7 +16,7 @@ function render() {
 		    this._node.qsa("img").forEach(function(img) {
 		    	var r = window.devicePixelRatio > 1 ? 2 : 2;
 		    	if(img.naturalWidth && img.src.indexOf("?2x") !== -1) {
-			    	console.log(">>>", img.naturalWidth, img);
+			    	// console.log(">>>", img.naturalWidth, img);
 		    		img.style.width = img.naturalWidth / r + "px";
 		    	}
 		    });
@@ -31,7 +31,7 @@ var Handlers = {
 		    this._node.qsa("img").forEach(function(img) {
 		    	var r = window.devicePixelRatio > 1 ? 2 : 2;
 		    	if(img.naturalWidth && img.src.indexOf("?2x") !== -1) {
-		    		console.log(">>>", img.naturalWidth, img);
+		    		// console.log(">>>", img.naturalWidth, img);
 		    		img.style.width = img.naturalWidth / r + "px";
 		    	}
 		    });
