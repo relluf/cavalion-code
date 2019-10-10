@@ -6,6 +6,33 @@ var Node_ = require("vcl/ui/Node");
 var Dropbox = require("dropbox").Dropbox;
 
 $(["devtools/Workspace"], {
+	onLoad: function() {
+		// var ws = this.up("devtools/Workspace<>:root");
+		var fs = this.down("#tree < #fs");
+		var NavigatorNode = fs.constructor;
+
+		var node = new NavigatorNode({
+			vars: { 
+				resource: { 
+					uri: "pouchdb://va_objects",
+					name: "va-objects", 
+					type: "Folder"
+				}
+			},
+			owner: this,
+			parent: this.scope().databases,
+			expandable: true,
+			onNodesNeeded: function() {
+				var fs = this.up("devtools/Workspace<>").down("#navigator #fs");
+				return fs._onChildNodesNeeded.apply(fs, arguments);
+			}
+		});
+
+		// must have a Resources implementation, take it from fs		
+		this.setVar("Resources", fs.getVar("Resources"));
+		
+		return this.inherited(arguments);
+	},
 	vars: {
 		dbx: new Dropbox({accessToken:DBX_XS_TOKEN}),
 		"#navigator favorites": [
@@ -20,7 +47,6 @@ $(["devtools/Workspace"], {
 },  [
 	$i("navigator", [
 		$i("tree", [
-	
 			$("vcl/ui/Node", {
 				text: "DROPBOX",
 				classes: "folder seperator",
@@ -46,8 +72,19 @@ $(["devtools/Workspace"], {
 							});
 						});
 				}
+			}),
+			$("vcl/ui/Node", "databases", {
+				text: "Databases",
+				// visible: false,
+				classes: "_root-invisible folder seperator",
+				expanded: true,
+				onLoad: function() {
+					var fs = this.up("devtools/Workspace<>").down("#navigator #fs");
+					this.setParent(fs);
+					this.show();
+				},
+				onNodesNeeded: function() {}
 			})
-		
 		])	
 	])
 ]);

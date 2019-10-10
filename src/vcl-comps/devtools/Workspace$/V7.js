@@ -1,12 +1,14 @@
 $([], { 
 	vars: {
 		"#navigator favorites": [
+			"Workspaces/veldapps.com/V7/ROADMAP.md;;File",
 			"Workspaces/veldapps.com/V7/CHANGELOG.md;;File",
 			// "Workspaces/veldapps.com/V7/docs;V7/docs",
 			"Workspaces/veldapps.com/V7/build;build",
 			"Workspaces/veldapps.com/V7/src;src",
 			"Workspaces/veldapps.com/V7/src/va/veldoffice",
 			"Workspaces/veldapps.com/V7/tools",
+			"pouchdb://va_objects;VA/objects;Folder;seperator"
 		],
 		"additional-workspaces": ["build", "va", "va/veldoffice"]
 	},

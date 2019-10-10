@@ -247,7 +247,7 @@ $(["ui/Form"], {
     		    	this.vars("devtools/Editor")
     		    }
     		    
-    		    if(evt.resource.contentType) {
+    		    if(evt.resource.contentType && evt.type !== "Folder") {
     		    	var type = evt.resource.contentType.split("/").pop();
     		    	evt.editorUri = js.sf("devtools/Editor<%s>", type);
     		    }
