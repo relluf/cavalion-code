@@ -207,7 +207,7 @@ $("vcl/ui/Form", {
 	                            /*- TODO how to know when nodes are actually created? */
 	                            node.setTimeout("walk", function() {
 	                        		walk(node);
-	                            }, 75);
+	                            }, 50);
 	                        });
 	                    } else {
 	                        scope.tree.setSelection([node]);
@@ -551,7 +551,7 @@ console.log(node, js.sf("expandable: %s", item.expandable));
 		}
     }, [
     	$(("devtools/NavigatorNode"), "fs", {
-	   		vars: { resource: { type: "Folder", uri: "", name: "Remote Files" } },
+	   		vars: { resource: { type: "Folder", uri: "", name: "Resources" } },
     		classes: "root-invisible", // classes: "root",
     		expanded: true,
     		onLoad: function() {

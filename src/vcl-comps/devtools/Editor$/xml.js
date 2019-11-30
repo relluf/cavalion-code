@@ -1,58 +1,7 @@
-"use fast-xml-parser";
+"use fast-xml-parser, xml-funcs";
 
 var Parser = require("fast-xml-parser");
-
-	function asArray(arr) {
-		if(arr instanceof Array) {
-			return arr;
-		}
-		
-		if(arr === null || arr === undefined) {
-			return [];
-		}
-		
-		return [arr];
-	}
-	function resolve_xlinks(elems, elem, log, done) {
-		var key = "@_xlink:href-resolved", href;
-		
-		done = done || [];
-		if(done.indexOf(elem) !== -1) return;
-		done.push(elem);
-		
-		for(var k in elem) {
-			if(k !== key && typeof elem[k] === "object") {
-				resolve_xlinks(elems, elem[k], log); // <- what about done? 
-			}
-		}
-	
-		if((href = elem['@_xlink:href'])) {
-			if(href.charAt(0) === '#') href = href.substring(1);
-			if(!(elem[key] = elems[href])) {
-				log && log.push(String.format("%s not found", href));
-			}
-		}
-	}
-	function gml(root) {
-		var key = Object.keys(root)[0];
-		var ns = key.split(":")[0];
-		var features = asArray(root[key][ns + ":featureMember"]);
-		var elems = {}, map = {}; /* return value */
-		var log = [];
-	
-		resolve_xlinks(elems, root);
-		features.forEach(function(_) {
-			var key = Object.keys(_)[0];
-			var arr = (map[key] = map[key] || []);
-	
-			elems[_[key]['@_gml:id']] = _;
-	
-			arr.push(_[key]);
-		});
-		resolve_xlinks(elems, root, log);
-		
-		return log.length ? { messages: log, result: map } : map;
-	}
+var Xml = require("xml-funcs");
 
 var styles = {
 	"#output": "background-color: #f0f0f0; border-right: 1px solid silver;"

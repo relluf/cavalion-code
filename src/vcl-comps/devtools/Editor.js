@@ -17,6 +17,7 @@ $(["ui/Form"], {
             "css": "css",
             "scss": "scss",
             "json": "json",
+            "geojson": "json",
             "js": "javascript",
             "blocks": "javascript",
             "vcl": "javascript",
@@ -250,10 +251,10 @@ $(["ui/Form"], {
             try {
                 var value = eval(text);
                 if(value !== undefined) {
-                    printer.print(this, value);
+                    this.print(value);
                 }
             } catch(e) {
-            	printer.print(this, e);
+            	this.print(e);
             }
         }
     }),

@@ -30,7 +30,11 @@ var Utils = {
         var tabs = scope["editors-tabs"].getControls();
         return {
         	'left-sidebar.visible': scope['left-sidebar'].getVisible(),
-            editors: tabs.map(function(tab) {
+            editors: tabs.filter(function(tab) {
+                var ace = tab.qsa("devtools/Editor<> #ace")[0];
+                var resource = tab.getVar("resource") || {}, r;
+                return resource && resource.uri;
+            }).map(function(tab) {
                 var ace = tab.qsa("devtools/Editor<> #ace")[0];
                 var resource = tab.getVar("resource") || {}, r;
                 if(ace) {

@@ -60,7 +60,7 @@ $([], {
         }
         
         /* When dealing with a "tool" run it immediately */
-        if(uri.indexOf("/cavalion-blocks/tools/") !== -1) { 
+        if(uri.indexOf("-blocks/tools/") !== -1) { 
         	scope['toggle-source'].setState(false);
         	scope.ace.hide();
         	scope['toggle-component'].setState(true);

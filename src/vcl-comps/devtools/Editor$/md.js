@@ -1,4 +1,5 @@
-"on, markdown";
+"use on, markdown";
+
 var on = require("on");
 var markdown = require("markdown");
 

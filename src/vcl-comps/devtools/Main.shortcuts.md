@@ -17,6 +17,7 @@
 - **F8** - Delete selected resource
 - **F9** - Create new resource
 - **Ctrl+N** - New resource
+- **Cmd+0** - Focus active resource in Navigator
 
 ## Editor
 - **Ctrl+N** - Next line (blocking Navigator Ctrl+N)

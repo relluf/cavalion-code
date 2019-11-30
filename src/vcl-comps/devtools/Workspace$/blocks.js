@@ -5,7 +5,7 @@ var DBX_XS_TOKEN = "4OZtEz8LDp4AAAAAAABLV81n84RSnHKyv9kCTgtYwfICAiQJ4RREDPS1MSND
 var Node_ = require("vcl/ui/Node");
 var Dropbox = require("dropbox").Dropbox;
 
-$(["devtools/Workspace"], {
+$([], {
 	onLoad: function() {
 		// var ws = this.up("devtools/Workspace<>:root");
 		var fs = this.down("#tree < #fs");
@@ -78,11 +78,11 @@ $(["devtools/Workspace"], {
 				// visible: false,
 				classes: "_root-invisible folder seperator",
 				expanded: true,
-				onLoad: function() {
-					var fs = this.up("devtools/Workspace<>").down("#navigator #fs");
-					this.setParent(fs);
-					this.show();
-				},
+				// onLoad: function() {
+				// 	var fs = this.up("devtools/Workspace<>").down("#navigator #fs");
+				// 	this.setParent(fs);
+				// 	this.show();
+				// },
 				onNodesNeeded: function() {}
 			})
 		])	

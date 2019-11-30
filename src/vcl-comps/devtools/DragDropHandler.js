@@ -3,11 +3,9 @@ $("vcl/ui/Panel", {
 		this.setParentNode(document.body);
 
 		var me = this, listeners;
+		var dropped = this.vars("dropped", false, []);
 		this.vars("listeners", listeners = {
 			dragover: function(evt) {
-				
-				console.log(js.get("dataTransfer.files.length", evt));
-				
 				evt.preventDefault();
 				me.setVisible(true);
 			},
@@ -16,7 +14,13 @@ $("vcl/ui/Panel", {
 				me.setVisible(false);
 			},
 			drop: function(evt) {
-				console.log(js.get("dataTransfer.files.length", evt));
+				// console.log(js.get("dataTransfer.files.length", evt), evt);
+				
+				var source = JSON.parse(JSON.stringify(evt.dataTransfer));
+				dropped.push(source);
+				
+				console.log(source);
+				
 				evt.preventDefault();
 				me.setVisible(false);
 			}
