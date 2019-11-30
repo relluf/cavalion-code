@@ -4,16 +4,18 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "cavalion-blocks": "^0.9.9",
-    "cavalion-js": "^1.0.30",
-    "cavalion-vcl": "^1.0.60",
+    "cavalion-blocks": "^0.9.11",
+    "cavalion-js": "^1.0.33",
+    "cavalion-vcl": "^1.0.62",
     "dropbox": "^4.0.30",
     "dygraphs": "^2.1.0",
     "framework7": "^4.5.2",
     "isomorphic-fetch": "^2.2.1",
-    "proj4": "^2.5.0",
+    "ol": "^6.1.1",
+    "proj4": "^2.6.0",
     "veldapps-v7": "^1.0.7",
-    "veldoffice-js": "^1.0.44"
+    "veldoffice-js": "^1.0.44",
+    "xslt": "^0.9.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

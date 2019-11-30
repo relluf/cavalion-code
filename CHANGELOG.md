@@ -1,3 +1,6 @@
+### 2019-10-29 / 1.0.89
+- Adding pouchdb://-resources
+
 ### 2019-10-06 / 1.0.88
 - Adding search feature to devtools/Editor<csv>
 - Introducing devtools/Editor<tsv>
