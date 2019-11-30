@@ -58,7 +58,7 @@ define(function(require) {
 					for(var k in res) {
 						var resource = res[k];
 						arr.push({
-							uri: uri + k, modified: resource.mtime,
+							uri: uri.substring(uri.charAt(0) === "/" ? 1 : 0) + k, modified: resource.mtime,
 							created: resource.ctime, added: resource.atime,
 							link: resource.link, size: resource.size, name: k, 
 							type: resource.type

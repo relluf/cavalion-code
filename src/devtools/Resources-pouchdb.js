@@ -1,6 +1,7 @@
 define(function(require) {
 
 	var PouchDB = require("pouchdb");
+	var Hash = require("util/Hash");
 
 	/*- 
 		Hosts allDocs as a JSON resource or devtools:resource is the actual doc.
@@ -82,6 +83,30 @@ define(function(require) {
 				_rev: resource.revision,
 				'devtools:resource': { text:resource.text }
 			});
+		},
+		
+		sync: function(db, dbs) {
+			if(typeof db === "string") db = this.dbs[db];
+			
+			dbs = dbs || "https://dbs.veldapps.com/";
+			// TODO sync-token-manager (!!!) based on session / account / user
+			var dbi = "cavdevres_" + Hash.md5("cavalion.org/devtools/Resources://" + db.name);
+			
+			console.log("started live syncing for", dbs + dbi);
+			return db.sync(new PouchDB(dbs + dbi), { live: true })
+				.on("error", function(err) {
+					console.error(err);
+				})
+				.on('change', function (change) {
+				  console.log("change", change);
+				})
+				.on('paused', function (info) {
+				  console.log("paused", info);
+				})
+				.on('active', function (info) {
+				  console.log("active", info);
+				});
 		}
+			
 	};
 });

@@ -83,3 +83,12 @@ How does that translate to new VA way-of-doing things?
 ![](https://i.snipboard.io/rb2UMd.jpg?2x)
 
 ### `[013]` Node interface?
+
+### `[---]` persist settings rewrite
+
+* Using "va/objects"-style of persistence
+* 
+
+### `[---]` #console-container #console
+
+Refactor `#left-sidebar #console` -> `#left-sidebar #console-container` (or anything different than `#console`)
