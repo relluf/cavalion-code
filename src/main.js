@@ -192,8 +192,11 @@ define("ArrayFactory", function() {
 		}
 	};
 });
-define("B", ["blocks/Factory"], function() {
-	return require("blocks/Blocks");
+define("B", ["blocks/Factory"], function(Factory) {
+	var Blocks = require("blocks/Blocks");
+	Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
+	Blocks.DEFAULT_NAMESPACES.veldoffice = "vcl-veldoffice";
+	return Blocks;
 });
 define("Element", function() {
 	/* Make life easier */
@@ -923,7 +926,6 @@ define(function(require) {
 
 	window.locale.slashDotRepl = false;
 
-	require("PageVisibility");
 	require("Element");
 	
 	var ComponentNode = require("console/node/vcl/Component");
