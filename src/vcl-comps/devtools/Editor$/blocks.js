@@ -72,6 +72,8 @@ $([], {
     	
     	// see main.js
     	uri = String.format("$HOME/%s", uri);
+    	sourceUri = String.format("$HOME/%s", sourceUri);
+    	
         
         function f() { scope.instantiate.execute({ uri: uri, sourceUri: sourceUri }); }
         tab.on({"resource-loaded": f, "resource-saved": f});

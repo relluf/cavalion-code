@@ -8,7 +8,8 @@ $([], {
 			"Workspaces/veldapps.com/V7/src;src",
 			"Workspaces/veldapps.com/V7/src/va/veldoffice",
 			"Workspaces/veldapps.com/V7/tools",
-			"pouchdb://va_objects;VA/objects;Folder;seperator"
+			"pouchdb://va_objects;VA/objects/;Folder;seperator",
+			"pouchdb://VA-app;VA-app/;Folder;seperator"
 		],
 		"additional-workspaces": ["build", "va", "va/veldoffice"]
 	},

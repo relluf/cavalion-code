@@ -1,6 +1,6 @@
 "devtools/Resources, util/Xml, vcl/ui/Tab";
 
-/*- Two way data binding mechanism needed! */
+/*- Two way data binding mechanism needed! (really?)*/
 /*- Event model/mechanism needed! */
 
 // TODO resetundo,gototop?
@@ -161,7 +161,9 @@ $(["ui/Form"], {
                 then(function(res) {
                     tab.removeVar("modified");
                     tab.setState("invalidated", true);
-                    resource.revision = res.revision;
+                    if(res.hasOwnProperty("revision")) {
+                    	resource.revision = res.revision;
+                    }
                     tab.emit("resource-saved");
                 }).
                 catch(function(res) {
@@ -231,6 +233,35 @@ $(["ui/Form"], {
             var all = require("js/JsObject").all;
             var Deferred = require("js/Deferred");
 
+/* TODO cleanup - @seealso blocks/Factory.prototype.constructor */
+
+				var parentRequire = require;
+				var uri = "$HOME/" + this.vars(["resource.uri"]);
+            
+				function normalize(uri, module) {
+					if(module.includes("!")) {
+						module = module.split("!");
+						module[1] = js.normalize(uri, module[1]);
+						module = module.join("!");
+					} else {
+						module = js.normalize(uri, module);
+					}
+					return module;
+				}
+				function thisRequire(modules, success, error) {
+					if(modules instanceof Array) {
+						modules = modules.map(module => normalize(uri, module));
+					} else {
+						modules = normalize(uri, modules);
+					}
+					return parentRequire(modules, success, error);
+				}
+				
+				for(var k in parentRequire) {
+					thisRequire[k] = parentRequire[k];
+				}
+            
+
             function defer(requirements, callback) {
                 var deferred = new Deferred();
                 require(requirements, function() {
@@ -249,10 +280,12 @@ $(["ui/Form"], {
                 text = "(" + text + ")";
             }
             try {
-                var value = eval(text);
-                if(value !== undefined) {
-                    this.print(value);
-                }
+            	(function(require) {
+	                var value = eval(text);
+	                if(value !== undefined) {
+	                    this.print(value);
+	                }
+            	}.apply(this, [thisRequire]));
             } catch(e) {
             	this.print(e);
             }

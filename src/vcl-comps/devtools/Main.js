@@ -402,6 +402,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
             if((tab = tabs.getControl(evt.keyCode - 49)) !== null) {
                 evt.preventDefault();
                 tab.setSelected(true);
+                tab.update(() => tab.scrollIntoView());
                 try {
                 	tab = tab._control.qs("#left-sidebar-tabs < vcl/ui/Tab:selected");
                 	// console.log(tab, tab._control.qs("vcl/ui/Input"));
@@ -413,7 +414,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
     	}
     }),
     $(("vcl/Action"), "workspaces-tabs::next-previous", {
-    	hotkey: "Ctrl+Alt+219|Ctrl+Alt+221",
+    	hotkey: "Ctrl+Alt+219|Ctrl+Alt+221|Shift+Meta+219|Shift+Meta+221",
     	onExecute: function(evt) {
     		var method = evt.keyCode === 219 ? "Previous" : "Next";
     		this.scope("workspaces-tabs")["select" + method]();

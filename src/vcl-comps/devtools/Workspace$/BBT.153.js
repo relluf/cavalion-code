@@ -4,6 +4,13 @@ var EM = require("entities/EM");
 var prefix = "/bbt-1.5.3/";
 
 $([], {
+	vars: {
+		// "#navigator favorites": [
+		// 	"Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
+		// 	"Workspaces/eae.com/BBT-1.5.3/WebContent/src/main",
+		// 	"Workspaces/eae.com/BBT-1.5.3/WebContent/src/gdtis"
+		// ]
+	},
 	
 	onLoad: function() {
 		if(EM.prefix !== prefix) {
