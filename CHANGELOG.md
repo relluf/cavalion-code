@@ -1,3 +1,6 @@
+### 2019-12-02 / 1.0.91
+- Lots of improvements, but most importantly relative require implemented for devtools/Editor<blocks>
+
 ### 2019-10-29 / 1.0.90
 - Adding pouchdb://-resources
 
