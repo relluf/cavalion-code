@@ -82,6 +82,10 @@ define(function(require) {
 				_id: uri.join("/"), 
 				_rev: resource.revision,
 				'devtools:resource': { text:resource.text }
+			}).then(function(res) {
+				// console.log("updated", res);
+				resource.revision = res.rev;
+				return res;
 			});
 		},
 		
