@@ -502,7 +502,101 @@ define("proj4", ["../lib/node_modules/proj4/dist/proj4-src"], function(P) {
 define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
+define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
+	var url = new Url();
+	var dbName = "va_objects"; //code-devtools";
+	var property = "cavalion-vcl:state";
+	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
+	var db = (c) => c.vars(["storage-db"]) || new PouchDB(dbName);
+	
+	function fetch(db, key, opts) {
+		return db.fetch(key, opts);
+	}
+	function save(db, obj, opts) {
+		return db.save(obj, opts);
+	}
+	
+	Component.sync = function(opts) {
+		
+		/* TODO prefix is title */
+		
+		var dbi = "https://dbs.veldapps.com/va_objects-code-veldapps--ralphk";
+		var root = opts.app || require("vcl/Application").instances[0];
+		var sh = db(root).sync(new PouchDB(dbi), opts)
+			.on("error", function(err) {
+				console.error(err);
+				root.print("sync-error", { sh: sh, err: err, 'this': this, args: arguments });
+			})
+			.on("change", function (change) {
+				console.log("change", change);
+				root.print("sync-change", { sh: sh, change: change, 'this': this, args: arguments });
+			})
+			.on("paused", function (info) {
+				console.log("paused", info);
+				root.print("sync-paused", { sh: sh, info: info, 'this': this, args: arguments });
+			})
+			.on("active", function (info) {
+				console.log("active", info);
+				root.print("sync-active", { sh: sh, info: info, 'this': this, args: arguments });
+			});
+			
+		return sh;
+	};
 
+	js.override(Component.prototype, {
+        readStorage: function (key, callback, errback) {
+
+// this.print(cid("readStorage", this), key);
+
+        	var args = arguments, me = this;
+            fetch(db(me), this.getStorageKey()).then(function(obj) {
+// me.print(cid("readStorage-fetched", me), obj);
+            	if(!obj.hasOwnProperty(property)) {
+        			obj[property] = {};
+            	}
+            	if(!obj[property].hasOwnProperty(key)) {
+            		var ls = me.inherited(args);
+            		if(ls) {
+            			obj[property][key] = ls;
+// me.print(cid("copyFromLS", me), [me.getStorageKey(), key, obj[property][key]]);
+            		}
+            	}
+            	if(typeof(obj && obj[property] && obj[property][key]) === "object") {
+            		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
+            		obj[property][key] = JSON.stringify(obj[property][key]);
+            	}
+            	callback(obj && obj[property] && obj[property][key] || null);
+            }).catch(function(e) {
+            	console.error(e);
+            	errback(e);	
+            });
+// console.log("readStorage", me, arguments);
+        },
+        writeStorage: function (key, value, callback, errback) {
+        	var args = arguments, me = this;
+if(typeof value === "string") {
+	try { value = JSON.parse(value); } catch(e) {}
+}
+// me.print(cid("writeStorage", me), key, value);
+            fetch(db(me), this.getStorageKey()).then(function(obj) {
+            	if(!obj.hasOwnProperty(property)) {
+        			obj[property] = {};
+            	}
+				obj[property][key] = value;
+				save(db(me), obj).then(function() {
+				    if (typeof callback === "function") { // nextTick?
+				        callback.apply(this, arguments);
+				    }
+				}).catch(function() {
+				    if (typeof errback === "function") { // nextTick?
+				        errback.apply(this, arguments);
+				    }
+				});
+            });
+// console.log("writeStorage", this, arguments);
+        }
+	});
+});
 define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
 	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
 	"pouchdb.memory",
@@ -831,72 +925,6 @@ define("xml-funcs", [], function() {
 	
 });
 
-define("vcl/Component.read/writeStorage->POUCH", ["vcl/Component", "pouchdb"], function(Component, PouchDB) {
-	var property = "cavalion-vcl:state";
-	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s)
-	var db = (c) => c.vars(["storage-db"]) || new PouchDB("va_objects");
-	
-	function fetch(db, key, opts) {
-		return db.fetch(key, opts);
-	}
-	function save(db, obj, opts) {
-		return db.save(obj, opts)
-	}
-
-	js.override(Component.prototype, {
-        readStorage: function (key, callback, errback) {
-
-this.print(cid("readStorage", this), key);
-
-        	var args = arguments, me = this;
-            fetch(db(me), this.getStorageKey()).then(function(obj) {
-me.print(cid("readStorage-fetched", me), obj);
-            	if(!obj.hasOwnProperty(property)) {
-        			obj[property] = {};
-            	}
-            	if(!obj[property].hasOwnProperty(key)) {
-            		var ls = me.inherited(args);
-            		if(ls) {
-            			obj[property][key] = ls;
-me.print(cid("copyFromLS", me), [me.getStorageKey(), key, obj[property][key]]);
-            		}
-            	}
-            	if(typeof(obj && obj[property] && obj[property][key]) === "object") {
-            		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
-            		obj[property][key] = JSON.stringify(obj[property][key]);
-            	}
-            	callback(obj && obj[property] && obj[property][key] || null);
-            }).catch(function(e) {
-            	console.error(e);
-            	errback(e);	
-            });
-// console.log("readStorage", me, arguments);
-        },
-        writeStorage: function (key, value, callback, errback) {
-        	var args = arguments, me = this;
-if(typeof value === "string") {
-	try { value = JSON.parse(value); } catch(e) {}
-}
-// me.print(cid("writeStorage", me), key, value);
-            fetch(db(me), this.getStorageKey()).then(function(obj) {
-            	if(!obj.hasOwnProperty(property)) {
-        			obj[property] = {};
-            	}
-				obj[property][key] = value;
-				save(db(me), obj).then(function() {
-				    if (typeof callback === "function") { // nextTick?
-				        callback.apply(this, arguments);
-				    }
-				}).catch(function() {
-				    if (typeof errback === "function") { // nextTick?
-				        errback.apply(this, arguments);
-				    }
-				});
-            });
-// console.log("writeStorage", this, arguments);
-        }
-	});
-});
 define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], function(Component) {
 	Component.prototype.e = function() {
 		if(typeof this.constructor.prototype.execute === "function") {
@@ -935,7 +963,7 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
-	require("vcl/Component.read/writeStorage->POUCH");
+	require("vcl/Component.storage-pouch");
 	// require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
