@@ -1,3 +1,40 @@
+function handleFile(file) {
+	let reader = new FileReader();
+	reader.onloadend = function() {
+		var result = reader.result;
+		console.log(this, reader, this===reader);
+		r.readerResult = result;
+		debugger;
+	};
+	// reader.readAsDataURL(file);
+	reader.readAsText(file);
+}
+function copy(obj, r) {
+	r = r || {};
+	for(var k in obj) {
+		var v = obj[k];
+		if(typeof v === "object") {
+			if(typeof v.length === "number") {
+				v = copy(v, []);
+			} else {
+				v = copy(v);
+			}
+		}
+		if(typeof v !== "function") {
+			r[k] = v;
+		} else if(k === "getAsString") {
+			obj.getAsString(function(value) { 
+				r.strValue = value; 
+			});
+		} else if(k === "getAsFile") {
+			r.fileValue = handleFile(obj.getAsFile(), r);
+		} else {
+			r[k] = function() {};
+		}
+	}
+	return r;
+}
+
 $("vcl/ui/Panel", {
 	onLoad: function() {
 		this.setParentNode(document.body);
@@ -14,12 +51,10 @@ $("vcl/ui/Panel", {
 				me.setVisible(false);
 			},
 			drop: function(evt) {
-				// console.log(js.get("dataTransfer.files.length", evt), evt);
+				var dataTransfer = copy(evt.dataTransfer);
+				dropped.push(dataTransfer);
 				
-				var source = JSON.parse(JSON.stringify(evt.dataTransfer));
-				dropped.push(source);
-				
-				console.log(source);
+				console.log("dropped-so-far", dropped);
 				
 				evt.preventDefault();
 				me.setVisible(false);

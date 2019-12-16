@@ -376,6 +376,13 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
 
     $(("vcl/Action"), "workspace-needed", {
         onExecute: function(evt) {
+        	if(evt instanceof Array) {
+        		var me = this;
+        		return evt.forEach(function(ws) {
+        			me.execute(ws);
+        		});
+        	}
+        	
         	if(typeof evt === "string") {
         		evt = { workspace: {name: evt} };
         	}

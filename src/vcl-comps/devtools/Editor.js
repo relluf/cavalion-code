@@ -1,9 +1,5 @@
 "devtools/Resources, util/Xml, vcl/ui/Tab";
 
-/*- Two way data binding mechanism needed! (really?)*/
-/*- Event model/mechanism needed! */
-
-// TODO resetundo,gototop?
 var Resources = require("devtools/Resources");
 
 $(["ui/Form"], {
@@ -130,7 +126,6 @@ $(["ui/Form"], {
             }
         }
     }),
-    
     $(("vcl/Action"), "save-resource", {
         onExecute: function () {
             var scope = this.getScope();
@@ -190,7 +185,6 @@ $(["ui/Form"], {
                 });
         }
     }),
-    
     $(("vcl/Action"), "save", {
         hotkey: "MetaCtrl+S",
         parent: "save-resource",

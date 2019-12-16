@@ -1,3 +1,6 @@
+### 2019-12-13 / 1.0.93
+- Working on sharing workspaces (VO.app)
+
 ### 2019-12-02 / 1.0.92
 - Lots of improvements, but most importantly relative require implemented for devtools/Editor<blocks>
 
