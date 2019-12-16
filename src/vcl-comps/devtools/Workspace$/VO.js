@@ -9,6 +9,7 @@ $([], {
 			// this.down("#navigator #fs").hide();
 			// this.down("#left-sidebar-tabs").hide();
 			// this.down("#editors-tabs").hide();
+			// this.down("#session-bar").setParent(this.app().down("#window"));
 			this.down("#session-bar").setIndex(0);
 			this.down("#session-bar").show();
 			
@@ -24,6 +25,10 @@ $([], {
 			).then(function(tab) {
 				tab.setSelected(true);
 				fs.up().print(tab);
+			});
+			
+			this.down("#session-bar").set({
+				parent: this.app().down("#window")
 			});
 				
 		},
@@ -54,5 +59,4 @@ $([], {
 
 	$(["veldoffice/Session"], "session-bar", { visible: false })
 
-	
 ]);

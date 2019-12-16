@@ -9,7 +9,7 @@ $(["devtools/Workspace"], {
 	},
 	handlers: {
 		"loaded": function() {
-			this.udown("#workspace-needed").execute("code/build");
+			// this.udown("#workspace-needed").execute("code/build");
 		}
 	}
 });
