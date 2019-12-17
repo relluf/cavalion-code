@@ -504,7 +504,7 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 });
 define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
 	var url = new Url();
-	var dbName = "va_objects"; //code-devtools";
+	var dbName = "va_objects-code"; //code-devtools";
 	var property = "cavalion-vcl:state";
 	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
 	var db = (c) => c.vars(["storage-db"]) || new PouchDB(dbName);
@@ -520,7 +520,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 		
 		/* TODO prefix is title */
 		
-		var dbi = "https://dbs.veldapps.com/va_objects-code-veldapps--ralphk";
+		var dbi = "https://dbs.veldapps.com/va_objects-code-veldapps--ralphkz";
 		var root = opts.app || require("vcl/Application").instances[0];
 		var sh = db(root).sync(new PouchDB(dbi), opts)
 			.on("error", function(err) {
