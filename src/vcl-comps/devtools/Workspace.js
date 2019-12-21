@@ -82,8 +82,8 @@ var Utils = {
 	                setTimeout(function() {
 	                    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
 	                    var session = ace.getEditor().session;    
-	                    session.selection.fromJSON(state.selection);
-	                    session.setOptions(state.options);
+	                    state.selection && session.selection.fromJSON(state.selection);
+	                    state.options && session.setOptions(state.options);
 	                    state.mode && session.setMode(state.mode);
 	                    try {
 	                        state.folds.forEach(function(fold){
@@ -91,14 +91,14 @@ var Utils = {
 	                                Range.fromPoints(fold.start, fold.end));
 	                        });
 	                    } catch(e) {
-	                        console.log(e.message);
+	                        console.error(e);
 	                    }
 	                    session.setScrollTop(state.scrollTop);
 	                    session.setScrollLeft(state.scrollLeft);
 	
-	                    ace.getEditor().gotoLine(
-	                        state.position.row + 1,
-	                        state.position.column);
+						if(state.position) {
+		                    ace.getEditor().gotoLine(state.position.row + 1,state.position.column);
+						}
 	                }, 0);
 	            });
 	        });

@@ -43,8 +43,7 @@ function getDb() { return OM.db; }
 		// 			}));
  	// 		});
 		// };
-	},
-	css: js.sf("background-color: %s;", (["red", "yellow", "green", "blue"])[Math.floor(Math.random() * 4)])
+	}
 }, [
 	["Node", "node", {
 		text: "Databases",

@@ -86,6 +86,7 @@ require.config({
         "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy",
 
         "fast-xml-parser": "../lib/fast-xml-parser/parser",
+        "xml-js": "node_modules/xml-js/dist/xml-js",
 
 		"dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph"
         
@@ -504,10 +505,18 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 });
 define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
 	var url = new Url();
-	var dbName = "va_objects-code"; //code-devtools";
+	
+	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
+	var app = workspaces && workspaces.split(",")[0] || "code";
+	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app);
+	var idPrefix = url.getParamValue("db-id-prefix") || "";
 	var property = "cavalion-vcl:state";
 	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
+
 	var db = (c) => c.vars(["storage-db"]) || new PouchDB(dbName);
+	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
+	
+/*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
 	
 	function fetch(db, key, opts) {
 		return db.fetch(key, opts);
@@ -518,9 +527,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	
 	Component.sync = function(opts) {
 		
-		/* TODO prefix is title */
-		
-		var dbi = "https://dbs.veldapps.com/va_objects-code-veldapps--ralphkz";
+		var dbi = js.sf("https://dbs.veldapps.com/ralphk-%s", dbName);
 		var root = opts.app || require("vcl/Application").instances[0];
 		var sh = db(root).sync(new PouchDB(dbi), opts)
 			.on("error", function(err) {
@@ -629,7 +636,7 @@ define("override", function() {
 	
 	return override;
 });
-define("blocks-js", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) {
+define("blocks", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) {
 
 	var override = require("override");
 	override(Blocks, "implicitBaseFor", function(inherited) {
@@ -943,7 +950,7 @@ define(function(require) {
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
-	require("blocks-js");
+	require("blocks");
 
 	/*- Some awesomeness */
 	require("font-awesome");
@@ -987,7 +994,7 @@ define(function(require) {
 	}
 	
 	Factory.require(app, function(factory) {
-		factory.newInstance();
+		B.DEFAULT_OWNER = factory.newInstance();
 		document.body.removeChild(document.getElementById("devtools-loading"));
 	});
 });

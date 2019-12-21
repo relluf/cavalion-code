@@ -26,10 +26,12 @@ define(function(require) {
 	
 	var db_index = {};
 	function va_objects_wrapper(db) {
-		if(!(this instanceof va_objects_wrapper)) {
-			return (db_index[db._name] = (db_index[db._name] || new va_objects_wrapper(db)));
-		}
+		var dbi = db.name;
 		
+		if(!(this instanceof va_objects_wrapper)) {
+			return (db_index[dbi] = (db_index[dbi] || new va_objects_wrapper(db)));
+		}
+
 		var va_objects = db;
 		var va_objects_timeouts = {};
 		var va_objects_idx = {};

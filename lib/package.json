@@ -16,6 +16,7 @@
     "proj4": "^2.6.0",
     "veldapps-v7": "^1.0.7",
     "veldoffice-js": "^1.0.44",
+    "xml-js": "^1.6.11",
     "xslt": "^0.9.1"
   },
   "scripts": {

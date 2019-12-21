@@ -36,14 +36,11 @@ $(["ui/Form"], {
 
         var resource = tab.vars(["resource"]);
         var name = resource.name || (resource.uri || "").split("/").pop();
+        var type = (resource.contentType || "").split("/").pop();
         var ext = name.split(".").pop();
         var session = ed.getSession();
 
-        if((!ext || name.indexOf(".") === -1) && resource.contentType) {
-        	ext = resource.contentType.split("/").pop();
-        }
-        
-        var mode = "ace/mode/" + (ExtensionToMode[ext || this.getSpecializer()] || (ext || "js"));
+        var mode = "ace/mode/" + (ExtensionToMode[type || ext || this.getSpecializer()] || (type || ext || this.getSpecializer() || "js"));
         
         require([mode], 
         	function() { session.setMode(mode); }, 
