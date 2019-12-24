@@ -512,9 +512,12 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	var idPrefix = url.getParamValue("db-id-prefix") || "";
 	var property = "cavalion-vcl:state";
 	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
-
-	var db = (c) => c.vars(["storage-db"]) || new PouchDB(dbName);
+	
+	var defaultDb = new PouchDB(dbName);
+	var db = (c) => c.vars(["storage-db"]) || defaultDb;
 	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
+	
+	console.log("using", defaultDb, "for vcl-comps")
 	
 /*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
 	

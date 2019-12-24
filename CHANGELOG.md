@@ -1,3 +1,18 @@
+### 2019-12-24 / 1.0.96
+- Editing "pouchdb://"-resources with contentType equal to `application/json` like editing records in the database"
+- Introducing VO.app workspace, a workspace for the application VO
+
+### 2019-12-21 / 1.0.95
+- Reorganzing cavalion-blocks
+	- Library -> .../dropbox@veldapps.com
+	- Source actively pushed from macbook2
+- Using PouchDB as storage layer for application state
+	- Thinking about hiding devtools in order to debug/design application with Code
+- Updating to cavalion-vcl@1.0.64
+
+### 2019-12-16 / 1.0.94
+- Trying to sync workspace with PouchDB
+
 ### 2019-12-13 / 1.0.93
 - Working on sharing workspaces (VO.app)
 
