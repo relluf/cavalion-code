@@ -1,13 +1,16 @@
 $([], {
-	handlers: {
-		loaded() {
-			this.down("#session-bar").setParent(this.app().down("#window"));
-			this.down("#session-bar").setIndex(0);
+	onLoad() {
+		this.down("#session-bar").setParent(this.app().down("#window"));
+		this.down("#session-bar").setIndex(0);
+		
+		["Gebruikers", "Bedrijven", "Onderzoeken", "Meetpunten", "Documenten"]
+			.forEach(
+				(name) => this
+					.up("devtools/Main<>")
+					.down("#workspace-needed")
+					.execute({ workspace: { name: name }, selected: false })
+			);
 			
-			this.up("devtools/Main<>").down("#workspace-needed")
-				.execute(["Gebruikers", "Bedrijven", "Onderzoeken", "Meetpunten", "Documenten"]);
-		}
+		return this.inherited(arguments);
 	}
-}, [
-
-]);
+});
