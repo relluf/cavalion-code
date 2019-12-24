@@ -16,9 +16,9 @@ define(function(require) {
 	*/
 	
 	var dbs = {};
-	function getDb(uri) {
+	function getDb(uri, force) {
 		var name = uri.split("/").shift();
-		if(dbs[name] === undefined) {
+		if(force || dbs[name] === undefined) {
 			dbs[name] = new PouchDB(name);
 		}
 		return dbs[name];
@@ -77,8 +77,30 @@ define(function(require) {
 			});
 		},
 		update: function(uri, resource) {
+			function done(res) {
+	console.log("updated", res);
+					resource.revision = res.rev;
+					resource.text = js.b(JSON.stringify(res));
+					return res;
+				}
+				
 			uri = uri.split("/");
-			return getDb(uri.shift()).put({ 
+			
+			var dbName = uri.shift();
+			if(resource.contentType === "application/json") {
+				var db, obj = JSON.parse(resource.text); // potential crash
+				obj._id = uri.join("/");
+				obj._rev = resource.revision;
+				
+				return getDb(dbName).put(obj).then(done).catch(function(err) {
+					if(err.name === "conflict") {
+						console.log("conflict - recreated database");
+						return getDb(dbName, true).put(obj).then(done);
+					}
+					throw err;
+				});
+			}
+			return getDb(dbName).put({ 
 				_id: uri.join("/"), 
 				_rev: resource.revision,
 				'devtools:resource': { text:resource.text }

@@ -42,7 +42,8 @@ var Utils = {
                     r = {
                         resource: {
                             uri: resource.uri,
-                            type: resource.type
+                            type: resource.type,
+                            contentType: resource.contentType
                         },
                         position: ed.selection.getCursor(),
                         selection: ed.selection.toJSON(),
