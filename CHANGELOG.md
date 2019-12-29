@@ -1,3 +1,13 @@
+### 2019-12-28 / 1.0.97
+- Updating node_modules
+	+ cavalion-code-blocks@1.0.1
+	+ cavalion-vcl@1.0.65
+- Adding shortcut for changing focused Tabs instance
+- A dash in the Workspace name doesn't "implicit inherit" anymore
+
+### 2019-12-25
+- Introducing NPM module `cavalion-code-blocks`
+
 ### 2019-12-24 / 1.0.96
 - Editing "pouchdb://"-resources with contentType equal to `application/json` like editing records in the database"
 - Introducing VO.app workspace, a workspace for the application VO
