@@ -95,7 +95,7 @@ var handlers = {
 			"Ctrl+N": "editor-new", 
 			"Alt+Ctrl+N": "editor-new",
 			
-			"Shift+Ctrl+187": "editors-next",
+			"Shift+Ctrl+186": "editors-next",
 			"Shift+Ctrl+189": "editors-previous",
 			// "Shift+Ctrl+222": "editors-next",
 			"Shift+Ctrl+221": "editor-next", 
@@ -240,7 +240,8 @@ var handlers = {
 
 // FIXME Move
 function replaceChars(uri) {
-	return uri.replace(/\-/g, ".").replace(/\//g, ".");
+	return uri.replace(/\//g, ".");
+	// return uri.replace(/\-/g, ".").replace(/\//g, ".");
     // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
     // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
 }
