@@ -7,7 +7,17 @@ var FormContainer = require("vcl/ui/FormContainer");
 var Panel = require("vcl/ui/Panel");
 
 var handlers = {
-	loaded: function() {
+	onGetStorageKey(forKey) {
+		if(forKey.length === 2) {
+			var comp = forKey[0];
+			var resource = comp.vars(["resource"]);
+			if(resource) {
+				var ws = comp.up("devtools/Workspace<>");
+				return js.sf("%s %s %s", ws.getUri(), comp.getUri(), resource.uri);
+			}
+		}
+	},
+	loaded() {
 		var scope = this.scope(), me = this;
 		this.open = function(uri, opts) {
 			if(typeof uri === "string") {
@@ -147,27 +157,6 @@ var handlers = {
 
 (function OverridesAndOtherHacks() {
 	
-	// var localStorage_pouched = require("devtools/localStorage-pouched");
-	// var Component = require("vcl/Component");
-	0 && Method.override(Component.prototype, {
-	    readStorage: function (key, callback, errback) {
-	        return localStorage_pouched.getItem(this.getStorageKey(key), callback, errback);
-	    },
-	    writeStorage: function (key, value, callback, errback) {
-	    	console.log("writeStorage", this.getUri(), key, value.length);
-	        try {
-	            var item = this.getStorageKey(key);
-	            var r = localStorage_pouched.setItem(item, value);
-	            if (typeof callback === "function") {
-	                callback.apply(this, [r]);
-	            }
-	        } catch(e) {
-	            if (typeof errback === "function") {
-	                errback.apply(this, [e]);
-	            }
-	        }
-	    },
-	});
 	/*- disable Ctrl+Shift+D */
 	Method.override(Ace.prototype, "onnodecreated", function() {
 	    var r = this.inherited(arguments);
@@ -204,6 +193,10 @@ var handlers = {
 	});
 } ());
 
-$(["App.v1.console"], { title: "Code", icon: "images/favicon.ico", handlers: handlers }, [
-	$i("client", {formUri: "./Main"})
+$(["App.v1.console"], { 
+	title: "Code", 
+	icon: "images/favicon.ico", 
+	handlers: handlers
+}, [
+	$i("client", { formUri: "./Main<>" })
 ]);
