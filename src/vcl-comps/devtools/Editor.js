@@ -1,10 +1,57 @@
 "devtools/Resources, util/Xml, vcl/ui/Tab";
 
 var Resources = require("devtools/Resources");
+var nameOf = (uri) => (uri||"").split("/").pop().replace(/\//g, ".");
+var getKey = (tab) => {
+	var parents = [];
+	while(tab !== null && tab.vars("resource")) {
+		parents.unshift(tab);
+		tab = tab.up("vcl/ui/Tab");
+	}
+	parents = parents.map(_ => nameOf(_.vars("resource.uri")));
+	return parents.join("/");
+};
+
+function state_invalidated(root, source) {
+	root.vars("stateChanged").apply(this, [root, source]);
+}
+function state_write(root) {
+	var tab = root.soup("vcl/ui/Tab");
+	var getState = root.vars("getState");
+	
+	if(root._vars._loading) return;
+
+console.log(">>> write editor state " + root.vars(["resource.uri"]));
+
+	return root.writeStorage(getKey(tab), getState(root));
+}
+function state_read(root) {
+	var tab = root.soup("vcl/ui/Tab");
+	var reflectState = root.vars("reflectState");
+
+console.log("read editor state " + root.vars(["resource.uri"]));
+	
+	root._vars._loading = true;
+	root.readStorage(getKey(tab), function(state) {
+		reflectState(root, state);
+		delete root._vars._loading;
+	});
+	
+	if(!root.vars("invalidated")) {
+		var ace = root.down("#ace");
+		var ed = ace.getEditor();
+		
+		var invalidated = root.vars("invalidated", () => state_invalidated(root));
+		
+        ed.selection.on("changeCursor", invalidated);
+        ed.session.on("changeFold", invalidated);
+        ed.session.on("changeSelection", invalidated);
+	}
+}
 
 $(["ui/Form"], {
     activeControl: "ace",
-    onLoad: function () {
+    onLoad() {
         var tab = this.up("vcl/ui/Tab");
         var scope = this.getScope();
         
@@ -75,6 +122,56 @@ $(["ui/Form"], {
         scope.refresh.execute();
         
         return this.inherited(arguments);
+    },
+    vars: {
+    	stateChanged(root,source) {
+    		root.setTimeout("state-invalidated", () => state_write(root), 250);	
+    	},
+    	getState(root) {
+			var ace = root.down("#ace");
+			var ed = ace.getEditor();
+			return {
+				// font-size, mode
+		        //mode: ed.session.getMode().$id,
+		        position: ed.selection.getCursor(),
+		        selection: ed.selection.toJSON(),
+		        options: ed.session.getOptions(),
+		        folds: ed.session.getAllFolds().map(function(fold) {
+		            return {
+		                start: fold.start,
+		                end: fold.end,
+		                placeholder: fold.placeholder
+		            };
+		        }),
+		        scrollTop: ed.session.getScrollTop(),
+		        scrollLeft: ed.session.getScrollLeft()
+		    };
+    	},
+    	reflectState(root, state) {
+		    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
+		    if(state === null) return;
+			
+			var ace = root.down("#ace");
+		    var session = ace.getEditor().session;    
+			
+			if(state.position) {
+		        ace.getEditor().gotoLine(state.position.row + 1,state.position.column);
+			}
+			
+		    state.selection && session.selection.fromJSON(state.selection);
+		    state.options && session.setOptions(state.options);
+		    state.mode && session.setMode(state.mode);
+			state.folds && state.folds.forEach(function(fold){
+		    		try {
+		            	session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end));
+				    } catch(e) {
+		    		    console.error(e);
+		    		}
+		    	});
+		    session.setScrollTop(state.scrollTop);
+		    session.setScrollLeft(state.scrollLeft);
+		
+		}
     }
 }, [
     $(("vcl/Action"), "refresh", {
@@ -101,7 +198,10 @@ $(["ui/Form"], {
                         editor.focus();
                         scope.loading.hide();
                         tab.emit("resource-loaded");
-//                        tab.setState("invalidated", true);
+                        
+// STATE READ
+state_read(scope.ace.up());
+						// tab.setState("invalidated", true);
                     }).
                     catch(function(res) {
                         editor.setReadOnly(false);
@@ -119,6 +219,8 @@ $(["ui/Form"], {
                         
                         scope.loading.hide();
                         tab.emit("resource-loaded");
+// STATE READ
+state_read(scope.ace.up());
                     });
             }
         }
@@ -319,7 +421,7 @@ $(["ui/Form"], {
                         me.inherited(args);
                     }, canHide - Date.now());
                 }
-            })
+            });
         }
     })
 ]);
