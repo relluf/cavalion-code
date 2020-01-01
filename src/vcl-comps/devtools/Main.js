@@ -24,7 +24,11 @@ var styles = {
     ".{./Panel}#editors": {
         "background-color": "silver"
     },
-    "#editors-tabs:focus": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);"
+    "#editors-tabs:focus": {
+    	"": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
+    	".selected": "border:1px solid rgb(57,121,204); background-color: rgb(57,121,204); color: white;",
+    	".menu": "color: white;"
+    }
 };
 var handlers = {
     onLoad: function () {
@@ -66,7 +70,7 @@ var handlers = {
         }
         this.readStorage("state", function(state) {
             if(state !== null) {
-                var index = JSON.parse(state).workspace;
+                var index = state.workspace;
                 var tab = scope['workspaces-tabs'].getControl(index);
                 tab && tab.setSelected(true);
             }
@@ -74,9 +78,9 @@ var handlers = {
         
         this.on("state-dirty", function() {
             me.setTimeout("saveState", function() {
-                me.writeStorage("state", JSON.stringify({
+                me.writeStorage("state", {
                     workspace: scope['workspaces-tabs'].getSelectedControl(1).
-                        getIndex()}));
+                        getIndex()});
             }, 200);
         });
 
@@ -94,6 +98,11 @@ var handlers = {
 			"Ctrl+Alt+F1": "editor-move-to-front",
 			"Ctrl+N": "editor-new", 
 			"Alt+Ctrl+N": "editor-new",
+			
+			"Shift+Ctrl+40": "editors-next",
+			"Shift+Ctrl+38": "editors-previous",
+			"Shift+Ctrl+39": "editor-next", 
+			"Shift+Ctrl+37": "editor-previous", 
 			
 			"Shift+Ctrl+186": "editors-next",
 			"Shift+Ctrl+189": "editors-previous",
