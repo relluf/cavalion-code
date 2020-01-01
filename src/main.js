@@ -507,7 +507,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	var url = new Url();
 	
 	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
-	var app = workspaces && workspaces.split(",")[0] || "code";
+	var app = url.getParamValue("") || (workspaces && workspaces.split(",")[0]) || "code";
 	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app);
 	var idPrefix = url.getParamValue("db-id-prefix") || "";
 	var property = "cavalion-vcl:state";
@@ -517,7 +517,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	var db = (c) => c.vars(["storage-db"]) || defaultDb;
 	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
 	
-	console.log("using", defaultDb, "for vcl-comps")
+	console.log("using", defaultDb, "for vcl-comps (" + defaultDb.name + ")");
 	
 /*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
 	
@@ -573,7 +573,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
             	}
             	if(typeof(obj && obj[property] && obj[property][key]) === "object") {
             		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
-            		obj[property][key] = JSON.stringify(obj[property][key]);
+            		// obj[property][key] = JSON.stringify(obj[property][key]);
             	}
             	callback(obj && obj[property] && obj[property][key] || null);
             }).catch(function(e) {
@@ -586,6 +586,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
         	var args = arguments, me = this;
 if(typeof value === "string") {
 	try { value = JSON.parse(value); } catch(e) {}
+	console.log("converted to object", value);
 }
 // me.print(cid("writeStorage", me), key, value);
             fetch(db(me), this.getStorageKey()).then(function(obj) {
@@ -992,12 +993,16 @@ define(function(require) {
 		// TODO reserved valueless parameters: ['debug']
 		
 		app = url.getParamValues("").filter(function(s) { 
-			return s !== "debug"; })[0] || "devtools";
-		app += "/App";
+			return s !== "debug"; })[0] || "code";
+
+		app = js.sf("devtools/App<%s>", app);
+		// app += "/App";
 	}
 	
 	Factory.require(app, function(factory) {
-		B.DEFAULT_OWNER = factory.newInstance();
+		window.app = B.DEFAULT_OWNER = factory.newInstance();
+		window.app.vars("url", url);
+
 		document.body.removeChild(document.getElementById("devtools-loading"));
 	});
 });
