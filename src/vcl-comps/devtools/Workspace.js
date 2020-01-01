@@ -35,35 +35,15 @@ var Utils = {
                 var resource = tab.getVar("resource") || {}, r;
                 return resource && resource.uri;
             }).map(function(tab) {
-                var ace = tab.qsa("devtools/Editor<> #ace")[0];
-                var resource = tab.getVar("resource") || {}, r;
-                if(ace) {
-                    var ed = ace.getEditor();
-                    r = {
-                        resource: {
-                            uri: resource.uri,
-                            type: resource.type,
-                            contentType: resource.contentType
-                        },
-                        position: ed.selection.getCursor(),
-                        selection: ed.selection.toJSON(),
-                        options: ed.session.getOptions(),
-                        //mode: ed.session.getMode().$id,
-                        folds: ed.session.getAllFolds().map(function(fold) {
-                            return {
-                                start: fold.start,
-                                end: fold.end,
-                                placeholder: fold.placeholder
-                            };
-                        }),
-                        scrollTop: ed.session.getScrollTop(),
-                        scrollLeft: ed.session.getScrollLeft()
-                    };
-                } else {
-                    r = tab.getVar(".state") || {};
-                }
-                r.selected = tab && tab.getSelected();
-                return r;
+            	var resource = tab.vars("resource");
+                return {
+                	selected: tab.isSelected(),
+                	resource: {
+                		uri: resource.uri,
+		                type: resource.type,
+		                contentType: resource.contentType
+                	}
+                };
             })
         };
     },
@@ -78,30 +58,30 @@ var Utils = {
 	            	dontBringToFront: true
 	            }));
 	            tab.setVar(".state", _state);
-	            tab.once("resource-loaded", function() {
-	                var ace = tab._control._form.getScope().ace;
-	                setTimeout(function() {
-	                    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
-	                    var session = ace.getEditor().session;    
-	                    state.selection && session.selection.fromJSON(state.selection);
-	                    state.options && session.setOptions(state.options);
-	                    state.mode && session.setMode(state.mode);
-	                    try {
-	                        state.folds.forEach(function(fold){
-	                            session.addFold(fold.placeholder, 
-	                                Range.fromPoints(fold.start, fold.end));
-	                        });
-	                    } catch(e) {
-	                        console.error(e);
-	                    }
-	                    session.setScrollTop(state.scrollTop);
-	                    session.setScrollLeft(state.scrollLeft);
+	     //       tab.once("resource-loaded", function() {
+	     //           var ace = tab._control._form.getScope().ace;
+	     //           setTimeout(function() {
+	     //               /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
+	     //               var session = ace.getEditor().session;    
+	     //               state.selection && session.selection.fromJSON(state.selection);
+	     //               state.options && session.setOptions(state.options);
+	     //               state.mode && session.setMode(state.mode);
+	     //               try {
+	     //                   state.folds.forEach(function(fold){
+	     //                       session.addFold(fold.placeholder, 
+	     //                           Range.fromPoints(fold.start, fold.end));
+	     //                   });
+	     //               } catch(e) {
+	     //                   console.error(e);
+	     //               }
+	     //               session.setScrollTop(state.scrollTop);
+	     //               session.setScrollLeft(state.scrollLeft);
 	
-						if(state.position) {
-		                    ace.getEditor().gotoLine(state.position.row + 1,state.position.column);
-						}
-	                }, 0);
-	            });
+						// if(state.position) {
+		    //                 ace.getEditor().gotoLine(state.position.row + 1,state.position.column);
+						// }
+	     //           }, 0);
+	     //       });
 	        });
 	        scope['left-sidebar'].setVisible(state['left-sidebar.visible'] !== false);
         }
@@ -112,15 +92,13 @@ $(["ui/Form"], {
     onLoad: function() {
         var scope = this.scope();
         this.readStorage("state", function(value) {
-            Utils.setState(JSON.parse(value) || {workspace:0}, scope);
+            Utils.setState(value || {workspace:0}, scope);
         });
 
         this.on("state-dirty", function() {
             var workspace = scope['@owner'];
             workspace.setTimeout("saveState", function() {
-                 workspace.writeStorage("state",
-                    JSON.stringify(Utils.getState(
-                        workspace.getScope())));
+                 workspace.writeStorage("state",Utils.getState(workspace.getScope()));
             }, 200);
         });
         
@@ -137,6 +115,20 @@ $(["ui/Form"], {
         };
         
         return this.inherited(arguments);
+    },
+    onDispatchChildEvent: function(component, name, evt, f, args) {
+    	var Tabs = require("vcl/ui/Tabs"), Tab = require("vcl/ui/Tab");
+    	if(name === "click") {
+    		if(component instanceof Tabs) {
+    			// console.log("!!!", component);
+    			this.vars("editors-tabs:focused", component);
+    		} else if(component instanceof Tab) {
+    			// console.log("!!!", component._parent);
+    			this.vars("editors-tabs:focused", component._parent);
+    		// } else {
+    			// console.log("???", component);
+    		}
+    	}
     },
     onActivate: function() {
     	/*- TODO describe why a timeout is necessary */
@@ -170,14 +162,16 @@ $(["ui/Form"], {
             var owner = tab.getOwner();
             tab.render = Tab.render;
             tab._control.once("formloaded", function() {
-                var ed = this._form.getScope().ace.getEditor();
-                ed.selection.on("changeCursor", function(e, thisObj) {
-                    tab._owner.emit("state-dirty");
-                });
-                ed.session.on("changeFold", function() {
-                    // FIXME does not work
-                    tab._owner.emit("state-dirty");
-                });
+            	// var ace = this._form.scope().ace;
+             //   var ed = ace.getEditor();
+                // ed.selection.on("changeCursor", function(e, thisObj) {
+                //     // tab._owner.emit("state-dirty");
+                //     // ace.p[er]
+                // });
+                // ed.session.on("changeFold", function() {
+                //     // FIXME does not work
+                //     // tab._owner.emit("state-dirty");
+                // });
                 tab.render();
 				this._form.setName(tab.getVar("resource.uri"));
             });
