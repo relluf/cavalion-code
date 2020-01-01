@@ -92,7 +92,19 @@ $([], {
 		// NOTE do not call inherited, because we are not editing a file? didn't seem to work with jpg/png.js - better override refresh?
     }
 }, [
-	$("vcl/ui/Tabs", "editors-tabs", {}),
+	$("vcl/ui/Tabs", "editors-tabs", {
+		onNodeCreated() {
+			var me = this;
+			this.up().readStorage("editors-tabs", function(state) {
+				state && state.selected && me.getControl(state.selected).setSelected(true);
+			});
+		},
+		onChange(newTab, oldTab) {
+if(!newTab) return;
+console.log("changed to", newTab && newTab.getIndex());
+			this.up().writeStorage("editors-tabs", { selected: newTab && newTab.getIndex() });
+		}
+	}),
 	$i("ace", { visible: false }),
 	
 	$("vcl/Action", "add-resources", {
