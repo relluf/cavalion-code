@@ -9,17 +9,6 @@ var Url = require("util/net/Url");
 var jQuery = require("jquery");
 var FormContainer = require("vcl/ui/FormContainer");
 
-var DefaultWorkspaces = [{
-    name: "⌘1",
-    selected: true
-}, { 
-	name: "⌘2"
-}, { 
-	name: "⌘3"
-}, { 
-	name: "⌘4"
-}];
-
 var styles = {
     ".{./Panel}#editors": {
         "background-color": "silver"
@@ -67,7 +56,7 @@ var handlers = {
 	        //     }
 	        //     createWorkspaces(value);
 	        // });
-            createWorkspaces(DefaultWorkspaces);
+            createWorkspaces(this.vars("default-workspaces"));
         }
         this.readStorage("state", function(state) {
             if(state !== null) {
@@ -279,7 +268,18 @@ function focusSidebar(ws, sidebar) {
 	}
 }
 
-$(["ui/Form"], { css: styles, handlers: handlers }, [
+$(["ui/Form"], { css: styles, handlers: handlers, vars: {
+	"default-workspaces": [{
+	    name: "⌘1",
+	    selected: true
+	}, { 
+		name: "⌘2"
+	}, { 
+		name: "⌘3"
+	}, { 
+		name: "⌘4"
+	}]
+} }, [
     $(["devtools/DragDropHandler<dropbox>"]),
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false}),
     $(["devtools/TabFactory"], "workspaces-new", {
@@ -301,6 +301,7 @@ $(["ui/Form"], { css: styles, handlers: handlers }, [
             var tab = this.inherited(arguments);
             tab.setVar("workspace", evt.workspace);
             tab.setText(evt.workspace.name);
+            
             return tab;
         }
     }),
