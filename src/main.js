@@ -508,7 +508,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	
 	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
 	var app = url.getParamValue("") || (workspaces && workspaces.split(",")[0]) || "code";
-	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app);
+	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app.split(/-|\./).shift());
 	var idPrefix = url.getParamValue("db-id-prefix") || "";
 	var property = "cavalion-vcl:state";
 	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
