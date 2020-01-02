@@ -1,5 +1,10 @@
+### 2020-01-01 / 1.0.100
+- Fixing folding-restore bug in devtools/Editor<>
+- Updating and fine-tuning, approaching "devtools-invisible"
+- Now persisting devtools/Editor<> #ace "word-wrap"-state
+
 ### 2020-01-01 / 1.0.99
-- Current url pattern: host/code?[AppName][&workspaces=ws1,ws2,ws3][&title=MyApp][&db=AppName-va_objects]
+- Current url pattern: `host/code?[AppName][&workspaces=ws1,ws2,ws3][&title=MyApp][&db=AppName-va_objects]`
 - Refactoring devtools/Main<> and state persistence
 - Starting persisting state for devtools/Editor<folder>
 - Cleaning up dead code, implementing onGetStorageKey for [devtools/Resource~resource]-varred (ie. tagged) components (did component tagging just occur to me?)
