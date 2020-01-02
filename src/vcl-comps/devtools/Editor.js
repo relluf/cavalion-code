@@ -62,6 +62,7 @@ $(["ui/Form"], {
             "json": "json",
             "geojson": "json",
             "js": "javascript",
+            "jso": "javascript",
             "blocks": "javascript",
             "vcl": "javascript",
             "ts": "typescript",
