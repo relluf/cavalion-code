@@ -22,14 +22,16 @@ $([], {
 		}
 	}
 }, [
-
-	$(["veldoffice/Session"], "session-bar", { visible: false }),
+	$(["veldoffice/Session"], "session-bar", { visible: false }, [
 	
+		$i("title", { 
+			content: "Veldoffice<span style='font-weight:normal;'></span>" 
+		})
+		
+	]),
 	$i("workspaces-tabs", { //align: "top", index: 1, classes: "", _zoom: 1.5,
-	
 		onNodeCreated() { 
 			// this.setTimeout("zoom", () => this.setZoom(1.45), 750); 
 		}
-		
 	})	
 ]);
