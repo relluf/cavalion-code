@@ -53,33 +53,33 @@ var handlers = {
 
 		var blurred = new Panel();
 		blurred.hide();
-		blurred.setCss({
-			"": "z-index:999999;font-size:55pt;text-align:center;padding-top:30%;font-family:Lucida Grande, Arial, sans-serif; font-weight:bold;pointer-events:none;opacity:0.35;",
-			".name": "padding:30px 40px; border-radius:160px;border:15px solid maroon; padding-top: 10px; padding-bottom: 40px;",
-			".host": "color:white;font-size:18pt;",
-			// "background-color":"rgba(255,255,255,0.5)",
-			"&.maroon": {
-				"color":"maroon",
-     				".name": {
-					"background-color":"rgba(255,69,0,0.75)"
-				}
-			},
-			"&.navy": {
-				"color":"navy",
-				// "background-color":"rgba(0, 123, 255, 0.25)",
-				".name": {
-					"border-color":"navy",
-					"background-color":"rgba(0, 123, 255, 0.5)"
-				}
-			},
+		// blurred.setCss({
+		// 	"": "z-index:999999;font-size:55pt;text-align:center;padding-top:30%;font-family:Lucida Grande, Arial, sans-serif; font-weight:bold;pointer-events:none;opacity:0.35;",
+		// 	".name": "padding:30px 40px; border-radius:160px;border:15px solid maroon; padding-top: 10px; padding-bottom: 40px;",
+		// 	".host": "color:white;font-size:18pt;",
+		// 	// "background-color":"rgba(255,255,255,0.5)",
+		// 	"&.maroon": {
+		// 		"color":"maroon",
+  //   				".name": {
+		// 			"background-color":"rgba(255,69,0,0.75)"
+		// 		}
+		// 	},
+		// 	"&.navy": {
+		// 		"color":"navy",
+		// 		// "background-color":"rgba(0, 123, 255, 0.25)",
+		// 		".name": {
+		// 			"border-color":"navy",
+		// 			"background-color":"rgba(0, 123, 255, 0.5)"
+		// 		}
+		// 	},
 			
-		});
+		// });
 		blurred.setOwner(this);
 		blurred.setName("blurry");
-		blurred.setAlignNode(document.body);
-		blurred.setAlign("client");
-		blurred.setClasses(Math.random() < 0.95 ? "navy" : "maroon");
-		blurred.setParentNode(document.body);
+		// blurred.setAlignNode(document.body);
+		// blurred.setAlign("client");
+		// blurred.setClasses(Math.random() < 0.95 ? "navy" : "maroon");
+		// blurred.setParentNode(document.body);
 		// blurred._onClick = function() { this.hide(); };
 
 		var timeout;
