@@ -1,4 +1,4 @@
-"devtools/Resources, util/Xml, vcl/ui/Tab";
+"devtools/Resources, util/Xml, vcl/ui/Tab, ace/range";
 
 var Resources = require("devtools/Resources");
 var nameOf = (uri) => (uri||"").split("/").pop().replace(/\//g, ".");
@@ -163,6 +163,7 @@ $(["ui/Form"], {
 		    state.mode && session.setMode(state.mode);
 			state.folds && state.folds.forEach(function(fold){
 		    		try {
+		    			var Range = require("ace/range").Range;
 		            	session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end));
 				    } catch(e) {
 		    		    console.error(e);
