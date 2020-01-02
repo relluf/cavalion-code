@@ -17,19 +17,19 @@ $([], {
 			fs.removeClass("root-invisible");
 			fs.setExpanded(false);
 			
-			B.instantiate(
-				["Tab<veldapps/OpenLayers>", "Veldoffice", { 
-					owner: this, parent: this.down("#editors-tabs"),
-					text: "Map"
-				}], {}
-			).then(function(tab) {
-				tab.setSelected(true);
-				fs.up().print(tab);
-			});
+			// B.instantiate(
+			// 	["Tab<veldapps/OpenLayers>", "Veldoffice", { 
+			// 		owner: this, parent: this.down("#editors-tabs"),
+			// 		text: "Map"
+			// 	}], {}
+			// ).then(function(tab) {
+			// 	tab.setSelected(true);
+			// 	fs.up().print(tab);
+			// });
 			
-			this.down("#session-bar").set({
-				parent: this.app().down("#window")
-			});
+			// this.down("#session-bar").set({
+			// 	parent: this.app().down("#window")
+			// });
 				
 		},
 		activate() {

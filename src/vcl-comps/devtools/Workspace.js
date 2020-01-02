@@ -91,8 +91,10 @@ var Utils = {
 $(["ui/Form"], {
     onLoad: function() {
         var scope = this.scope();
+        var workspace = this.vars(["workspace"]);
         this.readStorage("state", function(value) {
-            Utils.setState(value || {workspace:0}, scope);
+        	value = value || {workspace:0};
+            Utils.setState(js.mixIn(workspace.state||{}, value), scope);
         });
 
         this.on("state-dirty", function() {
