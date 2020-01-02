@@ -20,15 +20,12 @@ $([], {
 			}
 			return this.inherited(arguments);
 		}
-	},
-	css: {
-		"#session-bar": "background-color:#f0f0f0;"
 	}
 }, [
 
 	$(["veldoffice/Session"], "session-bar", { visible: false }),
 	
-	$i("workspaces-tabs", { align: "top", index: 1, classes: "", _zoom: 1.5,
+	$i("workspaces-tabs", { //align: "top", index: 1, classes: "", _zoom: 1.5,
 	
 		onNodeCreated() { 
 			// this.setTimeout("zoom", () => this.setZoom(1.45), 750); 

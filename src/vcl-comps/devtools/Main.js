@@ -24,6 +24,7 @@ var styles = {
     ".{./Panel}#editors": {
         "background-color": "silver"
     },
+    "#workspaces-tabs": "background-color:white;",
     "#editors-tabs:focus": {
     	"": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
     	".selected": "border:1px solid rgb(57,121,204); background-color: rgb(57,121,204); color: white;",
