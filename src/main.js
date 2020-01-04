@@ -552,6 +552,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 			
 		return sh;
 	};
+	Component.defaultDb = defaultDb;
 
 	js.override(Component.prototype, {
         readStorage: function (key, callback, errback) {
@@ -575,7 +576,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
             		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
             		// obj[property][key] = JSON.stringify(obj[property][key]);
             	}
-            	callback(obj && obj[property] && obj[property][key] || null);
+            	callback(obj && obj[property] && obj[property][key]);
             }).catch(function(e) {
             	console.error(e);
             	errback(e);	
