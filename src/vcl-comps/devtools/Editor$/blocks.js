@@ -7,7 +7,9 @@ var styles = {
 	"#host": {
 		"min-width": "100%",
         "background-color": "#f0f0f0", 
-        "border-left": "1px solid silver",
+        "border-right": "1px solid silver"
+	},
+	"#ace": {
         "border-right": "1px solid silver"
 	}
 };

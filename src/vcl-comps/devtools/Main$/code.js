@@ -1,6 +1,6 @@
 function title() {
 	var url = app.vars("url");
-	return url.getParamValue("title") || url.getParamValue("");
+	return url.getParamValue("title") || url.getParamValue("") || "code";
 }
 
 $([], {
@@ -11,7 +11,7 @@ $([], {
 		$("vcl/ui/Element", { 
 			index: 0, 
 			element: "span", 
-			content: js.sf("<b>%s<b> ///", title())
+			content: js.sf("<b>%s<b> / ", title())
 		})
 	])	
 	

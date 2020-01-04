@@ -50,12 +50,14 @@ $([], { handlers: Handlers }, [
     }),
     $("vcl/Action#toggle-source", {
         hotkey: "Shift+MetaCtrl+S",
-        selected: "state", visible: "state",
+        selected: "state", visible: "state", 
         state: true,
-        
-        onExecute: function() {
+        onLoad() {
+    		this.up().readStorage("source-visible", (visible) => typeof visible === "boolean" && this.setState(visible));
+        },
+        onExecute() {
         	this.setState(!this.getState());
-        	// this.scope().ace.setVisible(this.getState());
+        	this.up().writeStorage("source-visible", this.getState());
         }
     }),
     $("vcl/ui/Panel", "output", { align: "client", css: {

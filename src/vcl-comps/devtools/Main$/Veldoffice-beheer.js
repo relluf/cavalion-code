@@ -2,6 +2,7 @@ $(["devtools/Main<Veldoffice>"], {
 	vars: {
 		"default-workspaces": [{
 			name: "Sessies",
+			selected: true,
 			state: {
 	            "left-sidebar.visible": false,
 	            editors: [{
@@ -79,9 +80,13 @@ $(["devtools/Main<Veldoffice>"], {
 	            }]
 			}
 		}]
+	},
+	css: {
+		// ".vcl-ui-Tabs": "background-color: white;",
+		".vcl-ui-Tabs.bottom": "background-color: transparent;"
 	}
 }, [
-	
+
 	$i("session-bar", [
 	
 		$i("title", { 

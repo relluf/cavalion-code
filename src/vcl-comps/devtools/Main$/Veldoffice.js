@@ -25,7 +25,7 @@ $([], {
 	$(["veldoffice/Session"], "session-bar", { visible: false }, [
 	
 		$i("title", { 
-			content: "Veldoffice<span style='font-weight:normal;'></span>" 
+			content: "Veldoffice<span style='font-weight:normal;'> - code</span>" 
 		})
 		
 	]),

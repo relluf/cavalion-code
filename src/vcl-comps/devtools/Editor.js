@@ -12,42 +12,44 @@ var getKey = (tab) => {
 	return parents.join("/");
 };
 
-function state_invalidated(root, source) {
-	root.vars("stateChanged").apply(this, [root, source]);
-}
-function state_write(root) {
-	var tab = root.soup("vcl/ui/Tab");
-	var getState = root.vars("getState");
+// function state_invalidated(root, source) {
+// 	// root.vars("stateChanged").apply(this, [root, source]);
+// }
+// function state_write(root) {
+// 	var tab = root.soup("vcl/ui/Tab");
+// 	var getState = root.vars("getState");
 	
-	if(root._vars._loading) return;
+// 	if(root._vars._loading) return;
 
-console.log(">>> write editor state " + root.vars(["resource.uri"]));
+// console.log(">>> write editor state " + root.vars(["resource.uri"]));
 
-	return root.writeStorage(getKey(tab), getState(root));
-}
-function state_read(root) {
-	var tab = root.soup("vcl/ui/Tab");
-	var reflectState = root.vars("reflectState");
+// 	return root.writeStorage(getKey(tab), getState(root));
+// }
+// function state_read(root) {
+// 	var tab = root.soup("vcl/ui/Tab");
+// 	var reflectState = root.vars("reflectState");
 
-console.log("read editor state " + root.vars(["resource.uri"]));
+// console.log("read editor state " + root.vars(["resource.uri"]));
 	
-	root._vars._loading = true;
-	root.readStorage(getKey(tab), function(state) {
-		reflectState(root, state);
-		delete root._vars._loading;
-	});
+// 	root._vars._loading = true;
+// 	root.readStorage(getKey(tab), function(state) {
+// 		reflectState(root, state);
+// 		delete root._vars._loading;
+// 	});
 	
-	if(!root.vars("invalidated")) {
-		var ace = root.down("#ace");
-		var ed = ace.getEditor();
+// 	if(!root.vars("invalidated")) {
+// 		var ace = root.down("#ace");
+// 		var ed = ace.getEditor();
 		
-		var invalidated = root.vars("invalidated", () => state_invalidated(root));
+// 		// var invalidated = root.vars("invalidated", () => state_invalidated(root));
 		
-        ed.selection.on("changeCursor", invalidated);
-        ed.session.on("changeFold", invalidated);
-        ed.session.on("changeSelection", invalidated);
-	}
-}
+// 		var invalidated = () => {};
+		
+//         ed.selection.on("changeCursor", invalidated);
+//         ed.session.on("changeFold", invalidated);
+//         ed.session.on("changeSelection", invalidated);
+// 	}
+// }
 
 $(["ui/Form"], {
     activeControl: "ace",
@@ -125,29 +127,29 @@ $(["ui/Form"], {
         return this.inherited(arguments);
     },
     vars: {
-    	stateChanged(root,source) {
-    		root.setTimeout("state-invalidated", () => state_write(root), 250);	
-    	},
-    	getState(root) {
-			var ace = root.down("#ace");
-			var ed = ace.getEditor();
-			return {
-				// font-size, mode
-		        //mode: ed.session.getMode().$id,
-		        position: ed.selection.getCursor(),
-		        selection: ed.selection.toJSON(),
-		        options: ed.session.getOptions(),
-		        folds: ed.session.getAllFolds().map(function(fold) {
-		            return {
-		                start: fold.start,
-		                end: fold.end,
-		                placeholder: fold.placeholder
-		            };
-		        }),
-		        scrollTop: ed.session.getScrollTop(),
-		        scrollLeft: ed.session.getScrollLeft()
-		    };
-    	},
+  //  	stateChanged(root,source) {
+  //  		root.setTimeout("state-invalidated", () => state_write(root), 250);	
+  //  	},
+  //  	getState(root) {
+		// 	var ace = root.down("#ace");
+		// 	var ed = ace.getEditor();
+		// 	return {
+		// 		// font-size, mode
+		//         //mode: ed.session.getMode().$id,
+		//         position: ed.selection.getCursor(),
+		//         selection: ed.selection.toJSON(),
+		//         options: ed.session.getOptions(),
+		//         folds: ed.session.getAllFolds().map(function(fold) {
+		//             return {
+		//                 start: fold.start,
+		//                 end: fold.end,
+		//                 placeholder: fold.placeholder
+		//             };
+		//         }),
+		//         scrollTop: ed.session.getScrollTop(),
+		//         scrollLeft: ed.session.getScrollLeft()
+		//     };
+  //  	},
     	reflectState(root, state) {
 		    /*- FIXME setTimeout seems necessary because the row is not yet scrolled into view :-s */               
 		    if(state === null) return;
@@ -202,7 +204,7 @@ $(["ui/Form"], {
                         tab.emit("resource-loaded");
                         
 // STATE READ
-state_read(scope.ace.up());
+// state_read(scope.ace.up());
 						// tab.setState("invalidated", true);
                     }).
                     catch(function(res) {
@@ -222,7 +224,7 @@ state_read(scope.ace.up());
                         scope.loading.hide();
                         tab.emit("resource-loaded");
 // STATE READ
-state_read(scope.ace.up());
+// state_read(scope.ace.up());
                     });
             }
         }
@@ -395,7 +397,53 @@ state_read(scope.ace.up());
             	.execute({resource: resource}, this);
         }
     }),
-    $(("vcl/ui/Ace"), "ace"),
+    $(("vcl/ui/Ace"), "ace", {
+    	onLoad() {
+    		var ace = this;
+    		var writeStorage = () => {
+				var ed = ace.getEditor();
+				ace.up().writeStorage("ace", {
+					// font-size, mode
+			        // mode: ed.session.getMode().$id,
+			        position: ed.selection.getCursor(),
+			        selection: ed.selection.toJSON(),
+			        options: ed.session.getOptions(),
+			        folds: ed.session.getAllFolds().map(function(fold) {
+			            return {
+			                start: fold.start,
+			                end: fold.end,
+			                placeholder: fold.placeholder
+			            };
+			        }),
+			        scrollTop: ed.session.getScrollTop(),
+			        scrollLeft: ed.session.getScrollLeft()
+				});
+    		};
+    		ace.up().readStorage("ace", function(state) {
+				var ed = ace.getEditor();
+    			if(state) {
+    				state.position && ed.gotoLine(state.position.row + 1,state.position.column);
+				    state.selection && ed.session.selection.fromJSON(state.selection);
+				    state.options && ed.session.setOptions(state.options);
+				    state.mode && ed.session.setMode(state.mode);
+					state.folds && state.folds.forEach(function(fold){
+				    		try {
+				    			var Range = require("ace/range").Range;
+				            	ed.session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end));
+						    } catch(e) {
+				    		    console.error(e);
+				    		}
+				    	});
+	
+				    ed.session.setScrollTop(state.scrollTop);
+				    ed.session.setScrollLeft(state.scrollLeft);
+    			}
+		        ed.selection.on("changeCursor", writeStorage);
+		        ed.session.on("changeFold", writeStorage);
+		        ed.session.on("changeSelection", writeStorage);
+    		});
+    	}
+    }),
     $(("vcl/ui/Panel"), "loading", {
         align: "none",
         autoSize: "both",

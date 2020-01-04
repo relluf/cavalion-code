@@ -356,9 +356,14 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
 
     		// var tabs = this.app().down("devtools/Main<> #workspaces-tabs");
     		if(visible === true) {//!tabs.getVisible()) {
-	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs").show();
+    		// TODO make up one liner
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#editors-tabs").show();
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#bottom-tabs").show();
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#left-sidebar-tabs").show();
     		} else {
-    			this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs").hide();
+    			this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#editors-tabs").hide();
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#bottom-tabs").hide();
+	    		this.app().qsa("devtools/Workspace<>:root vcl/ui/Tabs#left-sidebar-tabs").hide();
     		}
     		// tabs.setVisible(!tabs.getVisible());
     		this._tag = !this._tag;
@@ -583,5 +588,4 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
             evt.preventDefault();
         }
     })
-
 ]);
