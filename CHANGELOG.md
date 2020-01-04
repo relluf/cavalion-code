@@ -1,3 +1,7 @@
+### 2020-01-04 / 1.0.102
+- Fix for vcl/Component.storage-pouch-prototype.readStorage()
+
+
 ### 2020-01-02 / 1.0.101
 - Supporting JSO
 - Starting implementation of an Azure-inspired horizontal scrolling UI. The source panel can be revealed by scrolling with two fingers on Macbook trackpad - so cool !
@@ -5,18 +9,17 @@
 >> ![image](https://user-images.githubusercontent.com/686773/71699764-cc057a00-2d86-11ea-9446-1a7678df5396.png?2x)
 
 - `localhost/code?{appName}&workspaces={workspaces}&title={title}&db={db}`
-	- _appName_ - application name
-	- _workspaces_ - comma-seperated list of workspaces to be opened
-	- _title_ - title of the window
-	- _db_ - the PouchDB instance for va_objects
-- _appName_ is used as the specifier for the `devtools/App<>`- and `devtools/Main<>`-instances
-- When _db_ is omitted the `va_objects` PouchDB-instance will be the first part of the _appName_ splitted by a dot (.) or dash (-). So in the following example `Veldoffice-beheer`, `Veldoffice` and `Veldoffice-rapportage` will all three share the same va_objects PouchDB-instance when the following urls are run:
+	- **appName** - application name
+	- **workspaces** - comma-seperated list of workspaces to be opened
+	- **title** - title of the window
+	- **db** - the PouchDB instance for va\_objects. When omitted it defaults to **appName** splitted by a dot (.) or dash (-). So in the following example `Veldoffice`, `Veldoffice-beheer` and `Veldoffice-rapportage` all three by default share the same va_objects PouchDB-instance:
+		- `localhost/code?Veldoffice`
+		- `localhost/code?Veldoffice-beheer`
+		- `localhost/code?Veldoffice-rapportage`
+- **appName** is used as the specifier for the `devtools/App<>`- and `devtools/Main<>`-instances
 - `devtools/Main<>` can be implemented to solve the problem of default-workspaces - these will now nicely flow into PouchDB - let's see how this develops
 
 >> ![image](https://user-images.githubusercontent.com/686773/71699435-1554ca00-2d85-11ea-9956-76c16cb3d367.png?2x)
-	- `localhost/code?Veldoffice`
-	- `localhost/code?Veldoffice-beheer`
-	- `localhost/code?Veldoffice-rapportage`
 
 With these `vars` as shown above it's a piece of pie later on to mixin a pouch'd state into the `default-state` or the `bulk` to make analogy with `V7/va/veldoffice/onderzoek`. When no pouch'd state is available the coded state remains.
 
