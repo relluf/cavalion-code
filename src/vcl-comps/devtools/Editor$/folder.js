@@ -35,7 +35,7 @@ $([], {
 			} else if(evt.keyCode === 222) {
 				tabs.selectNext();
 			} else {
-				console.log(evt.keyCode);
+				// console.log(evt.keyCode);
 			}
 		} else if(evt.ctrlKey === true) {
 			if(evt.keyCode === evt.KEY_PAGE_UP) {
@@ -101,7 +101,6 @@ $([], {
 		},
 		onChange(newTab, oldTab) {
 if(!newTab) return;
-console.log("changed to", newTab && newTab.getIndex());
 			this.up().writeStorage("editors-tabs", { selected: newTab && newTab.getIndex() });
 		}
 	}),

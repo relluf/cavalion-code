@@ -9,7 +9,7 @@ $([], {
 		}
 		
 	}, [
-		$("vcl/ui/Element", { index: 0, element: "span", content: "<b>cavalion-devtools<b>", css: "font-size:7pt;"})
+		$("vcl/ui/Element", { index: 0, element: "span", content: "<b>Cavalion-devtools<b>", css: "font-size:7pt;"})
 	])	
 	
 ]);
