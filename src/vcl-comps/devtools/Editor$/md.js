@@ -7,6 +7,7 @@ function render() {
 	var root = markdown.toHTMLTree(this.getValue());
 	this.up().vars("root", markdown.toHTMLTree(this.getValue()));//[].concat(root));
     this.up().qsa("#output").forEach(_ => {
+    	_.setContent(markdown.renderJsonML(root));
     	_.update(function() {
 		    on(this._node.qsa("img"), "load", function(img, r) {
 		    	img = this; r = window.devicePixelRatio || 1;
@@ -22,7 +23,6 @@ function render() {
 		    	}
 		    });
     	}.bind(_));
-    	_.setContent(markdown.renderJsonML(root));
     });
 }        	
 
@@ -53,7 +53,13 @@ $([], { handlers: Handlers }, [
         selected: "state", visible: "state", 
         state: true,
         onLoad() {
-    		this.up().readStorage("source-visible", (visible) => typeof visible === "boolean" && this.setState(visible));
+    		this.up().readStorage("source-visible", (visible) => {
+    			if(typeof visible === "boolean") {
+    				this.setState(visible);
+    			} else if(visible === null && this.vars(["resource.name"]) === ".md") {
+    				this.setState(false);
+    			}
+    		});
         },
         onExecute() {
         	this.setState(!this.getState());
@@ -67,7 +73,7 @@ $([], { handlers: Handlers }, [
 	    "font-family": "times,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'", 
 	    "font-size": "12pt",
 	    padding: "10px",
-	    "img:not(:hover)": "max-width: 75%; max-height: 600px;",
+	    "img:not(:hover)": "max-width: 75%;",// max-height: 600px;",
 	    // "img:hover": "width:100%;max-width:600px;",
 	    "code": "border-radius:3px;font-size: 10pt;background-color:white;padding:2px;line-height:12pt;",
     } })
