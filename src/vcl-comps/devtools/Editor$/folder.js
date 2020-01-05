@@ -105,6 +105,16 @@ console.log("changed to", newTab && newTab.getIndex());
 			this.up().writeStorage("editors-tabs", { selected: newTab && newTab.getIndex() });
 		}
 	}),
+	
+	$i("menu-open", {
+		onExecute: function() {
+			if(confirm(js.sf("I am folder %s, delegate to inherited?", 
+				this.vars(["resource.uri"]).split("/").pop())) === true) {
+					return this.inherited(arguments);
+			}
+		}
+	}),
+	
 	$i("ace", { visible: false }),
 	
 	$("vcl/Action", "add-resources", {

@@ -178,6 +178,15 @@ $(["ui/Form"], {
 		}
     }
 }, [
+
+    $(("vcl/Action"), "menu-open", {
+        hotkey: "Shift+F10",
+        onExecute: function (evt) {
+        	// TODO: evt.args?
+        	this.udown("#ace").getEditor().execCommand("showSettingsMenu",  evt.args || []);
+        }
+    }),
+
     $(("vcl/Action"), "refresh", {
         hotkey: "MetaCtrl+R",
         onExecute: function (evt) {

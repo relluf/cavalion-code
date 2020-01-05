@@ -177,6 +177,15 @@ $(["ui/Form"], {
                 tab.render();
 				this._form.setName(tab.getVar("resource.uri"));
             });
+            
+            tab.set({
+            	onMenuClick: function(evt) { // querySelectorAll 
+            		// var editor = this.qsa("#ace").each(function(ace) {
+            		// 	ace.getEditor().execCommand("showSettingsMenu", []);
+            		// });
+            		return this.qsa("#menu-open").execute(evt);
+            	}
+            });
             return tab;
         }
     }),
