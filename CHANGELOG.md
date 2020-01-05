@@ -1,6 +1,5 @@
 ### 2020-01-05 / 1.0.104
 - Introducing pull/push to dbs.veldapps.com in `pouchdb.save`
-- 
 
 ### 2020-01-05 / 1.0.103
 - Fixed a bug where retina-images might not be scaled correctly just after opening a resource in `devtools/Editor<md>`
