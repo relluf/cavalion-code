@@ -1,3 +1,9 @@
+### 2020-01-05 / 1.0.103
+- Fixed a bug where retina-images might not be scaled correctly just after opening a resource in `devtools/Editor<md>`
+- TODO Implementing Tab.event-onMenuClick~Executable#menu-open.execute
+- Refactored va_objects-instance (which is called code-va_objects most of the times anyways), PouchDB from V7
+- Source-panes (#ace) of devtools/Editor<md>#.md are invisible by default
+
 ### 2020-01-04 / 1.0.102
 - Fix for vcl/Component.storage-pouch-prototype.readStorage()
 
