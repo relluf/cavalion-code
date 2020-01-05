@@ -1,9 +1,13 @@
 define(function(require) {
+"use strict";
 
 	var Hash = require("util/Hash");
 
 	var skipSave = (s) => s.startsWith("$$") || s.endsWith("$$") || s.startsWith("__") || s.endsWith("__");
 	var skipHash = (s) => skipSave(s) || s.startsWith("_") || s.endsWith("_");
+	
+	var SALT_DBI = "nog-niet-geactiveerde-genen";
+	var DBS_HOST = "dbs.veldapps.com";
 	
 	function va_objects_hash(object) {
 		var hash = {};
@@ -205,6 +209,11 @@ define(function(require) {
 			}
 		});
 	}
+	
+	function getRemoteDb(db) {
+		var PouchDB = require("pouchdb");
+		return new PouchDB(js.sf("https://%s/%s/", DBS_HOST, Hash.md5(DBI_SALT + db.name)));
+	}
 
 	return {
 		getReference: function(id) {
@@ -215,6 +224,12 @@ define(function(require) {
 		},
 		save: function(obj, opts) {
 			return va_objects_wrapper(this).save(obj, opts)
+		},
+		pull: function(opts, callback) {
+			return this.replicate.from(getRemoteDb(this), opts, callback);
+		},
+		push: function(opts, callback) {
+			return this.replicate.to(getRemoteDb(this), opts, callback);
 		}
 	};	
 
