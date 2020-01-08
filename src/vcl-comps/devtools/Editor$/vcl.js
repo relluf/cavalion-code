@@ -5,7 +5,7 @@ var Factory = require("vcl/Factory");
 var Node = require("vcl/ui/Node");
 var Tab = require("vcl/ui/Tab");
 
-$([], {
+$(["./Editor<js>"], {
     onLoad: function() {
         var tab = this.up("vcl/ui/Tab");
         var scope = this.scope();

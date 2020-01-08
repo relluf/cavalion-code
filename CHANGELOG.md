@@ -1,4 +1,13 @@
+### 2020-01-07 / 1.0.105
+	+ cavalion-code-blocks@1.0.8
+	+ cavalion-vcl@1.0.68
+- Introducing `devtools/Editor<js>` - autofolding on first run, sub-classes/-comps/-blocks:
+	- `devtools/Editor<vcl>`
+	- `devtools/Editor<blocks>`
+
 ### 2020-01-05 / 1.0.104
+	+ cavalion-code-blocks@1.0.7
+	+ cavalion-vcl@1.0.67
 - Introducing pull/push to dbs.veldapps.com in `pouchdb.save`
 
 ### 2020-01-05 / 1.0.103

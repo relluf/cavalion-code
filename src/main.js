@@ -565,17 +565,17 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
             	if(!obj.hasOwnProperty(property)) {
         			obj[property] = {};
             	}
-            	if(!obj[property].hasOwnProperty(key)) {
-            		var ls = me.inherited(args);
-            		if(ls) {
-            			obj[property][key] = ls;
-// me.print(cid("copyFromLS", me), [me.getStorageKey(), key, obj[property][key]]);
-            		}
-            	}
-            	if(typeof(obj && obj[property] && obj[property][key]) === "object") {
-            		// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
-            		// obj[property][key] = JSON.stringify(obj[property][key]);
-            	}
+//             	if(!obj[property].hasOwnProperty(key)) {
+//             		var ls = me.inherited(args);
+//             		if(ls) {
+//             			obj[property][key] = ls;
+// // me.print(cid("copyFromLS", me), [me.getStorageKey(), key, obj[property][key]]);
+//             		}
+//             	}
+            	// if(typeof(obj && obj[property] && obj[property][key]) === "object") {
+            	// 	// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
+            	// 	// obj[property][key] = JSON.stringify(obj[property][key]);
+            	// }
             	callback(obj && obj[property] && obj[property][key]);
             }).catch(function(e) {
             	console.error(e);

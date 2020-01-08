@@ -59,7 +59,7 @@ var handlers = {
             createWorkspaces(this.vars("default-workspaces"));
         }
         this.readStorage("state", function(state) {
-            if(state !== null) {
+            if(state !== undefined) {
                 var index = state.workspace;
                 var tab = scope['workspaces-tabs'].getControl(index);
                 tab && tab.setSelected(true);

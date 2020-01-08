@@ -20,7 +20,7 @@ function print(comp, msg, value) {
 		.print(msg, value);
 }
 
-$([], { 
+$(["./Editor<js>"], {
 	css: styles, 
     onLoad: function() {
         var tab = this.up("vcl/ui/Tab");
