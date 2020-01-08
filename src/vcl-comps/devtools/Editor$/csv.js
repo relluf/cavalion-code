@@ -36,7 +36,7 @@ $([], {
     },
     handlers: {
 		"#source onFilterObject": function(obj) {
-			var q = this.udown("#search-input").getInputValue().toLowerCase();
+			var q = this.vars("q").toLowerCase();
 			if(q === "") return false;
 			
 			// var text = obj._text || (obj._text = JSON.stringify(obj).toLowerCase());
@@ -49,7 +49,12 @@ $([], {
 		},
 		"#search-input onChange": function() {
 			var source = this.scope().source;
-			this.setTimeout(function() { source.updateFilter(); }, 500);
+			var input = this.udown("#search-input");
+			
+			this.setTimeout(() => { 
+				source.vars("q", input.getInputValue());
+				source.updateFilter(); 
+			}, 350);
 		}
     }
 }, [
