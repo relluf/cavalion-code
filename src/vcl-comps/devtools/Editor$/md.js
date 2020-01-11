@@ -56,7 +56,7 @@ $([], { handlers: Handlers }, [
     		this.up().readStorage("source-visible", (visible) => {
     			if(typeof visible === "boolean") {
     				this.setState(visible);
-    			} else if(visible === null && this.vars(["resource.name"]) === ".md") {
+    			} else if(visible === undefined && this.vars(["resource.uri"]).split("/").pop() === ".md") {
     				this.setState(false);
     			}
     		});

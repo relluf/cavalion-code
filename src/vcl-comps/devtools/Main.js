@@ -9,19 +9,70 @@ var Url = require("util/net/Url");
 var jQuery = require("jquery");
 var FormContainer = require("vcl/ui/FormContainer");
 
-var styles = {
-    ".{./Panel}#editors": {
-        "background-color": "silver"
-    },
-    "#workspaces-tabs": "background-color:white;",
-    "#editors-tabs:focus": {
-    	"": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
-    	".selected": "border:1px solid rgb(57,121,204); background-color: rgb(57,121,204); color: white;",
-    	".menu": "color: white;"
-    }
-};
-var handlers = {
-    onLoad: function () {
+// FIXME move to a better place
+function replaceChars(uri) {
+	return uri.replace(/\//g, ".");
+	// return uri.replace(/\-/g, ".").replace(/\//g, ".");
+    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
+    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
+}
+function forceUpdate(control) {
+	/*- FIXME Find a better solution to force a Tab to update while invisible */
+	var ControlUpdater = require("vcl/ControlUpdater");
+	(function loop(c) {
+		ControlUpdater.queue(c);
+		c._controls && c._controls.forEach(loop);
+	}(control));
+}
+function focusSidebar(ws, sidebar) {
+	var tab = ws.qs("#left-sidebar < vcl/ui/Tab:selected");
+	if(tab && tab._control) {
+		var input = tab._control.qs("< vcl/ui/Input");
+		if(input) {
+    		if(!input.isFocused()) {
+    			// console.log("focus sidebar");
+    			input.setFocus();
+    		} else {
+    			console.log("focus editor");
+    			ws.down('*:selected #editor-setfocus').execute({}, ws);
+    		}
+		}
+	}
+}
+(function (styles) {
+	/* make sure styles.less overrides libs */
+	var node = styles[0];
+	var parent = node.parentNode;
+	parent.removeChild(node);
+	parent.appendChild(node);
+}(jQuery("style")));
+
+$(["ui/Form"], { 
+	css: {
+	    ".{./Panel}#editors": {
+	        "background-color": "silver"
+	    },
+	    "#workspaces-tabs": "background-color:white;",
+	    "#editors-tabs:focus": {
+	    	"": "transition: background-color ease-in 0.2s; background-color: rgba(244, 253, 255, 0.94);",
+	    	".selected": "border:1px solid rgb(57,121,204); background-color: rgb(57,121,204); color: white;",
+	    	".menu": "color: white;"
+	    }
+	},
+	vars: {
+		"default-workspaces": [{
+		    name: "⌘1",
+		    selected: true
+		}, { 
+			name: "⌘2"
+		}, { 
+			name: "⌘3"
+		}, { 
+			name: "⌘4"
+		}]
+	},
+	
+    onLoad() {
         var scope = this.scope();
         var me = this;
         
@@ -37,7 +88,7 @@ var handlers = {
             });
         }
         
-        var url = new Url();
+        var url = app.vars("url");
         var workspaces = url.getParamValue("workspaces");
         var title = url.getParamValue("title");
         if(title) {
@@ -45,17 +96,10 @@ var handlers = {
         	this.app().setTitle(title);
         }
         
-        if(workspaces) {
+        /*- nested devtools/Main<> will initialize at their default worksapces*/
+        if(this.up("devtools/Main<>") === null && workspaces) {
         	createWorkspaces(workspaces.split(",").map(_ => ({name: _})));
         } else {
-	        // this.readStorage("workspaces", function (value) {
-	        //     if(value) {
-	        //         value = JSON.parse(value) || DefaultWorkspaces;
-	        //     } else {
-	        //         value = DefaultWorkspaces;
-	        //     }
-	        //     createWorkspaces(value);
-	        // });
             createWorkspaces(this.vars("default-workspaces"));
         }
         this.readStorage("state", function(state) {
@@ -65,7 +109,6 @@ var handlers = {
                 tab && tab.setSelected(true);
             }
         });
-        
         this.on("state-dirty", function() {
             me.setTimeout("saveState", function() {
                 me.writeStorage("state", {
@@ -83,7 +126,7 @@ var handlers = {
 
         return this.inherited(arguments);
     },
-    onActivate: function() {
+    onActivate() {
 		var shortcuts = {
 			"Ctrl+Alt+F1": "editor-move-to-front",
 			"Ctrl+N": "editor-new", 
@@ -103,11 +146,12 @@ var handlers = {
 			"Ctrl+Tab": "editor-next", 
 			"Shift+Ctrl+Tab": "editor-previous", 
 			
-			
 			"Shift+Ctrl+Meta+219": "editor-move-left",
 			"Shift+Ctrl+Meta+221": "editor-move-right",
+
 			"Ctrl+W": "editor-close",
-			"Shift+Ctrl+W": "editors-close-all",
+			"Shift+Ctrl+W": "editors-close-all", //less-one ;-)
+			
 			// "MetaCtrl+48": "editor-focus-in-navigator",
 			"Escape": "editor-setfocus"
 		};
@@ -173,6 +217,7 @@ var handlers = {
 		function toggleSidebar(evt) {
 			var ws = me.qs("devtools/Workspace<>:root:selected");
 			var sidebar = ws.qs("#left-sidebar");
+debugger
 			if(sidebar.isVisible()) {
 				sidebar.hide();
 			} else {
@@ -191,8 +236,13 @@ var handlers = {
 		} });
 		
 		/* Workspaces and Sidebar */
-		for(var i = 1; i <= 9; ++i) {
-			var hotkey = String.format("Meta+%d", i + 48);
+		for(var i = 1, hotkey; i <= 9; ++i) {
+			hotkey = String.format("Meta+%d", i + 48);
+			HotkeyManager.register(hotkey, {
+				type: "keydown",
+				callback: create_callback_activateWS(hotkey, i - 1)
+			});
+			hotkey = String.format("Ctrl+Alt+%d", i + 48);
 			HotkeyManager.register(hotkey, {
 				type: "keydown",
 				callback: create_callback_activateWS(hotkey, i - 1)
@@ -223,63 +273,11 @@ var handlers = {
 			});
 		}());
     },
-    onDeactivate: function() {
+    onDeactivate() {
     	// FIXME deactivate hotkeys
     }
-};
-
-(function makeSureStylesLessOverridesLibs(styles) {
-	
-	var node = styles[0];
-	var parent = node.parentNode;
-	parent.removeChild(node);
-	parent.appendChild(node);
-	
-}(jQuery("style")));
-
-// FIXME Move
-function replaceChars(uri) {
-	return uri.replace(/\//g, ".");
-	// return uri.replace(/\-/g, ".").replace(/\//g, ".");
-    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,\.]/g, "_");
-    // return uri.replace(/[ \\\/\<\>\$\#\@\!\%\^\&\*\(\)\-\=\+\{\}\[\]\:\"\'\;\,]/g, "_");
-}
-function forceUpdate(control) {
-	/*- FIXME Find a better solution to force a Tab to update while invisible */
-	var ControlUpdater = require("vcl/ControlUpdater");
-	(function loop(c) {
-		ControlUpdater.queue(c);
-		c._controls && c._controls.forEach(loop);
-	}(control));
-}
-function focusSidebar(ws, sidebar) {
-	var tab = ws.qs("#left-sidebar < vcl/ui/Tab:selected");
-	if(tab && tab._control) {
-		var input = tab._control.qs("< vcl/ui/Input");
-		if(input) {
-    		if(!input.isFocused()) {
-    			// console.log("focus sidebar");
-    			input.setFocus();
-    		} else {
-    			console.log("focus editor");
-    			ws.down('*:selected #editor-setfocus').execute({}, ws);
-    		}
-		}
-	}
-}
-
-$(["ui/Form"], { css: styles, handlers: handlers, vars: {
-	"default-workspaces": [{
-	    name: "⌘1",
-	    selected: true
-	}, { 
-		name: "⌘2"
-	}, { 
-		name: "⌘3"
-	}, { 
-		name: "⌘4"
-	}]
-} }, [
+    
+}, [
     $(["devtools/DragDropHandler<dropbox>"]),
     $(["devtools/CtrlCtrl<>"], "ctrlctrl", { visible: false}),
     $(["devtools/TabFactory"], "workspaces-new", {
@@ -303,49 +301,6 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
             tab.setText(evt.workspace.name);
             
             return tab;
-        }
-    }),
-    
-    $(("vcl/Action"), "workspace-prompt-new", {
-    	hotkey: "Shift+122",
-    	onExecute: function(evt) {
-        	var n = this.udown("#workspaces-tabs")._controls.length, me = this;
-        	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
-        		if(res) {
-        			me.up().qs("#workspace-needed").execute(res).setSelected(true);
-        		}
-        	})
-    	}
-    }),
-    
-    $(("vcl/Action"), "workspace-prompt-new-resource", {
-    	hotkey: "Shift+121",
-    	onExecute: function(evt) {
-        	var me = this, parent = this.up().qsa("devtools/Editor<>:root:visible").pop();
-        	parent = parent ? js.up(parent.vars(["resource.uri"])) : "tmp";
-        	var editorNeeded = this.app().down("devtools/Workspace<>:root:selected #editor-needed");
-        	this.app().prompt("#editor-needed execute", parent + "/Resource-" + Math.random().toString(36).substring(2, 15), function(value) {
-        			if(value !== null) {
-        				editorNeeded.execute(value).setSelected(true);
-        			}
-        	});
-    		
-        	// this.app().prompt("#editor-needed execute", "Resource-" + Math.random().toString(36).substring(2, 15), function(res) {
-        	// 	if(res) {
-        	// 		editorNeeded.execute(res).setSelected(true);
-        	// 	}
-        	// })
-    	}
-    }),
-    
-    $(("vcl/ui/Tabs"), "workspaces-tabs", {
-        align: "bottom",
-        classes: "bottom",
-        onDblClick: function(evt) { 
-        	this.udown("#workspace-prompt-new").execute(evt);
-        },
-        onChange: function() {
-    		this._owner.emit("state-dirty");
         }
     }),
     
@@ -377,6 +332,49 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
     	}	
     }),
     
+    $(("vcl/Action"), "workspace-issues-new", {
+    	hotkey: "Shift+Ctrl+73", // Shift+Ctrl+I
+    	onExecute() {
+    		// Open a Github "issues/new"-page based upon workspace meta data
+    		
+    		var ws = app.down("devtools/Workspace<>:root:selected");
+			var repo = ws.vars(["workspace.github-repo"]) || 
+				js.sf("relluf/cavalion-%s", ws.vars(["workspace.name"]));
+    		
+    		window.open(js.sf("https://github.com/%s/issues/new", repo), "","menubar=no");
+    	}
+    }),
+
+    $(("vcl/Action"), "workspace-prompt-new", {
+    	hotkey: "Shift+122",
+    	onExecute: function(evt) {
+        	var n = this.udown("#workspaces-tabs")._controls.length, me = this;
+        	this.app().prompt("#workspace-needed execute", "ws" + n, function(res) {
+        		if(res) {
+        			me.up().qs("#workspace-needed").execute(res).setSelected(true);
+        		}
+        	})
+    	}
+    }),
+    $(("vcl/Action"), "workspace-prompt-new-resource", {
+    	hotkey: "Shift+121",
+    	onExecute: function(evt) {
+        	var me = this, parent = this.up().qsa("devtools/Editor<>:root:visible").pop();
+        	parent = parent ? js.up(parent.vars(["resource.uri"])) : "tmp";
+        	var editorNeeded = this.app().down("devtools/Workspace<>:root:selected #editor-needed");
+        	this.app().prompt("#editor-needed execute", parent + "/Resource-" + Math.random().toString(36).substring(2, 15), function(value) {
+        			if(value !== null) {
+        				editorNeeded.execute(value).setSelected(true);
+        			}
+        	});
+    		
+        	// this.app().prompt("#editor-needed execute", "Resource-" + Math.random().toString(36).substring(2, 15), function(res) {
+        	// 	if(res) {
+        	// 		editorNeeded.execute(res).setSelected(true);
+        	// 	}
+        	// })
+    	}
+    }),
     $(("vcl/Action"), "workspace-find", {
     	hotkey: "Alt+F",
     	onExecute: function() {
@@ -390,7 +388,6 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
     		// }
     	}
     }),
-
     $(("vcl/Action"), "workspace-needed", {
         onExecute: function(evt) {
         	if(evt instanceof Array) {
@@ -437,14 +434,7 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
             }
     	}
     }),
-    $(("vcl/Action"), "workspaces-tabs::next-previous", {
-    	hotkey: "Ctrl+Alt+219|Ctrl+Alt+221|Shift+Meta+219|Shift+Meta+221",
-    	onExecute: function(evt) {
-    		var method = evt.keyCode === 219 ? "Previous" : "Next";
-    		this.scope("workspaces-tabs")["select" + method]();
-    		evt.preventDefault();
-    	}
-    }),
+    
     $(("vcl/Action"), "workspace-left-sidebar-tabs::next-previous", {
     	hotkey: "Ctrl+32|Ctrl+Shift+32",
     	onExecute: function(evt) {
@@ -482,10 +472,20 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
     		tab.setIndex(index + 1);
     	}
     }),
+
+    $(("vcl/Action"), "workspaces-tabs::next-previous", {
+    	hotkey: "Ctrl+Alt+219|Ctrl+Alt+221|Shift+Meta+219|Shift+Meta+221",
+    	onExecute: function(evt) {
+    		var method = evt.keyCode === 219 ? "Previous" : "Next";
+    		this.scope("workspaces-tabs")["select" + method]();
+    		evt.preventDefault();
+    	}
+    }),
     $(("vcl/Action"), "workspaces-tabs-dblclick", {
 		hotkey: "Ctrl+Alt+187",
 		onExecute: function() { this.scope("workspaces-tabs").ondblclick({}); }
     }),
+
     $(("vcl/Action"), "open_form", {
         left: 96,
         onExecute: function onExecute(uri, options) {
@@ -586,6 +586,17 @@ $(["ui/Form"], { css: styles, handlers: handlers, vars: {
         hotkey: "F5|MetaCtrl+R",
         onExecute: function(evt) {
             evt.preventDefault();
+        }
+    }),
+    
+    $(("vcl/ui/Tabs"), "workspaces-tabs", {
+        align: "bottom",
+        classes: "bottom",
+        onDblClick: function(evt) { 
+        	this.udown("#workspace-prompt-new").execute(evt);
+        },
+        onChange: function() {
+    		this._owner.emit("state-dirty");
         }
     })
 ]);

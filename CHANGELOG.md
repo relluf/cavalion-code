@@ -1,3 +1,14 @@
+### 2020-01-10
+- Speed up searching in `devtools/Editor<csv>` (was terribly slow)
+- Source pane is now left aligned and by default invisible for `devtools/Editor<csv>`
+- No wrapping by default seems a better default for 'devtools/Editor<>`
+- Adding many shortcuts, of which a few:
+	- Ctrl+Shift+I - new Github-issue
+	- Ctrl+Alt+...
+
+### 2020-01-08
+- `devtools/Editor<md> #ace` will be invisible by default when a file named `.md` (ie. dot md) is loaded.
+
 ### 2020-01-07 / 1.0.105
 	+ cavalion-code-blocks@1.0.8
 	+ cavalion-vcl@1.0.68
