@@ -11,7 +11,7 @@ $([], {
 			"Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/tools/devtools;_tools/devtools;Folder",
 			js.sf("pouchdb://%s;%s/;Folder;seperator", db, db)
 		],
-		"additional-workspaces": ["build", "devtools"]
+		"additional-workspaces": ["build"/*, "devtools"*/]
 	},
 	handlers: {
 		loaded: function() {
@@ -26,7 +26,7 @@ $([], {
 			var this_index = this.up("vcl/ui/Tab").getIndex(), tab;
 			this.udown("#workspace-needed").execute({workspace:{name: "code/build", selected: false}}).setIndex(this_index);
 			// this.udown("#workspace-needed").execute({workspace:{name: "code/apps", text: "apps", content: "_apps", selected: false}}).setIndex(this_index + 2);
-			this.udown("#workspace-needed").execute({workspace:{name: "code/devtools", text: "devtools", content: "_devtools", selected: false}}).setIndex(this_index + 2);
+			// this.udown("#workspace-needed").execute({workspace:{name: "code/devtools", text: "devtools", content: "_devtools", selected: false}}).setIndex(this_index + 2);
 }			
 			// this.vars("additional-workspaces", false, []).map(function(ws, index) {
 			// 	var tab = ws_needed.execute({

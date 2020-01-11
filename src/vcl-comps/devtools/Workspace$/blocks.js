@@ -9,14 +9,23 @@ $([], {
 	vars: {
 		dbx: new Dropbox({accessToken:DBX_XS_TOKEN}),
 		"#navigator favorites": [
-			"Workspaces/cavalion.org/cavalion-blocks/src/prototypes;blocks/prototypes",
-			"Workspaces/cavalion.org/cavalion-blocks/src/;blocks/src",
-			"Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/console",
-			"Workspaces/cavalion.org/cavalion-devtools/src/cavalion-blocks/devtools",
-			"Workspaces/cavalion.org/cavalion-ide/src/cavalion-blocks/ide",
-			"Workspaces/veldapps.com/veldapps-vo/src/cavalion-blocks;veldapps",
+			// "Workspaces/cavalion.org/cavalion-blocks/src/prototypes;blocks/prototypes",
+			// "Workspaces/cavalion.org/cavalion-blocks/src/;blocks/src",
+			// "Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/console",
+			// "Workspaces/cavalion.org/cavalion-devtools/src/cavalion-blocks/devtools",
+			// "Workspaces/cavalion.org/cavalion-ide/src/cavalion-blocks/ide",
+			// "Workspaces/veldapps.com/veldapps-vo/src/cavalion-blocks;veldapps",
+			"Library/cavalion-blocks/console;;Folder",
+			"Library/cavalion-blocks/devtools;;Folder",
+			"Library/cavalion-blocks/docs;;Folder",
+			"Library/cavalion-blocks/ide;;Folder",
+			// "Library/cavalion-blocks/index;;Folder",
+			"Library/cavalion-blocks/lost+found;;Folder",
+			"Library/cavalion-blocks/prototypes;;Folder",
+			// "Library/cavalion-blocks/tools;;Folder",
+			"Library/cavalion-blocks/veldapps;;Folder"
 		],
-		"additional-workspaces": ["ide"]
+		// "additional-workspaces": ["ide"]
 	},
 	onLoad: function() {
 		// var ws = this.up("devtools/Workspace<>:root");
@@ -116,3 +125,5 @@ $([], {
 		])	
 	])
 ]);
+
+
