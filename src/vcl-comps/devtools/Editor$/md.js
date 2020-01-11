@@ -9,7 +9,7 @@ function render() {
     this.up().qsa("#output").forEach(_ => {
     	_.setContent(markdown.renderJsonML(root));
     	_.update(function() {
-		    on(this._node.qsa("img"), "load", function(img, r) {
+		    on(this.nodeNeeded().qsa("img"), "load", function(img, r) {
 		    	img = this; r = window.devicePixelRatio || 1;
 		    	if(img.src.indexOf("?2x") !== -1) {
 	    			img.style.width = img.naturalWidth / r + "px";

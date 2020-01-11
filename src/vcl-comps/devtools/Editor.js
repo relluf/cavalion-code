@@ -428,28 +428,31 @@ $(["ui/Form"], {
 			        scrollLeft: ed.session.getScrollLeft()
 				});
     		};
-    		ace.up().readStorage("ace", function(state) {
-				var ed = ace.getEditor();
-    			if(state) {
-    				state.position && ed.gotoLine(state.position.row + 1,state.position.column);
-				    state.selection && ed.session.selection.fromJSON(state.selection);
-				    state.options && ed.session.setOptions(state.options);
-				    state.mode && ed.session.setMode(state.mode);
-					state.folds && state.folds.forEach(function(fold){
-				    		try {
-				    			var Range = require("ace/range").Range;
-				            	ed.session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end));
-						    } catch(e) {
-				    		    console.error(e);
-				    		}
-				    	});
-	
-				    ed.session.setScrollTop(state.scrollTop);
-				    ed.session.setScrollLeft(state.scrollLeft);
-    			}
-		        ed.selection.on("changeCursor", writeStorage);
-		        ed.session.on("changeFold", writeStorage);
-		        ed.session.on("changeSelection", writeStorage);
+    		
+    		this.up("vcl/ui/Tab").once("resource-loaded", function() {
+				ace.up().readStorage("ace", function(state) {
+					var ed = ace.getEditor();
+	    			if(state) {
+	    				state.position && ed.gotoLine(state.position.row + 1,state.position.column);
+					    state.selection && ed.session.selection.fromJSON(state.selection);
+					    state.options && ed.session.setOptions(state.options);
+					    state.mode && ed.session.setMode(state.mode);
+						state.folds && state.folds.forEach(function(fold){
+					    		try {
+					    			var Range = require("ace/range").Range;
+					            	ed.session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end));
+							    } catch(e) {
+					    		    console.error(e);
+					    		}
+					    	});
+		
+					    ed.session.setScrollTop(state.scrollTop);
+					    ed.session.setScrollLeft(state.scrollLeft);
+	    			}
+			        ed.selection.on("changeCursor", writeStorage);
+			        ed.session.on("changeFold", writeStorage);
+			        ed.session.on("changeSelection", writeStorage);
+	    		});
     		});
     	}
     }),
