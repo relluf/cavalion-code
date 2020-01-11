@@ -430,7 +430,8 @@ $(["ui/Form"], {
     		};
     		
     		this.up("vcl/ui/Tab").once("resource-loaded", function() {
-				ace.up().readStorage("ace", function(state) {
+    			var root = ace.up();
+    			root && root.readStorage("ace", function(state) {
 					var ed = ace.getEditor();
 	    			if(state) {
 	    				state.position && ed.gotoLine(state.position.row + 1,state.position.column);
