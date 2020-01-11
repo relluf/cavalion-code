@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "cavalion-blocks": "^0.9.13",
-    "cavalion-code-blocks": "^1.0.9",
+    "cavalion-code-blocks": "^1.0.10",
     "cavalion-js": "^1.0.33",
     "cavalion-vcl": "^1.0.68",
     "clipboard-copy": "^3.1.0",
