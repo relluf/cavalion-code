@@ -35,15 +35,17 @@ $([], {
         return this.inherited(arguments);
     },
     handlers: {
-		"#source onFilterObject": function(obj) {
-			var q = this.vars("q").toLowerCase();
-			if(q === "") return false;
-			
-			// var text = obj._text || (obj._text = JSON.stringify(obj).toLowerCase());
-			var text = JSON.stringify(obj).toLowerCase();
-			return !q.split(" ").every(function(term) {
-				return text.includes(term);
-			});
+		"#source onFilterObject": function(obj, q) {
+			if((q = this.vars("q"))) {
+				return !(q.toLowerCase().split(" ").filter(_ => _.length).every(s => {
+					for(var k in obj) {
+						if(("" + obj[k]).toLowerCase().indexOf(s) >= 0) {
+							return true;
+						}
+					}	
+					return false;
+				}));
+			}
 		},
 		"#search-input onKeyDown": function() {
 		},
@@ -58,20 +60,45 @@ $([], {
 		}
     }
 }, [
-	$i("ace", { align: "bottom", height: 200 }),
+	$i("ace", { align: "left", width: 750 }),
 	$("vcl/data/Array#source"),
 	
-	$("vcl/ui/Bar", [
-		$("vcl/ui/Input", "search-input", { placeholder: locale("Search.placeholder") }),
-		$("vcl/ui/Element", "status")
+	$("vcl/Action", ("toggle-source"), {
+		hotkey: "Shift+MetaCtrl+S",
+		onLoad() {
+			this.scope().ace.hide();
+			this.up().readStorage("toggle-source-state", (state) => {
+				this.setState(state === true);
+				if(state === true) {
+					this.scope().ace.show();	
+				}
+			});
+		},
+		onExecute() {
+			var state;
+			if((state = this.toggleState()) === true) {
+				this.scope().ace.show();
+			} else {
+				this.scope().ace.hide();
+			}
+			this.up().writeStorage("toggle-source-state", state);
+		}
+	}),
+	
+	$(("vcl/ui/Bar"), [
+		$("vcl/ui/Input", ("search-input"), { placeholder: locale("Search.placeholder") }),
+		$("vcl/ui/Element", ("status"))
 	]),
 	
-	$("vcl/ui/List#list", { css: "background-color: white;", align: "client", autoColumns: true, source: "source",
+	$("vcl/ui/List", ("list"), { 
+		align: "client", 
+		autoColumns: true, source: "source",
+		css: "background-color: white; min-width:100%;", 
 		onDblClick: function() {
 			this.print(this.getSelection(true));	
 		},
 		onColumnGetValue: function(column, value, row, source) {
-			var value = this._source._arr[row][column._attribute];
+			value = this._source._arr[row][column._attribute];
 			if(column.getIndex() === 0) {
 				return row + " - " + value;
 			}
