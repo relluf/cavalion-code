@@ -1,3 +1,7 @@
+### 2020-01-10 / 1.0.108
+	+ cavalion-code-blocks@1.0.10
+- Finetuning and bugfixing for a demo/collab with TO
+
 ### 2020-01-10 / 1.0.107
 	+ cavalion-code-blocks@1.0.9
 - Speed up searching in `devtools/Editor<csv>` (was terribly slow)
