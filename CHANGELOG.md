@@ -1,4 +1,4 @@
-### 2020-01-10
+### 2020-01-10 / 1.0.107
 - Speed up searching in `devtools/Editor<csv>` (was terribly slow)
 - Source pane is now left aligned and by default invisible for `devtools/Editor<csv>`
 - No wrapping by default seems a better default for 'devtools/Editor<>`
@@ -6,7 +6,7 @@
 	- Ctrl+Shift+I - new Github-issue
 	- Ctrl+Alt+...
 
-### 2020-01-08
+### 2020-01-08 / 1.0.106
 - `devtools/Editor<md> #ace` will be invisible by default when a file named `.md` (ie. dot md) is loaded.
 
 ### 2020-01-07 / 1.0.105
