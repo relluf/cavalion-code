@@ -86,7 +86,6 @@ $(["devtools/Main<Veldoffice>"], {
 		".vcl-ui-Tabs.bottom": "background-color: transparent;"
 	}
 }, [
-
 	$i("session-bar", [
 	
 		$i("title", { 
@@ -94,5 +93,4 @@ $(["devtools/Main<Veldoffice>"], {
 		})
 		
 	])
-	
 ]);
