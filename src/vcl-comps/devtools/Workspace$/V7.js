@@ -9,7 +9,10 @@ $([], {
 			"Workspaces/veldapps.com/V7/src/va/veldoffice",
 			"Workspaces/veldapps.com/V7/tools"
 		],
-		"additional-workspaces": ["build", "va", "va/veldoffice"]
+		"additional-workspaces": ["build", "va", "va/veldoffice"],
+		"workspace": {
+			"github-repo": "relluf/v7-app"
+		}
 	},
 	handlers: {
 		loaded: function() {
@@ -17,6 +20,9 @@ $([], {
 			require(["va/objects"], function(OM) {
 				app.print("window.OM = require('va/objects')", window.OM = OM);
 			});
+			
+			js.mixIn(this.vars(["workspace"]), this.vars("workspace"));
+			// workspace['github-repo'] = "relluf/v7-app";
 
 			var keys = require("vcl/Component").getKeysByUri;
 			if((keys = keys(this._uri)).specializer_classes.length > 0) {

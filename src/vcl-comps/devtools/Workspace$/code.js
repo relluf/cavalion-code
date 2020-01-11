@@ -8,7 +8,7 @@ $([], {
 			"Workspaces/cavalion.org/cavalion-code/src/vcl-comps",
 			"Workspaces/cavalion.org/cavalion-code/CHANGELOG.md;CHANGELOG.md;File",
 			"Workspaces/cavalion.org/cavalion-code/ROADMAP.md;ROADMAP.md;File",
-			"Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/tools/devtools",
+			"Workspaces/cavalion.org/cavalion-code/src/cavalion-blocks/tools/devtools;_tools/devtools;Folder",
 			js.sf("pouchdb://%s;%s/;Folder;seperator", db, db)
 		],
 		"additional-workspaces": ["build", "devtools"]
