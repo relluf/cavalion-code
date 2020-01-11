@@ -96,7 +96,7 @@ $(["ui/Form"], {
         	function() { session.setMode(mode); }, 
         	function() { console.log("Unknown mode " + mode); });
         
-        session.setUseWrapMode(true);
+        session.setUseWrapMode(false);
         session.setWrapLimitRange(null, null);
 
         session.on("change", function (e) {
