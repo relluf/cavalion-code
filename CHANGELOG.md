@@ -1,4 +1,5 @@
 ### 2020-01-10 / 1.0.107
+	+ cavalion-code-blocks@1.0.9
 - Speed up searching in `devtools/Editor<csv>` (was terribly slow)
 - Source pane is now left aligned and by default invisible for `devtools/Editor<csv>`
 - No wrapping by default seems a better default for 'devtools/Editor<>`
