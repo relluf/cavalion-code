@@ -6,7 +6,15 @@ $([], {
         function f() { scope.render.execute({}); }
         tab.on({"resource-loaded": f, "resource-saved": f});
         
+		// TODO pinpoint specific event (not all)
+		this.vars("listeners", scope.source.on("event", () => { 
+			scope.count.setContent(scope.source.getSize()); 
+		}));
+			
         return this.inherited(arguments);
+    },
+    onDestroy: function() {
+		this.scope().source.un(this.removeVar("listeners"));
     }
 }, [
 	$i("ace", { align: "bottom", height: 200 }),
@@ -30,15 +38,15 @@ $([], {
 		$("vcl/ui/Element", "count", { content: "-" })
 	]),
 	$("vcl/data/Array#source", {
-		onLoad: function() {
-			var me = this;
-			this.on("event", function() {
-				// TODO pinpoint specific event (not all)
-				me.scope().count.setContent(me.getSize());
-			});
-		}
+		// onLoad() {
+		// },
+		// onDestroy() {
+		// 	debugger;
+		// }
 	}),
-	$("vcl/ui/List#list", { css: "background-color: white;", align: "client", autoColumns: true, source: "source",
+	$("vcl/ui/List#list", { 
+		css: "background-color: white;",
+		autoColumns: true, source: "source",
 		onColumnGetValue: function(column, value, row, source) {
 			// var value = this._source._array[row][column._attribute];
 			if(column.getIndex() === 0) {
