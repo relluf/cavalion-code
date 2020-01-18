@@ -1,3 +1,7 @@
+### 2020-01-10 / 1.0.109
++ cavalion-code-blocks@1.0.12
++ cavalion-vcl@1.0.69
+
 ### 2020-01-10 / 1.0.108
 	+ cavalion-code-blocks@1.0.10
 - Finetuning and bugfixing for a demo/collab with TO
