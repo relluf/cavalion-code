@@ -211,19 +211,24 @@ define(function(require) {
 	}
 	
 	function getRemoteDb(db) {
-		var PouchDB = require("pouchdb");
-		return new PouchDB(js.sf("https://%s/%s/", DBS_HOST, Hash.md5(DBI_SALT + db.name)));
+		var PouchDB = require("pouchdb"), name = db.name.toLowerCase();
+		return new PouchDB(js.sf("https://%s/ralphk-%s-%s/", DBS_HOST, name, 
+				Hash.md5(SALT_DBI + name)));
+		// return new PouchDB(js.sf("https://%s/%s/", DBS_HOST, Hash.md5(SALT_DBI + db.name)));
 	}
 
 	return {
-		getReference: function(id) {
+		getReference: function(id, opts) {
 			return va_objects_wrapper(this).get(id);
 		},
-		fetch: function(id) {
-			return va_objects_wrapper(this).resolve(id);
+		fetch: function(id, opts) {
+			return this.resolve(id, opts);
+		},
+		resolve: function(id, opts) {
+			return va_objects_wrapper(this).resolve(id, opts);
 		},
 		save: function(obj, opts) {
-			return va_objects_wrapper(this).save(obj, opts)
+			return va_objects_wrapper(this).save(obj, opts);
 		},
 		pull: function(opts, callback) {
 			return this.replicate.from(getRemoteDb(this), opts, callback);
