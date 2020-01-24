@@ -41,9 +41,8 @@ var sf = String.format;
 	function resolveUri(uri, me) {
 		var url_map = me.vars(["devtools/Editor<xsd>/url_map"]) || {};
 		var v = url_map[uri];
-		if(v) return v;
+		if(v) { return v; }
 		
-		me.print("resolveUri-" + uri, url_map);
 		
 		if(uri.indexOf("https://schema.broservices.nl/") === 0) {
 			uri = "Library/schema.broservices.nl/" + uri.substring("https://schema.broservices.nl/".length);

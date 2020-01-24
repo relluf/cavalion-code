@@ -1,8 +1,27 @@
 $(["devtools/Main<Veldoffice>"], {
 	vars: {
 		"default-workspaces": [{
-			name: "Sessies",
+			name: "Log",
 			selected: true,
+	        "state": {
+	            "left-sidebar.visible": true,
+	            "editors": [{
+	                "selected": false,
+	                "resource": {
+	                    "uri": "Resource-wavkytnyk5.log",
+	                    "type": "File"
+	                }
+	            },
+	            {
+	                "selected": true,
+	                "resource": {
+	                    "uri": "STREAM.md",
+	                    "type": "File"
+	                }
+	            }]
+	        }
+		}, {
+			name: "Sessies",
 			state: {
 	            "left-sidebar.visible": false,
 	            editors: [{
