@@ -641,7 +641,7 @@ define("override", function() {
 	
 	return override;
 });
-define("blocks", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) {
+define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(Component, Blocks, Factory) {
 
 	var override = require("override");
 	override(Blocks, "implicitBaseFor", function(inherited) {
@@ -683,6 +683,26 @@ define("blocks", ["blocks/Blocks", "blocks/Factory"], function(Blocks, Factory) 
 		}
 		return uri;
 	}
+	
+	Factory.fetch = function(name) {
+		// var source_code_pouchdb = Component.defaultDb;
+		// return source_code_pouchdb.get(name).then(function(obj) {
+		// 	var min = obj['cavalion-blocks:source.min'];
+		// 	if(min === undefined) {
+		// 		var src = obj['cavalion-blocks:src']
+		// 		if(src === undefined) {
+		// 			min = "[\"\", {}, []];";
+		// 		} else {
+		// 			min = minify(src)
+		// 		}
+		// 		obj['cavalion-blocks:source.min'] = min;
+		// 	}
+		// 	return min;
+		// });
+		return new Promise(function (resolve, reject) {
+        	reject();
+    	});		
+	};
 
 	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
 	
@@ -955,7 +975,7 @@ define(function(require) {
 	/*- Class/Type System, Tools, etc. */	
 	require("js");
 	require("less");
-	require("blocks");
+	require("blocks"); // <-- basic blocks funcs
 
 	/*- Some awesomeness */
 	require("font-awesome");
