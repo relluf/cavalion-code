@@ -3,6 +3,9 @@
 var Parser = require("lib/bower_components/papaparse/papaparse");
 
 $([], {
+    onDestroy: function() {
+		this.scope().source.un(this.removeVar("listeners"));
+    },
     onLoad: function() {
         var tab = this.up("vcl/ui/Tab");
         var scope = this.scope();
@@ -10,6 +13,15 @@ $([], {
         function f() { scope.render.execute({}); }
         tab.on({"resource-loaded": f, "resource-saved": f});
         
+		// TODO pinpoint specific event (not all)
+		this.vars("listeners", scope.array.on("event", () => { 
+			scope.count.setContent(scope.array.getSize()); 
+		}));
+		
+		this.readStorage("search-input-value", (value) => {
+			this.down("#search-input").set("value", value);
+		});
+
         return this.inherited(arguments);
     },
     onDispatchChildEvent: function (component, name, evt, f, args) {
@@ -34,8 +46,9 @@ $([], {
         }
         return this.inherited(arguments);
     },
+
     handlers: {
-		"#source onFilterObject": function(obj, q) {
+		"#array onFilterObject": function(obj, q) {
 			if((q = this.vars("q"))) {
 				return !(q.toLowerCase().split(" ").filter(_ => _.length).every(s => {
 					for(var k in obj) {
@@ -50,18 +63,19 @@ $([], {
 		"#search-input onKeyDown": function() {
 		},
 		"#search-input onChange": function() {
-			var source = this.scope().source;
+			var array = this.scope().array;
 			var input = this.udown("#search-input");
 			
 			this.setTimeout(() => { 
-				source.vars("q", input.getInputValue());
-				source.updateFilter(); 
+				array.vars("q", input.getInputValue());
+				array.updateFilter();
+				array.up().writeStorage("search-input-value", input.getInputValue());
 			}, 350);
 		}
     }
 }, [
 	$i("ace", { align: "left", width: 750 }),
-	$("vcl/data/Array#source"),
+	$(("vcl/data/Array"), "array"),
 	
 	$("vcl/Action", ("toggle-source"), {
 		hotkey: "Shift+MetaCtrl+S",
@@ -87,12 +101,11 @@ $([], {
 	
 	$(("vcl/ui/Bar"), [
 		$("vcl/ui/Input", ("search-input"), { placeholder: locale("Search.placeholder") }),
-		$("vcl/ui/Element", ("status"))
+		$("vcl/ui/Element", "count", { content: "-" })
 	]),
 	
 	$("vcl/ui/List", ("list"), { 
-		align: "client", 
-		autoColumns: true, source: "source",
+		align: "client", autoColumns: true, source: "array",
 		css: "background-color: white; min-width:100%;", 
 		onDblClick: function() {
 			this.print(this.getSelection(true));	
@@ -105,7 +118,7 @@ $([], {
 			return value;
 		}
 	}),
-	$("vcl/Action#render", {
+	$("vcl/Action", ("render"), {
 		onExecute: function() {
 			// see https://www.papaparse.com/docs#config
 			var options = this.getVar("options", true) || {
@@ -134,7 +147,7 @@ $([], {
 			var arr = Parser.parse(scope.ace.getValue(), options).data;
 			var headers = arr.shift();
 			
-			scope.source.setArray(arr.map(function(values) {
+			scope.array.setArray(arr.map(function(values) {
 				var obj = {};
 				headers.forEach(function(key, index) {
 					obj[key] = values[index];
