@@ -1,3 +1,6 @@
+### 2020-01-24 / 1.0.111
+- Double click `devtools/Editor<folder>#editors-tabs` to create new resource
+
 ### 2020-01-22 / 1.0.110
 + cavalion-js@1.0.35
 + cavalion-vcl@1.0.70
