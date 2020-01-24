@@ -20,7 +20,7 @@ $([], {
 			"Library/cavalion-blocks/docs;;Folder",
 			"Library/cavalion-blocks/ide;;Folder",
 			// "Library/cavalion-blocks/index;;Folder",
-			"Library/cavalion-blocks/lost+found;;Folder",
+			// "Library/cavalion-blocks/lost+found;;Folder",
 			"Library/cavalion-blocks/prototypes;;Folder",
 			// "Library/cavalion-blocks/tools;;Folder",
 			"Library/cavalion-blocks/veldapps;;Folder"

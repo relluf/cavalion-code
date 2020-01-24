@@ -6,8 +6,8 @@
   "dependencies": {
     "cavalion-blocks": "^0.9.13",
     "cavalion-code-blocks": "^1.0.12",
-    "cavalion-js": "^1.0.33",
-    "cavalion-vcl": "^1.0.69",
+    "cavalion-js": "^1.0.35",
+    "cavalion-vcl": "^1.0.70",
     "clipboard-copy": "^3.1.0",
     "dropbox": "^4.0.30",
     "dygraphs": "^2.1.0",

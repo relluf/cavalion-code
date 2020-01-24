@@ -1,3 +1,7 @@
+### 2020-01-22 / 1.0.110
++ cavalion-js@1.0.35
++ cavalion-vcl@1.0.70
+
 ### 2020-01-10 / 1.0.109
 + cavalion-code-blocks@1.0.12
 + cavalion-vcl@1.0.69

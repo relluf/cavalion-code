@@ -29,7 +29,7 @@ $([], {
 			this.udown("#workspace-needed").execute({workspace:{name: "Veldoffice/rapportage", selected: false}}).setIndex(this_index + 1);
 			this.udown("#workspace-needed").execute({workspace:{name: "Veldoffice/geografie", selected: false}}).setIndex(this_index + 2);
 			this.udown("#workspace-needed").execute({workspace:{name: "Veldoffice/gebruik", selected: false}}).setIndex(this_index + 2);
-			
+			this.udown("#workspace-needed").execute({workspace:{name: "Veldoffice/beheer", selected: false}}).setIndex(this_index + 2);
 		}
 	}
 }, []);
