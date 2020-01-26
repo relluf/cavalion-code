@@ -1,3 +1,5 @@
+var Component = require("vcl/Component");
+
 $([], { 
 	vars: {
 		"#navigator favorites": [
@@ -12,20 +14,22 @@ $([], {
 		"additional-workspaces": ["build", "va", "va/veldoffice"],
 		"workspace": {
 			"github-repo": "relluf/v7-app"
-		}
+		},
+		
+		"default-editors": [{
+			"uri": ""
+		}]
 	},
 	handlers: {
 		loaded: function() {
-			var app = this.app();
-			require(["va/objects"], function(OM) {
-				app.print("window.OM = require('va/objects')", window.OM = OM);
-			});
-			
-			js.mixIn(this.vars(["workspace"]), this.vars("workspace"));
-			// workspace['github-repo'] = "relluf/v7-app";
+			var app = this.app(), keys;
 
-			var keys = require("vcl/Component").getKeysByUri;
-			if((keys = keys(this._uri)).specializer_classes.length > 0) {
+			js.mixIn(this.vars(["workspace"]), this.vars("workspace"));
+
+			if( /* BLEH! no solution for multiple apps at all, favs eg. should differ as well*/
+				Component.defaultDb.name.indexOf("code-") !== 0 || (keys = 
+				Component.getKeysByUri(this._uri)).specializer_classes.length > 0
+			) {
 				return;
 			}
 			

@@ -4,4 +4,4 @@ npm update
 #bower update
 cd ../src
 r.js -o build.json
-vi index.html
+vi ../index.html
