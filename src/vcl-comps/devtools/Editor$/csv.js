@@ -4,7 +4,7 @@ var Parser = require("lib/bower_components/papaparse/papaparse");
 
 $([], {
     onDestroy: function() {
-		this.scope().source.un(this.removeVar("listeners"));
+		this.scope().array.un(this.removeVar("listeners"));
     },
     onLoad: function() {
         var tab = this.up("vcl/ui/Tab");
