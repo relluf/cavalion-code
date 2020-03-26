@@ -1,6 +1,18 @@
 $(["devtools/Main<Veldoffice>"], {
 	vars: {
 		"default-workspaces": [{
+			name: "Test",
+	        "state": {
+	            "left-sidebar.visible": true,
+	            "editors": [{
+	                "selected": true,
+	                "resource": {
+	                    "uri": "Projects/veldoffice-rapportage-scripts-live/lib/bro/tools",
+	                    "type": "Folder"
+	                }
+	            }]
+	        }
+		}, {
 			name: "Log",
 			selected: true,
 	        "state": {
@@ -98,6 +110,25 @@ $(["devtools/Main<Veldoffice>"], {
 	                }
 	            }]
 			}
+		}, {
+			name: "Peilbuislabels",
+	        state: {
+	            "left-sidebar.visible": false,
+	            "editors": [{
+	                "selected": true,
+	                "resource": {
+	                    "uri": "Library/cavalion-blocks/tools/veldapps/ListOf<>/MeetpuntFilter-peilbuislabel-bedrijf.js",
+	                    "type": "File"
+	                }
+	            },
+	            {
+	                "selected": false,
+	                "resource": {
+	                    "uri": "Library/cavalion-blocks/tools/veldapps/ListOf<>/MeetpuntFilter-peilbuislabel.js",
+	                    "type": "File"
+	                }
+	            }]
+	        }
 		}]
 	},
 	css: {
@@ -113,3 +144,5 @@ $(["devtools/Main<Veldoffice>"], {
 		
 	])
 ]);
+
+
