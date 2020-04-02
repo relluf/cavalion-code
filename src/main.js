@@ -34,6 +34,7 @@ require.config({
 
         /*- cavalion.org */
         "console": cavalion_js + "console",
+        "yell": cavalion_js + "yell",
         "data": cavalion_js + "data",
         "persistence": cavalion_js + "persistence",
         "entities": cavalion_js + "entities",
@@ -48,6 +49,8 @@ require.config({
         "xslt": "../lib/node_modules/xslt/dist/xslt",
         
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
+        
+        "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
 		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
