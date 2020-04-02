@@ -1,13 +1,35 @@
+### 2020-04-01
+
+>	+ cavalion-blocks@0.9.14
+
+>	store#1.2.0 bower_components/dstore
+	└── dojo#1.16.2
+	dgrid#1.3.0 bower_components/dgrid
+	├── dojo#1.16.2
+	└── dstore#1.2.0
+	xmlbuilder#15.1.0 bower_components/xmlbuilder
+	underscore#1.10.2 bower_components/underscore
+	dojo#1.16.2 bower_components/dojo
+	ace#1.4.9 bower_components/ace
+
+* Updating npm & bower modules
+* 
+
+### 2020-02-16
+- Add mapbox-gl
+
 ### 2020-01-24 / 1.0.111
-- Double click `devtools/Editor<folder>#editors-tabs` to create new resource
+- Doubleclick `devtools/Editor<folder>#editors-tabs` to create new resource
+- Enhancing inheritance, performance and features of `devtools/Editor<csv>` and `dectools/Editor<var/log>`
+
 
 ### 2020-01-22 / 1.0.110
-+ cavalion-js@1.0.35
-+ cavalion-vcl@1.0.70
+	+ cavalion-js@1.0.35
+	+ cavalion-vcl@1.0.70
 
 ### 2020-01-10 / 1.0.109
-+ cavalion-code-blocks@1.0.12
-+ cavalion-vcl@1.0.69
+	+ cavalion-code-blocks@1.0.12
+	+ cavalion-vcl@1.0.69
 
 ### 2020-01-10 / 1.0.108
 	+ cavalion-code-blocks@1.0.10
