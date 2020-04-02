@@ -158,7 +158,7 @@ $(["devtools/Editor<xml>"], {
 
 	// Parse namespaces and determine default namespace (ie. xmlns[''])
 			var xmlns = {};
-			Object.keys(schema).forEach(function(key) { 
+			schema && Object.keys(schema).forEach(function(key) { 
 				if(key.indexOf('@_xmlns:') === 0) {
 					xmlns[key.split(":").pop()] = schema[key];
 					if(schema['@_targetNamespace'] === schema[key]) {
