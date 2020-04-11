@@ -1,1 +1,0 @@
-$(["devtools/Editor<xml>"], {});

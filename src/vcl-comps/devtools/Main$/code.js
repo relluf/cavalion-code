@@ -1,1 +1,0 @@
-$(["./Main<Cavalion-code>"]); // just an alias
