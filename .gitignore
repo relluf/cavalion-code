@@ -5,7 +5,8 @@ lib/bower_components
 lib/node_modules
 node_modules
 src/.ignore
-src/cavalion-blocks/
+src/cavalion-blocks/devtools
+src/cavalion-blocks/veldapps
 src/pages/eae
 src/vcl-comps/veldoffice
 src/vcl-comps/devtools/Workspace$/bkp

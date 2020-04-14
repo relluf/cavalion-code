@@ -1,4 +1,23 @@
-### 2020-04-01
+### 2020-04-14 / 1.0.114
+
+	+ cavalion-blocks@0.9.15
+	+ cavalion-js@1.0.38
+	+ cavalion-vcl@1.0.74
+
+### 2020-04-06 / 1.0.113
+
+	+ papaparse@5.2.0
+	+ proj4@2.6.1
+	+ ol@6.3.1
+	+ cavalion-vcl@1.0.72
+	+ mapbox-gl@1.9.1
+
+* Updating cavalion-vcl (relative require!)
+
+### 2020-04-03 / 1.0.112
+- Developing focus movements of selected `Tab<devtools/Editor>` (or 'vcl/ui/Tabs`?)
+
+### 2020-04-01 / 1.0.112
 
 >	+ cavalion-blocks@0.9.14
 

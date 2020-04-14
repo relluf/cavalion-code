@@ -25,6 +25,7 @@ require.config({
         
         "Projects": "/home/Projects",
         "Library": "/home/Library",
+        "Workspaces": "/home/Workspaces",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
