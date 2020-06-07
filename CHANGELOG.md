@@ -1,3 +1,14 @@
+### 2020-06-06 / 1.0.115
+
+	+ framework7-icons@3.0.1
+	+ framework7@5.7.7
+	+ cavalion-js@1.0.44
+	+ veldoffice-js@1.0.46
+	+ cavalion-vcl@1.0.77
+	+ proj4@2.6.2
+	+ mapbox-gl@1.10.1
+
+
 ### 2020-04-14 / 1.0.114
 
 	+ cavalion-blocks@0.9.15

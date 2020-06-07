@@ -280,7 +280,9 @@ define("Element", function() {
 			window.TouchEvent && (TouchEvent.prototype.f7PreventPanelSwipe = prevent);
 			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
 	    });
+	return Element;
 });
+
 define("Framework7/plugins/auto-back-title", function() {
 	
 	var selectors = {
@@ -407,14 +409,6 @@ define(("Framework7"), [
     
 	return Framework7;
 });
-define(("dropbox"), [
-	"../lib/node_modules/dropbox/dist/Dropbox-sdk", 
-	"../lib/node_modules/dropbox/dist/DropboxTeam-sdk"
-	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
-	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
-], function(dbx) {
-	return dbx;
-});
 define("template7", ["Framework7"], function() {
 	
 	Template7.registerHelper("l", function (str) {
@@ -498,7 +492,14 @@ define("template7", ["Framework7"], function() {
 		}
 	};
 });
-
+define(("dropbox"), [
+	"../lib/node_modules/dropbox/dist/Dropbox-sdk", 
+	"../lib/node_modules/dropbox/dist/DropboxTeam-sdk"
+	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
+	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
+], function(dbx) {
+	return dbx;
+});
 // define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
 // define("proj4", [veldoffice_js_ + "proj4js.org/proj4-src"], function(P) {
 define("proj4", ["../lib/node_modules/proj4/dist/proj4-src"], function(P) {
@@ -649,6 +650,7 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 
 	var override = require("override");
 	override(Blocks, "implicitBaseFor", function(inherited) {
+		// has something todo with $HOME
 		return function(uri) {
 			var r = inherited.apply(this, arguments);
 			if(r === null && uri.indexOf("cavalion-blocks") !== -1 
@@ -689,23 +691,24 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 	}
 	
 	Factory.fetch = function(name) {
-		// var source_code_pouchdb = Component.defaultDb;
-		// return source_code_pouchdb.get(name).then(function(obj) {
-		// 	var min = obj['cavalion-blocks:source.min'];
-		// 	if(min === undefined) {
-		// 		var src = obj['cavalion-blocks:src']
-		// 		if(src === undefined) {
-		// 			min = "[\"\", {}, []];";
-		// 		} else {
-		// 			min = minify(src)
-		// 		}
-		// 		obj['cavalion-blocks:source.min'] = min;
-		// 	}
-		// 	return min;
-		// });
-		return new Promise(function (resolve, reject) {
-        	reject();
-    	});		
+		var source_code_pouchdb = Component.defaultDb;
+console.log(name);
+		return source_code_pouchdb.get(name).then(function(obj) {
+			var min = obj['cavalion-blocks:source.min'];
+			if(min === undefined) {
+				var src = obj['cavalion-blocks:src']
+				if(src === undefined) {
+					min = "[\"\", {}, []];";
+				} else {
+					min = minify(src);
+				}
+				obj['cavalion-blocks:source.min'] = min;
+			}
+			return min;
+		});
+		// return new Promise(function (resolve, reject) {
+  //      	reject();
+  //  	});		
 	};
 
 	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
@@ -790,7 +793,7 @@ define("xml-funcs", [], function() {
 		return r;
 	}
 
-	function gml(root) {
+	function gml(root, messages) {
 		
 		function resolve_xlinks(elems, elem, log, done) {
 			var key = "@_xlink:href-resolved", href;
@@ -830,8 +833,8 @@ define("xml-funcs", [], function() {
 		});
 		resolve_xlinks(elems, root, log);
 		
-		// return log.length ? { messages: log, result: map } : map;
-		return map;
+		return messages && log.length ? { messages: log, result: map } : map;
+		// return map;
 	}
 	function gml2geojson(feature) {
 		
