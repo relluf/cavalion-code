@@ -1,8 +1,10 @@
 ### 2020-06-10 / 1.0.116
 
 	+ cavalion-js@1.0.45
+	+ cavalion-vcl@1.0.78
 
 * Updated app.js, lib.js as well
+* Better Alt+Click
 
 ### 2020-06-06 / 1.0.115
 
