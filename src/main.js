@@ -47,6 +47,9 @@ require.config({
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
         
+		"cavalion-pouch": "/home/Workspaces/cavalion.org/cavalion-pouch",
+        
+        
         "xslt": "../lib/node_modules/xslt/dist/xslt",
         
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",

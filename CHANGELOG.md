@@ -1,3 +1,9 @@
+### 2020-06-10 / 1.0.116
+
+	+ cavalion-js@1.0.45
+
+* Updated app.js, lib.js as well
+
 ### 2020-06-06 / 1.0.115
 
 	+ framework7-icons@3.0.1
@@ -7,7 +13,6 @@
 	+ cavalion-vcl@1.0.77
 	+ proj4@2.6.2
 	+ mapbox-gl@1.10.1
-
 
 ### 2020-04-14 / 1.0.114
 
