@@ -6,6 +6,7 @@
   "dependencies": {
     "cavalion-blocks": "^0.9.15",
     "cavalion-code-blocks": "^1.0.12",
+    "cavalion-devtools": "^1.0.1",
     "cavalion-js": "^1.0.45",
     "cavalion-vcl": "^1.0.78",
     "clipboard-copy": "^3.1.0",
