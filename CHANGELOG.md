@@ -1,3 +1,23 @@
+### 2020-07-29 / 1.0.117
+
+	+ cavalion-js@1.0.49
+	+ ol@6.4.0
+	+ cavalion-devtools@1.0.2
+	+ framework7@5.7.10
+	+ cavalion-vcl@1.1.1
+
+* Updating packages, build, etc.
+
+### 2020-06-10
+
+	+ cavalion-devtools@1.0.1
+	+ cavalion-js@1.0.48
+	+ veldoffice-js@1.0.47
+	+ framework7@5.7.8
+	+ mapbox-gl@1.11.1
+
+* Now using **cavalion-devtools**
+
 ### 2020-06-10 / 1.0.116
 
 	+ cavalion-js@1.0.45
@@ -33,24 +53,10 @@
 * Updating cavalion-vcl (relative require!)
 
 ### 2020-04-03 / 1.0.112
+
+	+ cavalion-blocks@0.9.14
+
 - Developing focus movements of selected `Tab<devtools/Editor>` (or 'vcl/ui/Tabs`?)
-
-### 2020-04-01 / 1.0.112
-
->	+ cavalion-blocks@0.9.14
-
->	store#1.2.0 bower_components/dstore
-	└── dojo#1.16.2
-	dgrid#1.3.0 bower_components/dgrid
-	├── dojo#1.16.2
-	└── dstore#1.2.0
-	xmlbuilder#15.1.0 bower_components/xmlbuilder
-	underscore#1.10.2 bower_components/underscore
-	dojo#1.16.2 bower_components/dojo
-	ace#1.4.9 bower_components/ace
-
-* Updating npm & bower modules
-* 
 
 ### 2020-02-16
 - Add mapbox-gl
