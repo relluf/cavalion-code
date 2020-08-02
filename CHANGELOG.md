@@ -1,3 +1,11 @@
+### 2020-08-02 / 1.0.118
+
+	+ cavalion-blocks@0.9.16
+	+ ol@6.4.2
+	+ cavalion-devtools@1.0.4
+
+* Updating packages, build, etc. (in favor of veldoffice.nl/code (and veldapps.com/code perhaps))
+
 ### 2020-07-29 / 1.0.117
 
 	+ cavalion-js@1.0.49
