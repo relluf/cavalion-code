@@ -56,7 +56,6 @@ require.config({
         
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
-		/* veldapps.com */		
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -65,7 +64,9 @@ require.config({
 		// "proj4": veldoffice_js + "proj4js.org/proj4",
 		"epsg": veldoffice_js + "proj4js.org/epsg",
 		"leaflet": veldoffice_js + "leafletjs.com",
-
+		
+		
+		
 		/*- bower */
         "ace": "../lib/bower_components/ace/lib/ace",
         "less": "../lib/bower_components/less/dist/less",

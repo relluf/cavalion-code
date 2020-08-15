@@ -1,3 +1,14 @@
+### 2020-08-02 / 1.0.119
+
+	+ cavalion-js@1.0.50
+	+ ol@6.4.3
+	+ cavalion-blocks@0.9.17
+	+ mapbox-gl@1.12.0
+	+ cavalion-devtools@1.0.5
+	+ cavalion-vcl@1.1.3
+
+* Updating packages
+
 ### 2020-08-02 / 1.0.118
 
 	+ cavalion-blocks@0.9.16
