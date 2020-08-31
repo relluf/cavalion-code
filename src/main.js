@@ -683,6 +683,7 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 	});	
 	
 	Blocks.adjustUri = function(uri) {
+		uri = uri.split(">").join("").split("<").join("<>/")
 		if(uri.indexOf("cavalion-blocks") !== -1 && uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
 			uri = uri.split("/");
 			while(uri[2] !== "cavalion-blocks" && uri.length > 2) {
@@ -693,27 +694,39 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 		}
 		return uri;
 	}
-	
-	Factory.fetch = function(name) {
-		var source_code_pouchdb = Component.defaultDb;
-console.log(name);
-		return source_code_pouchdb.get(name).then(function(obj) {
-			var min = obj['cavalion-blocks:source.min'];
-			if(min === undefined) {
-				var src = obj['cavalion-blocks:src']
-				if(src === undefined) {
-					min = "[\"\", {}, []];";
-				} else {
-					min = minify(src);
-				}
-				obj['cavalion-blocks:source.min'] = min;
-			}
-			return min;
-		});
-		// return new Promise(function (resolve, reject) {
-  //      	reject();
-  //  	});		
-	};
+// 	Factory.fetch = function(name) {
+// 		var source_code_pouchdb = Component.defaultDb;
+// console.log(name);
+// 		return source_code_pouchdb.get(name).then(function(obj) {
+// 			var min = obj['cavalion-blocks:source.min'];
+// 			if(min === undefined) {
+// 				var src = obj['cavalion-blocks:src']
+// 				if(src === undefined) {
+// 					min = "[\"\", {}, []];";
+// 				} else {
+// 					min = minify(src);
+// 				}
+// 				obj['cavalion-blocks:source.min'] = min;
+// 			}
+// 			return min;
+// 		});
+// 		// return new Promise(function (resolve, reject) {
+//   //      	reject();
+//   //  	});		
+// 	};
+	// override(Factory, "makeTextUri", function(org) {
+	// 	// #CVLN-20200824-1
+	// 	return function(uri, suffix) {
+	// 		if(uri.startsWith("$HOME/")) {
+	// 			uri = uri.substring("$HOME/".length);
+	// 			console.log("uri.$HOME ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
+	// 			// console.log(uri.split(">").join("").split("<").join("<>/"));
+	// 		} else {
+	// 			console.log("uri ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
+	// 		}
+	// 		return org.apply(this, [uri.split(">").join("").split("<").join("<>/"), suffix]);
+	// 	};
+	// });
 
 	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
 	

@@ -1,3 +1,20 @@
+### 2020-08-27
+
+	+ papaparse@5.3.0
+	+ cavalion-vcl@1.1.7
+	+ cavalion-devtools@1.0.7
+	+ cavalion-js@1.0.52
+
+### 2020-08-22 / 1.0.120
+
+	+ cavalion-vcl@1.1.6
+	+ cavalion-js@1.0.51
+	+ cavalion-devtools@1.0.6
+	+ framework7@5.7.11
+
+* Mainly updating new features for Editor-descendants (csv, xml)
+* Many console improvements
+
 ### 2020-08-02 / 1.0.119
 
 	+ cavalion-js@1.0.50
