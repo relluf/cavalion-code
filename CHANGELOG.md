@@ -1,3 +1,10 @@
+### 2020-09-07 / 1.0.122
+
+	+ cavalion-devtools@1.0.8
+	+ cavalion-vcl@1.1.8
+	+ cavalion-js@1.0.53
+	+ framework7@5.7.12
+
 ### 2020-08-30 / 1.0.121
 
 * Updating build
