@@ -1,3 +1,11 @@
+### 2020-09-11 / 1.0.123
+
+	+ cavalion-vcl@1.1.10
+	+ cavalion-blocks@0.9.18
+	+ cavalion-devtools@1.0.9
+
+* Deploying new features of cavalion-devtools' Console
+
 ### 2020-09-07 / 1.0.122
 
 	+ cavalion-devtools@1.0.8
