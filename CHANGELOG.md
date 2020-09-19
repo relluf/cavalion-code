@@ -1,4 +1,4 @@
-### 2020-09-18
+### 2020-09-18  / 1.0.125
 
 	+ cavalion-vcl@1.1.11
 	- ipfs@0.50.2: removed 807 packages and audited 82 packages in 7.775s
@@ -6,7 +6,7 @@
 - Removed IPFS dependencies, a more lightweight approach seems wise
 - Starting to use colors in a new title area
 
-### 2020-09-14
+### 2020-09-14  / 1.0.124
 
 	+ cavalion-devtools@1.0.10
 	+ cavalion-js@1.0.54
