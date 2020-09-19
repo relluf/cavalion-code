@@ -15,7 +15,6 @@
     "dygraphs": "^2.1.0",
     "framework7": "^5.7.12",
     "framework7-icons": "^3.0.1",
-    "ipfs": "^0.50.2",
     "isomorphic-fetch": "^2.2.1",
     "mapbox-gl": "^1.12.0",
     "ol": "^6.4.3",
