@@ -48,12 +48,8 @@ require.config({
         "blocks": cavalion_blocks,
         
 		"cavalion-pouch": "/home/Workspaces/cavalion.org/cavalion-pouch",
-        
-        
         "xslt": "../lib/node_modules/xslt/dist/xslt",
-        
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
-        
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
 		"veldapps": veldoffice_js + "veldapps.com",
@@ -65,8 +61,8 @@ require.config({
 		"epsg": veldoffice_js + "proj4js.org/epsg",
 		"leaflet": veldoffice_js + "leafletjs.com",
 		
-		
-		
+		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
+
 		/*- bower */
         "ace": "../lib/bower_components/ace/lib/ace",
         "less": "../lib/bower_components/less/dist/less",
