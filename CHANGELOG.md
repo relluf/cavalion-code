@@ -1,3 +1,26 @@
+### 2020-09-18
+
+	+ cavalion-vcl@1.1.11
+
+- Starting to use colors
+
+### 2020-09-14
+
+	+ cavalion-devtools@1.0.10
+	+ cavalion-js@1.0.54
+
+### 2020-09-13
+
+	+ ipfs@0.50.2
+	added 807 packages from 1164 contributors and audited 889 packages in 139.229s
+
+- Adding IPFS (69M) via NPM, not really necessary since only `dist/index.min.js` is actually used - but then again, that's where the build-process come is
+
+### Before: 236M
+![image](https://user-images.githubusercontent.com/686773/93016465-fbf85480-f586-11ea-91c5-33e6b5b65ac7.png)
+### After: 305M
+![image](https://user-images.githubusercontent.com/686773/93016469-01ee3580-f587-11ea-941a-c2bf87f99e45.png)
+
 ### 2020-09-11 / 1.0.123
 
 	+ cavalion-vcl@1.1.10
