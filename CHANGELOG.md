@@ -1,3 +1,15 @@
+### 2020-10-02  / 1.0.127
+
+	+ cavalion-vcl@1.1.12
+
+- Tweaking Element.prototype.up()
+
+### 2020-09-21  / 1.0.126
+
+	+ cavalion-devtools@1.0.13
+
+- Updating cavalion-devtools
+
 ### 2020-09-18  / 1.0.125
 
 	+ cavalion-vcl@1.1.11

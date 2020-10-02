@@ -22,7 +22,7 @@ require.config({
         // "VA": veldapps_v7 + "/VA",
         
         "lib": "../lib",
-        
+
         "Projects": "/home/Projects",
         "Library": "/home/Library",
         "Workspaces": "/home/Workspaces",
@@ -156,20 +156,99 @@ window.req = function req() {
 	});
 };
 
-define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
-		pace.start({ 
-			ajax: {
-			    ignoreURLs: ['https://dbs.veldapps.com/'],
-			},
-			elements: false,
-			restartOnRequestAfter: true, 
-			restartOnPushState: true,
-			document: false
-		});
-		//{ trackMethods: [] } });
-		return pace; 
+define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(Component, Blocks, Factory) {
+
+	var override = require("override");
+	override(Blocks, "implicitBaseFor", function(inherited) {
+		// has something todo with $HOME
+		return function(uri) {
+			var r = inherited.apply(this, arguments);
+			if(r === null && uri.indexOf("cavalion-blocks") !== -1 
+					&& uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
+				r = uri.split("/");
+				while(r[2] !== "cavalion-blocks" && r.length > 2) {
+					r.splice(2, 1);
+				}
+				r.splice(2, 1);
+				r = r.join("/");
+			}
+			return r;
+		};
 	});
 	
+	// TODO Refactor to blocks/Superblock?
+	define("vcl/Component-parentIsOwner", ["require", "js/defineClass", "vcl/Component"], function (require, ComponentPIO, Component) {
+		return (ComponentPIO = ComponentPIO(require, {
+			inherits: Component,
+			prototype: {
+				setParentComponent: function(value) {
+					this.setOwner(value);
+				}
+			}
+		}));
+	});	
+	
+	Blocks.adjustUri = function(uri) {
+		uri = uri.split(">").join("").split("<").join("<>/")
+		if(uri.indexOf("cavalion-blocks") !== -1 && uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
+			uri = uri.split("/");
+			while(uri[2] !== "cavalion-blocks" && uri.length > 2) {
+				uri.splice(2, 1);
+			}
+			uri.splice(2, 1);
+			uri = uri.join("/");
+		}
+		return uri;
+	}
+	// Factory.fetch = function(name) {
+	// 	var source_code_pouchdb = Component.storageDB;
+
+	// 	return source_code_pouchdb.get(js.sf("cavalion-blocks/%s.js", name)).then(function(obj) {
+	// 		var src = js.get("cavalion-blocks:source", obj);
+	// 		if(src === undefined) {
+	// 			src = js.get("devtools:resource.text", obj);
+	// 			if(src === undefined) {
+	// 				src = "[\"\", {}, []];";
+	// 			} else {
+	// 				// src = minify(src);
+	// 				js.set("cavalion-blocks:source", src, obj);
+	// 			}
+	// 		}
+	// 		return src;
+	// 	});
+	// };
+	// override(Factory, "makeTextUri", function(org) {
+	// 	// #CVLN-20200824-1
+	// 	return function(uri, suffix) {
+	// 		if(uri.startsWith("$HOME/")) {
+	// 			uri = uri.substring("$HOME/".length);
+	// 			console.log("uri.$HOME ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
+	// 			// console.log(uri.split(">").join("").split("<").join("<>/"));
+	// 		} else {
+	// 			console.log("uri ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
+	// 		}
+	// 		return org.apply(this, [uri.split(">").join("").split("<").join("<>/"), suffix]);
+	// 	};
+	// });
+
+	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
+	
+	return Blocks;
+});
+define("B", ["blocks/Factory"], function(Factory) {
+	var Blocks = require("blocks/Blocks");
+	Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
+	Blocks.DEFAULT_NAMESPACES.veldoffice = "vcl-veldoffice";
+	return Blocks;
+});
+define("override", function() {
+	
+	function override(obj, method, factory) {
+		obj[method] = factory(obj[method]);
+	}
+	
+	return override;
+});
 define("ArrayFactory", function() {
 	return {
 		create: function(options, callback) {
@@ -197,16 +276,10 @@ define("ArrayFactory", function() {
 		}
 	};
 });
-define("B", ["blocks/Factory"], function(Factory) {
-	var Blocks = require("blocks/Blocks");
-	Blocks.DEFAULT_NAMESPACES['vcl-veldoffice'] = "vcl-veldoffice";
-	Blocks.DEFAULT_NAMESPACES.veldoffice = "vcl-veldoffice";
-	return Blocks;
-});
 define("Element", function() {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
-	Element.prototype.up = function(selector) {
+	Element.prototype.up = function(selector, includeThis) {
 		
 		if(arguments.length === 0) {
 			return this.parentNode;
@@ -222,16 +295,16 @@ define("Element", function() {
 			return node === parent ? r : 0;
 		}
 		
-		var all = document.querySelectorAll(selector), me = this;
-		return Array.prototype.slice.apply(all, [0]).map(function(node) { 
-			return {node: node, distance: distanceToParent(me, node)};
-		}).filter(function(result) {
-			return result.distance > 0;
-		}).sort(function(i1, i2) {
-			return i1.distance - i2.distance;
-		}).map(function(i1) {
-			return i1.node;
-		})[0] || null;
+		var all = Array.from(document.querySelectorAll(selector)), me = this;
+		if(includeThis && all.includes(this)) {
+			return this;
+		}
+		
+		return all.map(node => ({ node: node, distance: distanceToParent(me, node) }))
+			.filter(result => result.distance > 0)
+			.sort((i1, i2) => i1.distance - i2.distance < 0 ? -1 : 1)
+			.map(i1 => i1.node)
+			.shift() || null;
 	};
 	Element.prototype.down = function(selector) {
 		return this.querySelector(selector);
@@ -281,6 +354,207 @@ define("Element", function() {
 			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
 	    });
 	return Element;
+});
+define("xml-funcs", [], function() {
+
+	function logonce(s) {
+		var app = require("vcl/Application").instances[0];
+		var ac = arguments.callee; ac.cache = (ac.cache || (ac.cache = []));
+		if(ac.cache.indexOf(s) === -1) {
+			ac.cache.push(s);
+			app.print(s);
+		}
+	}
+	function asArray(arr) {
+		if(arr instanceof Array) {
+			return arr;
+		}
+		
+		if(arr === null || arr === undefined) {
+			return [];
+		}
+		
+		return [arr];
+	}
+	function types(scrape_gml_root, opts) {
+		var r = {};
+		for(var k in scrape_gml_root) {
+			r[k] = scrape_gml_root[k].map(_ => Object.keys(_).join(",")).filter(function(v, i, a) {
+				return a.indexOf(v) === i;
+			});
+		}
+		return r;
+	}
+
+	function gml(root, messages) {
+		
+		function resolve_xlinks(elems, elem, log, done) {
+			var key = "@_xlink:href-resolved", href;
+			
+			done = done || [];
+			if(done.indexOf(elem) !== -1) return;
+			done.push(elem);
+			
+			for(var k in elem) {
+				if(k !== key && typeof elem[k] === "object") {
+					resolve_xlinks(elems, elem[k], log); // <- what about done? 
+				}
+			}
+		
+			if((href = elem['@_xlink:href'])) {
+				if(href.charAt(0) === '#') href = href.substring(1);
+				if(!(elem[key] = elems[href])) {
+					log && log.push(String.format("%s not found", href));
+				}
+			}
+		}
+		
+		var key = Object.keys(root)[0];
+		var ns = key.split(":")[0];
+		var features = asArray(root[key][ns + ":featureMember"]);
+		var elems = {}, map = {}; /* return value */
+		var log = [];
+	
+		resolve_xlinks(elems, root);
+		features.forEach(function(_) {
+			var key = Object.keys(_)[0];
+			var arr = (map[key] = map[key] || []);
+	
+			elems[_[key]['@_gml:id']] = _;
+	
+			arr.push(_[key]);
+		});
+		resolve_xlinks(elems, root, log);
+		
+		return messages && log.length ? { messages: log, result: map } : map;
+		// return map;
+	}
+	function gml2geojson(feature) {
+		
+		function coordinates(arr) {
+			return arr.map(function(v) {
+				if(typeof v['#text'] === "string") {
+					v = v['#text'];
+				}
+				var r = [], coords = v.split(/\s/);
+				while(coords.length) {
+					r.push([parseFloat(coords.shift()), parseFloat(coords.shift())]);
+				}
+				return r;
+			});
+		}
+		
+		var keys = Object.keys(feature);
+		var ft = feature[keys[0]], v;
+		var r = { 
+			geometry: { type: keys[0].split(":").pop() },
+			properties: { id: ft['@_gml:id'] },
+			type: "Feature"
+		};
+		
+		if(r.geometry.type === "LineString") {
+			r.geometry.coordinates = coordinates(asArray(ft["gml:posList"]));
+		} else if(r.geometry.type === "Point") {
+			r.geometry.coordinates = coordinates(asArray(ft["gml:pos"]))[0][0];
+		} else if(r.geometry.type === "Polygon") {
+			r.geometry.coordinates = coordinates(asArray(js.get("gml:exterior.gml:LinearRing.gml:posList", ft)));
+		} else if(r.geometry.type === "Curve") {
+			r.geometry.type = "LineString";
+			r.geometry.coordinates = coordinates(asArray(js.get("gml:segments.gml:LineStringSegment.gml:posList", ft)))[0];
+		} else {
+			logonce(r.geometry.type);
+		}
+		r.properties['@_gml'] = ft;
+		return r;
+	}
+	function imkl2geojson(root, opts) {
+
+		function scrape(gml_root, opts) {
+			var result = {};
+	
+			opts = opts || {};
+			
+			function walk(item, path, objs) {
+				
+				path = path || [];
+				objs = objs || [];
+				
+				if(objs.indexOf(item) !== -1) return;
+				
+				objs.push(item);
+				
+				var r = {}, k;
+				for(var key in item) {
+					if(key !== "@_gml:id") {// && key!=="@_xlink:href-resolved") {
+						path.push(key);
+						if(key.indexOf("gml:") === 0) {
+							if(opts.fullPaths !== false) {
+								r[path.join("/")] = item[key];
+							} else {
+								if(r[key] instanceof Array) {
+									r[key].push(item[key]);
+								} else if(r[key] === undefined) {
+									r[key] = item[key];
+								} else {
+									r[key] = [r[key], item[key]];
+								}
+							}
+						} else if(key === "net:link") {
+							js.mixIn(r, walk(item[key]["@_xlink:href-resolved"], path, objs));
+						} else if(typeof item[key] === "object") {
+							js.mixIn(r, walk(item[key], path, objs));
+						}
+						path.pop();
+					}
+				}
+				return r;
+			}
+			
+			for(var k in gml_root) {
+				var arr = gml_root[k].map(item => walk(item)).filter(_ => Object.keys(_).length);
+				if(arr.length > 0) {
+					result[k] = arr;
+				}
+			}
+			
+			return result;
+		}
+
+		opts = opts || {};
+		
+		var scraped = scrape(gml(root, opts));
+		var layers = {}, all = [];
+
+		for(var layer in scraped) {
+			layers[layer] = {
+				type: "FeatureCollection", name: layer,
+				crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::28992" } },
+				features: scraped[layer].map(gml2geojson)
+			};
+			all = all.concat(layers[layer].features)
+		}
+		
+		if(opts.all === true) {
+			return {
+				type: "FeatureCollection", 
+				name: (/\d\d.\d\d\d\d\d\d/.exec(all[0].properties.id)||[""])[0],
+				crs: { 
+					"type": "name", 
+					"properties": { "name": "urn:ogc:def:crs:EPSG::28992" } 
+				},
+				features: all
+			}
+		}
+
+		return layers;
+	}
+	
+	return {
+		gml: gml, 
+		gml2geojson: gml2geojson,
+		imkl2geojson: imkl2geojson
+	}
+	
 });
 
 define("Framework7/plugins/auto-back-title", function() {
@@ -492,23 +766,99 @@ define("template7", ["Framework7"], function() {
 		}
 	};
 });
-define(("dropbox"), [
-	"../lib/node_modules/dropbox/dist/Dropbox-sdk", 
-	"../lib/node_modules/dropbox/dist/DropboxTeam-sdk"
-	// bang_node_module("script", "dropbox/dist/Dropbox-sdk.js"), 
-	// bang_node_module("script", "dropbox/dist/DropboxTeam-sdk.js")
-], function(dbx) {
-	return dbx;
+
+define("ol", ["../lib/ol-6.1.1", "stylesheet!../lib/ol-6.1.1.css"], function(ol_) {
+	var ol = window.ol || ol_;
+	window.ol = ol;
+	
+	ol.convert = (function(){
+		return function convert(value, properties) {
+			function instantiate(def, properties) {
+			
+				var values = def[1] || {};
+				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
+			
+				for(var name in values) {
+					var value = values[name];
+					values[name] = convert(value, properties);
+				}
+				
+				/*- jshint:evil */
+				return eval(code);
+			}
+		
+			// TODO escape with backslash
+			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
+				return properties[value.substring(1)];
+			}
+			
+			if(!(value instanceof Array)) {
+				return value;
+			}
+				
+			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
+				return value.map(function(val) {
+					return convert(val, properties);
+				});
+			}
+			
+			if(value[0].indexOf("ol:") === 0) {
+				value = instantiate(value, properties);
+			}
+			
+			return value;
+		};
+	}());
+	
+	return arguments[0];
 });
-// define("proj4", [veldoffice_js.substring(1) + "proj4js.org/proj4-src"], function(P) {
-// define("proj4", [veldoffice_js_ + "proj4js.org/proj4-src"], function(P) {
 define("proj4", ["../lib/node_modules/proj4/dist/proj4-src"], function(P) {
 	return P;
 });
 define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
-define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
+define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
+	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
+	"pouchdb.memory",
+	"pouchdb.save"
+], 
+function(pouchdb, find, relational, memory, save) {
+	
+	/*- hacked pouchdb.memory */
+	memory = window.pouch_MemoryPouchPlugin;
+	delete window.pouch_MemoryPouchPlugin;
+	
+	pouchdb.plugin(find);
+	pouchdb.plugin(relational);
+	pouchdb.plugin(memory);
+	pouchdb.plugin(save);
+	
+	return pouchdb;
+});
+
+define(("dropbox"), ["../lib/node_modules/dropbox/dist/Dropbox-sdk", "../lib/node_modules/dropbox/dist/DropboxTeam-sdk"], (dbx) => dbx);
+define("markdown", ["../lib/bower_components/markdown/lib/markdown"], function() {
+	return window.markdown;
+});
+define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
+		pace.start({ 
+			ajax: {
+			    ignoreURLs: ['https://dbs.veldapps.com/'],
+			},
+			elements: false,
+			restartOnRequestAfter: true, 
+			restartOnPushState: true,
+			document: false
+		});
+		//{ trackMethods: [] } });
+		return pace; 
+	});
+define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
+	return stylesheet;
+});
+
+define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
 	var url = new Url();
 	
 	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
@@ -518,11 +868,11 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	var property = "cavalion-vcl:state";
 	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
 	
-	var defaultDb = new PouchDB(dbName);
-	var db = (c) => c.vars(["storage-db"]) || defaultDb;
+	var storageDB = new PouchDB(dbName);
+	var db = (c) => c.vars(["storage-db"]) || storageDB;
 	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
 	
-	console.log("using", defaultDb, "for vcl-comps (" + defaultDb.name + ")");
+	console.log("using", storageDB, "for vcl-comps (" + storageDB.name + ")");
 	
 /*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
 	
@@ -534,7 +884,6 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 	}
 	
 	Component.sync = function(opts) {
-		
 		var dbi = js.sf("https://dbs.veldapps.com/ralphk-%s", dbName);
 		var root = opts.app || require("vcl/Application").instances[0];
 		var sh = db(root).sync(new PouchDB(dbi), opts)
@@ -557,7 +906,7 @@ define("vcl/Component.storage-pouch", ["vcl/Component", "pouchdb", "util/net/Url
 			
 		return sh;
 	};
-	Component.defaultDb = defaultDb;
+	Component.storageDB = storageDB;
 
 	js.override(Component.prototype, {
         readStorage: function (key, callback, errback) {
@@ -614,369 +963,6 @@ if(typeof value === "string") {
         }
 	});
 });
-define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
-	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
-	"pouchdb.memory",
-	"pouchdb.save"
-], 
-function(pouchdb, find, relational, memory, save) {
-	
-	/*- hacked pouchdb.memory */
-	memory = window.pouch_MemoryPouchPlugin;
-	delete window.pouch_MemoryPouchPlugin;
-	
-	pouchdb.plugin(find);
-	pouchdb.plugin(relational);
-	pouchdb.plugin(memory);
-	pouchdb.plugin(save);
-	
-	return pouchdb;
-});
-define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
-	return stylesheet;
-});
-define("markdown", ["../lib/bower_components/markdown/lib/markdown"], function() {
-	return window.markdown;
-});
-define("override", function() {
-	
-	function override(obj, method, factory) {
-		obj[method] = factory(obj[method]);
-	}
-	
-	return override;
-});
-define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(Component, Blocks, Factory) {
-
-	var override = require("override");
-	override(Blocks, "implicitBaseFor", function(inherited) {
-		// has something todo with $HOME
-		return function(uri) {
-			var r = inherited.apply(this, arguments);
-			if(r === null && uri.indexOf("cavalion-blocks") !== -1 
-					&& uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
-				r = uri.split("/");
-				while(r[2] !== "cavalion-blocks" && r.length > 2) {
-					r.splice(2, 1);
-				}
-				r.splice(2, 1);
-				r = r.join("/");
-			}
-			return r;
-		};
-	});
-	
-	// TODO Refactor to blocks/Superblock?
-	define("vcl/Component-parentIsOwner", ["require", "js/defineClass", "vcl/Component"], function (require, ComponentPIO, Component) {
-		return (ComponentPIO = ComponentPIO(require, {
-			inherits: Component,
-			prototype: {
-				setParentComponent: function(value) {
-					this.setOwner(value);
-				}
-			}
-		}));
-	});	
-	
-	Blocks.adjustUri = function(uri) {
-		uri = uri.split(">").join("").split("<").join("<>/")
-		if(uri.indexOf("cavalion-blocks") !== -1 && uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
-			uri = uri.split("/");
-			while(uri[2] !== "cavalion-blocks" && uri.length > 2) {
-				uri.splice(2, 1);
-			}
-			uri.splice(2, 1);
-			uri = uri.join("/");
-		}
-		return uri;
-	}
-// 	Factory.fetch = function(name) {
-// 		var source_code_pouchdb = Component.defaultDb;
-// console.log(name);
-// 		return source_code_pouchdb.get(name).then(function(obj) {
-// 			var min = obj['cavalion-blocks:source.min'];
-// 			if(min === undefined) {
-// 				var src = obj['cavalion-blocks:src']
-// 				if(src === undefined) {
-// 					min = "[\"\", {}, []];";
-// 				} else {
-// 					min = minify(src);
-// 				}
-// 				obj['cavalion-blocks:source.min'] = min;
-// 			}
-// 			return min;
-// 		});
-// 		// return new Promise(function (resolve, reject) {
-//   //      	reject();
-//   //  	});		
-// 	};
-	// override(Factory, "makeTextUri", function(org) {
-	// 	// #CVLN-20200824-1
-	// 	return function(uri, suffix) {
-	// 		if(uri.startsWith("$HOME/")) {
-	// 			uri = uri.substring("$HOME/".length);
-	// 			console.log("uri.$HOME ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
-	// 			// console.log(uri.split(">").join("").split("<").join("<>/"));
-	// 		} else {
-	// 			console.log("uri ==>", this.resolveUri(uri.split(">").join("").split("<").join("<>/")))
-	// 		}
-	// 		return org.apply(this, [uri.split(">").join("").split("<").join("<>/"), suffix]);
-	// 	};
-	// });
-
-	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
-	
-	return Blocks;
-});
-
-define("ol", ["../lib/ol-6.1.1", "stylesheet!../lib/ol-6.1.1.css"], function(ol_) {
-	var ol = window.ol || ol_;
-	window.ol = ol;
-	
-	ol.convert = (function(){
-		return function convert(value, properties) {
-			function instantiate(def, properties) {
-			
-				var values = def[1] || {};
-				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
-			
-				for(var name in values) {
-					var value = values[name];
-					values[name] = convert(value, properties);
-				}
-				
-				/*- jshint:evil */
-				return eval(code);
-			}
-		
-			// TODO escape with backslash
-			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
-				return properties[value.substring(1)];
-			}
-			
-			if(!(value instanceof Array)) {
-				return value;
-			}
-				
-			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
-				return value.map(function(val) {
-					return convert(val, properties);
-				});
-			}
-			
-			if(value[0].indexOf("ol:") === 0) {
-				value = instantiate(value, properties);
-			}
-			
-			return value;
-		};
-	}());
-	
-	return arguments[0];
-});
-
-define("xml-funcs", [], function() {
-
-	function logonce(s) {
-		var app = require("vcl/Application").instances[0];
-		var ac = arguments.callee; ac.cache = (ac.cache || (ac.cache = []));
-		if(ac.cache.indexOf(s) === -1) {
-			ac.cache.push(s);
-			app.print(s);
-		}
-	}
-	function asArray(arr) {
-		if(arr instanceof Array) {
-			return arr;
-		}
-		
-		if(arr === null || arr === undefined) {
-			return [];
-		}
-		
-		return [arr];
-	}
-	function types(scrape_gml_root, opts) {
-		var r = {};
-		for(var k in scrape_gml_root) {
-			r[k] = scrape_gml_root[k].map(_ => Object.keys(_).join(",")).filter(function(v, i, a) {
-				return a.indexOf(v) === i;
-			});
-		}
-		return r;
-	}
-
-	function gml(root, messages) {
-		
-		function resolve_xlinks(elems, elem, log, done) {
-			var key = "@_xlink:href-resolved", href;
-			
-			done = done || [];
-			if(done.indexOf(elem) !== -1) return;
-			done.push(elem);
-			
-			for(var k in elem) {
-				if(k !== key && typeof elem[k] === "object") {
-					resolve_xlinks(elems, elem[k], log); // <- what about done? 
-				}
-			}
-		
-			if((href = elem['@_xlink:href'])) {
-				if(href.charAt(0) === '#') href = href.substring(1);
-				if(!(elem[key] = elems[href])) {
-					log && log.push(String.format("%s not found", href));
-				}
-			}
-		}
-		
-		var key = Object.keys(root)[0];
-		var ns = key.split(":")[0];
-		var features = asArray(root[key][ns + ":featureMember"]);
-		var elems = {}, map = {}; /* return value */
-		var log = [];
-	
-		resolve_xlinks(elems, root);
-		features.forEach(function(_) {
-			var key = Object.keys(_)[0];
-			var arr = (map[key] = map[key] || []);
-	
-			elems[_[key]['@_gml:id']] = _;
-	
-			arr.push(_[key]);
-		});
-		resolve_xlinks(elems, root, log);
-		
-		return messages && log.length ? { messages: log, result: map } : map;
-		// return map;
-	}
-	function gml2geojson(feature) {
-		
-		function coordinates(arr) {
-			return arr.map(function(v) {
-				if(typeof v['#text'] === "string") {
-					v = v['#text'];
-				}
-				var r = [], coords = v.split(/\s/);
-				while(coords.length) {
-					r.push([parseFloat(coords.shift()), parseFloat(coords.shift())]);
-				}
-				return r;
-			});
-		}
-		
-		var keys = Object.keys(feature);
-		var ft = feature[keys[0]], v;
-		var r = { 
-			geometry: { type: keys[0].split(":").pop() },
-			properties: { id: ft['@_gml:id'] },
-			type: "Feature"
-		};
-		
-		if(r.geometry.type === "LineString") {
-			r.geometry.coordinates = coordinates(asArray(ft["gml:posList"]));
-		} else if(r.geometry.type === "Point") {
-			r.geometry.coordinates = coordinates(asArray(ft["gml:pos"]))[0][0];
-		} else if(r.geometry.type === "Polygon") {
-			r.geometry.coordinates = coordinates(asArray(js.get("gml:exterior.gml:LinearRing.gml:posList", ft)));
-		} else if(r.geometry.type === "Curve") {
-			r.geometry.type = "LineString";
-			r.geometry.coordinates = coordinates(asArray(js.get("gml:segments.gml:LineStringSegment.gml:posList", ft)))[0];
-		} else {
-			logonce(r.geometry.type);
-		}
-		r.properties['@_gml'] = ft;
-		return r;
-	}
-	function imkl2geojson(root, opts) {
-
-		function scrape(gml_root, opts) {
-			var result = {};
-	
-			opts = opts || {};
-			
-			function walk(item, path, objs) {
-				
-				path = path || [];
-				objs = objs || [];
-				
-				if(objs.indexOf(item) !== -1) return;
-				
-				objs.push(item);
-				
-				var r = {}, k;
-				for(var key in item) {
-					if(key !== "@_gml:id") {// && key!=="@_xlink:href-resolved") {
-						path.push(key);
-						if(key.indexOf("gml:") === 0) {
-							if(opts.fullPaths !== false) {
-								r[path.join("/")] = item[key];
-							} else {
-								if(r[key] instanceof Array) {
-									r[key].push(item[key]);
-								} else if(r[key] === undefined) {
-									r[key] = item[key];
-								} else {
-									r[key] = [r[key], item[key]];
-								}
-							}
-						} else if(key === "net:link") {
-							js.mixIn(r, walk(item[key]["@_xlink:href-resolved"], path, objs));
-						} else if(typeof item[key] === "object") {
-							js.mixIn(r, walk(item[key], path, objs));
-						}
-						path.pop();
-					}
-				}
-				return r;
-			}
-			
-			for(var k in gml_root) {
-				var arr = gml_root[k].map(item => walk(item)).filter(_ => Object.keys(_).length);
-				if(arr.length > 0) {
-					result[k] = arr;
-				}
-			}
-			
-			return result;
-		}
-
-		opts = opts || {};
-		
-		var scraped = scrape(gml(root, opts));
-		var layers = {}, all = [];
-
-		for(var layer in scraped) {
-			layers[layer] = {
-				type: "FeatureCollection", name: layer,
-				crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::28992" } },
-				features: scraped[layer].map(gml2geojson)
-			};
-			all = all.concat(layers[layer].features)
-		}
-		
-		if(opts.all === true) {
-			return {
-				type: "FeatureCollection", 
-				name: (/\d\d.\d\d\d\d\d\d/.exec(all[0].properties.id)||[""])[0],
-				crs: { 
-					"type": "name", 
-					"properties": { "name": "urn:ogc:def:crs:EPSG::28992" } 
-				},
-				features: all
-			}
-		}
-
-		return layers;
-	}
-	
-	return {
-		gml: gml, 
-		gml2geojson: gml2geojson,
-		imkl2geojson: imkl2geojson
-	}
-	
-});
-
 define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], function(Component) {
 	Component.prototype.e = function() {
 		if(typeof this.constructor.prototype.execute === "function") {
@@ -986,9 +972,76 @@ define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], fu
 		}
 	};
 });
+define("vcl/Factory.fetch-resources", ["vcl/Factory", "vcl/Component", "devtools/Resources"], (Factory, Component, Resources) => {
+	Factory.fetch = function(name) {
+		if(name.charAt(0) !== "/") {
+			name = "/" + name;
+		}
+		if(name.indexOf("<") !== -1) {
+			name = name.split("<").join("$/").split(">")[0] + ".js";
+		}
+		return Resources.get(js.sf("pouchdb://%s%s", Component.storageDB.name, name));
+	};
+});
+define("vcl/Factory.fetch-storageDB", ["vcl/Factory", "vcl/Component"], (Factory, Component) => {
+	Factory.fetch = function(name) {
+		var source_code_pouchdb = Component.storageDB;
+		if(name.indexOf("<") !== -1) {
+			name = name.split("<").join("$/").split(">")[0] + ".js";
+		}
+		return new Promise((resolve, reject) => {
+			source_code_pouchdb.get(js.sf("vcl-comps/%s", name))
+				.then(function(obj) {
+					// console.log(">>>", name, "get result", obj);
+					var src = js.get("vcl-comps:source", obj);
+					if(src === undefined) {
+						src = js.get("devtools:resource.text", obj);
+						if(src === undefined) {
+							src = "[\"\", {}, []];";
+						} else {
+							// src = minify(src);
+							js.set("vcl-comps:source", src, obj);
+						}
+					}
+					resolve(src);
+				})
+				.catch((err) => resolve(null));
+		});
+
+	};
+});
+define("blocks/Factory.fetch-resources", ["blocks/Factory", "vcl/Component", "devtools/Resources"], (Factory, Component, Resources) => {
+	Factory.fetch = function(name) {
+		if(name.charAt(0) !== "/") {
+			name = "/" + name;
+		}
+		if(name.indexOf("<") !== -1) {
+			name = name.split("<").join("$/").split(">")[0] + ".js";
+		}
+		return Resources.get(js.sf("pouchdb://%s%s", Component.storageDB.name, name));
+	};
+});
+define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (Factory, Component) => {
+	Factory.fetch = function(name) {
+		var source_code_pouchdb = Component.storageDB;
+
+		return source_code_pouchdb.get(js.sf("cavalion-blocks/%s.js", name)).then(function(obj) {
+			var src = js.get("cavalion-blocks:source", obj);
+			if(src === undefined) {
+				src = js.get("devtools:resource.text", obj);
+				if(src === undefined) {
+					src = "[\"\", {}, []];";
+				} else {
+					// src = minify(src);
+					js.set("cavalion-blocks:source", src, obj);
+				}
+			}
+			return src;
+		});
+	};
+});
 
 define(function(require) {
-	
 	require("pace");
 	require("stylesheet!styles.less");
 
@@ -1015,7 +1068,10 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 	var override = require("override");
 
-	require("vcl/Component.storage-pouch");
+	require("vcl/Component.storage-pouchdb");
+	require("vcl/Factory.fetch-storageDB");
+	require("blocks/Factory.fetch-storageDB");
+	
 	// require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
