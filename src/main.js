@@ -14,6 +14,10 @@ require.config({
         "home": "/home",
         "$HOME": "/home",
 
+        "Projects": "/home/Projects",
+        "Library": "/home/Library",
+        "Workspaces": "/home/Workspaces",
+
         // "v7": "node_modules/veldapps-v7/src/v7",
         // "v7": "/home/Projects/V7/src/v7",
         // "va": "/home/Projects/V7/src/va",
@@ -22,10 +26,6 @@ require.config({
         // "VA": veldapps_v7 + "/VA",
         
         "lib": "../lib",
-
-        "Projects": "/home/Projects",
-        "Library": "/home/Library",
-        "Workspaces": "/home/Workspaces",
 
         /*- bangers! */
         "locale": cavalion_js + "locale",
@@ -52,6 +52,7 @@ require.config({
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
+		"veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -231,7 +232,7 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 	// 	};
 	// });
 
-	Blocks.DEFAULT_NAMESPACES['devtools'] = "devtools";
+	Blocks.DEFAULT_NAMESPACES.devtools = "devtools";
 	
 	return Blocks;
 });
