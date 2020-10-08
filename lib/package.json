@@ -6,9 +6,9 @@
   "dependencies": {
     "cavalion-blocks": "^0.9.19",
     "cavalion-code-blocks": "^1.0.12",
-    "cavalion-devtools": "^1.0.13",
-    "cavalion-js": "^1.0.54",
-    "cavalion-vcl": "^1.1.12",
+    "cavalion-devtools": "^1.0.15",
+    "cavalion-js": "^1.0.55",
+    "cavalion-vcl": "^1.1.13",
     "clipboard-copy": "^3.1.0",
     "clipboard-polyfill": "^2.8.6",
     "dropbox": "^4.0.30",

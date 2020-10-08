@@ -1,3 +1,9 @@
+### 2020-10-07  / 1.0.128
+
+	+ cavalion-vcl@1.1.13
+	+ cavalion-devtools@1.0.15
+	+ cavalion-js@1.0.55
+
 ### 2020-10-02  / 1.0.127
 
 	+ cavalion-vcl@1.1.12
