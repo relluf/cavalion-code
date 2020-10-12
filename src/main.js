@@ -190,7 +190,7 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 	});	
 	
 	Blocks.adjustUri = function(uri) {
-		uri = uri.split(">").join("").split("<").join("<>/")
+		uri = uri.split(">").join("").split("<").join("<>/");
 		if(uri.indexOf("cavalion-blocks") !== -1 && uri.indexOf(Blocks.PREFIX_PROTOTYPES + "$HOME/") === 0) {
 			uri = uri.split("/");
 			while(uri[2] !== "cavalion-blocks" && uri.length > 2) {
@@ -200,7 +200,7 @@ define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(
 			uri = uri.join("/");
 		}
 		return uri;
-	}
+	};
 	// Factory.fetch = function(name) {
 	// 	var source_code_pouchdb = Component.storageDB;
 
@@ -821,10 +821,11 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 });
 define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
 	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
+	"pouchdb.authentication",
 	"pouchdb.memory",
 	"pouchdb.save"
 ], 
-function(pouchdb, find, relational, memory, save) {
+function(pouchdb, find, relational, authentication, memory, save) {
 	
 	/*- hacked pouchdb.memory */
 	memory = window.pouch_MemoryPouchPlugin;
@@ -832,6 +833,7 @@ function(pouchdb, find, relational, memory, save) {
 	
 	pouchdb.plugin(find);
 	pouchdb.plugin(relational);
+	pouchdb.plugin(authentication);
 	pouchdb.plugin(memory);
 	pouchdb.plugin(save);
 	
