@@ -1,3 +1,11 @@
+### 2020-10-12  / 1.0.129
+
++ cavalion-devtools@1.0.16
++ cavalion-vcl@1.1.14
+
+* Introducing pouchdb.authentication
+* Updating veldoffice.nl
+
 ### 2020-10-07  / 1.0.128
 
 	+ cavalion-vcl@1.1.13
