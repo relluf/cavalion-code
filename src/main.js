@@ -52,7 +52,7 @@ require.config({
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
-		"veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
+		"veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
