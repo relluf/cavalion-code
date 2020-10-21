@@ -1,9 +1,9 @@
-function ls(k) { var r = localStorage[k]; if(r) { console.log(k, r); return r; } }
+function ls(k) { var r = localStorage[k]; if(r) { if(!r.endsWith("/")) r+= "/"; console.log(k, r); return r; } }
 
 var cavalion_js = ls('cavalion-js-path') || "../lib/node_modules/cavalion-js/src/";
-var cavalion_vcl = ls('cavalion-vcl-path') || "../lib/node_modules/cavalion-vcl/src";
-var cavalion_blocks = ls('cavalion-blocks-path') || "../lib/node_modules/cavalion-blocks/src";
-var veldapps_v7 = ls('veldapps-v7-path') || "../lib/node_modules/veldapps-v7/src";
+var cavalion_vcl = ls('cavalion-vcl-path') || "../lib/node_modules/cavalion-vcl/src/";
+var cavalion_blocks = ls('cavalion-blocks-path') || "../lib/node_modules/cavalion-blocks/src/";
+var veldapps_v7 = ls('veldapps-v7-path') || "../lib/node_modules/veldapps-v7/src/";
 var veldoffice_js = ls('veldoffice-js-path') || "../lib/node_modules/veldoffice-js/src/";
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
@@ -64,6 +64,11 @@ require.config({
 		
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
+        "fast-xml-parser": "../lib/fast-xml-parser/parser",
+        "xml-js": "../lib/node_modules/xml-js/dist/xml-js",
+        
+        "sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
+
 		/*- bower */
         "ace": "../lib/bower_components/ace/lib/ace",
         "less": "../lib/bower_components/less/dist/less",
@@ -89,9 +94,6 @@ require.config({
         "amcharts.radar": "../lib/bower_components/amcharts3/amcharts/radar",
         "amcharts.serial": "../lib/bower_components/amcharts3/amcharts/serial",
         "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy",
-
-        "fast-xml-parser": "../lib/fast-xml-parser/parser",
-        "xml-js": "node_modules/xml-js/dist/xml-js",
 
 		"dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph"
         
