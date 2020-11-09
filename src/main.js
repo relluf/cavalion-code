@@ -52,6 +52,11 @@ require.config({
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
+		// "veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
+		"veldapps-xml": "../lib/node_modules/veldapps-xml/src",
+		// "veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
+		"veldapps-imkl": "../lib/node_modules/veldapps-imkl/src",
+		// "veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
 		"veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
@@ -64,8 +69,10 @@ require.config({
 		
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
+		// TODO now in veldapps-xml
         "fast-xml-parser": "../lib/fast-xml-parser/parser",
         "xml-js": "../lib/node_modules/xml-js/dist/xml-js",
+        "handlebars": "../lib/node_modules/handlebars/dist/handlebars.min",
         
         "sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
 
@@ -358,205 +365,207 @@ define("Element", function() {
 	    });
 	return Element;
 });
-define("xml-funcs", [], function() {
+define("xml-funcs", ["veldapps-xml/index"], function(Xml) {
+	return Xml;
 
-	function logonce(s) {
-		var app = require("vcl/Application").instances[0];
-		var ac = arguments.callee; ac.cache = (ac.cache || (ac.cache = []));
-		if(ac.cache.indexOf(s) === -1) {
-			ac.cache.push(s);
-			app.print(s);
-		}
-	}
-	function asArray(arr) {
-		if(arr instanceof Array) {
-			return arr;
-		}
+	// function logonce(s) {
+	// 	var app = require("vcl/Application").instances[0];
+	// 	var ac = arguments.callee; ac.cache = (ac.cache || (ac.cache = []));
+	// 	if(ac.cache.indexOf(s) === -1) {
+	// 		ac.cache.push(s);
+	// 		app.print(s);
+	// 	}
+	// }
+	// function asArray(arr) {
+	// 	if(arr instanceof Array) {
+	// 		return arr;
+	// 	}
 		
-		if(arr === null || arr === undefined) {
-			return [];
-		}
+	// 	if(arr === null || arr === undefined) {
+	// 		return [];
+	// 	}
 		
-		return [arr];
-	}
-	function types(scrape_gml_root, opts) {
-		var r = {};
-		for(var k in scrape_gml_root) {
-			r[k] = scrape_gml_root[k].map(_ => Object.keys(_).join(",")).filter(function(v, i, a) {
-				return a.indexOf(v) === i;
-			});
-		}
-		return r;
-	}
+	// 	return [arr];
+	// }
+	// function types(scrape_gml_root, opts) {
+	// 	var r = {};
+	// 	for(var k in scrape_gml_root) {
+	// 		r[k] = scrape_gml_root[k].map(_ => Object.keys(_).join(",")).filter(function(v, i, a) {
+	// 			return a.indexOf(v) === i;
+	// 		});
+	// 	}
+	// 	return r;
+	// }
 
-	function gml(root, messages) {
-		
-		function resolve_xlinks(elems, elem, log, done) {
-			var key = "@_xlink:href-resolved", href;
+	// function gml(root, messages, opts) {
+	// 	function resolve_xlinks(elems, elem, log, done) {
+	// 		var key = "@_xlink:href-resolved", href;
 			
-			done = done || [];
-			if(done.indexOf(elem) !== -1) return;
-			done.push(elem);
+	// 		done = done || [];
+	// 		if(done.indexOf(elem) !== -1) return;
+	// 		done.push(elem);
 			
-			for(var k in elem) {
-				if(k !== key && typeof elem[k] === "object") {
-					resolve_xlinks(elems, elem[k], log); // <- what about done? 
-				}
-			}
+	// 		for(var k in elem) {
+	// 			if(k !== key && typeof elem[k] === "object") {
+	// 				resolve_xlinks(elems, elem[k], log); // <- what about done? 
+	// 			}
+	// 		}
 		
-			if((href = elem['@_xlink:href'])) {
-				if(href.charAt(0) === '#') href = href.substring(1);
-				if(!(elem[key] = elems[href])) {
-					log && log.push(String.format("%s not found", href));
-				}
-			}
-		}
+	// 		if((href = elem['@_xlink:href'])) {
+	// 			if(href.charAt(0) === '#') href = href.substring(1);
+	// 			if(!(elem[key] = elems[href])) {
+	// 				log && log.push(String.format("%s not found", href));
+	// 			}
+	// 		}
+	// 	}
 		
-		var key = Object.keys(root)[0];
-		var ns = key.split(":")[0];
-		var features = asArray(root[key][ns + ":featureMember"]);
-		var elems = {}, map = {}; /* return value */
-		var log = [];
+	// 	var key = Object.keys(root)[0];
+	// 	var ns = key.split(":")[0];
+	// 	var features = asArray(root[key][ns + ":featureMember"]);
+	// 	var elems = {}, map = {}; /* return value */
+	// 	var log = [];
 	
-		resolve_xlinks(elems, root);
-		features.forEach(function(_) {
-			var key = Object.keys(_)[0];
-			var arr = (map[key] = map[key] || []);
+	// 	resolve_xlinks(elems, root);
+	// 	features.forEach(function(_) {
+	// 		var key = Object.keys(_)[0];
+	// 		var arr = (map[key] = map[key] || []);
 	
-			elems[_[key]['@_gml:id']] = _;
+	// 		elems[_[key]['@_gml:id']] = _;
 	
-			arr.push(_[key]);
-		});
-		resolve_xlinks(elems, root, log);
+	// 		arr.push(_[key]);
+	// 	});
+	// 	resolve_xlinks(elems, root, log);
 		
-		return messages && log.length ? { messages: log, result: map } : map;
-		// return map;
-	}
-	function gml2geojson(feature) {
+	// 	return messages && log.length ? { messages: log, result: map } : map;
+	// 	// return map;
+	// }
+	// function gml2geojson(feature) {
 		
-		function coordinates(arr) {
-			return arr.map(function(v) {
-				if(typeof v['#text'] === "string") {
-					v = v['#text'];
-				}
-				var r = [], coords = v.split(/\s/);
-				while(coords.length) {
-					r.push([parseFloat(coords.shift()), parseFloat(coords.shift())]);
-				}
-				return r;
-			});
-		}
+	// 	function coordinates(arr) {
+	// 		return arr.map(function(v) {
+	// 			if(typeof v['#text'] === "string") {
+	// 				v = v['#text'];
+	// 			}
+	// 			var r = [], coords = v.split(/\s/);
+	// 			while(coords.length) {
+	// 				r.push([parseFloat(coords.shift()), parseFloat(coords.shift())]);
+	// 			}
+	// 			return r;
+	// 		});
+	// 	}
 		
-		var keys = Object.keys(feature);
-		var ft = feature[keys[0]], v;
-		var r = { 
-			geometry: { type: keys[0].split(":").pop() },
-			properties: { id: ft['@_gml:id'] },
-			type: "Feature"
-		};
+	// 	var keys = Object.keys(feature);
+	// 	var ft = feature[keys[0]], v;
+	// 	var r = { 
+	// 		geometry: { type: keys[0].split(":").pop() },
+	// 		properties: { id: ft['@_gml:id'] },
+	// 		type: "Feature"
+	// 	};
 		
-		if(r.geometry.type === "LineString") {
-			r.geometry.coordinates = coordinates(asArray(ft["gml:posList"]));
-		} else if(r.geometry.type === "Point") {
-			r.geometry.coordinates = coordinates(asArray(ft["gml:pos"]))[0][0];
-		} else if(r.geometry.type === "Polygon") {
-			r.geometry.coordinates = coordinates(asArray(js.get("gml:exterior.gml:LinearRing.gml:posList", ft)));
-		} else if(r.geometry.type === "Curve") {
-			r.geometry.type = "LineString";
-			r.geometry.coordinates = coordinates(asArray(js.get("gml:segments.gml:LineStringSegment.gml:posList", ft)))[0];
-		} else {
-			logonce(r.geometry.type);
-		}
-		r.properties['@_gml'] = ft;
-		return r;
-	}
-	function imkl2geojson(root, opts) {
+	// 	if(r.geometry.type === "LineString") {
+	// 		r.geometry.coordinates = coordinates(asArray(ft["gml:posList"]));
+	// 	} else if(r.geometry.type === "Point") {
+	// 		r.geometry.coordinates = coordinates(asArray(ft["gml:pos"]))[0][0];
+	// 	} else if(r.geometry.type === "Polygon") {
+	// 		r.geometry.coordinates = coordinates(asArray(js.get("gml:exterior.gml:LinearRing.gml:posList", ft)));
+	// 	} else if(r.geometry.type === "Curve") {
+	// 		r.geometry.type = "LineString";
+	// 		r.geometry.coordinates = coordinates(asArray(js.get("gml:segments.gml:LineStringSegment.gml:posList", ft)))[0];
+	// 	} else {
+	// 		logonce(r.geometry.type);
+	// 	}
+	// 	r.properties['@_gml'] = ft;
+	// 	return r;
+	// }
+	// function imkl2geojson(root, opts) {
 
-		function scrape(gml_root, opts) {
-			var result = {};
+	// 	function scrape(gml_root, opts) {
+	// 		var result = {};
 	
-			opts = opts || {};
+	// 		opts = opts || {};
 			
-			function walk(item, path, objs) {
+	// 		function walk(item, path, objs) {
 				
-				path = path || [];
-				objs = objs || [];
+	// 			path = path || [];
+	// 			objs = objs || [];
 				
-				if(objs.indexOf(item) !== -1) return;
+	// 			if(objs.indexOf(item) !== -1) return;
 				
-				objs.push(item);
+	// 			objs.push(item);
 				
-				var r = {}, k;
-				for(var key in item) {
-					if(key !== "@_gml:id") {// && key!=="@_xlink:href-resolved") {
-						path.push(key);
-						if(key.indexOf("gml:") === 0) {
-							if(opts.fullPaths !== false) {
-								r[path.join("/")] = item[key];
-							} else {
-								if(r[key] instanceof Array) {
-									r[key].push(item[key]);
-								} else if(r[key] === undefined) {
-									r[key] = item[key];
-								} else {
-									r[key] = [r[key], item[key]];
-								}
-							}
-						} else if(key === "net:link") {
-							js.mixIn(r, walk(item[key]["@_xlink:href-resolved"], path, objs));
-						} else if(typeof item[key] === "object") {
-							js.mixIn(r, walk(item[key], path, objs));
-						}
-						path.pop();
-					}
-				}
-				return r;
-			}
+	// 			var r = {}, k;
+	// 			for(var key in item) {
+	// 				if(key !== "@_gml:id") {// && key!=="@_xlink:href-resolved") {
+	// 					path.push(key);
+	// 					if(key.indexOf("gml:") === 0) {
+	// 						if(opts.fullPaths !== false) {
+	// 							r[path.join("/")] = item[key];
+	// 						} else {
+	// 							if(r[key] instanceof Array) {
+	// 								r[key].push(item[key]);
+	// 							} else if(r[key] === undefined) {
+	// 								r[key] = item[key];
+	// 							} else {
+	// 								r[key] = [r[key], item[key]];
+	// 							}
+	// 						}
+	// 					} else if(key === "net:link") {
+	// 						js.mixIn(r, walk(item[key]["@_xlink:href-resolved"], path, objs));
+	// 					} else if(typeof item[key] === "object") {
+	// 						js.mixIn(r, walk(item[key], path, objs));
+	// 					}
+	// 					path.pop();
+	// 				}
+	// 			}
+	// 			return r;
+	// 		}
 			
-			for(var k in gml_root) {
-				var arr = gml_root[k].map(item => walk(item)).filter(_ => Object.keys(_).length);
-				if(arr.length > 0) {
-					result[k] = arr;
-				}
-			}
+	// 		for(var k in gml_root) {
+	// 			var arr = gml_root[k].map(item => walk(item)).filter(_ => Object.keys(_).length);
+	// 			if(arr.length > 0) {
+	// 				result[k] = arr;
+	// 			}
+	// 		}
 			
-			return result;
-		}
+	// 		return result;
+	// 	}
 
-		opts = opts || {};
+	// 	opts = opts || {};
 		
-		var scraped = scrape(gml(root, opts));
-		var layers = {}, all = [];
+	// 	var scraped = scrape(gml(root, opts));
+	// 	var layers = {}, all = [];
 
-		for(var layer in scraped) {
-			layers[layer] = {
-				type: "FeatureCollection", name: layer,
-				crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::28992" } },
-				features: scraped[layer].map(gml2geojson)
-			};
-			all = all.concat(layers[layer].features)
-		}
+	// 	for(var layer in scraped) {
+	// 		layers[layer] = {
+	// 			type: "FeatureCollection", name: layer,
+	// 			crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::28992" } },
+	// 			features: scraped[layer].map(gml2geojson)
+	// 		};
+	// 		all = all.concat(layers[layer].features)
+	// 	}
 		
-		if(opts.all === true) {
-			return {
-				type: "FeatureCollection", 
-				name: (/\d\d.\d\d\d\d\d\d/.exec(all[0].properties.id)||[""])[0],
-				crs: { 
-					"type": "name", 
-					"properties": { "name": "urn:ogc:def:crs:EPSG::28992" } 
-				},
-				features: all
-			}
-		}
+	// 	if(opts.all === true) {
+	// 		return {
+	// 			type: "FeatureCollection", 
+	// 			name: (/\d\d.\d\d\d\d\d\d/.exec(all[0].properties.id)||[""])[0],
+	// 			crs: { 
+	// 				"type": "name", 
+	// 				"properties": { "name": "urn:ogc:def:crs:EPSG::28992" } 
+	// 			},
+	// 			features: all
+	// 		}
+	// 	}
 
-		return layers;
-	}
+	// 	return layers;
+	// }
 	
-	return {
-		gml: gml, 
-		gml2geojson: gml2geojson,
-		imkl2geojson: imkl2geojson
-	}
+	// return {
+	// 	stringify: (obj) => JSON.stringify(obj, (key, value) => key !== "@_xlink:resolved" ? value : undefined),
+		
+	// 	gml: gml, 
+	// 	gml2geojson: gml2geojson,
+	// 	imkl2geojson: imkl2geojson
+	// }
 	
 });
 
@@ -607,7 +616,7 @@ define("Framework7/plugins/esc-is-back", [], function() {
 define(("Framework7"), [
 	"../lib/bower_components/framework7/dist/js/framework7", 
 	"Framework7/plugins/auto-back-title", "Framework7/plugins/esc-is-back",
-	"stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css",
+	// "stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css",
 	"stylesheet!../lib/bower_components/framework7/dist/css/framework7.css", 
 	"stylesheet!../lib/bower_components/framework7-icons/css/framework7-icons.css"
 ], function(Framework7) {

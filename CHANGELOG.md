@@ -1,3 +1,13 @@
+### 2020-11-09
+
+	+ handlebars@4.7.6
+	+ clipboard-copy@3.2.0
+	+ cavalion-devtools@1.0.18
+	+ cavalion-js@1.0.57
+	+ framework7@5.7.14
+
+* Updating release for veldoffice.nl/code
+
 ### 2020-10-24  / 1.0.133
 
 	+ veldapps-imsikb@1.0.15

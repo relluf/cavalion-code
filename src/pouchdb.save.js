@@ -231,10 +231,20 @@ define(function(require) {
 			return va_objects_wrapper(this).save(obj, opts);
 		},
 		pull: function(opts, callback) {
-			return this.replicate.from(getRemoteDb(this), opts, callback);
+			var PouchDB = require("pouchdb");
+			if(opts instanceof PouchDB) {
+				opts = {db: opts};
+			}
+			
+			return this.replicate.from(opts.db || getRemoteDb(this), opts, callback);
 		},
 		push: function(opts, callback) {
-			return this.replicate.to(getRemoteDb(this), opts, callback);
+			var PouchDB = require("pouchdb");
+			if(opts instanceof PouchDB) {
+				opts = {db: opts};
+			}
+
+			return this.replicate.to(opts.db || getRemoteDb(this), opts, callback);
 		}
 	};	
 
