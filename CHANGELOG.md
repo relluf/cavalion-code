@@ -1,34 +1,37 @@
 ### 2020-11-09
 
-	+ handlebars@4.7.6
 	+ clipboard-copy@3.2.0
 	+ cavalion-devtools@1.0.18
 	+ cavalion-js@1.0.57
 	+ framework7@5.7.14
+	+ handlebars@4.7.6
+	+ veldapps-xml@1.0.0
+	+ veldapps-imkl@1.0.0
 
 * Updating release for veldoffice.nl/code
+* Updating build, mainly for Ace-editor
 
-### 2020-10-24  / 1.0.133
+### 2020-10-24 / 1.0.133
 
 	+ veldapps-imsikb@1.0.15
 
 - Updating
 
-### 2020-10-24  / 1.0.132
+### 2020-10-24 / 1.0.132
 - Updating
 
-### 2020-10-21  / 1.0.131
+### 2020-10-21 / 1.0.131
 
 - Updating
 
-### 2020-10-19  / 1.0.130
+### 2020-10-19 / 1.0.130
 
 	+ cavalion-devtools@1.0.17
 	+ cavalion-js@1.0.56
 	+ veldoffice-js@1.0.49
 
 
-### 2020-10-12  / 1.0.129
+### 2020-10-12 / 1.0.129
 
 	+ cavalion-devtools@1.0.16
 	+ cavalion-vcl@1.1.14
@@ -36,25 +39,25 @@
 * Introducing pouchdb.authentication
 * Updating veldoffice.nl
 
-### 2020-10-07  / 1.0.128
+### 2020-10-07 / 1.0.128
 
 	+ cavalion-vcl@1.1.13
 	+ cavalion-devtools@1.0.15
 	+ cavalion-js@1.0.55
 
-### 2020-10-02  / 1.0.127
+### 2020-10-02 / 1.0.127
 
 	+ cavalion-vcl@1.1.12
 
 - Tweaking Element.prototype.up()
 
-### 2020-09-21  / 1.0.126
+### 2020-09-21 / 1.0.126
 
 	+ cavalion-devtools@1.0.13
 
 - Updating cavalion-devtools
 
-### 2020-09-18  / 1.0.125
+### 2020-09-18 / 1.0.125
 
 	+ cavalion-vcl@1.1.11
 	- ipfs@0.50.2: removed 807 packages and audited 82 packages in 7.775s
@@ -62,7 +65,7 @@
 - Removed IPFS dependencies, a more lightweight approach seems wise
 - Starting to use colors in a new title area
 
-### 2020-09-14  / 1.0.124
+### 2020-09-14 / 1.0.124
 
 	+ cavalion-devtools@1.0.10
 	+ cavalion-js@1.0.54
