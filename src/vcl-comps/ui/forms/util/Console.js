@@ -8,7 +8,7 @@ function setPaths() {
 	localStorage.setItem("cavalion-blocks-path", "/home/Workspaces/cavalion.org/cavalion-blocks/src/");
 	localStorage.setItem("cavalion-devtools-path", "/home/Workspaces/cavalion.org/cavalion-devtools/src/");
 	localStorage.setItem("cavalion-ide-path", "/home/Workspaces/cavalion.org/cavalion-ide/src/");
-	localStorage.setItem("veldoffice-js-path", "/home/Workspaces/veldapps.com/veldoffice-js/src/");
+	localStorage.setItem("veldoffice-js-path", "/home/Workspaces/veldapps.com/Veldoffice/veldoffice-js/src/");
 	localStorage.setItem("veldapps-v7-path", "/home/Workspaces/veldapps.com/V7/src/");
 }
 function edit(component) {
