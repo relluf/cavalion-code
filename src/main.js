@@ -58,6 +58,9 @@ require.config({
 		"veldapps-imkl": "../lib/node_modules/veldapps-imkl/src",
 		// "veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
 		"veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
+		// "veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
+		"veldapps-imbro": "../lib/node_modules/veldapps-imbro/src",
+		
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",

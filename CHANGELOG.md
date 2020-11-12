@@ -1,3 +1,13 @@
+### 2020-11-11
+
+	+ veldapps-imkl@1.0.1
+	+ cavalion-devtools@1.0.19
+	+ cavalion-js@1.0.58
+	+ cavalion-vcl@1.1.15
+	+ veldapps-imsikb@1.0.18
+
+* Updating (Rijkswaterstaat-demo)
+
 ### 2020-11-09
 
 	+ clipboard-copy@3.2.0
