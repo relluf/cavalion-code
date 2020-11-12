@@ -1,5 +1,7 @@
-### 2020-11-11
+### 2020-11-11 / 1.0.135
 
+	+ veldapps-xml@1.0.1
+	+ veldapps-imbro@1.0.1
 	+ veldapps-imkl@1.0.1
 	+ cavalion-devtools@1.0.19
 	+ cavalion-js@1.0.58
@@ -8,7 +10,7 @@
 
 * Updating (Rijkswaterstaat-demo)
 
-### 2020-11-09
+### 2020-11-09 / 1.0.134
 
 	+ clipboard-copy@3.2.0
 	+ cavalion-devtools@1.0.18
@@ -25,9 +27,15 @@
 
 	+ veldapps-imsikb@1.0.15
 
-- Updating
+	jquery#3.5.1 bower_components/jquery
+	xml2js#0.4.22 bower_components/xml2js
+	├── sax#1.2.4
+	└── xmlbuilder#15.1.1
+	xmlbuilder#15.1.1 bower_components/xmlbuilder
+	moment#2.29.1 bower_components/moment
+	js-yaml#3.14.0 bower_components/js-yaml
+	ace#1.4.12 bower_components/ace
 
-### 2020-10-24 / 1.0.132
 - Updating
 
 ### 2020-10-21 / 1.0.131
