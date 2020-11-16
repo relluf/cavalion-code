@@ -60,6 +60,8 @@ require.config({
 		"veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
 		// "veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
 		"veldapps-imbro": "../lib/node_modules/veldapps-imbro/src",
+		// "vo": "/home/Workspaces/veldapps.com/veldapps-vo/src",
+		// "vo": "../lib/node_modules/veldapps-vo/src",
 		
 		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
@@ -96,6 +98,9 @@ require.config({
         "dgrid": "../lib/bower_components/dgrid",
         "dstore": "../lib/bower_components/dstore",
         
+		"chartjs.org": "../lib/node_modules/chart.js/dist",
+		"dygraphs/Dygraph": "../lib/node_modules/dygraphs/dist/dygraph",
+		
 		/*- amcharts3 */
         "amcharts": "../lib/bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../lib/bower_components/amcharts3/amcharts/funnel",
@@ -103,11 +108,8 @@ require.config({
         "amcharts.pie": "../lib/bower_components/amcharts3/amcharts/pie",
         "amcharts.radar": "../lib/bower_components/amcharts3/amcharts/radar",
         "amcharts.serial": "../lib/bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy",
+        "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy"
 
-		"dygraphs/Dygraph": "node_modules/dygraphs/dist/dygraph"
-        
-        /*- Framework 7 */
     },
     shim: {
         "amcharts.funnel": {
@@ -780,6 +782,10 @@ define("template7", ["Framework7"], function() {
 			});
 		}
 	};
+});
+
+define("dygraphs/Dygraph", ["../lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
+	return dygraph;
 });
 
 define("ol", ["../lib/ol-6.1.1", "stylesheet!../lib/ol-6.1.1.css"], function(ol_) {
