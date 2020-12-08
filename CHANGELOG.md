@@ -1,3 +1,17 @@
+### 2020-12-08 - @1.0.138
+
++ cavalion-devtools@1.0.25
++ cavalion-vcl@1.1.21
++ veldapps-imsikb@1.0.22
+
+### 2020-12-07 / 1.0.137
+
++ veldapps-imsikb@1.0.21
+
+### 2020-11-16 / 1.0.136
+
++ veldapps-imsikb@1.0.19
+
 ### 2020-11-11 / 1.0.135
 
 	+ veldapps-xml@1.0.1
