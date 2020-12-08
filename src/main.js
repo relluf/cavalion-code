@@ -7,7 +7,6 @@ var veldapps_v7 = ls('veldapps-v7-path') || "../lib/node_modules/veldapps-v7/src
 var veldoffice_js = ls('veldoffice-js-path') || "../lib/node_modules/veldoffice-js/src/";
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
-less = { logLevel: 0 };
 require.config({
     paths: {
         "cavalion-blocks/$HOME": "/home",
@@ -28,24 +27,27 @@ require.config({
         "lib": "../lib",
 
         /*- bangers! */
-        "locale": cavalion_js + "locale",
-        "text": cavalion_js + "text",
         "stylesheet": cavalion_js + "stylesheet",
         "script": cavalion_js + "script",
+        "text": cavalion_js + "text",
+        "json": cavalion_js + "json",
+        "locale": cavalion_js + "locale",
 
         /*- cavalion.org */
-        "console": cavalion_js + "console",
-        "yell": cavalion_js + "yell",
-        "data": cavalion_js + "data",
-        "persistence": cavalion_js + "persistence",
-        "entities": cavalion_js + "entities",
-        "features": cavalion_js + "features",
         "js": cavalion_js + "js",
-        "on": cavalion_js + "on",
-        "json": cavalion_js + "json",
-        "util": cavalion_js + "util",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
+        
+        "console": cavalion_js + "console",
+
+        "data": cavalion_js + "data",
+        "persistence": cavalion_js + "persistence",
+        "features": cavalion_js + "features",
+        "entities": cavalion_js + "entities",
+
+        "util": cavalion_js + "util",
+        "on": cavalion_js + "on",
+        "yell": cavalion_js + "yell",
         
 		"cavalion-pouch": "/home/Workspaces/cavalion.org/cavalion-pouch",
         "xslt": "../lib/node_modules/xslt/dist/xslt",
@@ -80,18 +82,19 @@ require.config({
         "handlebars": "../lib/node_modules/handlebars/dist/handlebars.min",
         
         "sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
+        "xml-formatter": "../lib/node_modules/xml-formatter/dist/browser/xml-formatter",
 
 		/*- bower */
         "ace": "../lib/bower_components/ace/lib/ace",
         "less": "../lib/bower_components/less/dist/less",
-        "jquery": "../lib/bower_components/jquery/dist/jquery",
         "moment": "../lib/bower_components/moment/moment",
         "moment-locale": "../lib/bower_components/moment/locale",
-        // "csv-js": "../lib/bower_components/CSV-JS/csv",
-        // "relational-pouch": "../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        "jquery": "../lib/bower_components/jquery/dist/jquery",
         "backbone": "../lib/bower_components/backbone/backbone",
         "underscore": "../lib/bower_components/underscore/underscore",
         "js-yaml": "../lib/bower_components/js-yaml/dist/js-yaml",
+        // "csv-js": "../lib/bower_components/CSV-JS/csv",
+        // "relational-pouch": "../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
         
         /*- dojo */
         "dojo": "../lib/bower_components/dojo",
@@ -157,6 +160,7 @@ require.config({
     }
 });
 
+less = { logLevel: 0 };
 window.locale_base = "locales/";
 window.loc = "en-US";
 window.req = function req() {
