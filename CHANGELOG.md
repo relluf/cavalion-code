@@ -1,3 +1,6 @@
+### 2020-12-08 - @1.0.139
+- New build to get rid of buggy Code-instances on veldapps.com and veldoffice.nl (not loading default-workspaces, no probs @ localhost though)
+
 ### 2020-12-08 - @1.0.138
 
 + cavalion-devtools@1.0.25
