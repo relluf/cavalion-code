@@ -1,3 +1,10 @@
+### 2020-12-22 - @1.0.140
+
+	+ veldapps-xml@1.0.3
+	+ veldapps-imsikb@1.0.24
+
+- New build in favor of `#VA-20201218-1` (ie. Arcadis SIKB/CSV-conversion - 1st order)
+
 ### 2020-12-08 - @1.0.139
 - New build to get rid of buggy Code-instances on veldapps.com and veldoffice.nl (not loading default-workspaces, no probs @ localhost though)
 
