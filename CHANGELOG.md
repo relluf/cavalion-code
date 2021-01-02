@@ -1,3 +1,13 @@
+### 2021-01-02 - @1.0.141
+
+	+ veldoffice-js@1.0.50
+	+ fast-xml-parser@3.17.6
+	+ cavalion-devtools@1.0.26
+	+ cavalion-vcl@1.1.22
+	+ ol@6.5.0
+
+* Sharing with TO again :-D
+
 ### 2020-12-22 - @1.0.140
 
 	+ veldapps-xml@1.0.3
