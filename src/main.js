@@ -1,8 +1,11 @@
-function ls(k) { var r = localStorage[k]; if(r) { if(!r.endsWith("/")) r+= "/"; console.log(k, r); return r; } }
+function ls(k, slash) { var r = localStorage[k]; if(r) { 
+	if(slash && !r.endsWith("/")) r+= "/"; 
+	console.log(k, r); 
+	return r; } }
 
 var cavalion_js = ls('cavalion-js-path') || "../lib/node_modules/cavalion-js/src/";
-var cavalion_vcl = ls('cavalion-vcl-path') || "../lib/node_modules/cavalion-vcl/src/";
-var cavalion_blocks = ls('cavalion-blocks-path') || "../lib/node_modules/cavalion-blocks/src/";
+var cavalion_vcl = ls('cavalion-vcl-path', false) || "../lib/node_modules/cavalion-vcl/src/";
+var cavalion_blocks = ls('cavalion-blocks-path', false) || "../lib/node_modules/cavalion-blocks/src/";
 var veldapps_v7 = ls('veldapps-v7-path') || "../lib/node_modules/veldapps-v7/src/";
 var veldoffice_js = ls('veldoffice-js-path') || "../lib/node_modules/veldoffice-js/src/";
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
