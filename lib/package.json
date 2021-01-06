@@ -6,7 +6,7 @@
   "dependencies": {
     "cavalion-blocks": "^0.9.19",
     "cavalion-code-blocks": "^1.0.12",
-    "cavalion-devtools": "^1.0.26",
+    "cavalion-devtools": "^1.0.27",
     "cavalion-js": "^1.0.58",
     "cavalion-vcl": "^1.1.22",
     "chart.js": "^2.9.4",
