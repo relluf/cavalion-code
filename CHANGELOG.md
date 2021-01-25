@@ -1,3 +1,11 @@
+### 2021/01/23
+
+	+ cavalion-blocks@0.9.20
+	+ cavalion-devtools@1.0.31
+	+ cavalion-js@1.0.59
+	+ cavalion-vcl@1.1.23
+
+
 ### 2021/01/06 - @1.0.143
 
 + cavalion-devtools@1.0.28
