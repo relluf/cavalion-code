@@ -25,14 +25,17 @@ function edit(component) {
 	}
 }
 
-$([], {}, [
-    $i("console", {
+["", {}, [
+    ["#console", {
         onEvaluate: function (expr) {
             var scope = this.scope(), me = this;
 
 			var app = this.app();
             var ws = app.down("devtools/Workspace<>:root:selected:visible");
-            var ace = ws && ws.qsa("devtools/Editor<>:root:visible #ace").pop();
+            // var ace = ws && ws.down("devtools/Editor<>:root < vcl/ui/Ace:visible");
+            // var ace = ws && ws.qsa("devtools/Editor<>:root:visible #ace").pop();
+            var ace = ws && ws.qsa("devtools/Editor<>:root:visible").map(_ => _.down("#ace")).pop();
+			// ws.qsa("devtools/Editor<>:root:visible #ace")
             var host = ws && ws.qsa("devtools/Editor<>:root:visible #host").pop();
             var root = ace && ace.up().down(":root");
             var pr = this.print.bind(this);
@@ -46,5 +49,5 @@ $([], {}, [
             /* jshint evil: true */
             return eval(expr);
         }
-    })
-]);
+    }]
+]];
