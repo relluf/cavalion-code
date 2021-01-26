@@ -1,3 +1,11 @@
+### 2021/01/26 - @1.0.144
+
+	+ cavalion-js@1.0.60
+	+ veldoffice-js@1.0.51
+	+ cavalion-vcl@1.1.25
+	+ cavalion-devtools@1.0.33
+
+
 ### 2021/01/23
 
 	+ cavalion-blocks@0.9.20
