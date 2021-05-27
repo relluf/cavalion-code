@@ -80,7 +80,6 @@ require.config({
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
 		// TODO now in veldapps-xml
-        "fast-xml-parser": "../lib/fast-xml-parser/parser",
         "xml-js": "../lib/node_modules/xml-js/dist/xml-js",
         "handlebars": "../lib/node_modules/handlebars/dist/handlebars.min",
         
@@ -104,9 +103,14 @@ require.config({
         "dgrid": "../lib/bower_components/dgrid",
         "dstore": "../lib/bower_components/dstore",
         
-		"chartjs.org": "../lib/node_modules/chart.js/dist",
+		"chartjs": "../lib/node_modules/chart.js/dist",
 		"dygraphs/Dygraph": "../lib/node_modules/dygraphs/dist/dygraph",
-		
+
+        "fast-xml-parser": "../lib/fast-xml-parser/parser",
+		"papaparse": "../lib/node_modules/papaparse",
+		"jspdf": "../lib/node_modules/jspdf/dist/jspdf.umd",
+		"html2canvas": "../lib/node_modules/html2canvas/dist/html2canvas.min",
+
 		/*- amcharts3 */
         "amcharts": "../lib/bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../lib/bower_components/amcharts3/amcharts/funnel",
@@ -336,7 +340,7 @@ define("Element", function() {
 	};
 	Element.prototype.qs = Element.prototype.querySelector;
 	Element.prototype.on = function() {
-		var args = Array.prototype.slice.apply(args, [0]); 
+		var args = Array.prototype.slice.apply(arguments, [0]); 
 		return on.apply(this, (args.unshift(this), args));
 	};
 	Element.prototype.once = function(name, f) {
@@ -892,7 +896,8 @@ define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/U
 	var url = new Url();
 	
 	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
-	var app = url.getParamValue("") || (workspaces && workspaces.split(",")[0]) || "code";
+	var path = url.getPath().split("/")[0];
+	var app = url.getParamValue("") || path || (workspaces && workspaces.split(",")[0]) || "code";
 	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app.split(/-|\./).shift());
 	var idPrefix = url.getParamValue("db-id-prefix") || "";
 	var property = "cavalion-vcl:state";
@@ -1102,6 +1107,11 @@ define(function(require) {
 	require("vcl/Factory.fetch-storageDB");
 	require("blocks/Factory.fetch-storageDB");
 	
+	window.addEventListener("beforeunload", (e) => {
+		// check for dirty editors?
+		e.returnValue  = "Are you sure?";
+	});
+	
 	// require("vcl/Component.prototype.print");
 	
 	window.j$ = JsObject.$;
@@ -1120,7 +1130,7 @@ define(function(require) {
 		// TODO reserved valueless parameters: ['debug']
 		
 		app = url.getParamValues("").filter(function(s) { 
-			return s !== "debug"; })[0] || "code";
+			return s !== "debug"; })[0] || (url.getPath().split("/")[0] || "code");
 
 		app = js.sf("devtools/App<%s>", app);
 		// app += "/App";

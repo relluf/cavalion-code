@@ -1,4 +1,19 @@
+### 2021/05/19 - @1.0.147
+
+	+ veldoffice-js@1.0.55
+	+ cavalion-vcl@1.1.34
+	+ cavalion-blocks@0.9.23
+	+ cavalion-devtools@1.0.46
+
+* Mainly updating devtools @ veldoffice.nl and veldapps.com
+
+### 2021/05/19 - @1.0.146
+
 ### 2021/02/22 - @1.0.145
+
+* Adding jsPDF and html2canvas
+* Removed unused packages config paths
+* Changed boot sequence
 
 ### 2021/01/26 - @1.0.144
 
@@ -7,14 +22,12 @@
 	+ cavalion-vcl@1.1.25
 	+ cavalion-devtools@1.0.33
 
-
 ### 2021/01/23
 
 	+ cavalion-blocks@0.9.20
 	+ cavalion-devtools@1.0.31
 	+ cavalion-js@1.0.59
 	+ cavalion-vcl@1.1.23
-
 
 ### 2021/01/06 - @1.0.143
 
@@ -107,7 +120,6 @@
 	+ cavalion-devtools@1.0.17
 	+ cavalion-js@1.0.56
 	+ veldoffice-js@1.0.49
-
 
 ### 2020-10-12 / 1.0.129
 
