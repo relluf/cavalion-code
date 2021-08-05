@@ -965,7 +965,10 @@ define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/U
             	// 	// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
             	// 	// obj[property][key] = JSON.stringify(obj[property][key]);
             	// }
-            	callback(obj && obj[property] && obj[property][key]);
+            	
+            	// callback(obj && obj[property] && obj[property][key]);
+            	callback(obj && obj[property] && js.get(key, obj[property]));
+
             }).catch(function(e) {
             	console.error(e);
             	errback(e);	
@@ -983,7 +986,8 @@ if(typeof value === "string") {
             	if(!obj.hasOwnProperty(property)) {
         			obj[property] = {};
             	}
-				obj[property][key] = value;
+				// obj[property][key] = value;
+				js.set(key, value, obj[property]);
 				save(db(me), obj).then(function() {
 				    if (typeof callback === "function") { // nextTick?
 				        callback.apply(this, arguments);
