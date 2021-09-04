@@ -1,3 +1,10 @@
+### 2021/09/04 - @1.0.151
+
++ veldapps-xmlgen-imsikb@1.0.28
++ veldoffice-js@2.0.0
++ veldapps-leaflet-js@1.0.0
++ @amcharts/amcharts4@4.10.22
+
 ### 2021/05/19 - @1.0.147
 
 	+ veldoffice-js@1.0.55
