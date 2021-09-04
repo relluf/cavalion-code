@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.20",
+    "@amcharts/amcharts4": "^4.10.22",
     "cavalion-blocks": "^0.9.23",
     "cavalion-code-blocks": "^1.0.12",
     "cavalion-devtools": "^1.0.51",
@@ -33,10 +33,11 @@
     "veldapps-imbro": "^1.0.1",
     "veldapps-imkl": "^1.0.1",
     "veldapps-imsikb": "^1.0.24",
+    "veldapps-leaflet-js": "^1.0.0",
     "veldapps-v7": "^1.0.7",
     "veldapps-xml": "^1.0.3",
-    "veldapps-xmlgen-imsikb": "^1.0.20",
-    "veldoffice-js": "^1.0.62",
+    "veldapps-xmlgen-imsikb": "^1.0.28",
+    "veldoffice-js": "^2.0.0",
     "xml-beautifier": "^0.4.3",
     "xml-js": "^1.6.11",
     "xslt": "^0.9.1"
