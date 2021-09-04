@@ -73,10 +73,12 @@ require.config({
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		// "vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		/*- veldapps.com/leaflet */
-		// "proj4": veldoffice_js + "proj4js.org/proj4",
-		"epsg": veldoffice_js + "proj4js.org/epsg",
-		"leaflet": veldoffice_js + "leafletjs.com",
-		
+
+		/*- veldapps-leaflet/3rd party */
+		"proj4": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
+		"epsg": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
+		"leaflet": "../lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
+
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
 		// TODO now in veldapps-xml
@@ -584,7 +586,21 @@ define("xml-funcs", ["veldapps-xml/index"], function(Xml) {
 	// }
 	
 });
-
+define("utils/asarray", function() {
+	
+	/*	asArray(arrLike) - 
+	
+		used while processing XML files when a sequence 
+		of elements is expected:
+	
+			var root = parse(xml);
+			
+			asArray(root.children).map( .... )
+	
+	*/
+	
+	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
+});
 define("Framework7/plugins/auto-back-title", function() {
 	
 	var selectors = {
@@ -1135,7 +1151,7 @@ define(function(require) {
 		
 		app = url.getParamValues("").filter(function(s) { 
 			return s !== "debug"; })[0] || (url.getPath().split("/")[0] || "code");
-
+			
 		app = js.sf("devtools/App<%s>", app);
 		// app += "/App";
 	}
