@@ -1,3 +1,15 @@
+### 2021/09/13 - @1.0.153
+
+* Updating packages and build
+
+> + veldapps-imbro@1.0.6
++ veldoffice-js@2.0.1
++ fast-xml-parser@3.20.0
++ veldapps-xmlgen-imsikb@1.0.32
++ cavalion-devtools@1.0.52
++ ol@6.7.0
+
+
 ### 2021/09/07 - @1.0.152
 
 * Markdown updates
