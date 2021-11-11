@@ -1,3 +1,30 @@
+### 2021/11/11
+
+* Updating packages
+
+### 2021/10/23
+
+* Updating packages
+
+>+ veldoffice-js@2.0.4
++ cavalion-vcl@1.1.37
++ ol@6.9.0
++ cavalion-js@1.0.65
++ mapbox-gl@1.13.2
+
+### 2021/09/25
+
+* Updating packages
+
+> + jspdf@2.4.0
++ veldapps-imbro@1.0.7
++ veldoffice-js@2.0.3
++ cavalion-js@1.0.64
++ veldapps-xml@1.0.6
++ fast-xml-parser@3.20.3
++ ol@6.8.1
+
+
 ### 2021/09/13 - @1.0.153
 
 * Updating packages and build
