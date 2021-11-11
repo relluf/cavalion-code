@@ -5,9 +5,9 @@
   "main": "main.js",
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.22",
-    "cavalion-blocks": "^0.9.23",
+    "cavalion-blocks": "^0.9.24",
     "cavalion-code-blocks": "^1.0.12",
-    "cavalion-devtools": "^1.0.52",
+    "cavalion-devtools": "^1.0.53",
     "cavalion-js": "^1.0.65",
     "cavalion-vcl": "^1.1.37",
     "chart.js": "^2.9.4",
