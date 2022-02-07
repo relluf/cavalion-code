@@ -1,3 +1,14 @@
+### 2022/02/07 - @1.0.157
+
+* Update packages
+
+> + cavalion-blocks@0.9.26
++ cavalion-devtools@1.0.56
++ jspdf@2.5.1
++ cavalion-vcl@1.1.50
++ cavalion-js@1.0.67
++ ol@6.12.0
+
 ### 2021/12/17 - @1.0.156
 
 > + cavalion-vcl@1.1.41
