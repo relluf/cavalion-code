@@ -4,7 +4,6 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.23",
     "cavalion-blocks": "^0.9.26",
     "cavalion-code-blocks": "^1.0.12",
     "cavalion-devtools": "^1.0.56",

@@ -1,4 +1,3 @@
-![Cavalion Icon](http://relluf.nl/cavalion-icon.png)
 
 # Keyboard shortcuts
 
