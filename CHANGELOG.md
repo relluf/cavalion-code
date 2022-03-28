@@ -1,7 +1,23 @@
+### 2022/03/28 - @1.0.160
+
+* New build for [veldapps.com/code]()
+* Adding features to the [Markdown-editor]([devtools/Editor<md>]) like linking to [devtools/Editor<blocks>]()-instances, optionally with component instantiated
+* Updating packages
+
+> * cavalion-blocks@0.9.28
+* cavalion-devtools@1.0.57
+* cavalion-js@1.0.68
+* cavalion-vcl@1.1.52
+* ol@6.14.1
+* papaparse@5.3.2
+* proj4@2.8.0
+* veldoffice-js@2.0.8
+
+
 ### 2022/03/11 - @1.0.159
 
-* Updating `default-workspaces`
 * New build for [veldapps.com/code]()
+* Updating `default-workspaces`
 
 ### 2022/02/07 - @1.0.158
 
