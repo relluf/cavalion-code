@@ -308,7 +308,7 @@ define("ArrayFactory", function() {
 		}
 	};
 });
-define("Element", function() {
+define("Element", ["on"], function(on) {
 	/* Make life easier */
 	var qsa = Element.prototype.querySelectorAll;
 	Element.prototype.up = function(selector, includeThis) {
