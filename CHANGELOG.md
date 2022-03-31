@@ -1,3 +1,7 @@
+### 2022/03/31 - @1.0.161
+
+* Improved linking and inlining
+
 ### 2022/03/28 - @1.0.160
 
 * New build for [veldapps.com/code]()
@@ -12,7 +16,6 @@
 * papaparse@5.3.2
 * proj4@2.8.0
 * veldoffice-js@2.0.8
-
 
 ### 2022/03/11 - @1.0.159
 
@@ -67,7 +70,6 @@
 + fast-xml-parser@3.20.3
 + ol@6.8.1
 
-
 ### 2021/09/13 - @1.0.153
 
 * Updating packages and build
@@ -78,7 +80,6 @@
 + veldapps-xmlgen-imsikb@1.0.32
 + cavalion-devtools@1.0.52
 + ol@6.7.0
-
 
 ### 2021/09/07 - @1.0.152
 
@@ -925,4 +926,3 @@ Lot's has changed, lets see if I can recall (using GitUp).
 - Reformatting code to be better suited for folding features in the editor
 - Console: Introducing req()
 - vcl/Component.prototype.setVars: Now allowing a string as input (js.str2obj)
-
