@@ -808,7 +808,6 @@ define("framework7/plugins/esc-is-back", ["framework7/util"], function() {  // E
 	});
 });
 
-
 define("Framework7", ["framework7"], (framework7) => framework7)
 define("template7", ["Framework7"], function() {
 	
@@ -1163,6 +1162,10 @@ define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (F
 	Factory.fetch = function(name) {
 		var source_code_pouchdb = Component.storageDB;
 
+		if(name.indexOf("<") !== -1) {
+			name = name.split("<").join("<>/").split(">")[0] + ".js";
+		}
+
 		return source_code_pouchdb.get(js.sf("cavalion-blocks/%s.js", name)).then(function(obj) {
 			var src = js.get("cavalion-blocks:source", obj);
 			if(src === undefined) {
@@ -1178,6 +1181,57 @@ define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (F
 		});
 	};
 });
+
+
+define("js-3.0", ["js/nameOf.key-value-pair"], () => {
+
+	js.nameOf.methods.set("key-value-pair", (obj) => {
+		if(obj.hasOwnProperty("key") && obj.hasOwnProperty("value")) {
+			return js.sf("%n: %n", obj.key, obj.value);
+		}
+		if(obj.hasOwnProperty("k") && obj.hasOwnProperty("v")) {
+			return js.sf("%n: %n", obj.k, obj.v);
+		}
+		if(obj.kv instanceof Array && obj.kv.length === 2) {
+			return js.sf("%n: %n", obj.kv[0], obj.kv[1]);
+		}
+	});
+	
+});
+
+define("vcl-3.0", ["js", "vcl/Component"], (js, Component) => {
+	js.nameOf.methods.set("key-value-pair", (obj) => {
+		if(obj.hasOwnProperty("key") && obj.hasOwnProperty("value")) {
+			return js.sf("%n: %n", obj.key, obj.value);
+		}
+		if(obj.hasOwnProperty("k") && obj.hasOwnProperty("v")) {
+			return js.sf("%n: %n", obj.k, obj.v);
+		}
+		if(obj.kv instanceof Array && obj.kv.length === 2) {
+			return js.sf("%n: %n", obj.kv[0], obj.kv[1]);
+		}
+	});
+	
+	// scope, up, down, ud, udown, qs, qsa, query, set, get
+	js.mixIn(require("vcl/Component").prototype, {
+		owner() { return this._owner; },
+		owners() { 
+			var r = [this], c = r[0]; 
+			while((c = c._owner)) {
+				r.push(c); 
+			}
+			return r;
+		},
+		parent() { return this._parent; },
+		parents() { 
+			var r = [this], c = r[0]; 
+			while((c = c._parent)) {
+				r.push(c); 
+			}
+			return r;
+		}
+	});
+})
 
 define(function(require) {
 	require("pace");
@@ -1235,7 +1289,7 @@ define(function(require) {
 		app = url.getParamValues("").filter(function(s) { 
 			return s !== "debug"; })[0] || (url.getPath().split("/")[0] || "code");
 			
-		app = js.sf("devtools/App<%s>", app);
+		app = js.sf("devtools/App<%s.%s>", app, url.getHost());
 		// app += "/App";
 	}
 	
