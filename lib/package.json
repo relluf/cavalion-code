@@ -5,7 +5,6 @@
   "main": "main.js",
   "dependencies": {
     "cavalion-blocks": "^0.9.26",
-    "cavalion-code-blocks": "^1.0.12",
     "cavalion-devtools": "^1.0.56",
     "cavalion-js": "^1.0.67",
     "cavalion-vcl": "^1.1.50",
@@ -34,6 +33,7 @@
     "veldapps-imkl": "^1.0.1",
     "veldapps-imsikb": "^1.0.24",
     "veldapps-leaflet-js": "^1.0.1",
+    "veldapps-mmx": "^1.0.0",
     "veldapps-v7": "^1.0.7",
     "veldapps-xml": "^1.0.6",
     "veldapps-xmlgen-imsikb": "^1.0.32",

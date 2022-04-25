@@ -1,11 +1,12 @@
-function ls(k, slash) { var r = localStorage[k]; if(r) { 
-	if(slash && !r.endsWith("/")) r+= "/"; 
-	console.log(k, r); 
-	return r; } }
 
 var npm = (name) => "../lib/node_modules/" + name;
 var npm_bang = (banger, name) => banger + "!../lib/node_modules/" + name;
 var bower = (name) => "../lib/bower_components/" + name;
+
+function ls(k, slash) { var r = localStorage[k]; if(r) { 
+	if(slash && !r.endsWith("/")) r+= "/"; 
+	console.log(k, r); 
+	return r; } }
 
 var cavalion_js = ls('cavalion-js-path', true) || "../lib/node_modules/cavalion-js/src/";
 var cavalion_vcl = ls('cavalion-vcl-path', false) || "../lib/node_modules/cavalion-vcl/src/";
@@ -24,13 +25,6 @@ require.config({
         "Library": "/home/Library",
         "Workspaces": "/home/Workspaces",
 
-        // "v7": "node_modules/veldapps-v7/src/v7",
-        // "v7": "/home/Projects/V7/src/v7",
-        // "va": "/home/Projects/V7/src/va",
-        // "v7": veldapps_v7 + "/v7",
-        // "va": veldapps_v7 + "/va",
-        // "VA": veldapps_v7 + "/VA",
-        
         "lib": "../lib",
 
         /*- bangers! */
@@ -42,10 +36,9 @@ require.config({
 
         /*- cavalion.org */
         "js": cavalion_js + "js",
+        "console": cavalion_js + "console",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
-        
-        "console": cavalion_js + "console",
 
         "data": cavalion_js + "data",
         "persistence": cavalion_js + "persistence",
@@ -72,7 +65,6 @@ require.config({
 		// "vo": "/home/Workspaces/veldapps.com/veldapps-vo/src",
 		// "vo": "../lib/node_modules/veldapps-vo/src",
 		
-		"veldapps": veldoffice_js + "veldapps.com",
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
 		// "vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -174,6 +166,7 @@ require.config({
 });
 
 less = { logLevel: 0 };
+
 window.locale_base = "locales/";
 window.loc = "en-US";
 window.req = function req() {
@@ -188,7 +181,8 @@ window.req = function req() {
 	});
 };
 
-define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory"], function(Component, Blocks, Factory) {
+define("veldapps/Session", ["../lib/node_modules/veldapps-mmx/src/Session"], (Session) => Session);
+define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory", "override"], function(Component, Blocks, Factory) {
 
 	var override = require("override");
 	override(Blocks, "implicitBaseFor", function(inherited) {
@@ -372,19 +366,6 @@ define("Element", ["on"], function(on) {
 	        evt.preventDefault();
 	    }
 	}, false);
-	document.addEventListener("ontouchstart" in window ? 
-		"touchstart" : "mousedown", function checkBlockSwipe(evt) {
-			var node = evt.target, prevent = false;
-	    	if(evt.touches) {
-	    		node = evt.touches[0].target;
-	    	}
-			while(node !== document && node !== null && !prevent) {
-				prevent = $(node).hasClass("block-swipe");
-				node = node.parentNode;
-			}
-			window.TouchEvent && (TouchEvent.prototype.f7PreventPanelSwipe = prevent);
-			window.MouseEvent && (MouseEvent.prototype.f7PreventPanelSwipe = prevent);
-	    });
 	return Element;
 });
 define("xml-funcs", ["veldapps-xml/index"], function(Xml) {
@@ -604,293 +585,6 @@ define("utils/asarray", function() {
 	*/
 	
 	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
-});
-
-// define("Framework7/plugins/auto-back-title", function() {
-	
-// 	var selectors = {
-// 		back: ".navbar .back.link span",
-// 		title: ".title"
-// 	};
-
-//     /*- Link title of back button to title of page */
-//     document.addEventListener("page:beforein", function (e) {
-    	
-//     	if(e.detail.direction !== "forward") {
-//     		return;
-//     	}
-    	
-//     	var previous = e.detail.pageFrom;
-//     	if(!previous) return;
-    	
-//     	var current = e.detail;
-//         var back = current.navbarEl && current.navbarEl.down(selectors.back);
-
-//         if(back && previous.navbarEl) {
-//             back.innerHTML = previous.navbarEl.down(selectors.title).innerHTML;
-//         }
-//     });
-    
-//     return selectors;
-// });
-// define("Framework7/plugins/esc-is-back", [], function() {
-
-// 	var selectors = {
-// 		back: ".view-main .navbar .navbar-current .left a.back.link",
-// 	};
-	
-// 	document.addEventListener("keyup", function(e) {
-// 		if(e.keyCode === 27) {
-// 			e.preventDefault();
-// 			document.qsa(selectors.back).forEach(function(el, index) {
-// 				if(index === 0) el.click();
-// 			});
-// 		}
-// 	});
-	
-// 	return selectors;
-// });
-// define(("Framework7"), [
-// 	"../lib/bower_components/framework7/dist/js/framework7", 
-// 	"Framework7/plugins/auto-back-title", "Framework7/plugins/esc-is-back",
-// 	"stylesheet!../lib/bower_components/framework7/dist/css/framework7.css", 
-// 	"stylesheet!../lib/bower_components/framework7-icons/css/framework7-icons.css"
-
-// ], function(Framework7) {
-	
-// 	Template7.registerHelper("l", function (str) {
-// 		if(arguments.length > 1) {
-// 			str = js.copy_args(arguments);
-			
-// 			if(str[0] !== ">") {
-// 				str.pop();
-// 				str = str.join("");
-// 			} else {
-// 				str.shift(); // [thisObj, entity, factory, options]
-// 				var f = window.locale(String.format("%s.factories/%s", str[1], str[2]));
-// 				if(typeof f === "function") {
-// 					return f.apply(str[0], [str[1], str[2], str[3]]);
-// 				}
-// 			}
-// 		}
-		
-// 	    if (typeof str === "function") str = str.call(this);
-	    
-// 	    if(typeof window.locale === "function") {
-// 	    	return window.locale(str);
-// 	    }
-	    
-// 	    return str;
-//     });
-//     Template7.registerHelper("e", function(context, options) {
-//     	var joined;
-// 		if(arguments.length > 1) {
-// 			context = js.copy_args(arguments);
-// 			options = context.pop();
-// 			joined = context = context.join(".");
-// 		    context = js.get(context);
-// 		} else {
-// 	    	if (typeof context === "function") context = context.call(this);
-// 		}
-
-// 		return String.escapeHtml(options.fn(context));
-//     });
-//     Template7.registerHelper("w", function(context, options) {
-//     	var joined;
-// 		if(arguments.length > 1) {
-// 			context = js.copy_args(arguments);
-// 			options = context.pop();
-// 			joined = context = context.join("");
-// 			try {
-// 		    	context = eval(context);
-// 		    } catch(e) {
-// 		    	context = js.get(context);
-// 		    }
-// 		}
-		
-//     	if (typeof context === "function") context = context.call(this);
-
-// 		return options.fn(context);
-//     });
-//     Template7.registerHelper("wjs", function(expression, options) {
-//         if (typeof expression === "function") { expression = expression.call(this); }
-    	
-//         // 'with': function (context, options) {
-//         //     if (isFunction(context)) { context = context.call(this); }
-//         //     return options.fn(context);
-//         // },
-        
-//         var func;
-//         if (expression.indexOf('return')>=0) {
-//             func = '(function(){'+expression+'})';
-//         }
-//         else {
-//             func = '(function(){return ('+expression+')})';
-//         }
-//         return options.fn(eval.call(this, func).call(this));
-//     });
-    
-// 	return Framework7;
-// });
-
-define("framework7", [
-	npm("framework7/js/framework7.bundle"),
-	npm("framework7-plugin-3d-panels/dist/framework7.3dpanels"),
-	"framework7/plugins/esc-is-back",
-	"framework7/plugins/auto-back-title",
-	npm_bang("stylesheet", "framework7/css/framework7.bundle.css"), 
-	npm_bang("stylesheet", "framework7-icons/css/framework7-icons.css")
-], function(Framework7, Panels) { 
-
-	Framework7.use(Panels);
-	
-	return Framework7; 
-});
-define("framework7/util", function() {
-	return {
-		back: function() {
-			var selector = ".navbar-current .left a.back.link";
-			var modals = $$(".modal-in"), sel;
-			if(modals.length > 0) {
-				if(modals[modals.length - 1].qsa(".page-previous").length === 0) {
-					return modals[modals.length - 1].f7Modal.close();
-				}
-				sel = ".popup.modal-in .view " + selector;
-			} else {
-				sel = (f7a.panel.left.opened ? ".panel-left " : ".view-main ") + selector;
-			}
-			var back = document.body.qs(sel);
-			if(back) {
-				back.click();
-			} else {
-				if(f7a.panel.left.opened) {
-					f7a.panel.left.close();
-				} else {
-					f7a.panel.left.open();
-				}
-			}
-		}
-	};
-});
-define("framework7/plugins/auto-back-title", function() {
-	
-	var selectors = {
-		back: ".navbar .back.link span:not(.static)",
-		title: ".title"
-	};
-
-    /*- Link title of back button to title of page */
-    var previous;
-    document.addEventListener("page:mounted", function (e) {
-    	if(e.detail.direction !== "forward") {
-			// console.log("page:mounted - no direction", e.detail);
-    	} else {
-    		previous = e.detail.pageFrom;
-    	}
-
-    	if(!previous) return;
-    	
-    	var current = e.detail;
-        var back = current.navbarEl && current.navbarEl.down(selectors.back);
-
-        if(back && previous.navbarEl) {
-            back.innerHTML = previous.navbarEl.down(selectors.title).innerHTML;
-        }
-    });
-    
-    return selectors;
-});
-define("framework7/plugins/esc-is-back", ["framework7/util"], function() {  // Element?
-	document.addEventListener("keyup", function(e) {
-		if(e.keyCode === 27) {
-			require("framework7/util").back();
-		}
-	});
-});
-
-define("Framework7", ["framework7"], (framework7) => framework7)
-define("template7", ["Framework7"], function() {
-	
-	Template7.registerHelper("l", function (str) {
-		if(arguments.length > 1) {
-			str = js.copy_args(arguments);
-			
-			if(str[0] !== ">") {
-				str.pop();
-				str = str.join("");
-			} else {
-				str.shift(); // [thisObj, entity, factory, options]
-				var f = window.locale(String.format("%s.factories/%s", str[1], str[2]));
-				if(typeof f === "function") {
-					return f.apply(str[0], [str[1], str[2], str[3]]);
-				}
-			}
-		}
-		
-	    if (typeof str === "function") str = str.call(this);
-	    
-	    if(typeof window.locale === "function") {
-	    	return window.locale(str);
-	    }
-	    
-	    return str;
-    });
-    Template7.registerHelper("e", function(context, options) {
-    	var joined;
-		if(arguments.length > 1) {
-			context = js.copy_args(arguments);
-			options = context.pop();
-			joined = context = context.join(".");
-		    context = js.get(context);
-		} else {
-	    	if (typeof context === "function") context = context.call(this);
-		}
-
-		return String.escapeHtml(options.fn(context));
-    });
-    Template7.registerHelper("w", function(context, options) {
-    	var joined;
-		if(arguments.length > 1) {
-			context = js.copy_args(arguments);
-			options = context.pop();
-			joined = context = context.join("");
-			try {
-		    	context = eval(context);
-		    } catch(e) {
-		    	context = js.get(context);
-		    }
-		}
-		
-    	if (typeof context === "function") context = context.call(this);
-
-		return options.fn(context);
-    });
-    Template7.registerHelper("wjs", function(expression, options) {
-        if (typeof expression === "function") { expression = expression.call(this); }
-    	
-        // 'with': function (context, options) {
-        //     if (isFunction(context)) { context = context.call(this); }
-        //     return options.fn(context);
-        // },
-        
-        var func;
-        if (expression.indexOf('return')>=0) {
-            func = '(function(){'+expression+'})';
-        }
-        else {
-            func = '(function(){return ('+expression+')})';
-        }
-        return options.fn(eval.call(this, func).call(this));
-    });
-    
-	return {
-		load: function(name, parentRequire, load, config) {
-			/** @see http://requirejs.org/docs/plugins.html#apiload */
-			parentRequire(["text!" + name], function(source) {
-				load(Template7.compile(source));
-			});
-		}
-	};
 });
 
 define("dygraphs/Dygraph", ["../lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
@@ -1182,117 +876,38 @@ define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (F
 	};
 });
 
-
-define("js-3.0", ["js/nameOf.key-value-pair"], () => {
-
-	js.nameOf.methods.set("key-value-pair", (obj) => {
-		if(obj.hasOwnProperty("key") && obj.hasOwnProperty("value")) {
-			return js.sf("%n: %n", obj.key, obj.value);
-		}
-		if(obj.hasOwnProperty("k") && obj.hasOwnProperty("v")) {
-			return js.sf("%n: %n", obj.k, obj.v);
-		}
-		if(obj.kv instanceof Array && obj.kv.length === 2) {
-			return js.sf("%n: %n", obj.kv[0], obj.kv[1]);
-		}
-	});
-	
-});
-
-define("vcl-3.0", ["js", "vcl/Component"], (js, Component) => {
-	js.nameOf.methods.set("key-value-pair", (obj) => {
-		if(obj.hasOwnProperty("key") && obj.hasOwnProperty("value")) {
-			return js.sf("%n: %n", obj.key, obj.value);
-		}
-		if(obj.hasOwnProperty("k") && obj.hasOwnProperty("v")) {
-			return js.sf("%n: %n", obj.k, obj.v);
-		}
-		if(obj.kv instanceof Array && obj.kv.length === 2) {
-			return js.sf("%n: %n", obj.kv[0], obj.kv[1]);
-		}
-	});
-	
-	// scope, up, down, ud, udown, qs, qsa, query, set, get
-	js.mixIn(require("vcl/Component").prototype, {
-		owner() { return this._owner; },
-		owners() { 
-			var r = [this], c = r[0]; 
-			while((c = c._owner)) {
-				r.push(c); 
-			}
-			return r;
-		},
-		parent() { return this._parent; },
-		parents() { 
-			var r = [this], c = r[0]; 
-			while((c = c._parent)) {
-				r.push(c); 
-			}
-			return r;
-		}
-	});
-})
-
 define(function(require) {
 	require("pace");
-	require("stylesheet!styles.less");
-
-	/*- Class/Type System, Tools, etc. */	
-	require("js");
-	require("less");
-	require("blocks"); // <-- basic blocks funcs
-
-	/*- Some awesomeness */
-	require("font-awesome");
-	require("console/Printer");
-	
-	require("locale!en-US");
-	// require("leaflet"); //depends on global js, which might not be loaded yet
-
-	window.locale.slashDotRepl = false;
-
 	require("Element");
-	
+
+	require("locale!en-US");
+	require("console/Printer"); 
+	require("font-awesome");
+
 	var ComponentNode = require("console/node/vcl/Component");
-	var Component = require("vcl/Component");
 	var Factory = require("vcl/Factory");
 	var Url = require("util/net/Url");
 	var JsObject = require("js/JsObject");
-	var override = require("override");
 
-	require("vcl/Component.storage-pouchdb");
-	require("vcl/Factory.fetch-storageDB");
-	require("blocks/Factory.fetch-storageDB");
-	
+	ComponentNode.initialize();
+
+	window.j$ = JsObject.$;
+	window.B = require("B")
 	window.addEventListener("beforeunload", (e) => {
 		// check for dirty editors?
 		e.returnValue  = "Are you sure?";
 	});
-	
-	// require("vcl/Component.prototype.print");
-	
-	window.j$ = JsObject.$;
-	window.B = require("B")
-	
-	ComponentNode.initialize();
 
-	var app, url = new Url(); 
-	if((app = url.getParamValue("app"))) {
-		if(app && app.indexOf("/") === -1) {
-		    app += "/App.v1.desktop";
-		} else if(!app) {
-	        app = "App.v1.desktop";
-	    }
-	} else {
-		// TODO reserved valueless parameters: ['debug']
+	require("vcl/Component.storage-pouchdb");
+	require("vcl/Factory.fetch-storageDB");
+	require("blocks/Factory.fetch-storageDB");
+	require("stylesheet!styles.less");
+
+	var url = new Url(), app = js.sf("devtools/App<%s.%s>", 
+		url.getParamValues("").filter(s => s !== "debug")[0] ||
+		url.getPath().split("/")[0] || "code", 
+		url.getHost());
 		
-		app = url.getParamValues("").filter(function(s) { 
-			return s !== "debug"; })[0] || (url.getPath().split("/")[0] || "code");
-			
-		app = js.sf("devtools/App<%s.%s>", app, url.getHost());
-		// app += "/App";
-	}
-	
 	Factory.require(app, function(factory) {
 		window.app = B.DEFAULT_OWNER = factory.newInstance();
 		window.app.vars("url", url);
