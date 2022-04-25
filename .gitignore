@@ -8,7 +8,7 @@ src/.ignore
 src/cavalion-blocks/veldapps
 src/pages/eae
 src/vcl-comps/veldoffice
-src/vcl-comps/devtools/Workspace$/bkp
+src/vcl-comps/devtools
 src/cavalion-blocks/devtools
 src/cavalion-blocks/veldapps
 src/resources
@@ -17,5 +17,3 @@ src/va
 src/vo
 src/cavalion-blocks/veldapps--
 src/cavalion-blocks/veldoffice
-src/cavalion-blocks/devtools
-src/cavalion-blocks/veldapps
