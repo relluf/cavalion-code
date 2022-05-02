@@ -1,3 +1,9 @@
+### 2022/05/02 - @1.0.169
+
+	├── cavalion-devtools@1.0.70
+	├── cavalion-js@1.0.69
+	├── cavalion-vcl@1.1.62
+
 ### 2022/05/01 - @1.0.168
 
 * Upgrading OpenLayers (6.14.1)

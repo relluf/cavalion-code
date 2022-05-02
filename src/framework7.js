@@ -73,7 +73,7 @@ define("framework7/plugins/esc-is-back", ["framework7/util"], function() {  // E
 	});
 });
 
-define("Framework7", ["framework7"], (framework7) => framework7)
+define("Framework7", ["framework7"], (framework7) => framework7);
 define("template7", ["Framework7"], function() {
 	
 	Template7.registerHelper("l", function (str) {
