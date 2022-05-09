@@ -591,7 +591,8 @@ define("dygraphs/Dygraph", ["../lib/node_modules/dygraphs/dist/dygraph", "styles
 	return dygraph;
 });
 
-define("ol", ["../lib/ol-6.14.1", "stylesheet!../lib/ol-6.14.1.css"], function(ol_) {
+// define("ol", ["../lib/ol-6.1.1", "stylesheet!../lib/ol-6.1.1.css"], function(ol_) {
+define("ol", ["../lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
 	var ol = window.ol || ol_;
 	window.ol = ol;
 	
