@@ -700,7 +700,7 @@ define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/U
 	var db = (c) => c.vars(["storage-db"]) || storageDB;
 	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
 	
-	console.log("using", storageDB, "for vcl-comps (" + storageDB.name + ")");
+	console.log("using", storageDB.name, "for vcl-comps", storageDB);
 	
 /*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
 	
@@ -904,8 +904,8 @@ define(function(require) {
 	require("blocks/Factory.fetch-storageDB");
 	require("stylesheet!styles.less");
 
-	var url = new Url(), app = js.sf("devtools/App<%s.%s>", 
-		url.getParamValues("").filter(s => s !== "debug")[0] ||
+	var url = new Url(), app = js.sf("App<%s.%s>", 
+		// url.getParamValues("").filter(s => s !== "debug")[0] ||
 		url.getPath().split("/")[0] || "code", 
 		url.getHost());
 		
