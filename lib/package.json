@@ -9,7 +9,7 @@
     "cavalion-js": "^1.0.67",
     "cavalion-vcl": "^1.1.50",
     "chart.js": "^2.9.4",
-    "clipboard-copy": "^3.2.0",
+    "clipboard-copy": "^4.0.1",
     "clipboard-polyfill": "^2.8.6",
     "dropbox": "^4.0.30",
     "dygraphs": "^2.1.0",
