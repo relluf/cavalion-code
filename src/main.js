@@ -591,7 +591,6 @@ define("dygraphs/Dygraph", ["../lib/node_modules/dygraphs/dist/dygraph", "styles
 	return dygraph;
 });
 
-// define("ol", ["../lib/ol-6.1.1", "stylesheet!../lib/ol-6.1.1.css"], function(ol_) {
 define("ol", ["../lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
 	var ol = window.ol || ol_;
 	window.ol = ol;
@@ -678,13 +677,62 @@ define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_co
 			restartOnPushState: true,
 			document: false
 		});
-		//{ trackMethods: [] } });
 		return pace; 
 	});
 define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
+define("clipboard-copy", [], () => {
 
+	return function clipboardCopy (text) {
+	  // Use the Async Clipboard API when available. Requires a secure browsing
+	  // context (i.e. HTTPS)
+	  if (navigator.clipboard) {
+	    return navigator.clipboard.writeText(text).catch(function (err) {
+	      throw (err !== undefined ? err : new DOMException('The request is not allowed', 'NotAllowedError'))
+	    })
+	  }
+	
+	  // ...Otherwise, use document.execCommand() fallback
+	
+	  // Put the text to copy into a <span>
+	  var span = document.createElement('span')
+	  span.textContent = text
+	
+	  // Preserve consecutive spaces and newlines
+	  span.style.whiteSpace = 'pre'
+	  span.style.webkitUserSelect = 'auto'
+	  span.style.userSelect = 'all'
+	
+	  // Add the <span> to the page
+	  document.body.appendChild(span)
+	
+	  // Make a selection object representing the range of text selected by the user
+	  var selection = window.getSelection()
+	  var range = window.document.createRange()
+	  selection.removeAllRanges()
+	  range.selectNode(span)
+	  selection.addRange(range)
+	
+	  // Copy text to the clipboard
+	  var success = false
+	  try {
+	    success = window.document.execCommand('copy')
+	  } catch (err) {
+	    console.log('error', err)
+	  }
+	
+	  // Cleanup
+	  selection.removeAllRanges()
+	  window.document.body.removeChild(span)
+	
+	  return success
+	    ? Promise.resolve()
+	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
+	}
+
+	
+})
 define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
 	var url = new Url();
 	
