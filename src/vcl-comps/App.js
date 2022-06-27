@@ -1,0 +1,1 @@
+[["vcl/prototypes/App.v1.console"]];
