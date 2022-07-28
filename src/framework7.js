@@ -67,7 +67,7 @@ define("framework7/plugins/auto-back-title", function() {
 });
 define("framework7/plugins/esc-is-back", ["framework7/util"], function() {  // Element?
 	document.addEventListener("keyup", function(e) {
-		if(e.keyCode === 27) {
+		if(e.keyCode === 27 && typeof $$ !== "undefined") {
 			require("framework7/util").back();
 		}
 	});
