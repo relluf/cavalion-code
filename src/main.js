@@ -11,6 +11,7 @@ function ls(k, slash) { var r = localStorage[k]; if(r) {
 var cavalion_js = ls('cavalion-js-path', true) || "../lib/node_modules/cavalion-js/src/";
 var cavalion_vcl = ls('cavalion-vcl-path', false) || "../lib/node_modules/cavalion-vcl/src/";
 var cavalion_blocks = ls('cavalion-blocks-path', false) || "../lib/node_modules/cavalion-blocks/src/";
+var cavalion_pouch = ls('cavalion-pouch-path', false) || "../lib/node_modules/cavalion-pouch/src/";
 var veldapps_v7 = ls('veldapps-v7-path', true) || "../lib/node_modules/veldapps-v7/src/";
 var veldoffice_js = ls('veldoffice-js-path', true) || "../lib/node_modules/veldoffice-js/src/";
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
@@ -39,6 +40,7 @@ require.config({
         "console": cavalion_js + "console",
         "vcl": cavalion_vcl,
         "blocks": cavalion_blocks,
+        "pouch": cavalion_pouch,
 
         "data": cavalion_js + "data",
         "persistence": cavalion_js + "persistence",
@@ -595,7 +597,7 @@ define("ol", ["../lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.c
 	var ol = window.ol || ol_;
 	window.ol = ol;
 	
-	ol.convert = (function(){
+	ol.create = ol.convert = (function(){
 		return function convert(value, properties) {
 			function instantiate(def, properties) {
 			
