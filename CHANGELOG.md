@@ -1,3 +1,7 @@
+### 2022/10/30 - @1.0.176b
+
+* Developing [veldoffice.nl/code?gebruik](https://:)
+
 ### 2022/09/23 - @1.0.175
 
 * veldapps-leaflet-js

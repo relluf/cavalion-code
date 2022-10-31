@@ -1,3 +1,7 @@
+var npm = (name) => "../lib/node_modules/" + name;
+var npm_bang = (banger, name) => banger + "!../lib/node_modules/" + name;
+var bower = (name) => "../lib/bower_components/" + name;
+
 define("framework7", [
 	npm("framework7/js/framework7.bundle"),
 	npm("framework7-plugin-3d-panels/dist/framework7.3dpanels"),

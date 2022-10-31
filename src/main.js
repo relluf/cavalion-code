@@ -954,10 +954,11 @@ define(function(require) {
 	require("blocks/Factory.fetch-storageDB");
 	require("stylesheet!styles.less");
 
-	var url = new Url(), app = js.sf("App<%s.%s>", 
-		// url.getParamValues("").filter(s => s !== "debug")[0] ||
+	var url = new Url(), app = js.sf("App<%s>", [ 
 		url.getPath().split("/")[0] || "code", 
-		url.getHost());
+		url.getParamValues("").filter(s => s !== "debug")[0],
+		url.getHost()
+	].filter(_ => _).join("."));
 		
 	Factory.require(app, function(factory) {
 		window.app = B.DEFAULT_OWNER = factory.newInstance();
