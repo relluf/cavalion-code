@@ -13,6 +13,7 @@
     "clipboard-polyfill": "^2.8.6",
     "dropbox": "^4.0.30",
     "dygraphs": "^2.1.0",
+    "famous": "^0.7.1",
     "fast-xml-parser": "^3.21.1",
     "font-awesome": "^4.7.0",
     "framework7": "^4.5.2",
