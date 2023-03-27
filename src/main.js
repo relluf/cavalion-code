@@ -56,14 +56,16 @@ require.config({
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
         "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
-		// "veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
-		"veldapps-xml": "../lib/node_modules/veldapps-xml/src",
-		// "veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
-		"veldapps-imkl": "../lib/node_modules/veldapps-imkl/src",
-		// "veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
-		"veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
-		// "veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
-		"veldapps-imbro": "../lib/node_modules/veldapps-imbro/src",
+		"veldapps-ol": "/home/Workspaces/veldapps.com/veldapps-ol/src",
+		// "veldapps-ol": "/../lib/node_modules/veldapps-ol/src",
+		"veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
+		// "veldapps-xml": "../lib/node_modules/veldapps-xml/src",
+		"veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
+		// "veldapps-imkl": "../lib/node_modules/veldapps-imkl/src",
+		"veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
+		// "veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
+		"veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
+		// "veldapps-imbro": "../lib/node_modules/veldapps-imbro/src",
 		// "vo": "/home/Workspaces/veldapps.com/veldapps-vo/src",
 		// "vo": "../lib/node_modules/veldapps-vo/src",
 		
@@ -76,6 +78,7 @@ require.config({
 		"proj4": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
 		"epsg": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
 		"leaflet": "../lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
+		// "famous": "../lib/node_modules/famous/",
 
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
@@ -164,7 +167,14 @@ require.config({
                 AmCharts.isReady = true;
             }
         }
-    }
+    },
+    packages: [
+        {
+            name: 'famous',
+            location: "../lib/node_modules/famous",
+            main: 'index'
+        }
+    ]
 });
 
 less = { logLevel: 0 };
@@ -685,7 +695,6 @@ define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/fon
 	return stylesheet;
 });
 define("clipboard-copy", [], () => {
-
 	return function clipboardCopy (text) {
 	  // Use the Async Clipboard API when available. Requires a secure browsing
 	  // context (i.e. HTTPS)
@@ -732,8 +741,6 @@ define("clipboard-copy", [], () => {
 	    ? Promise.resolve()
 	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
 	}
-
-	
 })
 define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
 	var url = new Url();
@@ -860,9 +867,28 @@ define("vcl/Factory.fetch-resources", ["vcl/Factory", "vcl/Component", "devtools
 			name = "/" + name;
 		}
 		if(name.indexOf("<") !== -1) {
-			name = name.split("<").join("$/").split(">")[0] + ".js";
+			name = name.split("<").join("$/").split(">")[0];
 		}
-		return Resources.get(js.sf("pouchdb://%s%s", Component.storageDB.name, name));
+
+
+		return Resources.get(js.sf("pouchdb://%s/vcl-comps%s.js", Component.storageDB.name, name))
+				.then(function(obj) {
+					var src = js.get("vcl-comps:source", obj);
+					if(src === undefined) {
+						src = js.get("devtools:resource.text", obj);
+						if(src === undefined) {
+							src = obj.text || "[\"\", {}, []];";
+						} else {
+							// src = minify(src);
+							js.set("vcl-comps:source", src, obj);
+						}
+					}
+
+// console.log(js.sf(">>> pouchdb://%s/vcl-comps%s.js", Component.storageDB.name, name))
+					
+					return src;
+				})
+				.catch(err => null);
 	};
 });
 define("vcl/Factory.fetch-storageDB", ["vcl/Factory", "vcl/Component"], (Factory, Component) => {
@@ -872,6 +898,7 @@ define("vcl/Factory.fetch-storageDB", ["vcl/Factory", "vcl/Component"], (Factory
 			name = name.split("<").join("$/").split(">")[0] + ".js";
 		}
 		return new Promise((resolve, reject) => {
+			// console.log(js.sf(">>> vcl-comps/%s", name));
 			source_code_pouchdb.get(js.sf("vcl-comps/%s", name))
 				.then(function(obj) {
 					// console.log(">>>", name, "get result", obj);
@@ -894,13 +921,39 @@ define("vcl/Factory.fetch-storageDB", ["vcl/Factory", "vcl/Component"], (Factory
 });
 define("blocks/Factory.fetch-resources", ["blocks/Factory", "vcl/Component", "devtools/Resources"], (Factory, Component, Resources) => {
 	Factory.fetch = function(name) {
+		var keys = Component.getKeysByUri(name);
+		name = js.sf("%s/%s", keys.namespace, keys.name);
+		if(keys.classes.length) {
+			name += js.sf(".%s", keys.classes.join("."));
+		}
+		
+		if(keys.specializer) {
+			name += js.sf("<>/%s", keys.specializer);
+			if(keys.specializer_classes.length) {
+				name += js.sf(".%s", keys.specializer_classes.join("."));
+			}
+		}
+
 		if(name.charAt(0) !== "/") {
 			name = "/" + name;
 		}
-		if(name.indexOf("<") !== -1) {
-			name = name.split("<").join("$/").split(">")[0] + ".js";
-		}
-		return Resources.get(js.sf("pouchdb://%s%s", Component.storageDB.name, name));
+
+// console.log(js.sf(">>> pouchdb://%s/cavalion-blocks%s.js", Component.storageDB.name, name))
+
+		return Resources.get(js.sf("pouchdb://%s/cavalion-blocks%s.js", Component.storageDB.name, name))
+			.then(function(obj) {
+				var src = js.get("cavalion-blocks:source", obj);
+				if(src === undefined) {
+					src = js.get("devtools:resource.text", obj);
+					if(src === undefined) {
+						src = obj.text || "[\"\", {}, []];";
+					} else {
+						// src = minify(src);
+						js.set("cavalion-blocks:source", src, obj);
+					}
+				}
+				return src;
+			});
 	};
 });
 define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (Factory, Component) => {
@@ -911,19 +964,20 @@ define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (F
 			name = name.split("<").join("<>/").split(">")[0] + ".js";
 		}
 
-		return source_code_pouchdb.get(js.sf("cavalion-blocks/%s.js", name)).then(function(obj) {
-			var src = js.get("cavalion-blocks:source", obj);
-			if(src === undefined) {
-				src = js.get("devtools:resource.text", obj);
+		return source_code_pouchdb.get(js.sf("cavalion-blocks/%s.js", name))
+			.then(function(obj) {
+				var src = js.get("cavalion-blocks:source", obj);
 				if(src === undefined) {
-					src = "[\"\", {}, []];";
-				} else {
-					// src = minify(src);
-					js.set("cavalion-blocks:source", src, obj);
+					src = js.get("devtools:resource.text", obj);
+					if(src === undefined) {
+						src = "[\"\", {}, []];";
+					} else {
+						// src = minify(src);
+						js.set("cavalion-blocks:source", src, obj);
+					}
 				}
-			}
-			return src;
-		});
+				return src;
+			});
 	};
 });
 
@@ -950,8 +1004,10 @@ define(function(require) {
 	});
 
 	require("vcl/Component.storage-pouchdb");
-	require("vcl/Factory.fetch-storageDB");
-	require("blocks/Factory.fetch-storageDB");
+	// require("vcl/Factory.fetch-storageDB");
+	// require("blocks/Factory.fetch-storageDB");
+	require("vcl/Factory.fetch-resources");
+	require("blocks/Factory.fetch-resources");
 	require("stylesheet!styles.less");
 
 	var url = new Url(), app = js.sf("App<%s>", [ 
