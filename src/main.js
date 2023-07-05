@@ -78,7 +78,7 @@ require.config({
 		"proj4": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
 		"epsg": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
 		"leaflet": "../lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
-		// "famous": "../lib/node_modules/famous/",
+		"famous": "../lib/node_modules/famous",
 
 		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
 
@@ -124,8 +124,13 @@ require.config({
         "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy"
 
     },
-    shim: {
-        "amcharts.funnel": {
+	// map: {
+	// 	'*': {
+	// 	  'famous/*': 'famous/*/index.js'
+	// 	}
+	// },
+	shim: {
+		"amcharts.funnel": {
             "deps": ["amcharts"],
             "exports": "AmCharts",
             "init": function () {
@@ -679,6 +684,7 @@ define(("dropbox"), ["../lib/node_modules/dropbox/dist/Dropbox-sdk", "../lib/nod
 define("markdown", ["../lib/bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
+define("marked", ["lib/node_modules/marked/marked.min"], (marked) => marked);
 define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			ajax: {
@@ -1013,7 +1019,7 @@ define(function(require) {
 	var url = new Url(), app = js.sf("App<%s>", [ 
 		url.getPath().split("/")[0] || "code", 
 		url.getParamValues("").filter(s => s !== "debug")[0],
-		url.getHost()
+		url.getHost() === "localhost" ? "" : url.getHost()
 	].filter(_ => _).join("."));
 		
 	Factory.require(app, function(factory) {

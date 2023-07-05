@@ -1,3 +1,3 @@
-// alert("!docs")
+"use js";
 
-[["devtools/App<docs>"]];
+[["devtools/App<docs>"], { title: "Docs" }];
