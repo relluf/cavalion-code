@@ -25,7 +25,6 @@
         "less": "../lib/bower_components/less/dist/less",
 
         "veldoffice": "../lib/node_modules/veldoffice-js/src/veldapps.com/veldoffice",
-
 		"veldapps-gds-devtools": "../lib/node_modules/veldapps-gds-devtools/src",
 
         "jquery": "../lib/node_modules/veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min",
