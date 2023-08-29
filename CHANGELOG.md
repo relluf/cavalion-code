@@ -1,6 +1,7 @@
-### 2023/08/29 - @1.0.180
+### 2023/08/29 - @1.0.180-181
 
 * Start of BXV at veldapps.com
+* Booting workspaces from a resource via `devtools/Workspace<cavalion-blocks>`
 
 ### 2023/07/05 - @1.0.179
 
