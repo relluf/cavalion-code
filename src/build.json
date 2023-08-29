@@ -26,6 +26,8 @@
 
         "veldoffice": "../lib/node_modules/veldoffice-js/src/veldapps.com/veldoffice",
 
+		"veldapps-gds-devtools": "../lib/node_modules/veldapps-gds-devtools/src",
+
         "jquery": "../lib/node_modules/veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min",
         "proj4": "../lib/node_modules/veldoffice-js/src/proj4js.org/proj4-src",
         "epsg": "../lib/node_modules/veldoffice-js/src/proj4js.org/epsg",
