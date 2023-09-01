@@ -1,19 +1,19 @@
 
-var npm = (name) => "../lib/node_modules/" + name;
+var npm = (name) => "lib/node_modules/" + name;
 var npm_bang = (banger, name) => banger + "!../lib/node_modules/" + name;
-var bower = (name) => "../lib/bower_components/" + name;
+var bower = (name) => "lib/bower_components/" + name;
 
 function ls(k, slash) { var r = localStorage[k]; if(r) { 
 	if(slash && !r.endsWith("/")) r+= "/"; 
 	console.log(k, r); 
 	return r; } }
 
-var cavalion_js = ls('cavalion-js-path', true) || "../lib/node_modules/cavalion-js/src/";
-var cavalion_vcl = ls('cavalion-vcl-path', false) || "../lib/node_modules/cavalion-vcl/src/";
-var cavalion_blocks = ls('cavalion-blocks-path', false) || "../lib/node_modules/cavalion-blocks/src/";
-var cavalion_pouch = ls('cavalion-pouch-path', false) || "../lib/node_modules/cavalion-pouch/src/";
-var veldapps_v7 = ls('veldapps-v7-path', true) || "../lib/node_modules/veldapps-v7/src/";
-var veldoffice_js = ls('veldoffice-js-path', true) || "../lib/node_modules/veldoffice-js/src/";
+var cavalion_js = ls('cavalion-js-path', true) || "lib/node_modules/cavalion-js/src/";
+var cavalion_vcl = ls('cavalion-vcl-path', false) || "lib/node_modules/cavalion-vcl/src/";
+var cavalion_blocks = ls('cavalion-blocks-path', false) || "lib/node_modules/cavalion-blocks/src/";
+var cavalion_pouch = ls('cavalion-pouch-path', false) || "lib/node_modules/cavalion-pouch/src/";
+var veldapps_v7 = ls('veldapps-v7-path', true) || "lib/node_modules/veldapps-v7/src/";
+var veldoffice_js = ls('veldoffice-js-path', true) || "lib/node_modules/veldoffice-js/src/";
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
 require.config({
@@ -25,8 +25,6 @@ require.config({
         "Projects": "/home/Projects",
         "Library": "/home/Library",
         "Workspaces": "/home/Workspaces",
-
-        "lib": "../lib",
 
         /*- bangers! */
         "stylesheet": cavalion_js + "stylesheet",
@@ -52,22 +50,24 @@ require.config({
         "yell": cavalion_js + "yell",
         
 		"cavalion-pouch": "/home/Workspaces/cavalion.org/cavalion-pouch",
-        "xslt": "../lib/node_modules/xslt/dist/xslt",
+        "xslt": "lib/node_modules/xslt/dist/xslt",
         "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
-        "mapbox-gl": "../lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
+        "mapbox-gl": "lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
-		"veldapps-ol": "/home/Workspaces/veldapps.com/veldapps-ol/src",
-		// "veldapps-ol": "/../lib/node_modules/veldapps-ol/src",
-		"veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
-		// "veldapps-xml": "../lib/node_modules/veldapps-xml/src",
-		"veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
-		// "veldapps-imkl": "../lib/node_modules/veldapps-imkl/src",
-		"veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
-		// "veldapps-imsikb": "../lib/node_modules/veldapps-imsikb/src",
-		"veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
-		// "veldapps-imbro": "../lib/node_modules/veldapps-imbro/src",
+		// "veldapps-ol": "/home/Workspaces/veldapps.com/veldapps-ol/src",
+		"veldapps-ol": "lib/node_modules/veldapps-ol/src",
+		// "veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
+		"veldapps-xml": "lib/node_modules/veldapps-xml/src",
+		// "veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
+		"veldapps-imkl": "lib/node_modules/veldapps-imkl/src",
+		// "veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
+		"veldapps-imsikb": "lib/node_modules/veldapps-imsikb/src",
+		// "veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
+		"veldapps-imbro": "lib/node_modules/veldapps-imbro/src",
 		// "vo": "/home/Workspaces/veldapps.com/veldapps-vo/src",
-		// "vo": "../lib/node_modules/veldapps-vo/src",
+		// "vo": "lib/node_modules/veldapps-vo/src",
+		"veldapps-gds-devtools": "/home/Workspaces/veldapps.com/veldapps-gds-devtools/src",
+		// "veldapps-gds-devtools": "lib/node_modules/veldapps-gds-devtools/src",
 		
 		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
 		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
@@ -75,53 +75,53 @@ require.config({
 		/*- veldapps.com/leaflet */
 
 		/*- veldapps-leaflet/3rd party */
-		"proj4": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
-		"epsg": "../lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
-		"leaflet": "../lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
-		"famous": "../lib/node_modules/famous",
+		"proj4": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
+		"epsg": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
+		"leaflet": "lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
+		"famous": "lib/node_modules/famous",
 
-		"ipfs": "../lib/node_modules/ipfs/dist/index.min",
+		"ipfs": "lib/node_modules/ipfs/dist/index.min",
 
 		// TODO now in veldapps-xml
-        "xml-js": "../lib/node_modules/xml-js/dist/xml-js",
-        "handlebars": "../lib/node_modules/handlebars/dist/handlebars.min",
+        "xml-js": "lib/node_modules/xml-js/dist/xml-js",
+        "handlebars": "lib/node_modules/handlebars/dist/handlebars.min",
         
-        "sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
-        "xml-formatter": "../lib/node_modules/xml-formatter/dist/browser/xml-formatter",
+        "sikb0101": "lib/node_modules/veldapps-xmlgen-imsikb",
+        "xml-formatter": "lib/node_modules/xml-formatter/dist/browser/xml-formatter",
 
 		/*- bower */
-        "ace": "../lib/bower_components/ace/lib/ace",
-        "less": "../lib/bower_components/less/dist/less",
-        "moment": "../lib/bower_components/moment/moment",
-        "moment-locale": "../lib/bower_components/moment/locale",
-        "jquery": "../lib/bower_components/jquery/dist/jquery",
-        "backbone": "../lib/bower_components/backbone/backbone",
-        "underscore": "../lib/bower_components/underscore/underscore",
-        "js-yaml": "../lib/bower_components/js-yaml/dist/js-yaml",
-        // "csv-js": "../lib/bower_components/CSV-JS/csv",
-        // "relational-pouch": "../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        "ace": "lib/bower_components/ace/lib/ace",
+        "less": "lib/bower_components/less/dist/less",
+        "moment": "lib/bower_components/moment/moment",
+        "moment-locale": "lib/bower_components/moment/locale",
+        "jquery": "lib/bower_components/jquery/dist/jquery",
+        "backbone": "lib/bower_components/backbone/backbone",
+        "underscore": "lib/bower_components/underscore/underscore",
+        "js-yaml": "lib/bower_components/js-yaml/dist/js-yaml",
+        // "csv-js": "lib/bower_components/CSV-JS/csv",
+        // "relational-pouch": "lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
         
         /*- dojo */
-        "dojo": "../lib/bower_components/dojo",
-        "dgrid": "../lib/bower_components/dgrid",
-        "dstore": "../lib/bower_components/dstore",
+        "dojo": "lib/bower_components/dojo",
+        "dgrid": "lib/bower_components/dgrid",
+        "dstore": "lib/bower_components/dstore",
         
-		"chartjs": "../lib/node_modules/chart.js/dist",
-		"dygraphs/Dygraph": "../lib/node_modules/dygraphs/dist/dygraph",
+		"chartjs": "lib/node_modules/chart.js/dist",
+		"dygraphs/Dygraph": "lib/node_modules/dygraphs/dist/dygraph",
 
-        "fast-xml-parser": "../lib/fast-xml-parser/parser",
-		"papaparse": "../lib/node_modules/papaparse",
-		"jspdf": "../lib/node_modules/jspdf/dist/jspdf.umd",
-		"html2canvas": "../lib/node_modules/html2canvas/dist/html2canvas.min",
+        "fast-xml-parser": "lib/fast-xml-parser/parser",
+		"papaparse": "lib/node_modules/papaparse",
+		"jspdf": "lib/node_modules/jspdf/dist/jspdf.umd",
+		"html2canvas": "lib/node_modules/html2canvas/dist/html2canvas.min",
 
 		/*- amcharts3 */
-        "amcharts": "../lib/bower_components/amcharts3/amcharts/amcharts",
-        "amcharts.funnel": "../lib/bower_components/amcharts3/amcharts/funnel",
-        "amcharts.gauge": "../lib/bower_components/amcharts3/amcharts/gauge",
-        "amcharts.pie": "../lib/bower_components/amcharts3/amcharts/pie",
-        "amcharts.radar": "../lib/bower_components/amcharts3/amcharts/radar",
-        "amcharts.serial": "../lib/bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "../lib/bower_components/amcharts3/amcharts/xy"
+        "amcharts": "lib/bower_components/amcharts3/amcharts/amcharts",
+        "amcharts.funnel": "lib/bower_components/amcharts3/amcharts/funnel",
+        "amcharts.gauge": "lib/bower_components/amcharts3/amcharts/gauge",
+        "amcharts.pie": "lib/bower_components/amcharts3/amcharts/pie",
+        "amcharts.radar": "lib/bower_components/amcharts3/amcharts/radar",
+        "amcharts.serial": "lib/bower_components/amcharts3/amcharts/serial",
+        "amcharts.xy": "lib/bower_components/amcharts3/amcharts/xy"
 
     },
 	// map: {
@@ -176,7 +176,7 @@ require.config({
     packages: [
         {
             name: 'famous',
-            location: "../lib/node_modules/famous",
+            location: "lib/node_modules/famous",
             main: 'index'
         }
     ]
@@ -198,7 +198,7 @@ window.req = function req() {
 	});
 };
 
-define("veldapps/Session", ["../lib/node_modules/veldapps-mmx/src/Session"], (Session) => Session);
+define("veldapps/Session", ["lib/node_modules/veldapps-mmx/src/Session"], (Session) => Session);
 define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory", "override"], function(Component, Blocks, Factory) {
 
 	var override = require("override");
@@ -604,11 +604,11 @@ define("utils/asarray", function() {
 	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
 });
 
-define("dygraphs/Dygraph", ["../lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
+define("dygraphs/Dygraph", ["lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
 	return dygraph;
 });
 
-define("ol", ["../lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
+define("ol", ["lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
 	var ol = window.ol || ol_;
 	window.ol = ol;
 	
@@ -653,14 +653,14 @@ define("ol", ["../lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.c
 	
 	return arguments[0];
 });
-define("proj4", ["../lib/node_modules/proj4/dist/proj4-src"], function(P) {
+define("proj4", ["lib/node_modules/proj4/dist/proj4-src"], function(P) {
 	return P;
 });
 define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
-define(("pouchdb"), ["" + "../lib/bower_components/pouchdb/dist/pouchdb", "../lib/bower_components/pouchdb-find/dist/pouchdb.find", 
-	"../lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
+define(("pouchdb"), ["" + "lib/bower_components/pouchdb/dist/pouchdb", "lib/bower_components/pouchdb-find/dist/pouchdb.find", 
+	"lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
 	"pouchdb.authentication",
 	"pouchdb.memory",
 	"pouchdb.save"
@@ -680,12 +680,12 @@ function(pouchdb, find, relational, authentication, memory, save) {
 	return pouchdb;
 });
 
-define(("dropbox"), ["../lib/node_modules/dropbox/dist/Dropbox-sdk", "../lib/node_modules/dropbox/dist/DropboxTeam-sdk"], (dbx) => dbx);
-define("markdown", ["../lib/bower_components/markdown/lib/markdown"], function() {
+define(("dropbox"), ["lib/node_modules/dropbox/dist/Dropbox-sdk", "lib/node_modules/dropbox/dist/DropboxTeam-sdk"], (dbx) => dbx);
+define("markdown", ["lib/bower_components/markdown/lib/markdown"], function() {
 	return window.markdown;
 });
 define("marked", ["lib/node_modules/marked/marked.min"], (marked) => marked);
-define("pace", ["../lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
+define("pace", ["lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			ajax: {
 			    ignoreURLs: ['https://dbs.veldapps.com/'],
@@ -748,116 +748,7 @@ define("clipboard-copy", [], () => {
 	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
 	}
 })
-define("vcl/Component.storage-pouchdb", ["vcl/Component", "pouchdb", "util/net/Url"], function(Component, PouchDB, Url) {
-	var url = new Url();
-	
-	var workspaces = url.getParamValue("workspaces") || url.getParamValue("title");
-	var path = url.getPath().split("/")[0];
-	var app = url.getParamValue("") || path || (workspaces && workspaces.split(",")[0]) || "code";
-	var dbName = url.getParamValue("db") || js.sf("%s-va_objects", app.split(/-|\./).shift());
-	var idPrefix = url.getParamValue("db-id-prefix") || "";
-	var property = "cavalion-vcl:state";
-	var cid = (s, c) => js.sf("[%s %s]", c._name ? c._name : "#" + c.hashCode(), s);
-	
-	var storageDB = new PouchDB(dbName);
-	var db = (c) => c.vars(["storage-db"]) || storageDB;
-	var prefix = (c) => c.vars(["storage-id-prefix"]) || idPrefix;
-	
-	console.log("using", storageDB.name, "for vcl-comps", storageDB);
-	
-/*- perhaps here we should prefix the id (just like in Resources) with the workspace better */
-	
-	function fetch(db, key, opts) {
-		return db.fetch(key, opts);
-	}
-	function save(db, obj, opts) {
-		return db.save(obj, opts);
-	}
-	
-	Component.sync = function(opts) {
-		var dbi = js.sf("https://dbs.veldapps.com/ralphk-%s", dbName);
-		var root = opts.app || require("vcl/Application").instances[0];
-		var sh = db(root).sync(new PouchDB(dbi), opts)
-			.on("error", function(err) {
-				console.error(err);
-				root.print("sync-error", { sh: sh, err: err, 'this': this, args: arguments });
-			})
-			.on("change", function (change) {
-				console.log("change", change);
-				root.print("sync-change", { sh: sh, change: change, 'this': this, args: arguments });
-			})
-			.on("paused", function (info) {
-				console.log("paused", info);
-				root.print("sync-paused", { sh: sh, info: info, 'this': this, args: arguments });
-			})
-			.on("active", function (info) {
-				console.log("active", info);
-				root.print("sync-active", { sh: sh, info: info, 'this': this, args: arguments });
-			});
-			
-		return sh;
-	};
-	Component.storageDB = storageDB;
-
-	js.override(Component.prototype, {
-        readStorage: function (key, callback, errback) {
-
-// this.print(cid("readStorage", this), key);
-
-        	var args = arguments, me = this;
-            fetch(db(me), this.getStorageKey()).then(function(obj) {
-// me.print(cid("readStorage-fetched", me), obj);
-            	if(!obj.hasOwnProperty(property)) {
-        			obj[property] = {};
-            	}
-//             	if(!obj[property].hasOwnProperty(key)) {
-//             		var ls = me.inherited(args);
-//             		if(ls) {
-//             			obj[property][key] = ls;
-// // me.print(cid("copyFromLS", me), [me.getStorageKey(), key, obj[property][key]]);
-//             		}
-//             	}
-            	// if(typeof(obj && obj[property] && obj[property][key]) === "object") {
-            	// 	// try { obj = JSON.parse(obj[property][key]); } catch(e) {}
-            	// 	// obj[property][key] = JSON.stringify(obj[property][key]);
-            	// }
-            	
-            	// callback(obj && obj[property] && obj[property][key]);
-            	callback(obj && obj[property] && js.get(key, obj[property]));
-
-            }).catch(function(e) {
-            	console.error(e);
-            	errback(e);	
-            });
-// console.log("readStorage", me, arguments);
-        },
-        writeStorage: function (key, value, callback, errback) {
-        	var args = arguments, me = this;
-if(typeof value === "string") {
-	try { value = JSON.parse(value); } catch(e) {}
-	console.log("converted to object", value);
-}
-// me.print(cid("writeStorage", me), key, value);
-            fetch(db(me), this.getStorageKey()).then(function(obj) {
-            	if(!obj.hasOwnProperty(property)) {
-        			obj[property] = {};
-            	}
-				// obj[property][key] = value;
-				js.set(key, value, obj[property]);
-				save(db(me), obj).then(function() {
-				    if (typeof callback === "function") { // nextTick?
-				        callback.apply(this, arguments);
-				    }
-				}).catch(function() {
-				    if (typeof errback === "function") { // nextTick?
-				        errback.apply(this, arguments);
-				    }
-				});
-            });
-// console.log("writeStorage", this, arguments);
-        }
-	});
-});
+define("vcl/Component.storage-pouchdb", ["cavalion-pouch/Component.storageDB"], function() { return arguments[0]; });
 define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], function(Component) {
 	Component.prototype.e = function() {
 		if(typeof this.constructor.prototype.execute === "function") {
@@ -994,6 +885,8 @@ define(function(require) {
 	require("locale!en-US");
 	require("console/Printer"); 
 	require("font-awesome");
+	
+	require("veldapps-gds-devtools/index");
 
 	var ComponentNode = require("console/node/vcl/Component");
 	var Factory = require("vcl/Factory");
