@@ -18,6 +18,8 @@
         "util": "../lib/node_modules/cavalion-js/src/util",
         "vcl": "../lib/node_modules/cavalion-vcl/src",
 
+		"cavalion-pouch": "../lib/node_modules/cavalion-pouch",
+
         "json": "../lib/node_modules/cavalion-js/src/json",
         "blocks": "../lib/node_modules/cavalion-blocks/src",
 
