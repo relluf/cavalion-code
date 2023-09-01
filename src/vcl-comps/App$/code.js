@@ -1,3 +1,3 @@
-// alert("!")
+"use js";
 
-[["devtools/App<code>"]];
+[["devtools/App<>"]];
