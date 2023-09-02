@@ -22,8 +22,9 @@
 
 		"veldapps-ol": "lib/node_modules/veldapps-ol/src",
 		"veldapps-xml": "lib/node_modules/veldapps-xml/src",
-		"veldapps-imsikb": "lib/node_modules/veldapps-imsikb/src",
+		"veldapps-imkl": "lib/node_modules/veldapps-imsikb/src",
 		"veldapps-imbro": "lib/node_modules/veldapps-imbro/src",
+		"veldapps-imsikb": "lib/node_modules/veldapps-imsikb/src",
 		"veldapps-gds-devtools": "../lib/node_modules/veldapps-gds-devtools/src",
 
         "veldoffice": "../lib/node_modules/veldoffice-js/src/veldapps.com/veldoffice",
@@ -87,7 +88,15 @@
 			"vcl/ui/Select",
 			"vcl/ui/Popup",
 			"vcl-veldoffice/Query",
-			"vcl/entities/Query"
+			"vcl/entities/Query",
+			
+			"veldapps-imkl/util",
+			"veldapps-imkl/js/nameOf/methods",
+			"veldapps-imkl/lookup",
+			"veldapps-imkl/guess",
+			"veldapps-imkl/urns",
+			"vcl/ui/Radiobutton",
+			"vcl/ui/Checkbox"
 			
     ]
 }
