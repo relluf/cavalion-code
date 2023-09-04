@@ -23,12 +23,29 @@
 	<meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	
+	<style>
+        #build { 
+			font-family: -apple-system, "SF Pro Text", "SF UI Text", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-size: 14px; font-weight: bold; position: absolute; bottom: 32px; text-align: center; width: 100%;
+		}
+		#build:not(.on) { opacity:0.05; }
+		#build.on { z-index: 99999999; margin-left: 45%; width: 10%; }
+		#build.glass { background-color: rgba(255,255,255,0.25); backdrop-filter: blur(10px); border-radius: 5px; border: 1px solid transparent; box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 2px 0px;}
+        #logo { width: 500px; transition: transform 450ms; }
+        #logo.full-page { position:absolute;top:0;left:0;width:100%;height:100%; }
+        #logo.full-page-anim { transform: scale3d(3, 3, 1) translate3d(0, 50px, 0); }
+	</style>
+
 	<script>
-		require = { waitSeconds: 900, baseUrl: "src/", urlArgs: "1.0.193c" };
+		require = { waitSeconds: 900, baseUrl: "src/", urlArgs: "1.0.193d" };
 	</script>
 	<script 
 		src="lib/bower_components/requirejs/require.js" 
 		data-main="lib.js"></script>
 </head>
-<body><div id="devtools-loading" style="text-align:center;padding-top:15%;"><img src="/shared/vcl/images/loading.gif"></div></body>
+<body><div id="devtools-loading" style="text-align:center;padding-top:15%;"><img src="/shared/vcl/images/loading.gif"></div>
+	<div id="build"><script>(document.getElementById("build").innerHTML=require.toUrl("").split("?").pop())</script></div>
+</body>
+
+
 </html>
