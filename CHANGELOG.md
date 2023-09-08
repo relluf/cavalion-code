@@ -1,3 +1,7 @@
+### 2023/09/03 - @1.0.193d
+
+* Getting BVX up to speed, literally with faster loading speeds
+
 ### 2023/08/29 - @1.0.180-181
 
 * Start of BXV at veldapps.com
@@ -6,7 +10,6 @@
 ### 2023/07/05 - @1.0.179
 
 * Updated packages and stuff didn't work
-
 
 ### 2023/03/26 - @1.0.178
 

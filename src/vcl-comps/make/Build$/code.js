@@ -50,7 +50,20 @@
 "cavalion-blocks/veldapps/locales",
 		
 		
-		
+"veldoffice/devtools",
+"veldoffice/VO",
+"veldoffice/EM",
+"veldoffice/Session",
+"veldoffice/models",
+"entities/Model",
+"ace/ext/modelist",
+"lib/bower_components/markdown/lib/markdown",
+"cavalion-blocks/veldapps/ListOf<>/where",
+"vcl/ui/PopupButton",
+"vcl/ui/Select",
+"vcl/ui/Popup",
+"vcl-veldoffice/Query",
+"vcl/entities/Query"
 		
 		
 		],
@@ -88,7 +101,24 @@
 			"text!vcl-comps/ui/controls/SizeHandle.js",
 			"text!vcl-comps/devtools/DragDropHandler$/dropbox.js",
 			"text!vcl/prototypes/devtools/CtrlCtrl.js",
-			"text!vcl/prototypes/devtools/Navigator.js"
+			"text!vcl/prototypes/devtools/Navigator.js",
+			
+			"text!cavalion-blocks/veldoffice/ListOf<>/Document.js",
+			"text!cavalion-blocks/veldapps/ListOf<>/Document.js",
+			"text!blocks/prototypes/Column.js",
+			"text!blocks/prototypes/Group.js",
+			"text!cavalion-blocks/veldapps/ListOf.js",
+			"text!blocks/prototypes/Input.js",
+			"text!blocks/prototypes/Tab.js",
+			"text!veldoffice/models.json",
+			"text!blocks/prototypes/Button.js",
+			"text!blocks/prototypes/List.js",
+			
+			"text!blocks/prototypes/Array.js",
+			"text!blocks/prototypes/Radiobutton.js",
+			"text!blocks/prototypes/Checkbox.js",
+			"text!blocks/prototypes/Ace.js",
+			"text!blocks/prototypes/Tabs.js"
 
         ]
 //     implicit_components: {

@@ -14,6 +14,16 @@ define(["./prototype"], function(proto) { return {
 	"Ready":							"Klaar",
 	"Yes":								"Ja",
 	"No":								"Nee",
+	
+	"Login": {
+		".title":						"Aanmelden",
+		"-user":						"Gebruikersnaam",
+		"-password":					"Wachtwoord",
+		".messages": {
+			"-login-fail":				"<b>Toegang geweigerd</b><br>%H",
+			"-login-ok":				"<b>Welkom</b><br>%H"
+		}
+	},
 
 	"Application": {
 		"-build":						document.head.dataset.version,
