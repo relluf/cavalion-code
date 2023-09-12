@@ -1,3 +1,28 @@
+* √ Code: toast sizer selection instead activating console
+* √ Code: if you click a folder-url with Cmd, open the [.md]() :-D
+* √ Code: Delete to destroy selected component/control with confirm (alt?)
+* √ Code: Alt+Cmd+Click on an <a>nchor should block sizer behaviour
+* √ Code: Alt+Tap-thingy of links in Markdown should **always** postfix 
+
+### 2023/09/07
+
+* build 1.0.193k
+* build 1.0.193j
+* build 1.0.193i
+* build 1.0.193h
+
+### 2023/09/06
+
+* build 1.0.193g
+
+### 2023/09/05
+
+* build 1.0.193f
+
+### 2023/09/04
+
+* build 1.0.193e
+
 ### 2023/09/03 - @1.0.193d
 
 * Getting BVX up to speed, literally with faster loading speeds
