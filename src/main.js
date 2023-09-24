@@ -197,6 +197,7 @@ window.req = function req() {
 	    require(modules, resolve, reject);
 	});
 };
+window.cl = console.log;
 
 define("veldapps/Session", ["lib/node_modules/veldapps-mmx/src/Session"], (Session) => Session);
 define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory", "override"], function(Component, Blocks, Factory) {
