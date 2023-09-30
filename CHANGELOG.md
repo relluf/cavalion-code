@@ -1,8 +1,29 @@
+### 2023/09/30 build 1.0.196
+
+* The latest improvements made in Editor<md> are needed at veldoffice.nl ;-)
+
+### 2023/09/12 build 1.0.194
+
+Developing [BXV](https://veldapps.com/bxv) and [SMDL]() aka [supermarkdownland.com](https://:)
+
+* √ Code: Save resources locally with (**Ctrl+Alt+Cmd+S**)
 * √ Code: toast sizer selection instead activating console
 * √ Code: if you click a folder-url with Cmd, open the [.md]() :-D
 * √ Code: Delete to destroy selected component/control with confirm (alt?)
 * √ Code: Alt+Cmd+Click on an <a>nchor should block sizer behaviour
+* √ Code: Hotkey for destroying active workspace, properly, ie. including its tab
 * √ Code: Alt+Tap-thingy of links in Markdown should **always** postfix 
+* √ Code: toggle-workspaces-tabs should alter CSS not visible
+* √ Code: devtools/Workspace<cavalion-blocks>: Alt+Cmd+F1 should load .md from directory at least
+* √ Code: specify specializer optionally, and use `name` for tab
+* √ Code: Shift+F2
+* √ Code: another shortcut for Cmd+Shift+W => Cmd+Shift+2 (50)
+* √ Code: fix #workspace-open for [cavalion-blocks:Dropbox-veldapps/Issues/VA-20220501-1-Map/Map](#workspace-open::)
+* √ Code: loads `.md` as well, why?
+* √ Code: instantiate blocks component, relative to current Markdown-document, embedded in a Hover<>: `[](<<[./:]>>)`
+* √ Code: (if not shown before) #left-sidebar #console doesn't show when evaluating expressions in Markdown
+* √ Code: Shift+Alt+Click doesn't work @ veldapps.com
+* √ Code: Copy, paste editor-tabs between workspaces (**Shift+Ctrl+Up, Cmd+C**)
 
 ### 2023/09/07
 
