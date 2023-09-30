@@ -651,8 +651,51 @@ define("ol", ["lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"
 			return value;
 		};
 	}());
-	
+	ol.control.defaults.defaults = ol.control.defaults;
+
 	return arguments[0];
+});
+define("ol-8.1.0", ["lib/ol-8.1.0-dist/ol", "stylesheet!../lib/ol-8.1.0-dist/ol.css"], ol => {
+	ol = window.ol; // that was better before 7.1.0
+	ol.create = ol.convert = (function(){
+		return function convert(value, properties) {
+			function instantiate(def, properties) {
+			
+				var values = def[1] || {};
+				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
+			
+				for(var name in values) {
+					var value = values[name];
+					values[name] = convert(value, properties);
+				}
+				
+				/*- jshint:evil */
+				return eval(code);
+			}
+		
+			// TODO escape with backslash
+			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
+				return properties[value.substring(1)];
+			}
+			
+			if(!(value instanceof Array)) {
+				return value;
+			}
+				
+			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
+				return value.map(function(val) {
+					return convert(val, properties);
+				});
+			}
+			
+			if(value[0].indexOf("ol:") === 0) {
+				value = instantiate(value, properties);
+			}
+			
+			return value;
+		};
+	}());	
+	return ol;
 });
 define("proj4", ["lib/node_modules/proj4/dist/proj4-src"], function(P) {
 	return P;
