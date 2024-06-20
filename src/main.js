@@ -36,8 +36,8 @@ require.config({
         /*- cavalion.org */
         "js": cavalion_js + "js",
         "console": cavalion_js + "console",
-        "vcl": cavalion_vcl,
-        "blocks": cavalion_blocks,
+        "vcl": cavalion_vcl.replace(/\/$/, ""),
+        "blocks": cavalion_blocks.replace(/\/$/, ""),
         "pouch": cavalion_pouch,
 
         "data": cavalion_js + "data",
@@ -605,6 +605,8 @@ define("utils/asarray", function() {
 	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
 });
 
+define(("dropzone"), ["lib/node_modules/dropzone/dist/dropzone-amd-module", "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
+
 define("dygraphs/Dygraph", ["lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
 	return dygraph;
 });
@@ -811,7 +813,6 @@ define("vcl/Factory.fetch-resources", ["vcl/Factory", "vcl/Component", "devtools
 			name = name.split("<").join("$/").split(">")[0];
 		}
 
-
 		return Resources.get(js.sf("pouchdb://%s/vcl-comps%s.js", Component.storageDB.name, name))
 				.then(function(obj) {
 					var src = js.get("vcl-comps:source", obj);
@@ -861,13 +862,13 @@ define("vcl/Factory.fetch-storageDB", ["vcl/Factory", "vcl/Component"], (Factory
 	};
 });
 define("blocks/Factory.fetch-resources", ["blocks/Factory", "vcl/Component", "devtools/Resources"], (Factory, Component, Resources) => {
+	/*- So, fetch() is called **always**, default implementation reject()s, which is anticipated (catch()) and it falls back on RequireJS config */
 	Factory.fetch = function(name) {
 		var keys = Component.getKeysByUri(name);
 		name = js.sf("%s/%s", keys.namespace, keys.name);
 		if(keys.classes.length) {
 			name += js.sf(".%s", keys.classes.join("."));
 		}
-		
 		if(keys.specializer) {
 			name += js.sf("<>/%s", keys.specializer);
 			if(keys.specializer_classes.length) {
@@ -883,6 +884,9 @@ define("blocks/Factory.fetch-resources", ["blocks/Factory", "vcl/Component", "de
 
 		return Resources.get(js.sf("pouchdb://%s/cavalion-blocks%s.js", Component.storageDB.name, name))
 			.then(function(obj) {
+
+console.log("FETCH", obj, js.sf("pouchdb://%s/cavalion-blocks%s.js", Component.storageDB.name, name))
+
 				var src = js.get("cavalion-blocks:source", obj);
 				if(src === undefined) {
 					src = js.get("devtools:resource.text", obj);
