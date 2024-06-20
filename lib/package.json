@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "cavalion-blocks": "^0.9.26",
     "cavalion-devtools": "^1.0.56",
     "cavalion-js": "^1.0.67",
@@ -12,6 +13,7 @@
     "clipboard-copy": "^4.0.1",
     "clipboard-polyfill": "^2.8.6",
     "dropbox": "^4.0.30",
+    "dropzone": "^5.9.3",
     "dygraphs": "^2.1.0",
     "famous": "^0.7.1",
     "fast-xml-parser": "^3.21.1",
@@ -31,6 +33,7 @@
     "paste-image": "0.0.3",
     "proj4": "^2.7.5",
     "regression": "^2.0.1",
+    "tailwindcss": "^3.3.5",
     "veldapps-imbro": "^1.0.7",
     "veldapps-imkl": "^1.0.1",
     "veldapps-imsikb": "^1.0.24",
