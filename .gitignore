@@ -3,3 +3,11 @@ build/
 lib/bower_components
 lib/node_modules
 lib/package-lock.json
+src/cavalion-blocks/veldapps
+src/cavalion-blocks/veldoffice
+src/vcl-comps/devtools
+src/vcl-comps/veldoffice
+src/lib
+src/devtools
+src/v7
+src/va
