@@ -49,35 +49,47 @@ require.config({
         "on": cavalion_js + "on",
         "yell": cavalion_js + "yell",
         
-		"cavalion-pouch": "/home/Workspaces/cavalion.org/cavalion-pouch",
+		"cavalion-pouch": "lib/node_modules/cavalion-pouch",
         "xslt": "lib/node_modules/xslt/dist/xslt",
-        "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
+        // "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
         "mapbox-gl": "lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
 
-		// "veldapps-ol": "/home/Workspaces/veldapps.com/veldapps-ol/src",
-		"veldapps-ol": "lib/node_modules/veldapps-ol/src",
-		// "veldapps-xml": "/home/Workspaces/veldapps.com/veldapps-xml/src",
-		"veldapps-xml": "lib/node_modules/veldapps-xml/src",
-		// "veldapps-imkl": "/home/Workspaces/veldapps.com/veldapps-imkl/src",
-		"veldapps-imkl": "lib/node_modules/veldapps-imkl/src",
-		// "veldapps-imsikb": "/home/Workspaces/veldapps.com/veldapps-imsikb/src",
-		"veldapps-imsikb": "lib/node_modules/veldapps-imsikb/src",
-		// "veldapps-imbro": "/home/Workspaces/veldapps.com/veldapps-imbro/src",
-		"veldapps-imbro": "lib/node_modules/veldapps-imbro/src",
-		// "vo": "/home/Workspaces/veldapps.com/veldapps-vo/src",
-		// "vo": "lib/node_modules/veldapps-vo/src",
-		"veldapps-gds-devtools": "/home/Workspaces/veldapps.com/veldapps-gds-devtools/src",
-		// "veldapps-gds-devtools": "lib/node_modules/veldapps-gds-devtools/src",
-		
-		"veldoffice": veldoffice_js + "veldapps.com/veldoffice",
-		"vcl-veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
-		// "vcl/veldoffice": veldoffice_js + "veldapps.com/veldoffice/vcl-veldoffice",
-		/*- veldapps.com/leaflet */
+		"bxv": "../lib/node_modules/veldapps-bxv-parser/src",
+		"bro": "../lib/node_modules/veldapps-imbro/src",
+		// "bro": "../lib/node_modules/veldapps-xmlgen-broservices",
+		"sikb": "../lib/node_modules/veldapps-imsikb/src",
+		"sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
+
+		"veldapps-ol": npm("veldapps-ol/src"),
+		"veldapps-xml": npm("veldapps-xml/src"),
+		"veldapps-imkl": npm("veldapps-imkl/src"),
+		"veldapps-imsikb": npm("veldapps-imsikb/src"),
+		"veldapps-imbro": npm("veldapps-imbro/src"),
+		"veldapps-gds-devtools": npm("veldapps-gds-devtools/src"),
+
+		"vcl-veldoffice": veldoffice_js + "/veldapps.com/veldoffice/vcl-veldoffice",
+		"veldoffice": veldoffice_js + "/veldapps.com/veldoffice",
+
+        "ace": "../lib/bower_components/ace/lib/ace",
+		"less": "../lib/bower_components/less/dist/less.min",
+        "moment": "../lib/bower_components/moment/moment",
+        "moment-locale": "../lib/bower_components/moment/locale",
+        "moment-timezone": "../lib/bower_components/moment-timezone/moment-timezone",
+
+		"jquery": npm("veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min"),
+		"proj4": npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
+		"epsg": npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
+		"leaflet": npm("veldapps-leaflet-js/src/leafletjs.com"),
+
+        "fast-xml-parser": "../lib/fast-xml-parser/parser",
+		"papaparse": "../lib/node_modules/papaparse",
+		"jszip": "../lib/node_modules/jszip/dist/jszip.min",
+		"jspdf": "../lib/node_modules/jspdf/dist/jspdf.umd",
 
 		/*- veldapps-leaflet/3rd party */
-		"proj4": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
-		"epsg": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
-		"leaflet": "lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
+		// "proj4": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
+		// "epsg": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
+		// "leaflet": "lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
 		"famous": "lib/node_modules/famous",
 
 		"ipfs": "lib/node_modules/ipfs/dist/index.min",
@@ -86,15 +98,15 @@ require.config({
         "xml-js": "lib/node_modules/xml-js/dist/xml-js",
         "handlebars": "lib/node_modules/handlebars/dist/handlebars.min",
         
-        "sikb0101": "lib/node_modules/veldapps-xmlgen-imsikb",
+        // "sikb0101": "lib/node_modules/veldapps-xmlgen-imsikb",
         "xml-formatter": "lib/node_modules/xml-formatter/dist/browser/xml-formatter",
 
 		/*- bower */
-        "ace": "lib/bower_components/ace/lib/ace",
-        "less": "lib/bower_components/less/dist/less",
-        "moment": "lib/bower_components/moment/moment",
-        "moment-locale": "lib/bower_components/moment/locale",
-        "jquery": "lib/bower_components/jquery/dist/jquery",
+        // "ace": "lib/bower_components/ace/lib/ace",
+        // "less": "lib/bower_components/less/dist/less",
+        // "moment": "lib/bower_components/moment/moment",
+        // "moment-locale": "lib/bower_components/moment/locale",
+        // "jquery": "lib/bower_components/jquery/dist/jquery",
         "backbone": "lib/bower_components/backbone/backbone",
         "underscore": "lib/bower_components/underscore/underscore",
         "js-yaml": "lib/bower_components/js-yaml/dist/js-yaml",
@@ -109,9 +121,9 @@ require.config({
 		"chartjs": "lib/node_modules/chart.js/dist",
 		"dygraphs/Dygraph": "lib/node_modules/dygraphs/dist/dygraph",
 
-        "fast-xml-parser": "lib/fast-xml-parser/parser",
-		"papaparse": "lib/node_modules/papaparse",
-		"jspdf": "lib/node_modules/jspdf/dist/jspdf.umd",
+  //      "fast-xml-parser": "lib/fast-xml-parser/parser",
+		// "papaparse": "lib/node_modules/papaparse",
+		// "jspdf": "lib/node_modules/jspdf/dist/jspdf.umd",
 		"html2canvas": "lib/node_modules/html2canvas/dist/html2canvas.min",
 
 		/*- amcharts3 */
@@ -946,8 +958,15 @@ define(function(require) {
 	window.j$ = JsObject.$;
 	window.B = require("B")
 	window.addEventListener("beforeunload", (e) => {
-		// check for dirty editors?
-		e.returnValue  = "Are you sure?";
+		const app = window.app;
+		if(app) {
+			const cul = app.vars("canunload");
+			if(typeof cul === "function" && !cul(app, e)) {
+				e.returnValue = "Are you sure?"
+			} else if(!cul) {
+				e.returnValue = "Are you sure?"
+			}
+		}
 	});
 
 	require("vcl/Component.storage-pouchdb");
