@@ -25,6 +25,9 @@ require.config({
         "Projects": "/home/Projects",
         "Library": "/home/Library",
         "Workspaces": "/home/Workspaces",
+        
+        "npm": "lib/node_modules",
+        "bwr": "lib/bower_components",
 
         /*- bangers! */
         "stylesheet": cavalion_js + "stylesheet",
@@ -70,7 +73,8 @@ require.config({
 		"vcl-veldoffice": veldoffice_js + "/veldapps.com/veldoffice/vcl-veldoffice",
 		"veldoffice": veldoffice_js + "/veldapps.com/veldoffice",
 
-        "ace": "../lib/bower_components/ace/lib/ace",
+        // "ace": "../lib/bower_components/ace/lib/ace",
+        "ace": "../lib/node_modules/ace-builds/src",
 		"less": "../lib/bower_components/less/dist/less.min",
         "moment": "../lib/bower_components/moment/moment",
         "moment-locale": "../lib/bower_components/moment/locale",
@@ -388,6 +392,12 @@ define("Element", ["on"], function(on) {
 	        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
 	    );
 	};
+	Element.prototype.soup = function selfOrUp(selector) {
+		if(this.matches(selector)) {
+			return this;
+		}
+		return this.up(selector);
+	};
 	/* Again */
 	document.down = document.qs = document.querySelector;
 	document.qsa = document.querySelectorAll;
@@ -619,6 +629,9 @@ define("utils/asarray", function() {
 
 define(("dropzone"), ["lib/node_modules/dropzone/dist/dropzone-amd-module", "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
 
+define("mime-db", ["json!npm/mime-db/db"], (db) => db);
+define("mime-types", ["npm/mime-types/lookup"], (lu) => lu);
+
 define("dygraphs/Dygraph", ["lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
 	return dygraph;
 });
@@ -763,7 +776,7 @@ define("clipboard-copy", [], () => {
 	  // Use the Async Clipboard API when available. Requires a secure browsing
 	  // context (i.e. HTTPS)
 	  if (navigator.clipboard) {
-	    return navigator.clipboard.writeText(text).catch(function (err) {
+	    return navigator.clipboard.writeText(text).then(() => text).catch(function (err) {
 	      throw (err !== undefined ? err : new DOMException('The request is not allowed', 'NotAllowedError'))
 	    })
 	  }
@@ -802,11 +815,16 @@ define("clipboard-copy", [], () => {
 	  window.document.body.removeChild(span)
 	
 	  return success
-	    ? Promise.resolve()
+	    ? Promise.resolve(text)
 	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
 	}
-})
-define("vcl/Component.storage-pouchdb", ["cavalion-pouch/Component.storageDB"], function() { return arguments[0]; });
+});
+define("vcl/Component.storage-pouchdb", ["cavalion-pouch/Component.storageDB", "devtools/Resources"], (DB, Resources) => { 
+
+	
+	return DB;
+	
+});
 define("vcl/Component.all-kinds-of-aliases-for-codenvide", ["vcl/Component"], function(Component) {
 	Component.prototype.e = function() {
 		if(typeof this.constructor.prototype.execute === "function") {
@@ -948,6 +966,7 @@ define(function(require) {
 	
 	require("veldapps-gds-devtools/index");
 
+	var Resources = require("devtools/Resources");
 	var ComponentNode = require("console/node/vcl/Component");
 	var Factory = require("vcl/Factory");
 	var Url = require("util/net/Url");
@@ -963,8 +982,6 @@ define(function(require) {
 			const cul = app.vars("canunload");
 			if(typeof cul === "function" && !cul(app, e)) {
 				e.returnValue = "Are you sure?"
-			} else if(!cul) {
-				e.returnValue = "Are you sure?"
 			}
 		}
 	});
@@ -975,6 +992,10 @@ define(function(require) {
 	require("vcl/Factory.fetch-resources");
 	require("blocks/Factory.fetch-resources");
 	require("stylesheet!styles.less");
+
+	Resources.getDefaultURIBase = (uri) => {
+		return js.sf("pouchdb://%s/", req("vcl/Component").storageDB.name);
+	};
 
 	var url = new Url(), app = js.sf("App<%s>", [ 
 		url.getPath().split("/")[0] || "code", 
