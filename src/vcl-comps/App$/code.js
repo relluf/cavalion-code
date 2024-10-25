@@ -1,3 +1,5 @@
 "use js";
 
-[["devtools/App<>"]];
+[["devtools/App<>"], {
+	vars: { 'canunload': () => false }
+}];

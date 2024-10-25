@@ -1,6 +1,11 @@
 "use vcl/Component";
 
-var Component = require("vcl/Component");
+const Method = require("js/Method");
+const Component = require("vcl/Component");
+
+const Res = require("devtools/Resources");
+const H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
+const C = (id) => j$[id];
 
 function setPaths() {
 	localStorage.setItem("cavalion-js-path", "/home/Workspaces/cavalion.org/cavalion-js/src/");
@@ -25,26 +30,48 @@ function edit(component) {
 	}
 }
 
+
+/*- HM-20241010-1-method-auto-require-in-first-call
+		
+		let cc = Method.lazyreq("clipboard-copy", resolved => cc = resolved);
+		
+*/
+let cc = function() {
+	// const args = js.copy_args(arguments);
+	return Promise.resolve(req("clipboard-copy")).then(cc_ => {
+		cc = cc_;
+		return cc.apply(window, arguments);
+	});
+};
+
+
 ["", {}, [
-    ["#console", {
+	
+	["vcl/Action", ("reload"), {
+		hotkey: "MetaCtrl+R",
+		on(evt) {
+			evt.preventDefault();
+			this.app()
+				.qsa("devtools/Alphaview<> #reload")
+				.forEach(b => b.onclick());
+		}
+	}],
+	
+    [("#console"), {
         onEvaluate: function (expr) {
-            var scope = this.scope(), me = this;
-
-			var app = this.app();
-            var ws = app.down("devtools/Workspace<>:root:selected:visible");
-            // var ace = ws && ws.down("devtools/Editor<>:root < vcl/ui/Ace:visible");
-            // var ace = ws && ws.qsa("devtools/Editor<>:root:visible #ace").pop();
-            var ace = ws && ws.qsa("devtools/Editor<>:root:visible").map(_ => _.down("#ace")).pop();
+			const app = this.app();
+            const ws = app.down("devtools/Workspace<>:root:selected:visible");
+            // const ace = ws && ws.down("devtools/Editor<>:root < vcl/ui/Ace:visible");
+            // const ace = ws && ws.qsa("devtools/Editor<>:root:visible #ace").pop();
+            const ace = ws && ws.qsa("devtools/Editor<>:root:visible").map(_ => _.down("#ace")).pop();
 			// ws.qsa("devtools/Editor<>:root:visible #ace")
-            var host = ws && ws.qsa("devtools/Editor<>:root:visible #host").pop();
-            var root = ace && ace.up().down(":root");
-            var pr = this.print.bind(this);
+            const host = ws && ws.qsa("devtools/Editor<>:root:visible #host").pop();
+            const root = ace && ace.up().down(":root");
+            const pr = this.print.bind(this);
 
-            function open(uri, opts) {
-                me.bubble("openform", js.mixIn(js.mixIn(opts || {}), {
-                    uri: uri
-                }));
-            }
+            const open = (uri, opts) => this.bubble(
+            	"openform", js.mi(js.mi(opts || {}), { uri: uri })
+            );
 
             /* jshint evil: true */
             return eval(expr);

@@ -1,10 +1,13 @@
-"use locale";
+"use locale, veldoffice/VO";
+
+window.VO = require("veldoffice/VO");
 
 require("locale").mixIn({
 		
 	});
 
-[["devtools/App<veldoffice>"], { 
+[["vcl/prototypes/App.v2"], {
+// [["devtools/App<veldoffice>"], { 
 	title: "BXV", 
 	vars: {
 		"markdown-source-intially-hidden": true
