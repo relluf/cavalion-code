@@ -33,7 +33,7 @@
         "json": "../lib/node_modules/cavalion-js/src/json",
         "blocks": "../lib/node_modules/cavalion-blocks/src",
 
-        "ace": "../lib/bower_components/ace/lib/ace",
+        "ace": "../lib/node_modules/ace-builds/src",
         "less": "../lib/bower_components/less/dist/less",
         "jquery": "../lib/node_modules/veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min",
         "proj4": "../lib/node_modules/veldoffice-js/src/proj4js.org/proj4-src",
@@ -50,53 +50,6 @@
         "start": "(function() {",
         "end": "require(['app'], function() { require(['main']); })}());"
     },
-    "include": ["js/global", "js/beautify", "js/minify", "js/nameOf", "js/serialize", "util/Browser", "util/Event", "locales/prototype", "locales/en-US", "text", "vcl/ui/Ace", "vcl/ui/FormContainer", "vcl/ui/Form", "vcl/ui/Panel", "vcl/Control", "vcl/ui/Container", "vcl/ui/Element", "util/Stylesheet", "util/DocumentHook", "vcl/Action", "vcl/EventDispatcher", "vcl/ControlUpdater", "vcl/CssRules", "vcl/Dragger", "data/SourceEvent", "util/Ajax", "util/HotkeyManager", "util/Keyboard", "util/Fullscreen", "vcl/Application", "util/Command", "vcl/ui/Sizer", "entities/EM", "entities/ExpressionBuilder", "util/Rest", "features/FM", "entities/Instance", "jquery", "data/Source", "data/SourceState", "vcl/ui/Button", "vcl/ui/Console", "vcl/ui/Console.evaluate", "vcl/ui/Tab", "vcl/ui/Bar", "vcl/ui/Input", "vcl/ui/Tabs", "vcl/ui/Node", "vcl/ui/ListHeader", "vcl/ui/Group", "devtools/NavigatorNode", "devtools/Resources", "devtools/Resources-node", "vcl/data/Array", "vcl/ui/List", "vcl/ui/ListColumn", "vcl/ui/Tree", "vcl/ui/ListFooter", "vcl/ui/ListBody", "vcl/ui/ListRow", "util/Xml", "on", "../lib/bower_components/markdown/lib/markdown", "vcl/ui/CheckGroup", "util/HtmlElement", "v7/pdok/viewer-metadata", "v7/pdok/themes", "util/Hash", "utils/asarray", "json", "fast-xml-parser", "js/Type", "js/Property", "vcl/Listeners", "js/mixInRecursive", "vcl/Component.query", "console/node/OnlyKey", "util/net/Url", "blocks/Blocks", "ace/ace", "ace/commands/default_commands", "ace/lib/fixoldbrowsers", "ace/lib/dom", "ace/lib/event", "ace/range", "ace/editor", "ace/edit_session", "ace/virtual_renderer", "ace/undomanager", "ace/worker/worker_client", "ace/keyboard/hash_handler", "ace/placeholder", "ace/multi_select", "ace/mode/folding/fold_mode", "ace/ext/error_marker", "ace/theme/textmate", "ace/config", "ace/lib/lang", "ace/lib/useragent", "ace/lib/keys", "ace/lib/oop", "ace/keyboard/textinput", "ace/mouse/mouse_handler", "ace/search", "ace/keyboard/keybinding", "ace/mouse/fold_handler", "ace/commands/command_manager", "ace/bidihandler", "ace/token_iterator", "ace/clipboard", "ace/lib/event_emitter", "ace/selection", "ace/mode/text", "ace/document", "ace/background_tokenizer", "ace/search_highlight", "ace/edit_session/folding", "ace/edit_session/bracket_match", "ace/layer/gutter", "ace/layer/marker", "ace/layer/text", "ace/layer/cursor", "ace/scrollbar", "ace/renderloop", "ace/requirejs/text", "ace/layer/font_metrics", "ace/range_list", "ace/mouse/multi_select_handler", "ace/commands/multi_select_commands", "ace/line_widgets", "ace/lib/app_config", "ace/mouse/default_handlers", "ace/mouse/default_gutter_handler", "ace/mouse/mouse_event", "ace/mouse/dragdrop_handler", "ace/lib/bidiutil", "ace/mouse/touch_handler", "ace/tokenizer", "ace/mode/text_highlight_rules", "ace/mode/behaviour/cstyle", "ace/unicode", "ace/apply_delta", "ace/anchor", "ace/edit_session/fold_line", "ace/layer/lines", "ace/edit_session/fold", "ace/lib/net", "ace/tooltip", "ace/mode/behaviour", "devtools/Resources-pouchdb", "devtools/Resources-dropbox", "devtools/Resources-dropped", "../lib/node_modules/dropbox/dist/Dropbox-sdk", "../lib/node_modules/dropbox/dist/DropboxTeam-sdk", "ace/theme/eclipse", "ace/mode/javascript", "ace/mode/matching_brace_outdent", "ace/mode/javascript_highlight_rules", "ace/mode/folding/cstyle", "ace/mode/doc_comment_highlight_rules", "ace/mode/markdown", "ace/mode/folding/markdown", "ace/mode/html", "ace/mode/sh", "ace/mode/css", "ace/mode/xml", "ace/mode/html_highlight_rules", "ace/mode/folding/html", "ace/mode/behaviour/xml", "ace/mode/html_completions", "ace/mode/sh_highlight_rules", "ace/mode/css_highlight_rules", "ace/mode/css_completions", "ace/mode/behaviour/css", "ace/mode/xml_highlight_rules", "ace/mode/folding/xml", "ace/mode/folding/mixed", "ace/mode/markdown_highlight_rules", "ace/ext/searchbox", "ace/mode/gitignore", "ace/mode/gitignore_highlight_rules", "ace/mode/json", "ace/mode/json_highlight_rules",
-			"ace/ext/modelist",
-			"ace/lib/es6-shim",
-
-			"js/referenceClass",
-			"js/Enum",
-			"js/_js",
-
-			"cavalion-pouch/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
-			"cavalion-pouch/bower_components/pouchdb-find/dist/pouchdb.find",
-			"cavalion-pouch/pouchdb.save",
-			"cavalion-pouch/bower_components/pouchdb/dist/pouchdb",
-			"lib/bower_components/markdown/lib/markdown",
-			"lib/bower_components/pouchdb-find/dist/pouchdb.find",
-			"lib/bower_components/pouchdb/dist/pouchdb",
-			"lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
-			"lib/node_modules/dropbox/dist/DropboxTeam-sdk",
-			"lib/node_modules/dropbox/dist/Dropbox-sdk",
-			"lib/node_modules/proj4/dist/proj4-src",
-			"lib/ol-6.14.1-dist/ol",
-			"pouchdb.save",
-			"pouchdb.authentication",
-			"pouchdb.memory",
-
-			"cavalion-blocks/veldapps/_",
-			"cavalion-blocks/veldapps/locales",
-			
-			"veldoffice/VO",
-			"veldoffice/EM",
-			"veldoffice/Session",
-			"veldoffice/models",
-			"veldoffice/KLIC",
-			"entities/Model",
-			"cavalion-blocks/veldapps/ListOf<>/where",
-			"vcl/ui/PopupButton",
-			"vcl/ui/Select",
-			"vcl/ui/Popup",
-			"vcl-veldoffice/Query",
-			"vcl/entities/Query",
-			
-			"veldapps-imkl/util",
-			"veldapps-imkl/js/nameOf/methods",
-			"veldapps-imkl/lookup",
-			"veldapps-imkl/guess",
-			"veldapps-imkl/urns",
-			"vcl/ui/Radiobutton",
-			"vcl/ui/Checkbox"
-			
+    "include": ["js/nameOf","js/Enum","js/_js","util/Browser","util/HtmlElement","util/Event","console/node/OnlyKey","cavalion-pouch/bower_components/relational-pouch/dist/pouchdb.relational-pouch","veldapps-gds-devtools/index","cavalion-pouch/bower_components/pouchdb-find/dist/pouchdb.find","devtools/Resources","js/minify","cavalion-pouch/pouchdb.save","js/beautify","cavalion-pouch/bower_components/pouchdb/dist/pouchdb","js/serialize","text","veldapps-gds-devtools/vcl-comps/devtools/Renderer$/locales/prototype","veldapps-gds-devtools/vcl-comps/devtools/Renderer$/locales/nl","vcl/Factory","devtools/Resources-node","util/Hash","devtools/Resources-pouchdb","devtools/Resources-dropped","devtools/Resources-dropbox","devtools/Resources-ddh","devtools/Resources-gdrive","vcl/Factory.parse","lib/bower_components/pouchdb-find/dist/pouchdb.find","lib/bower_components/pouchdb/dist/pouchdb","pouchdb.authentication","lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch","pouchdb.save","vcl/Application","pouchdb.memory","lib/node_modules/dropbox/dist/Dropbox-sdk","vcl/EventDispatcher","vcl/CssRules","util/DocumentHook","util/Stylesheet","util/Ajax","js/global","locales/prototype","locales/en-US","veldapps-gds-devtools/Util","lib/node_modules/dropbox/dist/DropboxTeam-sdk","vcl/ui/Ace","vcl/ui/FormContainer","vcl/ui/Panel","util/Text","vcl/ui/Form","vcl/ui/Container","vcl/Control","ace/ace","vcl/ui/Element","vcl/ControlUpdater","vcl/Action","vcl/Dragger","data/SourceEvent","util/HotkeyManager","util/Keyboard","vcl/ui/Button","util/Fullscreen","vcl/ui/Popup","vcl/ui/List","vcl/ui/Tree","vcl/ui/Node","data/Source","vcl/ui/ListColumn","vcl/ui/ListFooter","vcl/ui/ListHeader","vcl/ui/ListRow","vcl/ui/Group","vcl/ui/ListBody","data/SourceState","devtools/Parser","vcl/ui/Sizer","devtools/cavalion-devtools","veldapps-xml/index","util/Xml","lib/bower_components/markdown/lib/markdown","lib/node_modules/papaparse/papaparse","vcl/ui/Input","veldapps-xml/fast-xml-parser/parser","vcl/ui/Console","vcl/ui/Console.evaluate","vcl/ui/Tab","vcl/ui/Bar","vcl/data/Array","vcl/ui/Tabs","v7/pdok/themes","v7/pdok/viewer-metadata","devtools/NavigatorNode","json","fast-xml-parser","ace/ext-modelist","vcl/ui/Checkbox","vcl/ui/Radiobutton"
     ]
 }

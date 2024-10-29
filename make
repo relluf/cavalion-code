@@ -4,4 +4,4 @@ echo NOTE Did you make app.js?
 #bower update
 cd ../src
 r.js -o build.json
-vi ../index.html
+#vi ../index.html

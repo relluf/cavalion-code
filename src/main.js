@@ -1,19 +1,20 @@
-
+var bwr = (name) => "lib/bower_components/" + name;
 var npm = (name) => "lib/node_modules/" + name;
-var npm_bang = (banger, name) => banger + "!../lib/node_modules/" + name;
-var bower = (name) => "lib/bower_components/" + name;
+var bwr_bang = (banger, name) => banger + "!lib/bower_components/" + name;
+var npm_bang = (banger, name) => banger + "!lib/node_modules/" + name;
 
 function ls(k, slash) { var r = localStorage[k]; if(r) { 
 	if(slash && !r.endsWith("/")) r+= "/"; 
 	console.log(k, r); 
 	return r; } }
 
-var cavalion_js = ls('cavalion-js-path', true) || "lib/node_modules/cavalion-js/src/";
-var cavalion_vcl = ls('cavalion-vcl-path', false) || "lib/node_modules/cavalion-vcl/src/";
-var cavalion_blocks = ls('cavalion-blocks-path', false) || "lib/node_modules/cavalion-blocks/src/";
-var cavalion_pouch = ls('cavalion-pouch-path', false) || "lib/node_modules/cavalion-pouch/src/";
-var veldapps_v7 = ls('veldapps-v7-path', true) || "lib/node_modules/veldapps-v7/src/";
-var veldoffice_js = ls('veldoffice-js-path', true) || "lib/node_modules/veldoffice-js/src/";
+var cavalion_js = npm("cavalion-js/src/");
+var cavalion_vcl = npm("cavalion-vcl/src/");
+var cavalion_blocks = npm("cavalion-blocks/src/");
+var cavalion_devtools = npm("cavalion-devtools/src/");
+var cavalion_pouch = npm("cavalion-pouch/src/");
+var veldapps_v7 = npm("veldapps-v7/src/");
+var veldoffice_js = npm("veldoffice-js/src/");
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
 require.config({
@@ -41,6 +42,7 @@ require.config({
         "console": cavalion_js + "console",
         "vcl": cavalion_vcl.replace(/\/$/, ""),
         "blocks": cavalion_blocks.replace(/\/$/, ""),
+        "devtools": cavalion_devtools + "devtools",
         "pouch": cavalion_pouch,
 
         "data": cavalion_js + "data",
@@ -52,16 +54,16 @@ require.config({
         "on": cavalion_js + "on",
         "yell": cavalion_js + "yell",
         
-		"cavalion-pouch": "lib/node_modules/cavalion-pouch",
-        "xslt": "lib/node_modules/xslt/dist/xslt",
+		"cavalion-pouch": npm("cavalion-pouch"),
+        "xslt": npm("xslt/dist/xslt"),
         // "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
-        "mapbox-gl": "lib/node_modules/mapbox-gl/dist/mapbox-gl-unminified",
+        "mapbox-gl": npm("mapbox-gl/dist/mapbox-gl-unminified"),
 
-		"bxv": "../lib/node_modules/veldapps-bxv-parser/src",
-		"bro": "../lib/node_modules/veldapps-imbro/src",
-		// "bro": "../lib/node_modules/veldapps-xmlgen-broservices",
-		"sikb": "../lib/node_modules/veldapps-imsikb/src",
-		"sikb0101": "../lib/node_modules/veldapps-xmlgen-imsikb",
+		"bxv": npm("veldapps-bxv-parser/src"),
+		"bro": npm("veldapps-imbro/src"),
+		// "bro": npm("veldapps-xmlgen-broservices"),
+		"sikb": npm("veldapps-imsikb/src"),
+		"sikb0101": npm("veldapps-xmlgen-imsikb"),
 
 		"veldapps-ol": npm("veldapps-ol/src"),
 		"veldapps-xml": npm("veldapps-xml/src"),
@@ -74,7 +76,7 @@ require.config({
 		"veldoffice": veldoffice_js + "/veldapps.com/veldoffice",
 
         // "ace": "../lib/bower_components/ace/lib/ace",
-        "ace": "../lib/node_modules/ace-builds/src",
+        "ace": npm("ace-builds/src"),
 		"less": "../lib/bower_components/less/dist/less.min",
         "moment": "../lib/bower_components/moment/moment",
         "moment-locale": "../lib/bower_components/moment/locale",
@@ -86,58 +88,53 @@ require.config({
 		"leaflet": npm("veldapps-leaflet-js/src/leafletjs.com"),
 
         "fast-xml-parser": "../lib/fast-xml-parser/parser",
-		"papaparse": "../lib/node_modules/papaparse",
-		"jszip": "../lib/node_modules/jszip/dist/jszip.min",
-		"jspdf": "../lib/node_modules/jspdf/dist/jspdf.umd",
+		"papaparse": npm("papaparse"),
+		"jszip": npm("jszip/dist/jszip.min"),
+		"jspdf": npm("jspdf/dist/jspdf.umd"),
 
 		/*- veldapps-leaflet/3rd party */
-		// "proj4": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/proj4-src",
-		// "epsg": "lib/node_modules/veldapps-leaflet-js/src/proj4js.org/epsg",
-		// "leaflet": "lib/node_modules/veldapps-leaflet-js/src/leafletjs.com",
-		"famous": "lib/node_modules/famous",
+		// "proj4": npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
+		// "epsg": npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
+		// "leaflet": npm("veldapps-leaflet-js/src/leafletjs.com"),
+		"famous": npm("famous"),
 
-		"ipfs": "lib/node_modules/ipfs/dist/index.min",
+		"ipfs": npm("ipfs/dist/index.min"),
 
 		// TODO now in veldapps-xml
-        "xml-js": "lib/node_modules/xml-js/dist/xml-js",
-        "handlebars": "lib/node_modules/handlebars/dist/handlebars.min",
+        "xml-js": npm("xml-js/dist/xml-js"),
+        "handlebars": npm("handlebars/dist/handlebars.min"),
         
-        // "sikb0101": "lib/node_modules/veldapps-xmlgen-imsikb",
-        "xml-formatter": "lib/node_modules/xml-formatter/dist/browser/xml-formatter",
+        // "sikb0101": npm("veldapps-xmlgen-imsikb"),
+        "xml-formatter": npm("xml-formatter/dist/browser/xml-formatter"),
 
 		/*- bower */
-        // "ace": "lib/bower_components/ace/lib/ace",
-        // "less": "lib/bower_components/less/dist/less",
-        // "moment": "lib/bower_components/moment/moment",
-        // "moment-locale": "lib/bower_components/moment/locale",
-        // "jquery": "lib/bower_components/jquery/dist/jquery",
-        "backbone": "lib/bower_components/backbone/backbone",
-        "underscore": "lib/bower_components/underscore/underscore",
-        "js-yaml": "lib/bower_components/js-yaml/dist/js-yaml",
-        // "csv-js": "lib/bower_components/CSV-JS/csv",
-        // "relational-pouch": "lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch",
+        "backbone": bwr("backbone/backbone"),
+        "underscore": bwr("underscore/underscore"),
+        "js-yaml": bwr("js-yaml/dist/js-yaml"),
+        // "csv-js": bwr("CSV-JS/csv"),
+        // "relational-pouch": bwr("relational-pouch/dist/pouchdb.relational-pouch"),
         
         /*- dojo */
-        "dojo": "lib/bower_components/dojo",
-        "dgrid": "lib/bower_components/dgrid",
-        "dstore": "lib/bower_components/dstore",
+        "dojo": bwr("dojo"),
+        "dgrid": bwr("dgrid"),
+        "dstore": bwr("dstore"),
         
-		"chartjs": "lib/node_modules/chart.js/dist",
-		"dygraphs/Dygraph": "lib/node_modules/dygraphs/dist/dygraph",
+		"chartjs": npm("chart.js/dist"),
+		"dygraphs/Dygraph": npm("dygraphs/dist/dygraph"),
 
   //      "fast-xml-parser": "lib/fast-xml-parser/parser",
-		// "papaparse": "lib/node_modules/papaparse",
-		// "jspdf": "lib/node_modules/jspdf/dist/jspdf.umd",
-		"html2canvas": "lib/node_modules/html2canvas/dist/html2canvas.min",
+		// "papaparse": npm("papaparse"),
+		// "jspdf": npm("jspdf/dist/jspdf.umd"),
+		"html2canvas": npm("html2canvas/dist/html2canvas.min"),
 
 		/*- amcharts3 */
-        "amcharts": "lib/bower_components/amcharts3/amcharts/amcharts",
-        "amcharts.funnel": "lib/bower_components/amcharts3/amcharts/funnel",
-        "amcharts.gauge": "lib/bower_components/amcharts3/amcharts/gauge",
-        "amcharts.pie": "lib/bower_components/amcharts3/amcharts/pie",
-        "amcharts.radar": "lib/bower_components/amcharts3/amcharts/radar",
-        "amcharts.serial": "lib/bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "lib/bower_components/amcharts3/amcharts/xy"
+        "amcharts": bwr("amcharts3/amcharts/amcharts"),
+        "amcharts.funnel": bwr("amcharts3/amcharts/funnel"),
+        "amcharts.gauge": bwr("amcharts3/amcharts/gauge"),
+        "amcharts.pie": bwr("amcharts3/amcharts/pie"),
+        "amcharts.radar": bwr("amcharts3/amcharts/radar"),
+        "amcharts.serial": bwr("amcharts3/amcharts/serial"),
+        "amcharts.xy": bwr("amcharts3/amcharts/xy")
 
     },
 	// map: {
@@ -192,7 +189,7 @@ require.config({
     packages: [
         {
             name: 'famous',
-            location: "lib/node_modules/famous",
+            location: npm("famous"),
             main: 'index'
         }
     ]
@@ -215,7 +212,7 @@ window.req = function req() {
 };
 window.cl = console.log;
 
-define("veldapps/Session", ["lib/node_modules/veldapps-mmx/src/Session"], (Session) => Session);
+define("veldapps/Session", [npm("veldapps-mmx/src/Session")], (Session) => Session);
 define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory", "override"], function(Component, Blocks, Factory) {
 
 	var override = require("override");
@@ -398,6 +395,21 @@ define("Element", ["on"], function(on) {
 		}
 		return this.up(selector);
 	};
+	Element.prototype.position = function() {
+	    let offsetTop = 0;
+	    let offsetLeft = 0;
+	    let currentElement = this;
+	
+	    // Loop through the offset parents to calculate top and left relative to the closest positioned ancestor
+	    while (currentElement) {
+	        offsetTop += currentElement.offsetTop;
+	        offsetLeft += currentElement.offsetLeft;
+	        currentElement = currentElement.offsetParent;
+	    }
+	
+	    return { top: offsetTop, left: offsetLeft };
+	};
+
 	/* Again */
 	document.down = document.qs = document.querySelector;
 	document.qsa = document.querySelectorAll;
@@ -627,12 +639,15 @@ define("utils/asarray", function() {
 	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
 });
 
-define(("dropzone"), ["lib/node_modules/dropzone/dist/dropzone-amd-module", "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
+// define("papaparse", [npm("papaparse/papaparse-min")], (ppp) => ppp);
+define("papaparse", [npm("papaparse/papaparse")], (ppp) => ppp);
+
+define(("dropzone"), [npm("dropzone/dist/dropzone-amd-module"), "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
 
 define("mime-db", ["json!npm/mime-db/db"], (db) => db);
 define("mime-types", ["npm/mime-types/lookup"], (lu) => lu);
 
-define("dygraphs/Dygraph", ["lib/node_modules/dygraphs/dist/dygraph", "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
+define("dygraphs/Dygraph", [npm("dygraphs/dist/dygraph"), "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
 	return dygraph;
 });
 
@@ -724,14 +739,14 @@ define("ol-8.1.0", ["lib/ol-8.1.0-dist/ol", "stylesheet!../lib/ol-8.1.0-dist/ol.
 	}());	
 	return ol;
 });
-define("proj4", ["lib/node_modules/proj4/dist/proj4-src"], function(P) {
+define("proj4", [npm("proj4/dist/proj4-src")], function(P) {
 	return P;
 });
 define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
-define(("pouchdb"), ["" + "lib/bower_components/pouchdb/dist/pouchdb", "lib/bower_components/pouchdb-find/dist/pouchdb.find", 
-	"lib/bower_components/relational-pouch/dist/pouchdb.relational-pouch", 
+define(("pouchdb"), ["" + bwr("pouchdb/dist/pouchdb"), bwr("pouchdb-find/dist/pouchdb.find"), 
+	bwr("relational-pouch/dist/pouchdb.relational-pouch"), 
 	"pouchdb.authentication",
 	"pouchdb.memory",
 	"pouchdb.save"
@@ -751,12 +766,12 @@ function(pouchdb, find, relational, authentication, memory, save) {
 	return pouchdb;
 });
 
-define(("dropbox"), ["lib/node_modules/dropbox/dist/Dropbox-sdk", "lib/node_modules/dropbox/dist/DropboxTeam-sdk"], (dbx) => dbx);
-define("markdown", ["lib/bower_components/markdown/lib/markdown"], function() {
+define(("dropbox"), [npm("dropbox/dist/Dropbox-sdk"), npm("dropbox/dist/DropboxTeam-sdk")], (dbx) => dbx);
+define("markdown", [bwr("markdown/lib/markdown")], function() {
 	return window.markdown;
 });
-define("marked", ["lib/node_modules/marked/marked.min"], (marked) => marked);
-define("pace", ["lib/bower_components/PACE/pace", "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
+define("marked", [npm("marked/marked.min")], (marked) => marked);
+define("pace", [bwr("PACE/pace"), "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			ajax: {
 			    ignoreURLs: ['https://dbs.veldapps.com/'],
@@ -1000,7 +1015,7 @@ define(function(require) {
 	var url = new Url(), app = js.sf("App<%s>", [ 
 		url.getPath().split("/")[0] || "code", 
 		url.getParamValues("").filter(s => s !== "debug")[0],
-		url.getHost() === "localhost" ? "" : url.getHost()
+		url.getHost() === "localhost" ? "" : ""//url.getHost()
 	].filter(_ => _).join("."));
 		
 	Factory.require(app, function(factory) {
