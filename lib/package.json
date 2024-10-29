@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "ace-builds": "^1.36.3",
     "cavalion-blocks": "^0.9.26",
     "cavalion-devtools": "^1.0.56",
     "cavalion-js": "^1.0.67",
