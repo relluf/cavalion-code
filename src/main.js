@@ -12,187 +12,171 @@ var cavalion_js = npm("cavalion-js/src/");
 var cavalion_vcl = npm("cavalion-vcl/src/");
 var cavalion_blocks = npm("cavalion-blocks/src/");
 var cavalion_devtools = npm("cavalion-devtools/src/");
-var cavalion_pouch = npm("cavalion-pouch/src/");
+var cavalion_pouch = npm("cavalion-pouch");
 var veldapps_v7 = npm("veldapps-v7/src/");
 var veldoffice_js = npm("veldoffice-js/src/");
 var veldoffice_js_ = veldoffice_js.substring(veldoffice_js.charAt(0) === '/' ? 1 : 0);
 
 require.config({
     paths: {
-        "cavalion-blocks/$HOME": "/home",
-        "home": "/home",
-        "$HOME": "/home",
+        'cavalion-blocks/$HOME': "/home",
+        'home': "/home",
+        '$HOME': "/home",
 
-        "Projects": "/home/Projects",
-        "Library": "/home/Library",
-        "Workspaces": "/home/Workspaces",
+        'Projects': "/home/Projects",
+        'Library': "/home/Library",
+        'Workspaces': "/home/Workspaces",
         
-        "npm": "lib/node_modules",
-        "bwr": "lib/bower_components",
+        'npm': "lib/node_modules",
+        'bwr': "lib/bower_components",
 
         /*- bangers! */
-        "stylesheet": cavalion_js + "stylesheet",
-        "script": cavalion_js + "script",
-        "text": cavalion_js + "text",
-        "json": cavalion_js + "json",
-        "locale": cavalion_js + "locale",
+        'stylesheet': cavalion_js + "stylesheet",
+        'script': cavalion_js + "script",
+        'text': cavalion_js + "text",
+        'json': cavalion_js + "json",
+        'locale': cavalion_js + "locale",
 
         /*- cavalion.org */
-        "js": cavalion_js + "js",
-        "console": cavalion_js + "console",
-        "vcl": cavalion_vcl.replace(/\/$/, ""),
-        "blocks": cavalion_blocks.replace(/\/$/, ""),
-        "devtools": cavalion_devtools + "devtools",
-        "pouch": cavalion_pouch,
+        'js': cavalion_js + "js",
+        'console': cavalion_js + "console",
+        'vcl': cavalion_vcl.replace(/\/$/, ""),
+        'blocks': cavalion_blocks.replace(/\/$/, ""),
+        'devtools': cavalion_devtools + "devtools",
+        'pouch': cavalion_pouch,
 
-        "data": cavalion_js + "data",
-        "persistence": cavalion_js + "persistence",
-        "features": cavalion_js + "features",
-        "entities": cavalion_js + "entities",
+        'data': cavalion_js + "data",
+        'persistence': cavalion_js + "persistence",
+        'features': cavalion_js + "features",
+        'entities': cavalion_js + "entities",
 
-        "util": cavalion_js + "util",
-        "on": cavalion_js + "on",
-        "yell": cavalion_js + "yell",
+        'util': cavalion_js + "util",
+        'on': cavalion_js + "on",
+        'yell': cavalion_js + "yell",
         
-		"cavalion-pouch": npm("cavalion-pouch"),
-        "xslt": npm("xslt/dist/xslt"),
-        // "eswbo": "/home/Workspaces/eae.com/BBT-1.5.3/WebContent/app/src",
-        "mapbox-gl": npm("mapbox-gl/dist/mapbox-gl-unminified"),
+        'xslt': npm("xslt/dist/xslt"),
+        'mapbox-gl': npm("mapbox-gl/dist/mapbox-gl-unminified"),
 
-		"bxv": npm("veldapps-bxv-parser/src"),
-		"bro": npm("veldapps-imbro/src"),
-		// "bro": npm("veldapps-xmlgen-broservices"),
-		"sikb": npm("veldapps-imsikb/src"),
-		"sikb0101": npm("veldapps-xmlgen-imsikb"),
+		'bxv': npm("veldapps-bxv-parser/src"),
+		'bro': npm("veldapps-imbro/src"),
+		'/ "bro': npm("veldapps-xmlgen-broservices"),
+		'sikb': npm("veldapps-imsikb/src"),
+		'sikb0101': npm("veldapps-xmlgen-imsikb"),
 
-		"veldapps-ol": npm("veldapps-ol/src"),
-		"veldapps-xml": npm("veldapps-xml/src"),
-		"veldapps-imkl": npm("veldapps-imkl/src"),
-		"veldapps-imsikb": npm("veldapps-imsikb/src"),
-		"veldapps-imbro": npm("veldapps-imbro/src"),
-		"veldapps-gds-devtools": npm("veldapps-gds-devtools/src"),
+		'veldapps-ol': npm("veldapps-ol/src"),
+		'veldapps-xml': npm("veldapps-xml/src"),
+		'veldapps-imkl': npm("veldapps-imkl/src"),
+		'veldapps-imsikb': npm("veldapps-imsikb/src"),
+		'veldapps-imbro': npm("veldapps-imbro/src"),
+		'veldapps-gds-devtools': npm("veldapps-gds-devtools/src"),
 
-		"vcl-veldoffice": veldoffice_js + "/veldapps.com/veldoffice/vcl-veldoffice",
-		"veldoffice": veldoffice_js + "/veldapps.com/veldoffice",
+		'vcl-veldoffice': veldoffice_js + "/veldapps.com/veldoffice/vcl-veldoffice",
+		'veldoffice': veldoffice_js + "/veldapps.com/veldoffice",
 
-        // "ace": "../lib/bower_components/ace/lib/ace",
-        "ace": npm("ace-builds/src"),
-		"less": "../lib/bower_components/less/dist/less.min",
-        "moment": "../lib/bower_components/moment/moment",
-        "moment-locale": "../lib/bower_components/moment/locale",
-        "moment-timezone": "../lib/bower_components/moment-timezone/moment-timezone",
+        'ace': npm("ace-builds/src"),
+		'less': "../lib/bower_components/less/dist/less.min",
+        'moment': "../lib/bower_components/moment/moment",
+        'moment-locale': "../lib/bower_components/moment/locale",
+        'moment-timezone': "../lib/bower_components/moment-timezone/moment-timezone",
 
-		"jquery": npm("veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min"),
-		"proj4": npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
-		"epsg": npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
-		"leaflet": npm("veldapps-leaflet-js/src/leafletjs.com"),
+		'jquery': npm("veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min"),
+		'proj4': npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
+		'epsg': npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
+		'leaflet': npm("veldapps-leaflet-js/src/leafletjs.com"),
 
-        "fast-xml-parser": "../lib/fast-xml-parser/parser",
-		"papaparse": npm("papaparse"),
-		"jszip": npm("jszip/dist/jszip.min"),
-		"jspdf": npm("jspdf/dist/jspdf.umd"),
+        'fast-xml-parser': "../lib/fast-xml-parser/parser",
+		'papaparse': npm("papaparse"),
+		'jszip': npm("jszip/dist/jszip.min"),
+		'jspdf': npm("jspdf/dist/jspdf.umd"),
 
 		/*- veldapps-leaflet/3rd party */
-		// "proj4": npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
-		// "epsg": npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
-		// "leaflet": npm("veldapps-leaflet-js/src/leafletjs.com"),
-		"famous": npm("famous"),
+		'/ "proj4': npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
+		'/ "epsg': npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
+		'/ "leaflet': npm("veldapps-leaflet-js/src/leafletjs.com"),
+		'famous': npm("famous"),
 
-		"ipfs": npm("ipfs/dist/index.min"),
+		'ipfs': npm("ipfs/dist/index.min"),
 
 		// TODO now in veldapps-xml
-        "xml-js": npm("xml-js/dist/xml-js"),
-        "handlebars": npm("handlebars/dist/handlebars.min"),
+        'xml-js': npm("xml-js/dist/xml-js"),
+        'handlebars': npm("handlebars/dist/handlebars.min"),
         
-        // "sikb0101": npm("veldapps-xmlgen-imsikb"),
-        "xml-formatter": npm("xml-formatter/dist/browser/xml-formatter"),
+        '/ "sikb0101': npm("veldapps-xmlgen-imsikb"),
+        'xml-formatter': npm("xml-formatter/dist/browser/xml-formatter"),
 
 		/*- bower */
-        "backbone": bwr("backbone/backbone"),
-        "underscore": bwr("underscore/underscore"),
-        "js-yaml": bwr("js-yaml/dist/js-yaml"),
-        // "csv-js": bwr("CSV-JS/csv"),
-        // "relational-pouch": bwr("relational-pouch/dist/pouchdb.relational-pouch"),
+        'backbone': bwr("backbone/backbone"),
+        'underscore': bwr("underscore/underscore"),
+        'js-yaml': bwr("js-yaml/dist/js-yaml"),
+        '/ "csv-js': bwr("CSV-JS/csv"),
+        '/ "relational-pouch': bwr("relational-pouch/dist/pouchdb.relational-pouch"),
         
         /*- dojo */
-        "dojo": bwr("dojo"),
-        "dgrid": bwr("dgrid"),
-        "dstore": bwr("dstore"),
+        'dojo': bwr("dojo"),
+        'dgrid': bwr("dgrid"),
+        'dstore': bwr("dstore"),
         
-		"chartjs": npm("chart.js/dist"),
-		"dygraphs/Dygraph": npm("dygraphs/dist/dygraph"),
+		'chartjs': npm("chart.js/dist"),
+		'dygraphs/Dygraph': npm("dygraphs/dist/dygraph"),
 
-  //      "fast-xml-parser": "lib/fast-xml-parser/parser",
-		// "papaparse": npm("papaparse"),
-		// "jspdf": npm("jspdf/dist/jspdf.umd"),
-		"html2canvas": npm("html2canvas/dist/html2canvas.min"),
+		'/ "papaparse': npm("papaparse"),
+		'/ "jspdf': npm("jspdf/dist/jspdf.umd"),
+		'html2canvas': npm("html2canvas/dist/html2canvas.min"),
 
 		/*- amcharts3 */
-        "amcharts": bwr("amcharts3/amcharts/amcharts"),
-        "amcharts.funnel": bwr("amcharts3/amcharts/funnel"),
-        "amcharts.gauge": bwr("amcharts3/amcharts/gauge"),
-        "amcharts.pie": bwr("amcharts3/amcharts/pie"),
-        "amcharts.radar": bwr("amcharts3/amcharts/radar"),
-        "amcharts.serial": bwr("amcharts3/amcharts/serial"),
-        "amcharts.xy": bwr("amcharts3/amcharts/xy")
+        'amcharts': bwr("amcharts3/amcharts/amcharts"),
+        'amcharts.funnel': bwr("amcharts3/amcharts/funnel"),
+        'amcharts.gauge': bwr("amcharts3/amcharts/gauge"),
+        'amcharts.pie': bwr("amcharts3/amcharts/pie"),
+        'amcharts.radar': bwr("amcharts3/amcharts/radar"),
+        'amcharts.serial': bwr("amcharts3/amcharts/serial"),
+        'amcharts.xy': bwr("amcharts3/amcharts/xy")
 
     },
-	// map: {
-	// 	'*': {
-	// 	  'famous/*': 'famous/*/index.js'
-	// 	}
-	// },
 	shim: {
-		"amcharts.funnel": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+		'amcharts.funnel': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.gauge": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+        'amcharts.gauge': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.pie": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+        'amcharts.pie': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.radar": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+        'amcharts.radar': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.serial": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+        'amcharts.serial': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.xy": {
-            "deps": ["amcharts"],
-            "exports": "AmCharts",
+        'amcharts.xy': {
+            'deps': ["amcharts"],
+            'exports': "AmCharts",
             "init": function () {
                 AmCharts.isReady = true;
             }
         }
-    },
-    packages: [
-        {
-            name: 'famous',
-            location: npm("famous"),
-            main: 'index'
-        }
-    ]
+    }
 });
 
 less = { logLevel: 0 };
@@ -420,209 +404,7 @@ define("Element", ["on"], function(on) {
 	}, false);
 	return Element;
 });
-define("xml-funcs", ["veldapps-xml/index"], function(Xml) {
-	return Xml;
-
-	// function logonce(s) {
-	// 	var app = require("vcl/Application").instances[0];
-	// 	var ac = arguments.callee; ac.cache = (ac.cache || (ac.cache = []));
-	// 	if(ac.cache.indexOf(s) === -1) {
-	// 		ac.cache.push(s);
-	// 		app.print(s);
-	// 	}
-	// }
-	// function asArray(arr) {
-	// 	if(arr instanceof Array) {
-	// 		return arr;
-	// 	}
-		
-	// 	if(arr === null || arr === undefined) {
-	// 		return [];
-	// 	}
-		
-	// 	return [arr];
-	// }
-	// function types(scrape_gml_root, opts) {
-	// 	var r = {};
-	// 	for(var k in scrape_gml_root) {
-	// 		r[k] = scrape_gml_root[k].map(_ => Object.keys(_).join(",")).filter(function(v, i, a) {
-	// 			return a.indexOf(v) === i;
-	// 		});
-	// 	}
-	// 	return r;
-	// }
-
-	// function gml(root, messages, opts) {
-	// 	function resolve_xlinks(elems, elem, log, done) {
-	// 		var key = "@_xlink:href-resolved", href;
-			
-	// 		done = done || [];
-	// 		if(done.indexOf(elem) !== -1) return;
-	// 		done.push(elem);
-			
-	// 		for(var k in elem) {
-	// 			if(k !== key && typeof elem[k] === "object") {
-	// 				resolve_xlinks(elems, elem[k], log); // <- what about done? 
-	// 			}
-	// 		}
-		
-	// 		if((href = elem['@_xlink:href'])) {
-	// 			if(href.charAt(0) === '#') href = href.substring(1);
-	// 			if(!(elem[key] = elems[href])) {
-	// 				log && log.push(String.format("%s not found", href));
-	// 			}
-	// 		}
-	// 	}
-		
-	// 	var key = Object.keys(root)[0];
-	// 	var ns = key.split(":")[0];
-	// 	var features = asArray(root[key][ns + ":featureMember"]);
-	// 	var elems = {}, map = {}; /* return value */
-	// 	var log = [];
-	
-	// 	resolve_xlinks(elems, root);
-	// 	features.forEach(function(_) {
-	// 		var key = Object.keys(_)[0];
-	// 		var arr = (map[key] = map[key] || []);
-	
-	// 		elems[_[key]['@_gml:id']] = _;
-	
-	// 		arr.push(_[key]);
-	// 	});
-	// 	resolve_xlinks(elems, root, log);
-		
-	// 	return messages && log.length ? { messages: log, result: map } : map;
-	// 	// return map;
-	// }
-	// function gml2geojson(feature) {
-		
-	// 	function coordinates(arr) {
-	// 		return arr.map(function(v) {
-	// 			if(typeof v['#text'] === "string") {
-	// 				v = v['#text'];
-	// 			}
-	// 			var r = [], coords = v.split(/\s/);
-	// 			while(coords.length) {
-	// 				r.push([parseFloat(coords.shift()), parseFloat(coords.shift())]);
-	// 			}
-	// 			return r;
-	// 		});
-	// 	}
-		
-	// 	var keys = Object.keys(feature);
-	// 	var ft = feature[keys[0]], v;
-	// 	var r = { 
-	// 		geometry: { type: keys[0].split(":").pop() },
-	// 		properties: { id: ft['@_gml:id'] },
-	// 		type: "Feature"
-	// 	};
-		
-	// 	if(r.geometry.type === "LineString") {
-	// 		r.geometry.coordinates = coordinates(asArray(ft["gml:posList"]));
-	// 	} else if(r.geometry.type === "Point") {
-	// 		r.geometry.coordinates = coordinates(asArray(ft["gml:pos"]))[0][0];
-	// 	} else if(r.geometry.type === "Polygon") {
-	// 		r.geometry.coordinates = coordinates(asArray(js.get("gml:exterior.gml:LinearRing.gml:posList", ft)));
-	// 	} else if(r.geometry.type === "Curve") {
-	// 		r.geometry.type = "LineString";
-	// 		r.geometry.coordinates = coordinates(asArray(js.get("gml:segments.gml:LineStringSegment.gml:posList", ft)))[0];
-	// 	} else {
-	// 		logonce(r.geometry.type);
-	// 	}
-	// 	r.properties['@_gml'] = ft;
-	// 	return r;
-	// }
-	// function imkl2geojson(root, opts) {
-
-	// 	function scrape(gml_root, opts) {
-	// 		var result = {};
-	
-	// 		opts = opts || {};
-			
-	// 		function walk(item, path, objs) {
-				
-	// 			path = path || [];
-	// 			objs = objs || [];
-				
-	// 			if(objs.indexOf(item) !== -1) return;
-				
-	// 			objs.push(item);
-				
-	// 			var r = {}, k;
-	// 			for(var key in item) {
-	// 				if(key !== "@_gml:id") {// && key!=="@_xlink:href-resolved") {
-	// 					path.push(key);
-	// 					if(key.indexOf("gml:") === 0) {
-	// 						if(opts.fullPaths !== false) {
-	// 							r[path.join("/")] = item[key];
-	// 						} else {
-	// 							if(r[key] instanceof Array) {
-	// 								r[key].push(item[key]);
-	// 							} else if(r[key] === undefined) {
-	// 								r[key] = item[key];
-	// 							} else {
-	// 								r[key] = [r[key], item[key]];
-	// 							}
-	// 						}
-	// 					} else if(key === "net:link") {
-	// 						js.mixIn(r, walk(item[key]["@_xlink:href-resolved"], path, objs));
-	// 					} else if(typeof item[key] === "object") {
-	// 						js.mixIn(r, walk(item[key], path, objs));
-	// 					}
-	// 					path.pop();
-	// 				}
-	// 			}
-	// 			return r;
-	// 		}
-			
-	// 		for(var k in gml_root) {
-	// 			var arr = gml_root[k].map(item => walk(item)).filter(_ => Object.keys(_).length);
-	// 			if(arr.length > 0) {
-	// 				result[k] = arr;
-	// 			}
-	// 		}
-			
-	// 		return result;
-	// 	}
-
-	// 	opts = opts || {};
-		
-	// 	var scraped = scrape(gml(root, opts));
-	// 	var layers = {}, all = [];
-
-	// 	for(var layer in scraped) {
-	// 		layers[layer] = {
-	// 			type: "FeatureCollection", name: layer,
-	// 			crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::28992" } },
-	// 			features: scraped[layer].map(gml2geojson)
-	// 		};
-	// 		all = all.concat(layers[layer].features)
-	// 	}
-		
-	// 	if(opts.all === true) {
-	// 		return {
-	// 			type: "FeatureCollection", 
-	// 			name: (/\d\d.\d\d\d\d\d\d/.exec(all[0].properties.id)||[""])[0],
-	// 			crs: { 
-	// 				"type": "name", 
-	// 				"properties": { "name": "urn:ogc:def:crs:EPSG::28992" } 
-	// 			},
-	// 			features: all
-	// 		}
-	// 	}
-
-	// 	return layers;
-	// }
-	
-	// return {
-	// 	stringify: (obj) => JSON.stringify(obj, (key, value) => key !== "@_xlink:resolved" ? value : undefined),
-		
-	// 	gml: gml, 
-	// 	gml2geojson: gml2geojson,
-	// 	imkl2geojson: imkl2geojson
-	// }
-	
-});
+define("xml-funcs", ["veldapps-xml/index"], Xml => Xml);
 define("utils/asarray", function() {
 	
 	/*	asArray(arrLike) - 
@@ -745,28 +527,10 @@ define("proj4", [npm("proj4/dist/proj4-src")], function(P) {
 define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], function(js, L) {
 	return L;
 });
-define(("pouchdb"), ["" + bwr("pouchdb/dist/pouchdb"), bwr("pouchdb-find/dist/pouchdb.find"), 
-	bwr("relational-pouch/dist/pouchdb.relational-pouch"), 
-	"pouchdb.authentication",
-	"pouchdb.memory",
-	"pouchdb.save"
-], 
-function(pouchdb, find, relational, authentication, memory, save) {
-	
-	/*- hacked pouchdb.memory */
-	memory = window.pouch_MemoryPouchPlugin;
-	delete window.pouch_MemoryPouchPlugin;
-	
-	pouchdb.plugin(find);
-	pouchdb.plugin(relational);
-	pouchdb.plugin(authentication);
-	pouchdb.plugin(memory);
-	pouchdb.plugin(save);
-	
-	return pouchdb;
-});
 
-define(("dropbox"), [npm("dropbox/dist/Dropbox-sdk"), npm("dropbox/dist/DropboxTeam-sdk")], (dbx) => dbx);
+define("pouchdb", ["pouch/db"], db => db);
+
+define(("dropbox"), [npm("dropbox/dist/Dropbox-sdk")], (dbx) => dbx);
 define("markdown", [bwr("markdown/lib/markdown")], function() {
 	return window.markdown;
 });
@@ -834,7 +598,7 @@ define("clipboard-copy", [], () => {
 	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
 	}
 });
-define("vcl/Component.storage-pouchdb", ["cavalion-pouch/Component.storageDB", "devtools/Resources"], (DB, Resources) => { 
+define("vcl/Component.storage-pouchdb", ["pouch/Component.storageDB", "devtools/Resources"], (DB, Resources) => { 
 
 	
 	return DB;
