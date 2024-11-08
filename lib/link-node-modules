@@ -1,0 +1,10 @@
+cd node_modules
+link-cavalion js
+link-cavalion vcl
+link-cavalion blocks
+link-cavalion devtools
+link-cavalion pouch
+link-veldoffice js
+link-veldapps gds-devtools
+link-veldapps ol
+#ln -s /Users/ralph/Workspaces/veldapps.com/Veldoffice/veldoffice-vcl-comps/lib/node_modules/ace-builds/ .
