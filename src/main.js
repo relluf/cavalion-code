@@ -735,6 +735,12 @@ define("blocks/Factory.fetch-storageDB", ["blocks/Factory", "vcl/Component"], (F
 	};
 });
 
+define("implicit_sources", ["blocks/Factory", "blocks/Factory.implicit_sources"], (Factory, sources) => {
+	// vcl-comps might be done like this as well
+	// the idea is that this code is only run (required) in the build (see build.json)
+	Factory.implicit_sources = sources;
+});
+
 define(function(require) {
 	require("pace");
 	require("Element");
@@ -743,7 +749,7 @@ define(function(require) {
 	require("console/Printer"); 
 	require("font-awesome");
 	
-	require("veldapps-gds-devtools/index");
+	// require("veldapps-gds-devtools/index");
 
 	var Resources = require("devtools/Resources");
 	var ComponentNode = require("console/node/vcl/Component");
