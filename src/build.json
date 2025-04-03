@@ -124,8 +124,6 @@
 		"vcl/data/Array",
 		"vcl/ui/Tabs",
 		"devtools/NavigatorNode",
-		"v7/pdok/viewer-metadata",
-		"v7/pdok/themes",
 		"fast-xml-parser",
 		"json",
 		"ace/ext-modelist",

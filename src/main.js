@@ -3,11 +3,6 @@ var npm = (name) => "lib/node_modules/" + name;
 var bwr_bang = (banger, name) => banger + "!lib/bower_components/" + name;
 var npm_bang = (banger, name) => banger + "!lib/node_modules/" + name;
 
-function ls(k, slash) { var r = localStorage[k]; if(r) { 
-	if(slash && !r.endsWith("/")) r+= "/"; 
-	console.log(k, r); 
-	return r; } }
-
 var cavalion_js = npm("cavalion-js/src/");
 var cavalion_vcl = npm("cavalion-vcl/src/");
 var cavalion_blocks = npm("cavalion-blocks/src/");
@@ -56,10 +51,13 @@ require.config({
         
         'xslt': npm("xslt/dist/xslt"),
         'mapbox-gl': npm("mapbox-gl/dist/mapbox-gl-unminified"),
+        
+        'shapefile': npm("shapefile/dist/shapefile"),
+        'pako': npm("pako/dist/pako"),
+        'sqlite': npm("sql.js/dist/sql-wasm"),
 
 		'bxv': npm("veldapps-bxv-parser/src"),
-		'bro': npm("veldapps-imbro/src"),
-		'/ "bro': npm("veldapps-xmlgen-broservices"),
+		'bro': npm("veldapps-imbro/src"), // '/ "bro': npm("veldapps-xmlgen-broservices"),
 		'sikb': npm("veldapps-imsikb/src"),
 		'sikb0101': npm("veldapps-xmlgen-imsikb"),
 
@@ -79,20 +77,16 @@ require.config({
         'moment-locale': "../lib/bower_components/moment/locale",
         'moment-timezone': "../lib/bower_components/moment-timezone/moment-timezone",
 
-		'jquery': npm("veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min"),
-		'proj4': npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
-		'epsg': npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
-		'leaflet': npm("veldapps-leaflet-js/src/leafletjs.com"),
-
         'fast-xml-parser': "../lib/fast-xml-parser/parser",
 		'papaparse': npm("papaparse"),
 		'jszip': npm("jszip/dist/jszip.min"),
 		'jspdf': npm("jspdf/dist/jspdf.umd"),
 
-		/*- veldapps-leaflet/3rd party */
-		'/ "proj4': npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
-		'/ "epsg': npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
-		'/ "leaflet': npm("veldapps-leaflet-js/src/leafletjs.com"),
+		// /*- veldapps-leaflet/3rd party */
+		'proj4': npm("veldapps-leaflet-js/src/proj4js.org/proj4-src"),
+		'epsg': npm("veldapps-leaflet-js/src/proj4js.org/epsg"),
+		'leaflet': npm("veldapps-leaflet-js/src/leafletjs.com"),
+		'jquery': npm("veldapps-leaflet-js/src/jquery.com/jquery-2.1.0.min"),
 		'famous': npm("famous"),
 
 		'ipfs': npm("ipfs/dist/index.min"),
@@ -101,16 +95,13 @@ require.config({
         'xml-js': npm("xml-js/dist/xml-js"),
         'handlebars': npm("handlebars/dist/handlebars.min"),
         
-        '/ "sikb0101': npm("veldapps-xmlgen-imsikb"),
         'xml-formatter': npm("xml-formatter/dist/browser/xml-formatter"),
 
 		/*- bower */
         'backbone': bwr("backbone/backbone"),
         'underscore': bwr("underscore/underscore"),
         'js-yaml': bwr("js-yaml/dist/js-yaml"),
-        '/ "csv-js': bwr("CSV-JS/csv"),
-        '/ "relational-pouch': bwr("relational-pouch/dist/pouchdb.relational-pouch"),
-        
+
         /*- dojo */
         'dojo': bwr("dojo"),
         'dgrid': bwr("dgrid"),
@@ -119,8 +110,6 @@ require.config({
 		'chartjs': npm("chart.js/dist"),
 		'dygraphs/Dygraph': npm("dygraphs/dist/dygraph"),
 
-		'/ "papaparse': npm("papaparse"),
-		'/ "jspdf': npm("jspdf/dist/jspdf.umd"),
 		'html2canvas': npm("html2canvas/dist/html2canvas.min"),
 
 		/*- amcharts3 */
@@ -421,7 +410,7 @@ define("utils/asarray", function() {
 	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
 });
 
-// define("papaparse", [npm("papaparse/papaparse-min")], (ppp) => ppp);
+// define("papaparse", ["papaparse"], (ppp) => ppp);
 define("papaparse", [npm("papaparse/papaparse")], (ppp) => ppp);
 
 define(("dropzone"), [npm("dropzone/dist/dropzone-amd-module"), "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
@@ -433,7 +422,92 @@ define("dygraphs/Dygraph", [npm("dygraphs/dist/dygraph"), "stylesheet!../lib/nod
 	return dygraph;
 });
 
-define("ol", ["lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
+define("am5", ["lib/amcharts5-lib/dist/am5.amd"], am5 => am5);
+define("ol-10.2.1", ["script!lib/ol-10.2.1-dist/ol.js", "stylesheet!lib/ol-10.2.1-dist/ol.css"], ol => {
+	ol = window.ol;
+	ol.create = ol.convert = (function(){
+		return function convert(value, properties) {
+			function instantiate(def, properties) {
+			
+				var values = def[1] || {};
+				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
+			
+				for(var name in values) {
+					var value = values[name];
+					values[name] = convert(value, properties);
+				}
+				
+				/*- jshint:evil */
+				return eval(code);
+			}
+		
+			// TODO escape with backslash
+			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
+				return properties[value.substring(1)];
+			}
+			
+			if(!(value instanceof Array)) {
+				return value;
+			}
+				
+			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
+				return value.map(function(val) {
+					return convert(val, properties);
+				});
+			}
+			
+			if(value[0].indexOf("ol:") === 0) {
+				value = instantiate(value, properties);
+			}
+			
+			return value;
+		};
+	}());	
+	return (window.ol = ol);
+});
+define("ol-8.1.0", ["lib/ol-8.1.0-dist/ol", "stylesheet!../lib/ol-8.1.0-dist/ol.css"], ol => {
+	ol = window.ol; // that was better before 7.1.0
+	ol.create = ol.convert = (function(){
+		return function convert(value, properties) {
+			function instantiate(def, properties) {
+			
+				var values = def[1] || {};
+				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
+			
+				for(var name in values) {
+					var value = values[name];
+					values[name] = convert(value, properties);
+				}
+				
+				/*- jshint:evil */
+				return eval(code);
+			}
+		
+			// TODO escape with backslash
+			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
+				return properties[value.substring(1)];
+			}
+			
+			if(!(value instanceof Array)) {
+				return value;
+			}
+				
+			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
+				return value.map(function(val) {
+					return convert(val, properties);
+				});
+			}
+			
+			if(value[0].indexOf("ol:") === 0) {
+				value = instantiate(value, properties);
+			}
+			
+			return value;
+		};
+	}());	
+	return ol;
+});
+define("ol-6.14.1", ["lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"], function(ol_) {
 	var ol = window.ol || ol_;
 	window.ol = ol;
 	
@@ -479,48 +553,9 @@ define("ol", ["lib/ol-6.14.1-dist/ol", "stylesheet!../lib/ol-6.14.1-dist/ol.css"
 
 	return arguments[0];
 });
-define("ol-8.1.0", ["lib/ol-8.1.0-dist/ol", "stylesheet!../lib/ol-8.1.0-dist/ol.css"], ol => {
-	ol = window.ol; // that was better before 7.1.0
-	ol.create = ol.convert = (function(){
-		return function convert(value, properties) {
-			function instantiate(def, properties) {
-			
-				var values = def[1] || {};
-				var code = js.sf("new %s(values)", def[0].replace(/\:/g, "."));
-			
-				for(var name in values) {
-					var value = values[name];
-					values[name] = convert(value, properties);
-				}
-				
-				/*- jshint:evil */
-				return eval(code);
-			}
-		
-			// TODO escape with backslash
-			if(typeof value === "string" && value.charAt(0) === ":" && value.charAt(1) !== ":") {
-				return properties[value.substring(1)];
-			}
-			
-			if(!(value instanceof Array)) {
-				return value;
-			}
-				
-			if(value.length < 1 || value.length > 2 || typeof value[0] !== "string") {
-				return value.map(function(val) {
-					return convert(val, properties);
-				});
-			}
-			
-			if(value[0].indexOf("ol:") === 0) {
-				value = instantiate(value, properties);
-			}
-			
-			return value;
-		};
-	}());	
-	return ol;
-});
+define("ol", ["ol-6.14.1"], ol => ol)
+// define("ol", ["ol-8.1.0"], ol => ol)
+// define("ol", ["ol-10.2.1"], ol => ol)
 define("proj4", [npm("proj4/dist/proj4-src")], function(P) {
 	return P;
 });
@@ -530,11 +565,14 @@ define("leaflet", ["js", veldoffice_js_ + "leafletjs.com/leaflet-default"], func
 
 define("pouchdb", ["pouch/db"], db => db);
 
+define("hljs", [npm("@highlightjs/cdn-assets/highlight.min")], () => window.hljs);
+
 define(("dropbox"), [npm("dropbox/dist/Dropbox-sdk")], (dbx) => dbx);
 define("markdown", [bwr("markdown/lib/markdown")], function() {
 	return window.markdown;
 });
-define("marked", [npm("marked/marked.min")], (marked) => marked);
+define("marked-highlight", ["hljs", npm("marked-highlight/lib/index.umd")], (hljs, markedhl) => markedhl);
+define("marked", [npm("marked/marked.min"), "marked-highlight"], (marked) => marked);
 define("pace", [bwr("PACE/pace"), "stylesheet!../lib/bower_components/PACE/themes/blue/pace-theme-minimal.css"], function(pace) { 
 		pace.start({ 
 			ajax: {
@@ -550,54 +588,7 @@ define("pace", [bwr("PACE/pace"), "stylesheet!../lib/bower_components/PACE/theme
 define("font-awesome", ["stylesheet!../lib/bower_components/font-awesome/css/font-awesome.css"], function(stylesheet) {
 	return stylesheet;
 });
-define("clipboard-copy", [], () => {
-	return function clipboardCopy (text) {
-	  // Use the Async Clipboard API when available. Requires a secure browsing
-	  // context (i.e. HTTPS)
-	  if (navigator.clipboard) {
-	    return navigator.clipboard.writeText(text).then(() => text).catch(function (err) {
-	      throw (err !== undefined ? err : new DOMException('The request is not allowed', 'NotAllowedError'))
-	    })
-	  }
-	
-	  // ...Otherwise, use document.execCommand() fallback
-	
-	  // Put the text to copy into a <span>
-	  var span = document.createElement('span')
-	  span.textContent = text
-	
-	  // Preserve consecutive spaces and newlines
-	  span.style.whiteSpace = 'pre'
-	  span.style.webkitUserSelect = 'auto'
-	  span.style.userSelect = 'all'
-	
-	  // Add the <span> to the page
-	  document.body.appendChild(span)
-	
-	  // Make a selection object representing the range of text selected by the user
-	  var selection = window.getSelection()
-	  var range = window.document.createRange()
-	  selection.removeAllRanges()
-	  range.selectNode(span)
-	  selection.addRange(range)
-	
-	  // Copy text to the clipboard
-	  var success = false
-	  try {
-	    success = window.document.execCommand('copy')
-	  } catch (err) {
-	    console.log('error', err)
-	  }
-	
-	  // Cleanup
-	  selection.removeAllRanges()
-	  window.document.body.removeChild(span)
-	
-	  return success
-	    ? Promise.resolve(text)
-	    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'))
-	}
-});
+define("clipboard-copy", ["util/Clipboard"], (Clipboard) => Clipboard.copy);
 define("vcl/Component.storage-pouchdb", ["pouch/Component.storageDB", "devtools/Resources"], (DB, Resources) => { 
 
 	
