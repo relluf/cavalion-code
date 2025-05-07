@@ -70,10 +70,6 @@
 		"js/minify",
 		"js/serialize",
 		"js/beautify",
-		"pouch/pouchdb.save",
-		"vcl/EventDispatcher",
-		"vcl/CssRules",
-		"locales/prototype",
 		"locales/en-US",
 		"util/DocumentHook",
 		"util/Stylesheet",
@@ -157,6 +153,11 @@
 		"less",
 		"on",
 		"locale",
-		"util/Clipboard"
+		"util/Clipboard",
+		"veldapps-xml/comment-parser",
+		"veldapps-ol/util",
+		"lib/node_modules/rbush/rbush",
+		"util/Queue",
+		"util/EventEmitter"
 	]
 }
