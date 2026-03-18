@@ -1,10 +1,12 @@
-"use vcl/Component";
+"use vcl/Component, vcl/ui/Console";
 
 const Method = require("js/Method");
 const Component = require("vcl/Component");
+const Console = require("vcl/ui/Console");
 
 const Res = require("devtools/Resources");
-const H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
+const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
+H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
 const C = (id) => j$[id];
 
 function setPaths() {
@@ -58,6 +60,10 @@ let cc = function() {
 	}],
 	
     [("#console"), {
+    	onLoad() {
+    		Console.prototype._onEvaluate = this._onEvaluate; // make this the default onEvaluate
+    		return this.inherited(arguments);	
+    	},
         onEvaluate: function (expr) {
 			const app = this.app();
             const ws = app.down("devtools/Workspace<>:root:selected:visible");
@@ -72,6 +78,8 @@ let cc = function() {
             const open = (uri, opts) => this.bubble(
             	"openform", js.mi(js.mi(opts || {}), { uri: uri })
             );
+            
+			const $$ = this.vars(["sizer._control"]);
 
             /* jshint evil: true */
             return eval(expr);

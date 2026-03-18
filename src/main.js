@@ -55,6 +55,7 @@ require.config({
         'shapefile': npm("shapefile/dist/shapefile"),
         'pako': npm("pako/dist/pako"),
         'sqlite': npm("sql.js/dist/sql-wasm"),
+		"qrcode": "../lib/qrcode", // ../lib/homemade/jslibs/qrnode/?
 
 		'bxv': npm("veldapps-bxv-parser/src"),
 		'bro': npm("veldapps-imbro/src"), // '/ "bro': npm("veldapps-xmlgen-broservices"),
@@ -70,8 +71,10 @@ require.config({
 
 		'vcl-veldoffice': veldoffice_js + "/veldapps.com/veldoffice/vcl-veldoffice",
 		'veldoffice': veldoffice_js + "/veldapps.com/veldoffice",
+		'veldoffice-codering': npm("veldoffice-codering"),
 
         'ace': npm("ace-builds/src"),
+		// "ace": npm("ace-builds/src-min-noconflict"),
 		'less': "../lib/bower_components/less/dist/less.min",
         'moment': "../lib/bower_components/moment/moment",
         'moment-locale': "../lib/bower_components/moment/locale",
@@ -119,8 +122,7 @@ require.config({
         'amcharts.pie': bwr("amcharts3/amcharts/pie"),
         'amcharts.radar': bwr("amcharts3/amcharts/radar"),
         'amcharts.serial': bwr("amcharts3/amcharts/serial"),
-        'amcharts.xy': bwr("amcharts3/amcharts/xy")
-
+    	'amcharts.xy': bwr("amcharts3/amcharts/xy")
     },
 	shim: {
 		'amcharts.funnel': {
@@ -172,20 +174,23 @@ less = { logLevel: 0 };
 
 window.locale_base = "locales/";
 window.loc = "en-US";
-window.req = function req() {
-	if(arguments.length == 1) {
+window.req = function req(modules, cb) {
+	if(typeof modules === "string") {
     	try {
     		return require(arguments[0]);
     	} catch(e) {}
+    	modules = [modules];
 	}
-	var modules = js.copy_args(arguments);
+	
 	return new Promise(function(resolve, reject) {
-	    require(modules, resolve, reject);
+	    require(modules, function() { resolve(cb ? 
+	    	cb.apply(this, arguments) : 
+	    	arguments[0]); }, reject);
 	});
-};
+	
+};	
 window.cl = console.log;
 
-define("veldapps/Session", [npm("veldapps-mmx/src/Session")], (Session) => Session);
 define("blocks", ["vcl/Component", "blocks/Blocks", "blocks/Factory", "override"], function(Component, Blocks, Factory) {
 
 	var override = require("override");
@@ -393,36 +398,52 @@ define("Element", ["on"], function(on) {
 	}, false);
 	return Element;
 });
-define("xml-funcs", ["veldapps-xml/index"], Xml => Xml);
-define("utils/asarray", function() {
-	
-	/*	asArray(arrLike) - 
-	
-		used while processing XML files when a sequence 
-		of elements is expected:
-	
-			var root = parse(xml);
-			
-			asArray(root.children).map( .... )
-	
-	*/
-	
-	return (_) => (_ instanceof Array ? _ : (_ !== undefined && _ !== null ? [_] : []));
-});
 
-// define("papaparse", ["papaparse"], (ppp) => ppp);
+define("xml-funcs", ["veldapps-xml/index"], Xml => Xml);
+define("veldapps/Session", [npm("veldapps-mmx/src/Session")], (Session) => Session);
+
 define("papaparse", [npm("papaparse/papaparse")], (ppp) => ppp);
+define("papaparse/papaparse", ["papaparse"], ppp => ppp)
 
 define(("dropzone"), [npm("dropzone/dist/dropzone-amd-module"), "stylesheet!lib/node_modules/dropzone/dist/dropzone.css"], (dz) => dz);
 
 define("mime-db", ["json!npm/mime-db/db"], (db) => db);
 define("mime-types", ["npm/mime-types/lookup"], (lu) => lu);
 
+define("csv", ["papaparse"], (ppp) => {
+	const opts = {
+		// delimiter: ",",	// auto-detect
+		// newline: "",	// auto-detect
+		quoteChar: '"',
+		// escapeChar: '"',
+		header: true,
+		// dynamicTyping: false,
+		// preview: 0,
+		// encoding: "",
+		// worker: false,
+		// comments: false,
+		// step: undefined,
+		// complete: undefined,
+		// error: undefined,
+		// download: false,
+		skipEmptyLines: true,
+		// chunk: undefined,
+		// fastMode: undefined,
+		// beforeFirstChunk: undefined,
+		// withCredentials: undefined
+	};
+	return {
+		load: function (name, req, onLoad, config) {
+			req(["text!" + name + ".csv"], (text) => onLoad(ppp.parse(text, opts).data));
+        }
+	};
+});
+
 define("dygraphs/Dygraph", [npm("dygraphs/dist/dygraph"), "stylesheet!../lib/node_modules/dygraphs/dist/dygraph.css"], function(dygraph) {
 	return dygraph;
 });
 
-define("am5", ["lib/amcharts5-lib/dist/am5.amd"], am5 => am5);
+define("am5", ["lib/amcharts5/dist/amd"], am5 => am5);
 define("ol-10.5.0", ["script!lib/ol-10.5.0-dist/ol.js", "stylesheet!lib/ol-10.5.0-dist/ol.css"], ol => {
 	ol = window.ol;
 	ol.create = ol.convert = (function(){
@@ -792,9 +813,10 @@ define(function(require) {
 	var JsObject = require("js/JsObject");
 
 	ComponentNode.initialize();
-
+	
 	window.j$ = JsObject.$;
-	window.B = require("B")
+	window.B = require("B");
+	window.Res = Resources;
 	window.addEventListener("beforeunload", (e) => {
 		const app = window.app;
 		if(app) {
