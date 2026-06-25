@@ -7,6 +7,7 @@ const Console = require("vcl/ui/Console");
 const Res = require("devtools/Resources");
 const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
 H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
+H.ns = (a, b, c) => Promise.resolve(H(a, b, c)).then(h => (h.addClass("no-shrinking"), h));
 const C = (id) => j$[id];
 
 function setPaths() {
@@ -31,7 +32,6 @@ function edit(component) {
 		});
 	}
 }
-
 
 /*- HM-20241010-1-method-auto-require-in-first-call
 		
@@ -75,11 +75,15 @@ let cc = function() {
             const root = ace && ace.up().down(":root");
             const pr = this.print.bind(this);
 
+const oln = (uri) => Res.get(uri).then(res => ws.qs("#ol-layer-needed").execute({parent: "#tree", layer: { name: res.name, source: ws.qs("#ol-source-needed").execute({ resource: res }) }}));
+const orln = (uri) => Res.get(uri).then(res => ws.qs("#ol-resource-layer-needed").execute({parent: "#tree", layer: { name: res.name, source: ws.qs("#ol-source-needed").execute({ resource: res }) }}));
+
             const open = (uri, opts) => this.bubble(
             	"openform", js.mi(js.mi(opts || {}), { uri: uri })
             );
             
 			const $$ = this.vars(["sizer._control"]);
+			const _ = this.getValues(true).pop() || this.getValues().pop();
 
             /* jshint evil: true */
             return eval(expr);

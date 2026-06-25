@@ -4,7 +4,7 @@ window.VO = require("veldoffice/VO");
 
 require("locale").mixIn({
 		
-	});
+});
 
 // [["vcl/prototypes/App.v2"], {
 [["devtools/App<veldoffice>"], { 
